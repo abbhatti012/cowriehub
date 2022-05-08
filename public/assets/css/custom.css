@@ -1,0 +1,19 @@
+.right-sidebar:not(.woocommerce-checkout) #secondary,
+.left-sidebar:not(.woocommerce-checkout) #secondary {
+    flex: 0 0 27.23577% !important;
+    max-width: 27.23577% !important;
+    position: relative !important;
+    width: 100% !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
+
+.right-sidebar:not(.woocommerce-checkout) #primary,
+.left-sidebar:not(.woocommerce-checkout) #primary {
+    flex: 0 0 72.76423% !important;
+    max-width: 72.76423% !important;
+    position: relative !important;
+    width: 100% !important;
+    padding-right: 15px !important;
+    padding-left: 15px !important;
+}
