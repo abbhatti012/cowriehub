@@ -1,4 +1,4 @@
-@extends('user.layout.index')
+@extends('admin.layout.index')
 @section('content')
 <style>
     .hard_cover, .digital_epub, .paper_back{

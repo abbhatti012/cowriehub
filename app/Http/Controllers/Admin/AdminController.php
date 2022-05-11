@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\c;
+use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
 use App\Models\SubGenre;
+use App\Models\AuthorDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AdminController extends Controller
 {
@@ -22,6 +26,8 @@ class AdminController extends Controller
         ->select(
             'users.*',
             'author-detail.email as work_email',
+            'author-detail.id as author_id',
+            'author-detail.user_id as user_id',
             'author-detail.cover as cover')
         ->get();
         return view('admin.author', compact('authors'));
@@ -30,7 +36,8 @@ class AdminController extends Controller
         return view('admin.consultant');
     }
     public function general_user(){
-        return view('admin.general-user');
+        $users = User::where('role','user')->get();
+        return view('admin.general-user',compact('users'));
     }
     public function publisher(){
         return view('admin.publisher');
@@ -42,7 +49,8 @@ class AdminController extends Controller
         return view('admin.affiliates');
     }
     public function books(){
-        return view('admin.books');
+        $books = Book::get();
+        return view('admin.books',compact('books'));
     }
     public function book_orders(){
         return view('admin.book-orders');
@@ -77,8 +85,9 @@ class AdminController extends Controller
     public function profile(){
         return view('admin.profile');
     }
-    public function edit_author(){
-        return view('admin.edit_author');
+    public function edit_author($id){
+        $user = AuthorDetail::where('id',$id)->first();
+        return view('admin.edit_author',compact('user'));
     }
     public function slider(){
         return view('admin.slider');
@@ -151,6 +160,66 @@ class AdminController extends Controller
         return view('admin.sub-genre',compact('sub_genres','genres','sub_genre'));
     }
     public function delete_author($id){
-        dd($id);
+        AuthorDetail::where('user_id',$id)->delete();
+        User::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Author data has been updated','type'=>'success']);
+    }
+    public function author_profile_update(Request $request, $id){
+        unset($request->_token);
+        $user = AuthorDetail::firstOrNew(array('id' => $id));
+        if($request->cover != null){
+            $coverImage = time().'.'.$request->cover->extension();
+            $request->cover->move(public_path('images/authors'), $coverImage);
+            $user->cover = 'images/authors/'.$coverImage;
+        } else {
+            unset($user->cover);
+        }
+        sleep(1);
+        if($request->profile != null){
+            $profileImage = time().'.'.$request->profile->extension();
+            $request->profile->move(public_path('images/authors'), $profileImage);
+            $user->profile = 'images/authors/'.$profileImage;
+        } else {
+            unset($user->profile);
+        }
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->biography = $request->biography;
+        $user->achievement = $request->achievement;
+        $user->website = $request->website;
+        $user->facebook = $request->facebook;
+        $user->instagram = $request->instagram;
+        $user->twitter = $request->twitter;
+        $user->save();
+
+        Session::flash('message', ['text'=>'Author data has been updated','type'=>'success']);
+        return back()->with('success','You have successfully upload image.');
+    }
+    public function edit_book($id){
+        $genres = Genre::with('subgenres')->get(); 
+        $authors = User::where('id','!=',Auth::id())->where('role','author')->get();
+        $book = Book::where('id',$id)->first(); 
+        return view('admin.edit-book', compact('genres', 'authors', 'book'));
+    }
+    public function add_book(Request $request){
+        $genres = Genre::with('subgenres')->get(); 
+        $authors = User::where('role','author')->get();
+        return view('admin.add-book', compact('genres', 'authors'));
+    }
+    public function update_book_status(Request $request){
+        $id = $request->id;
+        $value = $request->value;
+        $column = $request->column;
+       
+        $is_updated = Book::where('id',$id)->update([$column => $value]);
+        if($is_updated){
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
+    }
+    public function delete_user(Request $request, $id){
+        User::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'User data has been updated','type'=>'success']);
     }
 }

@@ -161,6 +161,8 @@
 <script src="{{asset('admin_assets/js/plugins-init/datatables.init.js')}}"></script>
 <script src="{{asset('admin_assets/vendor/ckeditor/ckeditor.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @yield('scripts')
 	<script>
 		$(document).ready(function(){
@@ -170,6 +172,13 @@
 				$('.content-body').show();
 			},1000)
 		})
+		var loadFile = function(event, id) {
+			var output = document.getElementById(id);
+			output.src = URL.createObjectURL(event.target.files[0]);
+			output.onload = function() {
+			URL.revokeObjectURL(output.src) // free memory
+			}
+		};
 	</script>
 </body>
 </html>

@@ -48,6 +48,12 @@ return new class extends Migration
             $table->integer('is_hardcover')->default(0);
             $table->integer('is_paperback')->default(0);
             $table->integer('is_digital')->default(0);
+            $table->integer('is_featured')->default(0);
+            $table->integer('is_sale')->default(0);
+            $table->integer('is_most_viewed')->default(0);
+            $table->integer('is_new')->default(0);
+            $table->integer('is_biographies')->default(0);
+            $table->integer('is_best')->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

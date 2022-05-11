@@ -23,7 +23,9 @@ class BookController extends Controller
     }
     public function insert_book(Request $request, $id){
         $user = Book::firstOrNew(array('id' => $id));
-        $user->user_id = Auth::id();
+        if($request->post_type == 'add'){
+            $user->user_id = Auth::id();
+        }
         if($request->hero_image != null){
             $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
             $request->hero_image->move(public_path('images/books'), $UploadImage);
@@ -46,6 +48,7 @@ class BookController extends Controller
             unset($user->sample);
         }
         $user->title = $request->title;
+        $user->price = $request->price;
         $user->subtitle = $request->subtitle;
         $user->synopsis = $request->synopsis;
         $user->genre = $request->genre;
@@ -53,6 +56,9 @@ class BookController extends Controller
         $user->publisher = $request->publisher;
         $user->country = $request->country;
         $user->publication_date = $request->publication_date;
+        if(Auth::user()->role == 'admin'){
+            $user->status = 1;
+        }
         
         if(isset($request->hardcover) && !empty($request->hardcover)){
             $user->hard_price = $request->hard_price;

@@ -62,7 +62,7 @@ class UserController extends Controller
             return back();
         }
         $user = AuthorDetail::firstOrNew(array('user_id' => Auth::id()));
-        
+       
         if($request->cover != null){
             $coverImage = time().'.'.$request->cover->extension();
             $request->cover->move(public_path('images/authors'), $coverImage);

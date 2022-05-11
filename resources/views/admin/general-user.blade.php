@@ -11,6 +11,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                     <div class="card-header">
                         <h4 class="card-title">General Users</h4>
                     </div>
@@ -19,40 +24,42 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
+                                        <!-- <th>
                                             <div class="form-check custom-checkbox ms-2">
                                                 <input type="checkbox" class="form-check-input" id="checkAll" required="">
                                                 <label class="form-check-label" for="checkAll"></label>
                                             </div>
-                                        </th>
+                                        </th> -->
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Phone</th>
+                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                <?php for($i = 1; $i <= 30; $i++): ?>
+                                @if(isset($users) && !empty($users))
+                                @foreach($users as $user)
                                     <tr>
-                                        <td>
+                                        <!-- <td>
                                             <div class="form-check custom-checkbox ms-2">
                                                 <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
                                                 <label class="form-check-label" for="customCheckBox2"></label>
                                             </div>
-                                        </td>
-                                        <td>{{ $i }}</td>
-                                        <td>Test Name</td>
-                                        <td>example@gmail.com</td>
-                                        <td>1234567890</td>
+                                        </td> -->
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->role }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-primary shadow btn-xs sharp me-1" title=""><i class="fa fa-thumbs-down"></i></a>
+                                                <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                @endforeach
+                                @endif
                                 </tbody>
                             </table>
                         </div>

@@ -11,6 +11,11 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                     <div class="card-header">
                         <h4 class="card-title">Author</h4>
                     </div>
@@ -50,7 +55,7 @@
                                                 <a href="{{ route('admin.edit.author', $author->author_id) }}" class="btn btn-primary shadow btn-xs sharp me-1" title="Update Author"><i class="fa fa-pencil"></i></a>
                                                 <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title="View Author"><i class="fa fa-eye"></i></a>
                                                 <!-- <a href="#" class="btn btn-info shadow btn-xs sharp me-1" title="Approve Author"><i class="fa fa-check"></i></a> -->
-                                                <a href="{{ route('admin.delete-author') }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Author"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-author', $author->user_id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Author"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>

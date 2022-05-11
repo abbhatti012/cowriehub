@@ -1,4 +1,4 @@
-@extends('user.layout.index')
+@extends('admin.layout.index')
 @section('content')
 <style>
     .hard_cover, .digital_epub, .paper_back{
@@ -9,7 +9,7 @@
    <div class="container-fluid">
       <div class="row page-titles">
          <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Admin</a></li>
             <li class="breadcrumb-item"><a href="javascript:void(0)">Add Book</a></li>
          </ol>
       </div>
@@ -19,7 +19,7 @@
         </div>
     @endif
    
-    <form id="basic-validation" action="{{ route('insert-book', 0) }}" method="POST" enctype="multipart/form-data">
+    <form id="basic-validation" action="{{ route('insert-book', $book->id) }}" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-xl-6 col-lg-6">
                 <div class="card">
@@ -27,35 +27,48 @@
                         <h4 class="card-title">Add Detail</h4>
                     </div>
                     @csrf
-                    <input type="hidden" name="post_type" value="add">
+                    <input type="hidden" name="post_type" value="edit">
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
-                       
+                       @if($book->hero_image)
+                        <div class="input-group mb-3">
+                            <img width="50%" src="{{ asset($book->hero_image) }}" id="commonImage1" alt="">
+                        </div>
+                        @else
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage1" alt="">
                         </div>
-                     
+                        @endif
                         <div class="input-group mb-3">
                             <span class="input-group-text">Hero Section Image</span>
                             <div class="form-file">
-                                <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')" required>
+                                <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')">
                             </div>
                         </div>
-                       
+                        @if($book->cover)
+                        <div class="input-group mb-3">
+                            <img width="50%" src="{{ asset($book->cover) }}" id="commonImage2" alt="">
+                        </div>
+                        @else
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage2" alt="">
                         </div>
-
+                        @endif
                         <div class="input-group mb-3">
                             <span class="input-group-text">Book Cover Photo</span>
                             <div class="form-file">
-                                <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')" required>
+                                <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')">
                             </div>
                         </div>
+                        @if($book->sample)
+                        <div class="input-group mb-3">
+                            <iframe width="50%" src="{{ asset($book->sample) }}" alt=""></iframe>
+                        </div>
+                        @endif
                         <div class="input-group mb-3">
                             <span class="input-group-text">Sample PDF</span>
                             <div class="form-file">
-                                <input type="file" name="sample" class="form-file-input form-control" required>
+                                <input type="file" name="sample" class="form-file-input form-control">
                             </div>
                         </div>
                         </div>
@@ -71,25 +84,25 @@
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="title">Title</label>
-                                <input class="form-control form-control-lg" name="title" type="text" id="title" required>
+                                <input class="form-control form-control-lg" name="title" type="text" id="title" value="{{ $book->title }}" required>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="price">Price</label>
-                                <input class="form-control form-control-lg" name="price" type="number" id="price" required>
+                                <input class="form-control form-control-lg" name="price" type="number" id="price" value="{{ $book->price }}" required>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="subtitle">Subtitle</label>
-                                <input type="text" class="form-control" name="subtitle" id="subtitle" required>
+                                <input type="text" class="form-control" name="subtitle" id="subtitle" value="{{ $book->subtitle }}" required>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="synopsis">Synopsis</label>
-                                <textarea class="form-control" rows="8" name="synopsis" id="synopsis" required></textarea>
+                                <textarea class="form-control" rows="8" name="synopsis" id="synopsis" required>{{ $book->synopsis }}</textarea>
                             </div>
                         </div>
                         <div class="basic-form">
@@ -99,7 +112,7 @@
                                     @foreach($genres as $genre)
                                         <optgroup label="{{ $genre->title }}"></optgroup>
                                         @foreach($genre->subgenres  as $sub)
-                                        <option value="{{ $sub->id }}">{{ $sub->title }}</option>
+                                        <option value="{{ $sub->id }}" @if($sub->id == $book->genre) selected="selected" @endif >{{ $sub->title }}</option>
                                         @endforeach
                                     @endforeach
                                 </select>
@@ -111,7 +124,7 @@
                                 <select style="height: 100%" class="form-control form-control-lg" name="sub_author[]" id="sub_author" multiple required>
                                     <optgroup label="--Please select an author--"></optgroup>
                                     @foreach($authors as $author)
-                                        <option value="{{ $author->id}}">{{ $author->name}}</option>
+                                        <option value="{{ $author->id}}" @foreach(unserialize($book->sub_author) as $sub)) @if($author->id == $sub) selected="selected" @endif @endforeach >{{ $author->name}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -120,14 +133,14 @@
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="publisher">Publisher</label>
-                                <input class="form-control form-control-lg" name="publisher" type="text" id="publisher" required>
+                                <input class="form-control form-control-lg" name="publisher" type="text" id="publisher" value="{{ $book->publisher }}" required>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="country">Country</label>
                                 <select id="country" name="country" class="form-control" required>
-                                    <option value="" selected="">Choose Country</option>
+                                    <option value="">Choose Country</option>
                                     <option value="Afghanistan">Afghanistan</option>
                                     <option value="Åland Islands">Åland Islands</option>
                                     <option value="Albania">Albania</option>
@@ -378,41 +391,41 @@
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="publication_date">Date</label>
-                                <input class="form-control form-control-lg" name="publication_date" type="date" id="publication_date" required>
+                                <input class="form-control form-control-lg" name="publication_date" type="date" id="publication_date" value="{{ $book->publication_date }}" required>
                             </div>
                         </div>
                         <h4>Book Format</h4><hr>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <div class="form-check custom-checkbox mb-3 checkbox-danger">
-                                    <input type="checkbox" class="form-check-input bookFormat" name="hardcover" id="hard_cover">
+                                    <input type="checkbox" class="form-check-input bookFormat" name="hardcover" @if($book->is_hardcover) checked @endif id="hard_cover">
                                     <label class="form-check-label" for="hard_cover">Hardcover</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="hard_cover">
+                        <div @if($book->is_hardcover) style="display: block" @endif class="hard_cover">
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_price">Price</label>
-                                    <input class="form-control form-control-lg" name="hard_price" type="number" id="hard_price">
+                                    <input class="form-control form-control-lg" name="hard_price" type="number" value="{{ $book->hard_price }}" id="hard_price">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_page">Page Count</label>
-                                    <input class="form-control form-control-lg" name="hard_page" type="number" id="hard_page">
+                                    <input class="form-control form-control-lg" name="hard_page" type="number" value="{{ $book->hard_page }}" id="hard_page">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_isbn">ISBN</label>
-                                    <input class="form-control form-control-lg" name="hard_isbn" type="text" id="hard_isbn">
+                                    <input class="form-control form-control-lg" name="hard_isbn" type="text" value="{{ $book->hard_isbn }}" id="hard_isbn">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_weight">Weight</label>
-                                    <input class="form-control form-control-lg" name="hard_weight" type="number" id="hard_weight">
+                                    <input class="form-control form-control-lg" name="hard_weight" type="number" value="{{ $book->hard_weight }}" id="hard_weight">
                                 </div>
                             </div>
                             <fieldset class="mb-3">
@@ -420,13 +433,13 @@
                                     <label class="col-form-label col-sm-3 pt-0">Shipped to Cowriehub?</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="hard_ship" value="1" checked="">
+                                            <input class="form-check-input" type="radio" name="hard_ship" value="1" @if($book->hard_ship == 1) checked @endif>
                                             <label class="form-check-label">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="hard_ship" value="0">
+                                            <input class="form-check-input" type="radio" name="hard_ship" value="0" @if($book->hard_ship == 0) checked @endif>   
                                             <label class="form-check-label">
                                                 No
                                             </label>
@@ -437,41 +450,41 @@
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_stock">Number in stock</label>
-                                    <input class="form-control form-control-lg" name="hard_stock" type="number" id="hard_stock">
+                                    <input class="form-control form-control-lg" name="hard_stock" type="number" id="hard_stock" value="{{ $book->stock }}">
                                 </div>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <div class="form-check custom-checkbox mb-3 checkbox-danger">
-                                    <input type="checkbox" class="form-check-input bookFormat" name="paperback" id="paper_back" >
+                                    <input type="checkbox" class="form-check-input bookFormat" name="paperback" id="paper_back" @if($book->is_paperback) checked @endif >
                                     <label class="form-check-label" for="paper_back">PaperBack</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="paper_back">
+                        <div @if($book->is_paperback) style="display: block" @endif class="paper_back">
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="paper_price">Price</label>
-                                    <input class="form-control form-control-lg" name="paper_price" type="number" id="paper_price">
+                                    <input class="form-control form-control-lg" name="paper_price" type="number" id="paper_price" value="{{ $book->paper_price }}">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="paper_page">Page Count</label>
-                                    <input class="form-control form-control-lg" name="paper_page" type="number" id="paper_page">
+                                    <input class="form-control form-control-lg" name="paper_page" type="number" id="paper_page" value="{{ $book->paper_page }}">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="paper_isbn">ISBN</label>
-                                    <input class="form-control form-control-lg" name="paper_isbn" type="text" id="paper_isbn">
+                                    <input class="form-control form-control-lg" name="paper_isbn" type="text" id="paper_isbn" value="{{ $book->paper_isbn }}">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="paper_weight">Weight</label>
-                                    <input class="form-control form-control-lg" name="paper_weight" type="number" id="paper_weight">
+                                    <input class="form-control form-control-lg" name="paper_weight" type="number" id="paper_weight" value="{{ $book->paper_weight }}">
                                 </div>
                             </div>
                             <fieldset class="mb-3">
@@ -479,13 +492,13 @@
                                     <label class="col-form-label col-sm-3 pt-0">Shipped to Cowriehub?</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" checked="">
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" @if($book->hard_ship == 1) checked @endif>
                                             <label class="form-check-label">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="0">
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="0" @if($book->hard_ship == 0) checked @endif>
                                             <label class="form-check-label">
                                                 No
                                             </label>
@@ -496,35 +509,35 @@
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="paper_stock">Number in stock</label>
-                                    <input class="form-control form-control-lg" name="paper_stock" type="number" id="paper_stock">
+                                    <input class="form-control form-control-lg" name="paper_stock" type="number" id="paper_stock" value="{{ $book->paper_stock }}">
                                 </div>
                             </div>
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <div class="form-check custom-checkbox mb-3 checkbox-danger">
-                                    <input type="checkbox" class="form-check-input bookFormat" name="digital" id="digital_epub" >
+                                    <input type="checkbox" class="form-check-input bookFormat" name="digital" id="digital_epub" @if($book->is_digital) checked @endif >
                                     <label class="form-check-label" for="digital_epub">Digital (ePUB)</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="digital_epub">
+                        <div @if($book->is_digital) style="display: block" @endif class="digital_epub">
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="digital_price">Price</label>
-                                    <input class="form-control form-control-lg" name="digital_price" type="number" id="digital_price">
+                                    <input class="form-control form-control-lg" name="digital_price" type="number" value="{{ $book->digital_price }}" id="digital_price">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="digital_page">Page Count</label>
-                                    <input class="form-control form-control-lg" name="digital_page" type="number" id="digital_page">
+                                    <input class="form-control form-control-lg" name="digital_page" type="number" value="{{ $book->digital_page }}" id="digital_page">
                                 </div>
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="digital_isbn">ISBN</label>
-                                    <input class="form-control form-control-lg" name="digital_isbn" type="text" id="digital_isbn">
+                                    <input class="form-control form-control-lg" name="digital_isbn" type="text" value="{{ $book->digital_isbn }}" id="digital_isbn">
                                 </div>
                             </div>
                             <div class="input-group mb-3">
@@ -554,6 +567,7 @@
                 $('.'+id).hide();
             }
         })
+        $('#country option[value={{ $book->country }}]').prop('selected', 'selected');
     })
 </script>
 @endsection

@@ -27,6 +27,7 @@
                         <h4 class="card-title">Add Detail</h4>
                     </div>
                     @csrf
+                    <input type="hidden" name="post_type" value="add">
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
                        @if($book->hero_image)
