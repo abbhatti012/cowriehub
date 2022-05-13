@@ -15,7 +15,7 @@ Route::get('/product/{any}', [App\Http\Controllers\HomeController::class, 'produ
 Route::get('/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
 Route::get('/about-us', [App\Http\Controllers\HomeController::class, 'about_us'])->name('about-us');
 Route::get('/authors-list', [App\Http\Controllers\HomeController::class, 'authors_list'])->name('authors-list');
-Route::get('/author-detail', [App\Http\Controllers\HomeController::class, 'author_detail'])->name('author-detail');
+Route::get('/author-detail/{num}', [App\Http\Controllers\HomeController::class, 'author_detail'])->name('author-detail');
 Route::get('/contact-us', [App\Http\Controllers\HomeController::class, 'contact_us'])->name('contact-us');
 Route::get('/faq', [App\Http\Controllers\HomeController::class, 'faq'])->name('faq');
 Route::get('/pricing-table', [App\Http\Controllers\HomeController::class, 'pricing_table'])->name('pricing-table');

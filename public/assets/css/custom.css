@@ -17,3 +17,9 @@
     padding-right: 15px !important;
     padding-left: 15px !important;
 }
+
+.common-card-image {
+    height: 186px;
+    object-fit: cover;
+    width: 150px;
+}

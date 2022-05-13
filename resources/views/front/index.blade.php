@@ -168,215 +168,52 @@
                      "slidesToShow": 1
                    }
                 }]'>
+                @forelse($data['best_selling'] as $book)
                 <div class="product">
                     <div class="product__inner overflow-hidden p-3 p-md-4d875">
                         <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                             <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{asset($book->hero_image)}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid common-card-image" alt="{{ $book->title }}"></a>
                             </div>
                             <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
+                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                    @if($book->is_paperback)
+                                        Paperback
+                                    @elseif($book->is_hardcover)
+                                        , Hardcover
+                                    @elseif($book->is_digital)
+                                        , Digital
+                                    @endif
+                                </a></div>
+                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                <div class="font-size-2  mb-1 text-truncate">
+                                    @if($book->role != 'admin')
+                                        <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                    @else
+                                        <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                    @endif
+                                </div>
                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                                 </div>
                             </div>
                             <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
+                                <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
                                     <span class="product__add-to-cart">ADD TO CART</span>
                                     <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                 </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
+                                <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                     <i class="flaticon-switch"></i>
                                 </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
+                                <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                     <i class="flaticon-heart"></i>
                                 </a>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="150x226"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Last Sister (Columbia River Book 1)</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Kelly Harms</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="150x226"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Kelly Harms</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Last Sister (Columbia River Book 1)</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Kelly Harms</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product">
-                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                            <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{asset('assets/img/books/bookworm-product-placeholder-120x183.jpg')}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Kelly Harms</a></div>
-                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                </div>
-                            </div>
-                            <div class="product__hover d-flex align-items-center">
-                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto">
-                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-switch"></i>
-                                </a>
-                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                    <i class="flaticon-heart"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+                @endforelse
             </div>
         </div>
     </section>
@@ -399,1058 +236,152 @@
             <div class="tab-content" id="featuredBooksContent">
                 <div class="tab-pane fade show active" id="featured" role="tabpanel" aria-labelledby="featured-tab">
                     <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-wd-6 border-top border-left my-0">
+                        @forelse($data['featured'] as $book)
                         <li class="product col">
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                            @if($book->is_paperback)
+                                                Paperback
+                                            @elseif($book->is_hardcover)
+                                                , Hardcover
+                                            @elseif($book->is_digital)
+                                                , Digital
+                                            @endif
+                                        </a></div>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <div class="font-size-2  mb-1 text-truncate">
+                                            @if($book->role != 'admin')
+                                                <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                            @else
+                                                <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                            @endif
+                                        </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                        <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-switch"></i>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-heart"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        @empty
+                        @endforelse
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="onsale" role="tabpanel" aria-labelledby="onsale-tab">
                     <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-wd-6 border-top border-left my-0">
+                    @forelse($data['sales'] as $book)
                         <li class="product col">
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                            @if($book->is_paperback)
+                                                Paperback
+                                            @elseif($book->is_hardcover)
+                                                , Hardcover
+                                            @elseif($book->is_digital)
+                                                , Digital
+                                            @endif
+                                        </a></div>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <div class="font-size-2  mb-1 text-truncate">
+                                            @if($book->role != 'admin')
+                                                <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                            @else
+                                                <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                            @endif
+                                        </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                        <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-switch"></i>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-heart"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                        @empty
+                        @endforelse
                     </ul>
                 </div>
                 <div class="tab-pane fade" id="mostviewed" role="tabpanel" aria-labelledby="mostviewed-tab">
                     <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-wd-6 border-top border-left my-0">
+                    @forelse($data['viewed'] as $book)
                         <li class="product col">
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                            @if($book->is_paperback)
+                                                Paperback
+                                            @elseif($book->is_hardcover)
+                                                , Hardcover
+                                            @elseif($book->is_digital)
+                                                , Digital
+                                            @endif
+                                        </a></div>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <div class="font-size-2  mb-1 text-truncate">
+                                            @if($book->role != 'admin')
+                                                <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                            @else
+                                                <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                            @endif
+                                        </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                        <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-switch"></i>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
+                                        <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                             <i class="flaticon-heart"></i>
                                         </a>
                                     </div>
                                 </div>
                             </div>
                         </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">All You Can Ever Know: A Memoir</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                        <li class="product col d-xl-none d-wd-block">
-                            <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                    <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                    </div>
-                                    <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Broken Faith: Inside the Word of Faith...</a></h2>
-                                        <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('author-detail') }}" class="text-gray-700">Jay Shetty</a></div>
-                                        <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                        </div>
-                                    </div>
-                                    <div class="product__hover d-flex align-items-center">
-                                        <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                            <span class="product__add-to-cart">ADD TO CART</span>
-                                            <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-switch"></i>
-                                        </a>
-                                        <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                            <i class="flaticon-heart"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
+                    @empty
+                    @endforelse
                     </ul>
                 </div>
             </div>
@@ -1797,7 +728,7 @@
     </section>
     <section class="space-bottom-3 banner-with-product">
         <div class="container">
-            <header class="mb-5 d-md-flex justify-content-between align-items-center">
+            <!-- <header class="mb-5 d-md-flex justify-content-between align-items-center">
                 <h2 class="font-size-7 mb-3 mb-md-0">New Releases</h2>
                 <ul class="nav nav-gray-700 flex-nowrap flex-md-wrap overflow-auto overflow-md-visible" role="tablist">
                     <li class="nav-item mx-4 flex-shrink-0 flex-md-shrink-1">
@@ -1813,6 +744,10 @@
                         <a class="nav-link pb-1 px-0" id="travel-tab" data-toggle="tab" href="#travel-1" role="tab" aria-controls="travel-1" aria-selected="false">Travel</a>
                     </li>
                 </ul>
+            </header> -->
+            <header class="mb-5 d-md-flex justify-content-between align-items-center">
+                <h2 class="font-size-7 mb-3 mb-md-0">New Release</h2>
+                <a href="{{ route('shop') }}" class="h-primary d-block">View All <i class="glyph-icon flaticon-next"></i></a>
             </header>
             <div class="tab-content u-slick__tab">
                 <div class="tab-pane fade show active" id="history-1" role="tabpanel" aria-labelledby="history-tab">
@@ -1820,9 +755,7 @@
                         <div class="col-xl-4 border-right-0 border bg-gray-200 px-1">
                             <div class="banner px-lg-8 px-3 py-4 py-xl-0 d-flex h-100 align-items-center justify-content-center">
                                 <div class="banner__body">
-                                    <div class="banner__image pb-1 mb-5">
-                                        <img class="img-fluid" src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description">
-                                    </div>
+                                   
                                     <h3 class="banner_text m-0">
                                         <span class="d-block mb-1 font-size-10 font-weight-regular">Get Extra</span>
                                         <span class="d-block mb-3 font-size-12 text-primary font-weight-medium">Sale -25%</span>
@@ -1834,1003 +767,52 @@
                         </div>
                         <div class="col-xl-8">
                             <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-lg-3 row-cols-wd-4 border-top border-left my-0">
+                            @forelse($data['new_release'] as $book)
                                 <li class="product col">
                                     <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                         <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                             <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                             </div>
                                             <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
+                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                                    @if($book->is_paperback)
+                                                        Paperback
+                                                    @elseif($book->is_hardcover)
+                                                        , Hardcover
+                                                    @elseif($book->is_digital)
+                                                        , Digital
+                                                    @endif
+                                                </a></div>
+                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                                <div class="font-size-2  mb-1 text-truncate">
+                                                    @if($book->role != 'admin')
+                                                        <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                                    @else
+                                                        <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                                    @endif
+                                                </div>
                                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                                                 </div>
                                             </div>
                                             <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
+                                                <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
                                                     <span class="product__add-to-cart">ADD TO CART</span>
                                                     <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                                 </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
+                                                <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                                     <i class="flaticon-switch"></i>
                                                 </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
+                                                <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                                                     <i class="flaticon-heart"></i>
                                                 </a>
                                             </div>
                                         </div>
                                     </div>
                                 </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Call Me By Your Name</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Camino Winds</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="sciencemath-1" role="tabpanel" aria-labelledby="sciencemath-tab">
-                    <div class="row no-gutters">
-                        <div class="col-xl-4 border-right-0 border bg-gray-200 px-1">
-                            <div class="banner px-lg-8 px-3 py-4 py-xl-0 d-flex h-100 align-items-center justify-content-center">
-                                <div class="banner__body">
-                                    <div class="banner__image pb-1 mb-5">
-                                        <img class="img-fluid" src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description">
-                                    </div>
-                                    <h3 class="banner_text m-0">
-                                        <span class="d-block mb-1 font-size-10 font-weight-regular">Get Extra</span>
-                                        <span class="d-block mb-3 font-size-12 text-primary font-weight-medium">Sale -25%</span>
-                                        <span class="d-block mb-5 text-uppercase font-size-7 font-weight-regular text-gray-400">On Order Over $100</span>
-                                    </h3>
-                                    <a href="{{ route('shop') }}" class="btn btn-primary btn-wide rounded-0">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-8">
-                            <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-lg-3 row-cols-wd-4 border-top border-left my-0">
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Call Me By Your Name</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Camino Winds</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="romance-1" role="tabpanel" aria-labelledby="romance-tab">
-                    <div class="row no-gutters">
-                        <div class="col-xl-4 border-right-0 border bg-gray-200 px-1">
-                            <div class="banner px-lg-8 px-3 py-4 py-xl-0 d-flex h-100 align-items-center justify-content-center">
-                                <div class="banner__body">
-                                    <div class="banner__image pb-1 mb-5">
-                                        <img class="img-fluid" src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description">
-                                    </div>
-                                    <h3 class="banner_text m-0">
-                                        <span class="d-block mb-1 font-size-10 font-weight-regular">Get Extra</span>
-                                        <span class="d-block mb-3 font-size-12 text-primary font-weight-medium">Sale -25%</span>
-                                        <span class="d-block mb-5 text-uppercase font-size-7 font-weight-regular text-gray-400">On Order Over $100</span>
-                                    </h3>
-                                    <a href="{{ route('shop') }}" class="btn btn-primary btn-wide rounded-0">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-8">
-                            <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-lg-3 row-cols-wd-4 border-top border-left my-0">
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Call Me By Your Name</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Camino Winds</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="travel-1" role="tabpanel" aria-labelledby="travel-tab">
-                    <div class="row no-gutters">
-                        <div class="col-xl-4 border-right-0 border bg-gray-200 px-1">
-                            <div class="banner px-lg-8 px-3 py-4 py-xl-0 d-flex h-100 align-items-center justify-content-center">
-                                <div class="banner__body">
-                                    <div class="banner__image pb-1 mb-5">
-                                        <img class="img-fluid" src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description">
-                                    </div>
-                                    <h3 class="banner_text m-0">
-                                        <span class="d-block mb-1 font-size-10 font-weight-regular">Get Extra</span>
-                                        <span class="d-block mb-3 font-size-12 text-primary font-weight-medium">Sale -25%</span>
-                                        <span class="d-block mb-5 text-uppercase font-size-7 font-weight-regular text-gray-400">On Order Over $100</span>
-                                    </h3>
-                                    <a href="{{ route('shop') }}" class="btn btn-primary btn-wide rounded-0">View More</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-8">
-                            <ul class="products list-unstyled row no-gutters row-cols-2 row-cols-lg-3 row-cols-wd-4 border-top border-left my-0">
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Think Like a Monk: Train Your Mind for Peace and Purpose Everyday</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Overdue Life of Amy Byler</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Call Me By Your Name</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Camino Winds</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Man's Search for Meaning</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product col d-xl-none d-wd-block">
-                                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
-                                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
-                                            <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/featured_books.jpg') }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
-                                            </div>
-                                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Paperback</a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Blindside (Michael Bennett)</a></h2>
-                                                <div class="font-size-2  mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Jay Shetty</a></div>
-                                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>29</span>
-                                                </div>
-                                            </div>
-                                            <div class="product__hover d-flex align-items-center">
-                                                <a href="{{ route('product', 4) }}" class="text-uppercase text-dark h-dark font-weight-medium mr-auto" data-toggle="tooltip" data-placement="right" title="ADD TO CART">
-                                                    <span class="product__add-to-cart">ADD TO CART</span>
-                                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-switch"></i>
-                                                </a>
-                                                <a href="{{ route('product', 4) }}" class="h-p-bg btn btn-outline-primary border-0">
-                                                    <i class="flaticon-heart"></i>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
+                            @empty
+                            @endforelse
                             </ul>
                         </div>
                     </div>
@@ -2860,97 +842,28 @@
                      "slidesToShow": 1
                    }
                 }]'>
+                @forelse($data['biographies'] as $book)
                 <div class="product product__card border-right">
                     <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
+                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img class="common-card-image" src="{{ asset($book->hero_image) }}" alt="{{ $book->title }}"></a>
                         <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Rural Diaries: Love, Livestock, and Big Life Lessons Down on Mischief Farm</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
+                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">Hard Cover</a></div>
+                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->author_id) }}">{{ $book->title }}</a></h2>
+                            <div class="font-size-2 mb-1 text-truncate">
+                                @if($book->role != 'admin')
+                                    <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                @else
+                                    <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                @endif
+                            </div>
                             <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
+                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Ride of a Lifetime: Lessons Learned from 15 Years as CEO...</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Russians Among Us: Sleeper Cells, Ghost Stories, and the Hunt...</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Rural Diaries: Love, Livestock, and Big Life Lessons Down on Mischief Farm</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Ride of a Lifetime: Lessons Learned from 15 Years as CEO...</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Russians Among Us: Sleeper Cells, Ghost Stories, and the Hunt...</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="product product__card border-right">
-                    <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/get extra.jpg') }}" alt="image-description"></a>
-                        <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Hard Cover</a></div>
-                            <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">The Rural Diaries: Love, Livestock, and Big Life Lessons Down on Mischief Farm</a></h2>
-                            <div class="font-size-2 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Hillary Burton</a></div>
-                            <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                @empty
+               @endforelse
             </div>
         </div>
     </section>
@@ -2982,78 +895,19 @@
                         "slidesToShow": 1
                     }
                 }]'>
+                @forelse($data['authors'] as $author)
                 <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
+                    <a href="{{ route('author-detail', $author->id) }}" class="text-reset">
+                        <img src="{{ asset($author->profile) }}" class="author-img mx-auto mb-5 d-block rounded-circle" alt="{{ $author->name }}">
                         <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Barbara O'Neil</h2>
+                            <h2 class="author__name h6 mb-0">{{ $author->name }}</h2>
                             <div class="text-gray-700 font-size-2">25 Published Books</div>
                         </div>
                     </a>
                 </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Stephen King</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">David Walliams</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Joe Wicks</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Jessica Simpson</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">David Walliams</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Joe Wicks</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
-                <li class="author col">
-                    <a href="{{ route('authors-list') }}" class="text-reset">
-                        <img src="{{ asset('assets/img/books/favorite authers.jpg') }}" class="mx-auto mb-5 d-block rounded-circle" alt="image-description">
-                        <div class="author__body text-center">
-                            <h2 class="author__name h6 mb-0">Barbara O'Neil</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
-                        </div>
-                    </a>
-                </li>
+                @empty
+                @endforelse
+                
             </ul>
         </div>
     </section>
