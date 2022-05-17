@@ -55,6 +55,7 @@
                                         <th>Is Most Viewed?</th>
                                         <th>Is New Release?</th>
                                         <th>Is Biographies?</th>
+                                        <th>Is Campaign?</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -214,6 +215,25 @@
                                                 title="Not In Biographies"><i class="fa fa-check"></i></a>
                                             @endif
                                         </td>
+                                        <td>
+                                            @if($book->is_campaign)
+                                                <a href="javascript:void(0)" class="btn btn-danger shadow btn-xs sharp takeAction" 
+                                                data-id="{{ $book->id }}"
+                                                data-text="Book is removed from Campaign!"
+                                                data-sub_text="You want to remove the book from Campaign?"
+                                                data-column="is_campaign"
+                                                data-value="0"
+                                                title="In Campaign"><i class="fa fa-times"></i></a>
+                                            @else
+                                                <a href="javascript:void(0)" class="btn btn-primary shadow btn-xs sharp add_to_campaign" 
+                                                data-id="{{ $book->id }}"
+                                                data-text="Book is added to Campaign!"
+                                                data-sub_text="You want to add the book in Campaign?"
+                                                data-column="is_campaign"
+                                                data-value="1"
+                                                title="Not In Campaign"><i class="fa fa-check"></i></a>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -245,35 +265,81 @@
                     dangerMode: true,
                 })
                 .then((willDelete) => {
-                if (willDelete) {
-                    $.ajax({
-                        type : 'POST',
-                        url : '{{ route("admin.update-book-status") }}',
-                        data : {
-                            "_token": "{{ csrf_token() }}",
-                            id : id,
-                            value : value,
-                            column : column
-                        },
-                        success : function(data){
-                            if(data){
-                                swal(text, {
-                                    icon: "success",
-                                });
-                                setTimeout(function(){
-                                    location.reload();
-                                },1000)
-                            } else {
-                                swal("Something went wrong!");
+                    if (willDelete) {
+                        $.ajax({
+                            type : 'POST',
+                            url : '{{ route("admin.update-book-status") }}',
+                            data : {
+                                "_token": "{{ csrf_token() }}",
+                                id : id,
+                                value : value,
+                                column : column
+                            },
+                            success : function(data){
+                                if(data){
+                                    swal(text, {
+                                        icon: "success",
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },1000)
+                                } else {
+                                    swal("Something went wrong!");
+                                }
                             }
-                        }
-                    })
-                
-                } else {
-                    swal("Action Back!");
-                }
+                        })
+                    
+                    } else {
+                        swal("Action Back!");
+                    }
                 });
-            })
-        })
+            });
+            $(document).on('click','.add_to_campaign',function(){
+                var column = $(this).data('column');
+                var value = $(this).data('value');
+                var id = $(this).data('id');
+                var text = $(this).data('text');
+                var sub_text = $(this).data('sub_text');
+                
+                swal({
+                    text: 'Please enter book old price',
+                    content: "input",
+                        button: {
+                            text: "Add!",
+                            closeModal: false,
+                        },
+                    })
+                    .then(old_price => {
+                        if (old_price) {
+                        $.ajax({
+                            type : 'POST',
+                            url : '{{ route("admin.update-campaign-status") }}',
+                            data : {
+                                "_token": "{{ csrf_token() }}",
+                                id : id,
+                                value : value,
+                                column : column,
+                                old_price : old_price
+                            },
+                            success : function(data){
+                                if(data){
+                                    swal(text, {
+                                        icon: "success",
+                                    });
+                                    setTimeout(function(){
+                                        location.reload();
+                                    },1000)
+                                } else {
+                                    swal("Something went wrong!");
+                                }
+                            }
+                        })
+                    
+                    } else {
+                        swal("Action Back!");
+                    }
+                })    
+            });
+        });
     </script>
 @endsection

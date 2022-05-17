@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <div class="nav-header">
-    <a href="index.html" class="brand-logo">
+    <a href="/" class="brand-logo">
         <img width="150" src="{{ asset('logo.png') }}" alt="logo">
     </a>
     <div class="nav-control">
@@ -833,6 +833,12 @@
                 <a href="{{ route('admin.system-users') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-cog"></i>
                     <span class="nav-text">System Users</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'settings'){echo 'mm-active';} ?>">
+                <a href="{{ route('admin.settings') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-cog"></i>
+                    <span class="nav-text">Settings</span>
                 </a>
             </li>
         </ul>

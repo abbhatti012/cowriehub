@@ -6,7 +6,10 @@ use App\Models\c;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Banner;
+use App\Models\Setting;
 use App\Models\SubGenre;
+use App\Models\Marketing;
 use App\Models\AuthorDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,6 +85,10 @@ class AdminController extends Controller
     public function system_users(){
         return view('admin.system-users');
     }
+    public function settings(){
+        $setting = Setting::first();
+        return view('admin.settings',compact('setting'));
+    }
     public function profile(){
         return view('admin.profile');
     }
@@ -90,7 +97,8 @@ class AdminController extends Controller
         return view('admin.edit_author',compact('user'));
     }
     public function slider(){
-        return view('admin.slider');
+        $banners = Banner::get();
+        return view('admin.slider',compact('banners'));
     }
     public function ads(){
         return view('admin.ads');
@@ -117,7 +125,8 @@ class AdminController extends Controller
         return view('admin.authors-Contract');
     }
     public function marketersNetworkAgreement(){
-        return view('admin.marketers-Network-Agreement');
+        $marketing = Marketing::get();
+        return view('admin.marketers-Network-Agreement',compact('marketing'));
     }
     public function referredCustomersAgreement(){
         return view('admin.referred-Customers-Agreement');
@@ -218,8 +227,65 @@ class AdminController extends Controller
             return response()->json(false);
         }
     }
+    public function update_campaign_status(Request $request){
+        $id = $request->id;
+        $value = $request->value;
+        $column = $request->column;
+        $old_price = $request->old_price;
+       
+        $is_updated = Book::where('id',$id)->update([$column => $value, 'old_price' => $old_price]);
+        if($is_updated){
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
+    }
     public function delete_user(Request $request, $id){
         User::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'User data has been updated','type'=>'danger']);
+    }
+    public function delete_marketing(Request $request, $id){
+        Marketing::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Marketing data has been deleted','type'=>'danger']);
+    }
+    public function delete_banner(Request $request, $id){
+        Banner::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Banner has been deleted','type'=>'danger']);
+    }
+    public function update_setting(Request $request){
+        $data = $request->all();
+        unset($data['_token']);
+        $trainee = Setting::findOrFail(1);
+        $trainee->fill($data)->save();
         return back()->with('message', ['text'=>'User data has been updated','type'=>'success']);
     }
-}
+    public function add_marketing(Request $request){
+        $data = $request->all();
+        unset($data['_token']);
+        $point = serialize($data['point']);
+        unset($data['point']);
+        $market = new Marketing;
+        $market->package = $data['package'];
+        $market->price = $data['price'];
+        $market->duration = $data['duration'];
+        $market->point = $point;
+        $market->save();
+        return back()->with('message', ['text'=>'Marketing data has been saved','type'=>'success']);
+    }
+    public function add_banner(Request $request){
+        $banner = New Banner();
+        if($request->banner != null){
+            $bannerImage = time().'.'.$request->banner->extension();
+            $request->banner->move(public_path('images/banners'), $bannerImage );
+            $banner->banner = 'images/banners/'.$bannerImage ;
+        } else {
+            unset($banner->banner);
+        }
+        $banner->type = $request->type;
+        $banner->title = $request->title;
+        $banner->month = $request->month;
+        $banner->category = 'Hero Banner';
+        $banner->save();
+        return back()->with('message', ['text'=>'Banner data has been saved','type'=>'success']);
+    }
+} 

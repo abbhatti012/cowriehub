@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\User;
+use App\Models\Genre;
+use App\Models\Banner;
+use App\Models\Setting;
+use App\Models\Marketing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,7 +52,36 @@ class HomeController extends Controller
         $data['authors'] = User::where('users.role','author')
         ->select('users.*','author-detail.profile as profile')
         ->join('author-detail','author-detail.user_id','=','users.id')->get();
+        $data['setting'] = Setting::first();
+        $start_date = $data['setting']->start_date;
+        $end_date = $data['setting']->end_date;
+        $start_time = $data['setting']->start_time;
+        $end_time = $data['setting']->end_time;
+        if($start_date.''.$start_time > $end_date.' '.$end_time){
+            $data['is_campaign'] = false;
+        } else {
+            $data['is_campaign'] = true;
+        }
+        $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
+        ->orderBy('books.id','asc')->where('status',1)
+        ->join('users','users.id','=','books.user_id')
+        ->join('sub_genres','sub_genres.id','=','books.genre');
+        $data['campaign'] = $query->where('books.is_campaign',1)->get();
+        $data['genres'] = Genre::get();
+        $data['banners'] = Banner::get();
         return view('front.index',compact('data'));
+    }
+    public function add_marketing_orders(Request $request){
+        echo 'In progress';exit;
+        if(!Auth::check()){
+            return redirect('/login')->with('message', ['text'=>'Pleas login first to proceed','type'=>'warning']);
+        }
+        $data['user_id'] = Auth::user()->id;
+        $data['first_name'] = $request->first_name;
+        $data['last_name'] = $request->last_name;
+        $data['email'] = $request->email;
+        $data['phone'] = $request->phone;
+        $data['marketing_id'] = $request->marketing_id;
     }
     public function shop(){
         return view('front.shop');
@@ -86,7 +119,8 @@ class HomeController extends Controller
         return view('front.terms-conditions');
     }
     public function pricing_table(){
-        return view('front.pricing-table');
+        $marketing = Marketing::get();
+        return view('front.pricing-table',compact('marketing'));
     }
     public function faq(){
         return view('front.faq');
@@ -105,5 +139,8 @@ class HomeController extends Controller
     }
     public function order_tracking(){
         return view('front.order-tracking');
+    }
+    public function buy_marketing_package(){
+        return view('front.buy-marketing-package');
     }
 }

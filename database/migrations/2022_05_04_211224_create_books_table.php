@@ -54,6 +54,8 @@ return new class extends Migration
             $table->integer('is_new')->default(0);
             $table->integer('is_biographies')->default(0);
             $table->integer('is_best')->default(0);
+            $table->integer('is_campaign')->default(0);
+            $table->integer('old_price')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

@@ -105,6 +105,11 @@
                         </ul>
                     </div>
                 @endif
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                 <div class="col-md-6">
                     <div class="authincation-content">
                         <div class="row no-gutters">

@@ -1,4 +1,6 @@
-<!-- ========== FOOTER ========== -->
+@php 
+    $genres = DB::table('genres')->get();
+@endphp
 <footer>
         <div class="border-top space-top-3">
             <div class="border-bottom pb-5 space-bottom-lg-3">
@@ -135,24 +137,11 @@
                         <div class="col-lg-2 mb-6 mb-lg-0">
                             <h4 class="font-size-3 font-weight-medium mb-2 mb-xl-5 pb-xl-1">Categories</h4>
                             <ul class="list-unstyled mb-0">
+                                @foreach($genres as $genre)
                                 <li class="pb-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 1</a>
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">{{  $genre->title }}</a>
                                 </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 2</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 3</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 4</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 5</a>
-                                </li>
-                                <li class="pt-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('shop') }}">Category 6</a>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>

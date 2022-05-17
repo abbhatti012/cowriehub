@@ -8,6 +8,51 @@
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Slider</a></li>
             </ol>
         </div>
+        @if(Session::has('message'))
+            <div class="alert alert-{{session('message')['type']}}">
+                {{session('message')['text']}}
+            </div>
+        @endif
+        <form id="basic-validation" action="{{ route('admin.add-banner') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Hero Banner Data</h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="basic-form col-lg-6">
+                                <div class="mb-3">
+                                    <label for="type">Editor</label>
+                                    <input class="form-control form-control-lg" name="type" type="text" id="type" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-6">
+                                <div class="mb-3">
+                                    <label for="title">Title</label>
+                                    <input class="form-control form-control-lg" name="title" type="text" id="title" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-6">
+                                <div class="mb-3">
+                                    <label for="month">Month</label>
+                                    <input class="form-control form-control-lg" name="month" type="text" id="month" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-6">
+                                <div class="mb-3">
+                                    <label for="email">Banner Image</label>
+                                    <input class="form-control form-control-lg" name="banner" type="file">
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="row">
             <div class="col-12">
                 <div class="card">
@@ -19,40 +64,30 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th>
                                         <th>#</th>
-                                        <th>Caption</th>
+                                        <th>Banner</th>
+                                        <th>Editor</th>
+                                        <th>Title</th>
                                         <th>Category</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                
-                                <?php for($i = 1; $i <= 20; $i++): ?>
+                                @forelse($banners as $banner)
                                     <tr>
-                                        <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
-                                        </td>
-                                        <td>{{ $i }}</td>
-                                        <td>MOMO AWAY</td>
-                                        <td>Landing Page</td>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td><img width="150" src="{{ asset($banner->banner) }}" alt=""></td>
+                                        <td>{{ $banner->type }}</td>
+                                        <td>{{ $banner->title }}</td>
+                                        <td>{{ $banner->category }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-warning shadow btn-xs sharp" title=""><i class="fa fa-eye"></i></a>
-                                                <a href="#" class="btn btn-info shadow btn-xs sharp" title=""><i class="fa fa-edit"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-banner', $banner->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                    @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>

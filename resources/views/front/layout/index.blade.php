@@ -18,6 +18,25 @@
     <link rel="stylesheet" href="{{asset('assets/css/theme.css')}}">
     <link rel="stylesheet" href="{{asset('assets/css/custom.css')}}">
 </head>
+    <style>
+        label.error {
+            color: red;
+            font-size: 1rem;
+            display: block;
+            margin-top: 5px;
+        }
+
+        input.error {
+            border: 1px dashed red;
+            font-weight: 300;
+            color: red;
+        }
+        textarea.error {
+            border: 1px dashed red;
+            font-weight: 300;
+            color: red;
+        }
+    </style>
 <body>
 @include('front.layout.header')
 
@@ -44,11 +63,13 @@
 <script src="{{asset('assets/js/components/hs.selectpicker.js')}}"></script>
 <script src="{{asset('assets/js/components/hs.show-animation.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-    <!-- JS Bookworm -->
-    <!-- <script src="../../assets/js/bookworm.js"></script> -->
-    <script>
-        $(document).on('ready', function() {
+<!-- JS Bookworm -->
+<!-- <script src="../../assets/js/bookworm.js"></script> -->
+<script>
+    $(document).on('ready', function() {
+            $("#basic-validation").validate();
             // initialization of unfold component
             $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
 

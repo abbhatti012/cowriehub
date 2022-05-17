@@ -1,80 +1,64 @@
+<style>
+    .outCampaign{
+        display: none;
+    }
+    .bgimg {
+        height: 30%;
+        background-position: center;
+        background-size: cover;
+        position: relative;
+        font-size: 25px;
+    }
+    .topleft {
+        position: absolute;
+        top: 0;
+        left: 16px;
+    }
+    .bottomleft {
+        position: absolute;
+        bottom: 0;
+        left: 16px;
+    }
+    .middle {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    hr {
+        margin: auto;
+        width: 40%;
+    }
+    .deals-of-the-week{
+        height: 300px !important;
+    }
+</style>
 @extends('front.layout.index')
 @section('content')
 <section class="space-bottom-3">
         <div class="bg-gray-200 space-2 space-lg-0 bg-img-hero" style="background-image: url(../../assets/img/1920x588/img1.jpg);">
             <div class="container">
                 <div class="js-slick-carousel u-slick" data-pagi-classes="text-center u-slick__pagination position-absolute right-0 left-0 mb-n8 mb-lg-4 bottom-0">
-                    <div class="js-slide">
-                        <div class="hero row min-height-588 align-items-center">
-                            <div class="col-lg-7 col-wd-6 mb-4 mb-lg-0">
-                                <div class="media-body mr-wd-4 align-self-center mb-4 mb-md-0">
-                                    <p class="hero__pretitle text-uppercase font-weight-bold text-gray-400 mb-2" data-scs-animation-in="fadeInUp" data-scs-animation-delay="200">The Bookworm Editors'</p>
-                                    <h2 class="hero__title font-size-14 mb-4" data-scs-animation-in="fadeInUp" data-scs-animation-delay="300">
-                                        <span class="hero__title-line-1 font-weight-regular d-block">Featured Books of the</span>
-                                        <span class="hero__title-line-2 font-weight-bold d-block">February</span>
-                                    </h2>
-                                    <a href="{{ route('shop') }}" class="btn btn-dark btn-wide rounded-0 hero__btn" data-scs-animation-in="fadeInLeft" data-scs-animation-delay="400">See More</a>
+                    @foreach($data['banners'] as $banner)
+                        <div class="js-slide">
+                            <div class="hero row min-height-588 align-items-center">
+                                <div class="col-lg-7 col-wd-6 mb-4 mb-lg-0">
+                                    <div class="media-body mr-wd-4 align-self-center mb-4 mb-md-0">
+                                        <p class="hero__pretitle text-uppercase font-weight-bold text-gray-400 mb-2" data-scs-animation-in="fadeInUp" data-scs-animation-delay="200">{{ $banner->type }}</p>
+                                        <h2 class="hero__title font-size-14 mb-4" data-scs-animation-in="fadeInUp" data-scs-animation-delay="300">
+                                            <span class="hero__title-line-1 font-weight-regular d-block">{{ $banner->title }}</span>
+                                            <span class="hero__title-line-2 font-weight-bold d-block">{{ $banner->month }}</span>
+                                        </h2>
+                                        <a href="{{ route('shop') }}" class="btn btn-dark btn-wide rounded-0 hero__btn" data-scs-animation-in="fadeInLeft" data-scs-animation-delay="400">See More</a>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-wd-6" data-scs-animation-in="fadeInRight" data-scs-animation-delay="500">
+                                    <img class="img-fluid" src="{{ asset($banner->banner) }}" alt="800x420">
                                 </div>
                             </div>
-                            <div class="col-lg-5 col-wd-6" data-scs-animation-in="fadeInRight" data-scs-animation-delay="500">
-                                <img class="img-fluid" src="{{ asset('assets/img/custom/Hero-carousel-1.jpg') }}" alt="800x420">
-                            </div>
                         </div>
-                    </div>
-
-                    <div class="js-slide">
-                        <div class="hero row min-height-588 align-items-center">
-                            <div class="col-lg-7 col-wd-6 mb-4 mb-lg-0">
-                                <div class="media-body mr-wd-4 align-self-center mb-4 mb-md-0">
-                                    <p class="hero__pretitle text-uppercase font-weight-bold text-gray-400 mb-2" data-scs-animation-in="fadeInUp" data-scs-animation-delay="200">The Bookworm Editors'</p>
-                                    <h2 class="hero__title font-size-14 mb-4" data-scs-animation-in="fadeInUp" data-scs-animation-delay="300">
-                                        <span class="hero__title-line-1 font-weight-regular d-block">Featured Books of the</span>
-                                        <span class="hero__title-line-2 font-weight-bold d-block">February</span>
-                                    </h2>
-                                    <a href="{{ route('shop') }}" class="btn btn-dark btn-wide rounded-0 hero__btn" data-scs-animation-in="fadeInLeft" data-scs-animation-delay="400">See More</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-wd-6" data-scs-animation-in="fadeInRight" data-scs-animation-delay="500">
-                                <img class="img-fluid" src="{{ asset('assets/img/custom/Hero-carousel-1.jpg') }}" alt="800x420">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="js-slide">
-                        <div class="hero row min-height-588 align-items-center">
-                            <div class="col-lg-7 col-wd-6 mb-4 mb-lg-0">
-                                <div class="media-body mr-wd-4 align-self-center mb-4 mb-md-0">
-                                    <p class="hero__pretitle text-uppercase font-weight-bold text-gray-400 mb-2" data-scs-animation-in="fadeInUp" data-scs-animation-delay="200">The Bookworm Editors'</p>
-                                    <h2 class="hero__title font-size-14 mb-4" data-scs-animation-in="fadeInUp" data-scs-animation-delay="300">
-                                        <span class="hero__title-line-1 font-weight-regular d-block">Featured Books of the</span>
-                                        <span class="hero__title-line-2 font-weight-bold d-block">February</span>
-                                    </h2>
-                                    <a href="{{ route('shop') }}" class="btn btn-dark btn-wide rounded-0 hero__btn" data-scs-animation-in="fadeInLeft" data-scs-animation-delay="400">See More</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-wd-6" data-scs-animation-in="fadeInRight" data-scs-animation-delay="500">
-                                <img class="img-fluid" src="{{ asset('assets/img/custom/Hero-carousel-1.jpg') }}" alt="800x420">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="js-slide">
-                        <div class="hero row min-height-588 align-items-center">
-                            <div class="col-lg-7 col-wd-6 mb-4 mb-lg-0">
-                                <div class="media-body mr-wd-4 align-self-center mb-4 mb-md-0">
-                                    <p class="hero__pretitle text-uppercase font-weight-bold text-gray-400 mb-2" data-scs-animation-in="fadeInUp" data-scs-animation-delay="200">The Bookworm Editors'</p>
-                                    <h2 class="hero__title font-size-14 mb-4" data-scs-animation-in="fadeInUp" data-scs-animation-delay="300">
-                                        <span class="hero__title-line-1 font-weight-regular d-block">Featured Books of the</span>
-                                        <span class="hero__title-line-2 font-weight-bold d-block">February</span>
-                                    </h2>
-                                    <a href="{{ route('shop') }}" class="btn btn-dark btn-wide rounded-0 hero__btn" data-scs-animation-in="fadeInLeft" data-scs-animation-delay="400">See More</a>
-                                </div>
-                            </div>
-                            <div class="col-lg-5 col-wd-6" data-scs-animation-in="fadeInRight" data-scs-animation-delay="500">
-                                <img class="img-fluid" src="{{ asset('assets/img/custom/Hero-carousel-1.jpg') }}" alt="800x420">
-                            </div>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -86,51 +70,17 @@
                 <a href="{{ route('shop') }}" class="h-primary d-block">All Categories <i class="glyph-icon flaticon-next"></i></a>
             </header>
             <ul class="list-unstyled my-0 row row-cols-md-2 row-cols-lg-3 row-cols-xl-4 row-cols-wd-5">
+                @foreach($data['genres'] as $genre)
                 <li class="product-category col mb-4 mb-xl-0">
                     <div class="product-category__inner bg-indigo-light px-6 py-5">
-                        <div class="product-category__icon font-size-12 text-primary-indigo"><i class="glyph-icon flaticon-gallery"></i></div>
+                        <div class="product-category__icon font-size-12 text-primary-indigo"><i class="fas fa-atom"></i></div>
                         <div class="product-category__body">
-                            <h3 class="text-truncate font-size-3">Arts &amp; Photography</h3>
+                            <h3 class="text-truncate font-size-3">{{ $genre->title }}</h3>
                             <a href="{{ route('shop') }}" class="stretched-link text-dark">Shop Now</a>
                         </div>
                     </div>
                 </li>
-                <li class="product-category col mb-4 mb-xl-0">
-                    <div class="product-category__inner bg-tangerine-light px-6 py-5">
-                        <div class="product-category__icon font-size-12 text-tangerine"><i class="glyph-icon flaticon-cook"></i></div>
-                        <div class="product-category__body">
-                            <h3 class="text-truncate font-size-3">Food &amp; Drink</h3>
-                            <a href="{{ route('shop') }}" class="stretched-link text-dark">Shop Now</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="product-category col mb-4 mb-xl-0">
-                    <div class="product-category__inner bg-chili-light px-6 py-5">
-                        <div class="product-category__icon font-size-12 text-chili"><i class="glyph-icon flaticon-like"></i></div>
-                        <div class="product-category__body">
-                            <h3 class="text-truncate font-size-3">Romance</h3>
-                            <a href="{{ route('shop') }}" class="stretched-link text-dark">Shop Now</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="product-category col mb-4 mb-xl-0">
-                    <div class="product-category__inner bg-carolina-light px-6 py-5">
-                        <div class="product-category__icon font-size-12 text-carolina"><i class="glyph-icon flaticon-doctor"></i></div>
-                        <div class="product-category__body">
-                            <h3 class="text-truncate font-size-3">Health</h3>
-                            <a href="{{ route('shop') }}" class="stretched-link text-dark">Shop Now</a>
-                        </div>
-                    </div>
-                </li>
-                <li class="product-category col mb-4 mb-xl-0 d-xl-none d-wd-block">
-                    <div class="product-category__inner bg-punch-light px-6 py-5">
-                        <div class="product-category__icon font-size-12 text-punch"><i class="glyph-icon flaticon-resume"></i></div>
-                        <div class="product-category__body">
-                            <h3 class="text-truncate font-size-3">Biography</h3>
-                            <a href="{{ route('shop') }}" class="stretched-link text-dark">Shop Now</a>
-                        </div>
-                    </div>
-                </li>
+               @endforeach
             </ul>
         </div>
     </section>
@@ -389,7 +339,7 @@
     </section>
     <section class="space-bottom-3">
         <div class="space-top-3 space-bottom-4 bg-gray-200">
-            <div class="container">
+            <div class="container inCampaign">
                 <header class="mb-5 d-md-flex justify-content-between align-items-center">
                     <h2 class="font-size-7 mb-3 mb-md-0">Deals of the Week</h2>
                     <a href="#" class="h-primary d-block">View All <i class="glyph-icon flaticon-next"></i></a>
@@ -411,41 +361,47 @@
                          "slidesToShow": 1
                        }
                     }]'>
+                    @foreach($data['campaign'] as $book)
                     <div class="product product__card border-right">
                         <div class="media p-md-6 p-4 d-block d-md-flex">
                             <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
+                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="deals-of-the-week attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
                             </div>
                             <div class="woocommerce-loop-product__body media-body ml-md-5d25">
                                 <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Dark in Death: An Eve Dallas Novel (In Death, Book 46)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
+                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate">
+                                        @if($book->role != 'admin')
+                                            <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                        @else
+                                            <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                        @endif
+                                    </div>
                                     <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
+                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span></ins>
+                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->old_price }}</span></del>
                                     </div>
                                 </div>
                                 <div class="countdown-timer mb-5">
                                     <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
                                     <div class="d-flex align-items-stretch justify-content-between">
                                         <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
+                                            <span class="font-weight-medium font-size-3 days"></span>
                                             <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
                                         </div>
                                         <div class="border-left pr-3 pr-md-0">&nbsp;</div>
                                         <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
+                                            <span class="font-weight-medium font-size-3 hours"></span>
                                             <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
                                         </div>
                                         <div class="border-left pr-3 pr-md-0">&nbsp;</div>
                                         <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
+                                            <span class="font-weight-medium font-size-3 minutes"></span>
                                             <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
                                         </div>
                                         <div class="border-left pr-3 pr-md-0">&nbsp;</div>
                                         <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
+                                            <span class="font-weight-medium font-size-3 seconds"></span>
                                             <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
                                         </div>
                                     </div>
@@ -453,7 +409,7 @@
                                 <div class="deal-progress">
                                     <div class="d-flex justify-content-between font-size-2 mb-2d75">
                                         <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
+                                        <!-- <span>Available: 3</span> -->
                                     </div>
                                     <div class="progress">
                                         <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
@@ -462,266 +418,21 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="product product__card border-right">
-                        <div class="media p-md-6 p-4 d-block d-md-flex">
-                            <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body media-body ml-md-5d25">
-                                <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Under a Firefly Moon (Firefly Lake Book 1)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
-                                    <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
-                                    </div>
-                                </div>
-                                <div class="countdown-timer mb-5">
-                                    <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
-                                    <div class="d-flex align-items-stretch justify-content-between">
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="deal-progress">
-                                    <div class="d-flex justify-content-between font-size-2 mb-2d75">
-                                        <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    @endforeach
+                </div>
+            </div>
+            <div class="container outCampaign">
+                <header class="mb-5 d-md-flex justify-content-between align-items-center">
+                    <h2 class="font-size-7 mb-3 mb-md-0">Deals of the Week</h2>
+                </header>
+                <div class="bgimg">
+                    
+                    <div class="middle">
+                        <h1>COMING SOON</h1>
+                        <hr>
+                        <p>10 days left</p>
                     </div>
-
-                    <div class="product product__card border-right">
-                        <div class="media p-md-6 p-4 d-block d-md-flex">
-                            <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body media-body ml-md-5d25">
-                                <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Dark in Death: An Eve Dallas Novel (In Death, Book 46)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
-                                    <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
-                                    </div>
-                                </div>
-                                <div class="countdown-timer mb-5">
-                                    <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
-                                    <div class="d-flex align-items-stretch justify-content-between">
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="deal-progress">
-                                    <div class="d-flex justify-content-between font-size-2 mb-2d75">
-                                        <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product product__card border-right">
-                        <div class="media p-md-6 p-4 d-block d-md-flex">
-                            <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body media-body ml-md-5d25">
-                                <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Under a Firefly Moon (Firefly Lake Book 1)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
-                                    <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
-                                    </div>
-                                </div>
-                                <div class="countdown-timer mb-5">
-                                    <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
-                                    <div class="d-flex align-items-stretch justify-content-between">
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="deal-progress">
-                                    <div class="d-flex justify-content-between font-size-2 mb-2d75">
-                                        <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product product__card border-right">
-                        <div class="media p-md-6 p-4 d-block d-md-flex">
-                            <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body media-body ml-md-5d25">
-                                <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Dark in Death: An Eve Dallas Novel (In Death, Book 46)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
-                                    <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
-                                    </div>
-                                </div>
-                                <div class="countdown-timer mb-5">
-                                    <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
-                                    <div class="d-flex align-items-stretch justify-content-between">
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="deal-progress">
-                                    <div class="d-flex justify-content-between font-size-2 mb-2d75">
-                                        <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product product__card border-right">
-                        <div class="media p-md-6 p-4 d-block d-md-flex">
-                            <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', 4) }}" class="d-block"><img src="{{ asset('assets/img/books/deals of the week.jpg') }}" class="attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
-                            </div>
-                            <div class="woocommerce-loop-product__body media-body ml-md-5d25">
-                                <div class="mb-3">
-                                    <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', 4) }}">Kindle Edition</a></div>
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', 4) }}">Under a Firefly Moon (Firefly Lake Book 1)</a></h2>
-                                    <div class="font-size-2 text-gray-700 mb-1 text-truncate"><a href="{{ route('authors-list') }}" class="text-gray-700">Nora Roberts</a></div>
-                                    <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>79</span></ins>
-                                        <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>99</span></del>
-                                    </div>
-                                </div>
-                                <div class="countdown-timer mb-5">
-                                    <h5 class="countdown-timer__title font-size-3 mb-3 font-weight-bold">Hurry Up! <span class="font-weight-regular">Offer ends in:</span></h5>
-                                    <div class="d-flex align-items-stretch justify-content-between">
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">114</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">03</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">60</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
-                                        </div>
-                                        <div class="border-left pr-3 pr-md-0">&nbsp;</div>
-                                        <div class="py-2d75">
-                                            <span class="font-weight-medium font-size-3">25</span>
-                                            <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="deal-progress">
-                                    <div class="d-flex justify-content-between font-size-2 mb-2d75">
-                                        <span>Already Sold: 14</span>
-                                        <span>Available: 3</span>
-                                    </div>
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width:82%" aria-valuenow="14" aria-valuemin="0" aria-valuemax="17"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                   
                 </div>
             </div>
         </div>
@@ -912,4 +623,48 @@
         </div>
     </section>
     <!-- ====== END MAIN CONTENT ====== -->
+@endsection
+@section('scripts') 
+    <script>
+        (function () {
+            const second = 1000,
+                minute = second * 60,
+                hour = minute * 60,
+                day = hour * 24;
+            var end_date = "<?= $data['setting']->start_date ?>";
+            let today = new Date(end_date),
+                dd = String(today.getDate()).padStart(2, "0"),
+                mm = String(today.getMonth() + 1).padStart(2, "0"),
+                yyyy = today.getFullYear(),
+                nextYear = yyyy + 1,
+                dayMonth = "<?= $data['setting']->end_date ?>",
+                birthday = dayMonth;
+            
+            today = mm + "/" + dd + "/" + yyyy;
+            if (today > birthday) {
+                birthday = dayMonth + nextYear;
+            }
+            
+            //end
+            
+            const countDown = new Date(birthday).getTime(),
+                x = setInterval(function() {
+
+                    const now = new Date().getTime(),
+                    distance = countDown - now;
+                    
+                    $('.days').html(Math.floor(distance / (day)));
+                    $('.hours').html(Math.floor((distance % (day)) / (hour)));
+                    $('.minutes').html(Math.floor((distance % (hour)) / (minute)));
+                    $('.seconds').html(Math.floor((distance % (minute)) / second));
+                    
+                    if (distance < 0) {
+                        $('.outCampaign').css('display','block');
+                        $('.inCampaign').css('display','none');
+                        clearInterval(x);
+                    }
+                    //seconds
+                }, 0)
+            }());
+    </script>
 @endsection

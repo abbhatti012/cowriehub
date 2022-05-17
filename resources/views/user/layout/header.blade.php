@@ -1,5 +1,5 @@
 <div class="nav-header">
-    <a href="index.html" class="brand-logo">
+    <a href="/" class="brand-logo">
         <img width="150" src="{{ asset('logo.png') }}" alt="logo">
     </a>
     <div class="nav-control">
