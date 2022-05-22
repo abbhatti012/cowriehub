@@ -13,6 +13,7 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('ho
 Route::get('/shop', [App\Http\Controllers\HomeController::class, 'shop'])->name('shop');
 Route::get('/product/{any}', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
 Route::get('/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
+Route::get('/wishlist', [App\Http\Controllers\HomeController::class, 'wishlist'])->name('wishlist')->middleware('auth');;
 Route::get('/about-us', [App\Http\Controllers\HomeController::class, 'about_us'])->name('about-us');
 Route::get('/authors-list', [App\Http\Controllers\HomeController::class, 'authors_list'])->name('authors-list');
 Route::get('/author-detail/{num}', [App\Http\Controllers\HomeController::class, 'author_detail'])->name('author-detail');
@@ -26,6 +27,13 @@ Route::get('/blog', [App\Http\Controllers\HomeController::class, 'blog'])->name(
 Route::get('/blog-detail', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
 Route::get('/buy-marketing-package/{any}', [App\Http\Controllers\HomeController::class, 'buy_marketing_package'])->name('buy-marketing-package');
 Route::post('/add-marketing-orders', [App\Http\Controllers\HomeController::class, 'add_marketing_orders'])->name('add-marketing-orders');
+Route::post('/add-review', [App\Http\Controllers\HomeController::class, 'add_review'])->name('add-review');
+
+Route::post('/add-to-cart', [App\Http\Controllers\CartController::class, 'addToCart'])->name('add-to-cart');
+Route::post('/add-to-wishlist', [App\Http\Controllers\CartController::class, 'add_to_wishlist'])->name('add-to-wishlist');
+Route::get('/remove-cart', [App\Http\Controllers\CartController::class, 'remove_cart'])->name('remove-cart');
+Route::get('/remove-wishlist', [App\Http\Controllers\CartController::class, 'remove_wishlist'])->name('remove-wishlist');
+Route::get('/update-cart', [App\Http\Controllers\CartController::class, 'update_cart'])->name('update-cart');
 Route::get('/admin-login', function(){
     return view('auth.login');
 });
@@ -137,6 +145,7 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
     Route::get('/author/edit', [App\Http\Controllers\User\UserController::class, 'author_profile_edit'])->name('author.profile.edit')->middleware('auth');
     Route::post('/author/update', [App\Http\Controllers\User\UserController::class, 'author_profile_update'])->name('update-author-profile')->middleware('auth');
+    Route::get('/author/autocomplete', [App\Http\Controllers\User\UserController::class, 'autocomplete'])->name('autocomplete')->middleware('auth');
 
 
     Route::get('/order-received', [App\Http\Controllers\HomeController::class, 'order_received'])->name('order-received');

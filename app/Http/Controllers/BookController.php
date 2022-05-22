@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Genre;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Cviebrock\EloquentSluggable\Services\SlugService;
 
 class BookController extends Controller
 {
@@ -19,7 +20,10 @@ class BookController extends Controller
         $genres = Genre::with('subgenres')->get(); 
         $authors = User::where('id','!=',Auth::id())->where('role','author')->get();
         $book = Book::where('id',$id)->first(); 
-        return view('user.edit-book', compact('genres', 'authors', 'book'));
+        $sub_authors_list = explode(',',$book->sub_author);
+        $sub_authors = User::whereIn('id',$sub_authors_list)->get();
+
+        return view('user.edit-book', compact('genres', 'authors', 'book', 'sub_authors'));
     }
     public function insert_book(Request $request, $id){
         $user = Book::firstOrNew(array('id' => $id));
@@ -48,13 +52,15 @@ class BookController extends Controller
             unset($user->sample);
         }
         $user->title = $request->title;
+        $user->slug = SlugService::createSlug(Genre::class, 'slug', $request->title);
         $user->price = $request->price;
         $user->subtitle = $request->subtitle;
         $user->synopsis = $request->synopsis;
         $user->genre = $request->genre;
-        $user->sub_author = serialize($request->sub_author);
+        $user->sub_author = $request->sub_author;
         $user->publisher = $request->publisher;
         $user->country = $request->country;
+        $user->cover_type = $request->cover_type;
         $user->publication_date = $request->publication_date;
         if(Auth::user()->role == 'admin'){
             $user->status = 1;

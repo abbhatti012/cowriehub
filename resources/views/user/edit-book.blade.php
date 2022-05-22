@@ -30,6 +30,15 @@
                     <input type="hidden" name="post_type" value="add">
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
+                        <h3 for="instagram">Cover Type</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" <?php if($book->cover_type == 'portrait'){ echo 'checked'; } ?>  required> Portrait?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" <?php if($book->cover_type == 'landscape'){ echo 'checked'; } ?> required> Landscape?</label>
+                            </div>
+                        </div>
+                        <b>Size (<small id="size">1350x500</small>)</b>
                        @if($book->hero_image)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($book->hero_image) }}" id="commonImage1" alt="">
@@ -120,15 +129,20 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
-                                <label for="sub_author">Authors</label>
-                                <select style="height: 100%" class="form-control form-control-lg" name="sub_author[]" id="sub_author" multiple required>
-                                    <optgroup label="--Please select an author--"></optgroup>
-                                    @foreach($authors as $author)
-                                        <option value="{{ $author->id}}" @foreach(unserialize($book->sub_author) as $sub)) @if($author->id == $sub) selected="selected" @endif @endforeach >{{ $author->name}}</option>
-                                    @endforeach
-                                </select>
+                                <label for="publisher">Add Sub-authors</label>
+                                <input class="typeahead form-control form-control-lg" type="text">
                             </div>
                         </div>
+                        <input type="hidden" name="sub_author" id="sub_author" value="{{ $book->sub_author }}">
+                        @forelse($sub_authors as $authors)
+                            <span class="badge badge-xl light badge-info remove-{{ $authors->id }}">{{ $authors->name }}<i class="fa fa-times removeItem" data-id="{{ $authors->id }}"></i></span>
+                        @empty
+                        @endforelse
+                        <div class="co-authors-here">
+                            
+                        </div>
+                        <br>
+                        <br>
                         <h4>Publication</h4><hr>                 
                         <div class="basic-form">
                             <div class="mb-3">
@@ -557,8 +571,10 @@
 </div>
 @endsection
 @section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('#sub_author').val('');
         $('.bookFormat').on('click',function(){
             var id = $(this).attr('id');
             if($(this).is(":checked")){
@@ -566,8 +582,45 @@
             } else {
                 $('.'+id).hide();
             }
-        })
+        });
         $('#country option[value={{ $book->country }}]').prop('selected', 'selected');
-    })
+        $('.cover_type').on('change',function(){
+            var size = $(this).data('size');
+            $('#size').html(size);
+        });
+        var author_id = "{{ $book->sub_author }}";
+        if(author_id == ""){
+            var authorsArray = [];
+        } else {
+            var authorsArray = new Array();
+            authorsArray = author_id.split(',').map(Number);
+        }
+        var path = "{{ route('autocomplete') }}";
+        $('input.typeahead').typeahead({
+            source:  function (query, process) {
+            return $.get(path, { query: query }, function (data) {
+                    return process(data);
+                });
+            },
+            updater: function(selection){
+                var response = JSON.stringify(selection)
+                response = JSON.parse(response);
+                var checkIfExists = $.inArray(response.id, authorsArray);
+                if (checkIfExists == -1) {
+                    authorsArray.push(response.id);
+                    $('.co-authors-here').append('<span class="badge badge-xl light badge-info remove-'+response.id+'">'+response.name+'<i class="fa fa-times removeItem" data-id="'+response.id+'"></i></span>');
+                    $('#sub_author').val(authorsArray);
+                }
+            }
+        });
+        $(document).on('click','.removeItem',function(){
+            var id = $(this).data('id');
+            $('.remove-'+id).remove();
+            authorsArray = jQuery.grep(authorsArray, function(value) {
+                return value != id;
+            });
+            $('#sub_author').val(authorsArray);
+        });
+    });
 </script>
 @endsection

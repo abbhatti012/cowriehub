@@ -123,10 +123,10 @@
                     <div class="product__inner overflow-hidden p-3 p-md-4d875">
                         <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                             <div class="woocommerce-loop-product__thumbnail">
-                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{asset($book->hero_image)}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid common-card-image" alt="{{ $book->title }}"></a>
+                                <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{asset($book->hero_image)}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid common-card-image" alt="{{ $book->title }}"></a>
                             </div>
                             <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
                                     @if($book->is_paperback)
                                         Paperback
                                     @elseif($book->is_hardcover)
@@ -135,7 +135,7 @@
                                         , Digital
                                     @endif
                                 </a></div>
-                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                 <div class="font-size-2  mb-1 text-truncate">
                                     @if($book->role != 'admin')
                                         <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -191,10 +191,10 @@
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
                                             @if($book->is_paperback)
                                                 Paperback
                                             @elseif($book->is_hardcover)
@@ -203,7 +203,7 @@
                                                 , Digital
                                             @endif
                                         </a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                         <div class="font-size-2  mb-1 text-truncate">
                                             @if($book->role != 'admin')
                                                 <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -241,10 +241,10 @@
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
                                             @if($book->is_paperback)
                                                 Paperback
                                             @elseif($book->is_hardcover)
@@ -253,7 +253,7 @@
                                                 , Digital
                                             @endif
                                         </a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                         <div class="font-size-2  mb-1 text-truncate">
                                             @if($book->role != 'admin')
                                                 <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -291,10 +291,10 @@
                             <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                 <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                     <div class="woocommerce-loop-product__thumbnail">
-                                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                        <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                     </div>
                                     <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                        <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
                                             @if($book->is_paperback)
                                                 Paperback
                                             @elseif($book->is_hardcover)
@@ -303,7 +303,7 @@
                                                 , Digital
                                             @endif
                                         </a></div>
-                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                        <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                         <div class="font-size-2  mb-1 text-truncate">
                                             @if($book->role != 'admin')
                                                 <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -365,11 +365,11 @@
                     <div class="product product__card border-right">
                         <div class="media p-md-6 p-4 d-block d-md-flex">
                             <div class="woocommerce-loop-product__thumbnail mb-4 mb-md-0">
-                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="deals-of-the-week attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
+                                <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="deals-of-the-week attachment-shop_catalog size-shop_catalog wp-post-image d-block mx-auto" alt="image-description"></a>
                             </div>
                             <div class="woocommerce-loop-product__body media-body ml-md-5d25">
                                 <div class="mb-3">
-                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                    <h2 class="woocommerce-loop-product__title font-size-3 text-lh-md mb-2 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                     <div class="font-size-2 text-gray-700 mb-1 text-truncate">
                                         @if($book->role != 'admin')
                                             <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -483,10 +483,10 @@
                                     <div class="product__inner overflow-hidden p-3 p-md-4d875">
                                         <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
                                             <div class="woocommerce-loop-product__thumbnail">
-                                                <a href="{{ route('product', $book->book_id) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
+                                                <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a>
                                             </div>
                                             <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
-                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">
+                                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
                                                     @if($book->is_paperback)
                                                         Paperback
                                                     @elseif($book->is_hardcover)
@@ -495,7 +495,7 @@
                                                         , Digital
                                                     @endif
                                                 </a></div>
-                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->book_id) }}">{{ $book->title }}</a></h2>
+                                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
                                                 <div class="font-size-2  mb-1 text-truncate">
                                                     @if($book->role != 'admin')
                                                         <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
@@ -556,9 +556,9 @@
                 @forelse($data['biographies'] as $book)
                 <div class="product product__card border-right">
                     <div class="media p-3 p-md-4d875">
-                        <a href="{{ route('product', $book->book_id) }}" class="d-block"><img class="common-card-image" src="{{ asset($book->hero_image) }}" alt="{{ $book->title }}"></a>
+                        <a href="{{ route('product', $book->slug) }}" class="d-block"><img class="common-card-image" src="{{ asset($book->hero_image) }}" alt="{{ $book->title }}"></a>
                         <div class="media-body ml-4d875">
-                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->book_id) }}">Hard Cover</a></div>
+                            <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">Hard Cover</a></div>
                             <h2 class="woocommerce-loop-product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->author_id) }}">{{ $book->title }}</a></h2>
                             <div class="font-size-2 mb-1 text-truncate">
                                 @if($book->role != 'admin')

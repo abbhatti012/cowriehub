@@ -123,5 +123,20 @@
     $.notify("Your Payment has been cancelled!");
 </script>
 @endif
+@if(Session::has('review_not_added'))
+<script>
+    $.notify("You have already added a review against that product!");
+</script>
+@endif
+@if(Session::has('review_added'))
+<script>
+    $.notify("Review added successfully.",'success');
+</script>
+@endif
+@if(Session::has('review_error'))
+<script>
+    $.notify("Review not added. There is something went wrong!");
+</script>
+@endif
 </body>
 </html>

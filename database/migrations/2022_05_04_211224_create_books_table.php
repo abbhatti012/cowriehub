@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('cover');
             $table->string('sample');
             $table->string('title');
+            $table->string('slug');
             $table->float('price');
             $table->string('subtitle');
             $table->string('synopsis');
             $table->string('genre');
-            $table->string('sub_author');
+            $table->string('sub_author')->nullable();
             $table->string('publisher');
             $table->string('country');
             $table->string('publication_date');

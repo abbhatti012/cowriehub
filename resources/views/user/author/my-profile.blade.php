@@ -24,6 +24,16 @@
                     @csrf
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
+                        <h3 for="instagram">Cover Type</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" <?php if($user->cover_type == 'portrait'){echo 'checked';} ?> required> Portrait?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" <?php if($user->cover_type == 'portrait'){echo 'landscape';} ?> required> Landscape?</label>
+                            </div>
+                        </div>
+                        <b>Size (<small id="size">1350x500</small>)</b>
+
                         @if($user && $user->cover)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($user->cover) }}" id="commonImage1" alt="">
@@ -112,6 +122,14 @@
                                 <input class="form-control form-control-lg" name="instagram" type="text" id="instagram" value="{{ $user->instagram }}">
                             </div>
                         </div>
+                        <h3 for="instagram">Payment Details</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" name="payment" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Settelments</label>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
@@ -129,7 +147,16 @@
                     @csrf
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
-                       
+                        <h3 for="instagram">Cover Type</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="portrait" required> Portrait?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="landscape" required> Landscape?</label>
+                            </div>
+                        </div>
+                        <b>Size (<small id="size">1350x500</small>)</b>
+
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage1" alt="">
                         </div>
@@ -209,6 +236,14 @@
                                 <input class="form-control form-control-lg" name="instagram" type="text" id="instagram">
                             </div>
                         </div>
+                        <h3 for="instagram">Payment Details</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" name="payment" value="mobile_money" required> Mobile Money</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" value="bank_settelments" required> Bank Settelments</label>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
@@ -218,4 +253,15 @@
     @endif
    </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('.cover_type').on('change',function(){
+            var size = $(this).data('size');
+            $('#size').html(size);
+        });
+    });
+</script>
 @endsection

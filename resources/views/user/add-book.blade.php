@@ -4,6 +4,8 @@
     .hard_cover, .digital_epub, .paper_back{
         display: none;
     }
+    
+
 </style>
 <div class="content-body">
    <div class="container-fluid">
@@ -30,13 +32,21 @@
                     <input type="hidden" name="post_type" value="add">
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
-                       
+                        <h3 for="instagram">Cover Type</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" required> Portrait?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" required> Landscape?</label>
+                            </div>
+                        </div>
+                        <b>Size (<small id="size">1350x500</small>)</b>
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage1" alt="">
                         </div>
                      
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Hero Section Image</span>
+                            <span class="input-group-text">Hero Image </span>
                             <div class="form-file">
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')" required>
                             </div>
@@ -47,7 +57,7 @@
                         </div>
 
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Book Cover Photo</span>
+                            <span class="input-group-text">Book Image</span>
                             <div class="form-file">
                                 <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')" required>
                             </div>
@@ -107,15 +117,40 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
-                                <label for="sub_author">Authors</label>
-                                <select style="height: 100%" class="form-control form-control-lg" name="sub_author[]" id="sub_author" multiple required>
-                                    <optgroup label="--Please select an author--"></optgroup>
-                                    @foreach($authors as $author)
-                                        <option value="{{ $author->id}}">{{ $author->name}}</option>
-                                    @endforeach
-                                </select>
+                                <label for="publisher">Add Sub-authors</label>
+                                <input class="typeahead form-control form-control-lg" type="text">
                             </div>
                         </div>
+                        <input type="hidden" name="sub_author" id="sub_author" value="">
+                        <div class="co-authors-here">
+                            
+                        </div>
+                        <br>
+                        <br>
+
+                        <!-- <div class="basic-form">
+                                <div class="mb-3">
+                                <div class="multiselect" id="countries" multiple="multiple" data-target="multi-0">
+                                    <div class="title noselect">
+                                        <span class="text">Select</span>
+                                        <span class="close-icon">&times;</span>
+                                        <span class="expand-icon">&plus;</span>
+                                    </div>
+                                    <div class="container">
+                                        <option value="us">USA</option>
+                                        <option value="fr">France</option>
+                                        <option value="gr">Greece</option>
+                                        <option value="uk">United Kingdom</option>
+                                        <option value="ge">Germany</option>
+                                        <option value="sp">Spain</option>
+                                        <option value="it">Italy</option>
+                                        <option value="ch">China</option>
+                                        <option value="jp">Japan</option>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
                         <h4>Publication</h4><hr>                 
                         <div class="basic-form">
                             <div class="mb-3">
@@ -544,8 +579,10 @@
 </div>
 @endsection
 @section('scripts')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 <script>
     $(document).ready(function(){
+        $('#sub_author').val('');
         $('.bookFormat').on('click',function(){
             var id = $(this).attr('id');
             if($(this).is(":checked")){
@@ -553,7 +590,39 @@
             } else {
                 $('.'+id).hide();
             }
-        })
-    })
+        });
+        $('.cover_type').on('change',function(){
+            var size = $(this).data('size');
+            $('#size').html(size);
+        });
+        let authorsArray = [];
+        var path = "{{ route('autocomplete') }}";
+        $('input.typeahead').typeahead({
+            source:  function (query, process) {
+            return $.get(path, { query: query }, function (data) {
+                    return process(data);
+                });
+            },
+            updater: function(selection){
+                var response = JSON.stringify(selection)
+                response = JSON.parse(response);
+                var checkIfExists = $.inArray(response.id, authorsArray);
+                if (checkIfExists == -1) {
+                    authorsArray.push(response.id);
+                    $('.co-authors-here').append('<span class="badge badge-xl light badge-info remove-'+response.id+'">'+response.name+'<i class="fa fa-times removeItem" data-id="'+response.id+'"></i></span>');
+                    $('#sub_author').val(authorsArray);
+                }
+            }
+        });
+        $(document).on('click','.removeItem',function(){
+            var id = $(this).data('id');
+            $('.remove-'+id).remove();
+            authorsArray = jQuery.grep(authorsArray, function(value) {
+                return value != id;
+            });
+            $('#sub_author').val(authorsArray);
+        });
+    });
 </script>
+
 @endsection

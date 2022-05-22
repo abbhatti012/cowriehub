@@ -207,8 +207,10 @@ class AdminController extends Controller
     public function edit_book($id){
         $genres = Genre::with('subgenres')->get(); 
         $authors = User::where('id','!=',Auth::id())->where('role','author')->get();
-        $book = Book::where('id',$id)->first(); 
-        return view('admin.edit-book', compact('genres', 'authors', 'book'));
+        $book = Book::where('id',$id)->first();
+        $sub_authors_list = explode(',',$book->sub_author);
+        $sub_authors = User::whereIn('id',$sub_authors_list)->get();
+        return view('admin.edit-book', compact('genres', 'authors', 'book', 'sub_authors'));
     }
     public function add_book(Request $request){
         $genres = Genre::with('subgenres')->get(); 

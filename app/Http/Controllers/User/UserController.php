@@ -86,11 +86,21 @@ class UserController extends Controller
         $user->website = $request->website;
         $user->facebook = $request->facebook;
         $user->instagram = $request->instagram;
+        $user->payment = $request->payment;
+        $user->cover_type = $request->cover_type;
         $user->twitter = $request->twitter;
         $user->save();
 
         User::where('id',Auth::id())->update(array('role'=>'author'));
         Session::flash('message', ['text'=>'Congratulations! You are an author now','type'=>'success']);
         return back()->with('success','You have successfully upload image.');
+    }
+    public function autocomplete(Request $request){
+        $data = User::select("id", "name")
+                ->where("name","LIKE","%{$request->input('query')}%")
+                ->where('role','author')
+                ->where('id','!=',Auth::id())
+                ->get();
+        return response()->json($data);
     }
 }

@@ -1,4 +1,11 @@
 @extends('front.layout.index')
+<style>
+    .author-cover-image{
+        width: 1350px;
+        height: 500px;
+        object-fit: cover;
+    }
+</style>
 @section('content')
 <main id="content">
         <div class="space-bottom-2 space-bottom-lg-3">
@@ -15,7 +22,7 @@
                         </div>
                     </div>
                 </div>
-
+                <img class="author-cover-image" src="https://cowriehub.s3.amazonaws.com/sliders/a072ea80-1fc9-4c57-b364-ba99425ad866.png" alt="">
                 <section class="space-bottom-2 space-bottom-lg-3">
                     <div class="bg-gray-200 space-bottom-2 space-bottom-md-0">
                         <div class="container space-top-2 space-top-wd-3 px-3">

@@ -23,3 +23,23 @@
     object-fit: cover;
     width: 150px;
 }
+
+.addthis_toolbox a {
+    height: 32px;
+    width: 32px;
+    overflow: hidden;
+}
+
+.addthis_button_more {
+    background: #749EAC;
+    color: #fff;
+}
+
+.addthis_button_more i {
+    height: 32px;
+    width: 27px;
+    padding: 3px 0;
+    font-size: 1.6em;
+    text-align: center;
+    overflow: hidden;
+}

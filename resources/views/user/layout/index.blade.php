@@ -18,7 +18,7 @@
 	<title>COWRIEHUB | User</title>
 	
 	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/png" href="{{asset('admin_assets/images/favicon.png')}}" />
+	<link rel="shortcut icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
 	<!-- Style css -->
 	<link href="{{asset('admin_assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
     <link href="{{asset('admin_assets/css/style.css')}}" rel="stylesheet">
