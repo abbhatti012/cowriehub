@@ -19,43 +19,39 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th>
                                         <th>#</th>
-                                        <th>Client</th>
-                                        <th>Invoice No.</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
+                                        <th>Package Name</th>
+                                        <th>Price</th>
+                                        <th>Duration</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Notes</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                <?php for($i = 1; $i <= 30; $i++): ?>
+                                @forelse($orders as $order)
                                     <tr>
-                                        <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
-                                        </td>
-                                        <td>{{ $i }}</td>
-                                        <td>Test Client</td>
-                                        <td>12345678</td>
-                                        <td>100</td>
-                                        <td>POS</td>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $order->package }}</td>
+                                        <td>{{ $order->price }}</td>
+                                        <td>{{ $order->duration }}</td>
+                                        <td>{{ $order->first_name }} {{ $order->last_name }}</td>
+                                        <td>{{ $order->email }}</td>
+                                        <td>{{ $order->phone }}</td>
+                                        <td>{{ $order->notes }}</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title=""><i class="fa fa-eye"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
+                                                <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete Order"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                @empty
+
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>

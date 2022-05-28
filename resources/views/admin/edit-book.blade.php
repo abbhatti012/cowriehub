@@ -35,7 +35,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" <?php if($book->cover_type == 'portrait'){ echo 'checked'; } ?>  required> Portrait?</label>
-                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" <?php if($book->cover_type == 'landscape'){ echo 'checked'; } ?> required> Landscape?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" checked <?php if($book->cover_type == 'landscape'){ echo 'checked'; } ?> required> Landscape?</label>
                             </div>
                         </div>
                         <b>Size (<small id="size">1350x500</small>)</b>
@@ -462,6 +462,31 @@
                                     </div>
                                 </div>
                             </fieldset>
+                            <fieldset style="<?php if($book->hard_ship == 1){ echo 'display: none;';} ?>" class="mb-3 hard_allow_preorders">
+                                <div class="row">
+                                    <label class="col-form-label col-sm-3 pt-0">Allow Preorders?</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="herd_allow_preorder" value="1" <?php if($book->hard_allow_preorders == 1){echo 'checked';} ?> required>
+                                            <label class="form-check-label">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="herd_allow_preorder" value="0" <?php if($book->hard_allow_preorders == 0){echo 'checked';} ?> required>
+                                            <label class="form-check-label">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div style="<?php if($book->hard_allow_preorders == 0){ echo 'display: none;';} ?>" class="basic-form hard_shipment_date">
+                                        <div class="mb-3">
+                                            <label for="shipment_date">Shipment Date</label>
+                                            <input class="form-control form-control-lg" name="hard_shipment_date" value="{{ $book->hard_expected_shipment }}" type="date" min="{{ $book->hard_expected_shipment }}" id="shipment_date" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
                             <div class="basic-form">
                                 <div class="mb-3">
                                     <label for="hard_stock">Number in stock</label>
@@ -507,16 +532,41 @@
                                     <label class="col-form-label col-sm-3 pt-0">Shipped to Cowriehub?</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" @if($book->hard_ship == 1) checked @endif>
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" @if($book->paper_ship == 1) checked @endif>
                                             <label class="form-check-label">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="0" @if($book->hard_ship == 0) checked @endif>
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="0" @if($book->paper_ship == 0) checked @endif>
                                             <label class="form-check-label">
                                                 No
                                             </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset style="<?php if($book->paper_ship == 1){ echo 'display: none;';} ?>" class="mb-3 paper_allow_preorders">
+                                <div class="row">
+                                    <label class="col-form-label col-sm-3 pt-0">Allow Preorders?</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paper_allow_preorder" value="1" <?php if($book->paper_allow_preorders == 1){echo 'checked';} ?> required>
+                                            <label class="form-check-label">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paper_allow_preorder" value="0" <?php if($book->paper_allow_preorders == 0){echo 'checked';} ?> required>
+                                            <label class="form-check-label">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div style="<?php if($book->paper_allow_preorders == 0){ echo 'display: none;';} ?>" class="basic-form paper_shipment_date">
+                                        <div class="mb-3">
+                                            <label for="shipment_date">Shipment Date</label>
+                                            <input class="form-control form-control-lg" name="paper_shipment_date" type="date" value="{{ $book->paper_expected_shipment }}" min="{{ $book->paper_expected_shipment }}" id="shipment_date" required>
                                         </div>
                                     </div>
                                 </div>
@@ -624,6 +674,38 @@
                 return value != id;
             });
             $('#sub_author').val(authorsArray);
+        });
+        $('input[name="hard_ship"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.hard_allow_preorders').show();
+            } else if(type == 1){
+                $('.hard_allow_preorders').hide();
+            }
+        });
+        $('input[name="herd_allow_preorder"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.hard_shipment_date').hide();
+            } else if(type == 1){
+                $('.hard_shipment_date').show();
+            }
+        });
+        $('input[name="paper_ship"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.paper_allow_preorders').show();
+            } else if(type == 1){
+                $('.paper_allow_preorders').hide();
+            }
+        });
+        $('input[name="paper_allow_preorder"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.paper_shipment_date').hide();
+            } else if(type == 1){
+                $('.paper_shipment_date').show();
+            }
         });
     })
 </script>

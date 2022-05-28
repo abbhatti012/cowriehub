@@ -136,13 +136,68 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- End Quantity -->
                                     </div>
-
-                                    <a href="javascript:void(0)" name="add-to-cart" value="7145" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-id="{{ $book->id }}">Add to cart</a>
+                                @if($book->hard_allow_preorders == 1 || $book->paper_allow_preorders == 1)
+                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
+                                @else
+                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}">Add to cart</a>
+                                @endif
                                     <a href="{{ route('cart') }}" class="p-3 min-width-250 ml-md-4 btn btn-outline-dark rounded-0 px-5 mb-3 mb-md-0">View Cart</a>
                                 </form>
                             </div>
+                            
+                            <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header border-bottom-0">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                        Your Shopping Cart
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <table class="table table-image">
+                                        <thead>
+                                            <tr>
+                                            <th scope="col"></th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Qty</th>
+                                            <th scope="col">Total</th>
+                                            <th scope="col">Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <td class="w-25">
+                                                <img src="https://s3.eu-central-1.amazonaws.com/bootstrapbaymisc/blog/24_days_bootstrap/vans.png" class="img-fluid img-thumbnail" alt="Sheep">
+                                            </td>
+                                            <td>Vans Sk8-Hi MTE Shoes</td>
+                                            <td>89$</td>
+                                            <td class="qty"><input type="text" class="form-control" id="input1" value="2"></td>
+                                            <td>178$</td>
+                                            <td>
+                                                <a href="#" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                            </tr>
+                                        </tbody>
+                                        </table> 
+                                        <div class="d-flex justify-content-end">
+                                        <h5>Total: <span class="price text-success">89$</span></h5>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-top-0 d-flex justify-content-between">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-success">Checkout</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="px-4 px-xl-7 py-5 d-flex align-items-center">
                                 <ul class="list-unstyled nav">
                                     <li class="mr-6 mb-4 mb-md-0">
@@ -614,6 +669,7 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+            // $('#cartModal').modal('show');
             $('.description-link').on('click',function(){
                 $('html, body').animate({
                     scrollTop: $(".description").offset().top
@@ -659,6 +715,7 @@
             });
             $('.addToCart').on('click',function(){
                 var id = $(this).data('id');
+                var is_preorder = $(this).data('is_preorder');
                 var qty = $('#prod_qty').val();
                 var extraPrice = $("input[name='extraPrices']:checked").val();
                 var extraType = $("input[name='extraPrices']:checked").data('type');
@@ -677,7 +734,8 @@
                         extraType : extraType,
                         bookPrice : bookPrice,
                         title : title,
-                        image : image
+                        image : image,
+                        is_preorder : is_preorder
                     },
                     success : function(data){
                         $.notify(data.message, data.type);

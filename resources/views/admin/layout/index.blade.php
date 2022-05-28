@@ -14,15 +14,13 @@
 	<meta property="og:image" content="https://innap.dexignzone.com/xhtml/social-image.png" />
 	<meta name="format-detection" content="telephone=no">
 	
-	<!-- PAGE TITLE HERE -->
 	<title>COWRIEHUB | ADMIN</title>
 	
-	<!-- FAVICONS ICON -->
 	<link rel="shortcut icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
-	<!-- Style css -->
 	<link href="{{asset('admin_assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
 	<link href="{{asset('admin_assets/vendor/jquery-nice-select/css/nice-select.css')}}" rel="stylesheet">
     <link href="{{asset('admin_assets/css/style.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
 	<style>
 		#site_preloader {
 			position: fixed;

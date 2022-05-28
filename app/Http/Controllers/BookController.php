@@ -72,6 +72,15 @@ class BookController extends Controller
             $user->hard_isbn = $request->hard_isbn;
             $user->hard_weight = $request->hard_weight;
             $user->hard_ship = $request->hard_ship;
+            if($request->hard_ship == 0){
+                $user->hard_allow_preorders = $request->herd_allow_preorder;
+                if($request->herd_allow_preorder == 1){
+                    $user->hard_expected_shipment = $request->hard_shipment_date;
+                }
+            } else {
+                $user->hard_allow_preorders = 0;
+                $user->hard_expected_shipment = NULL;
+            }
             $user->hard_stock = $request->hard_stock;
             $user->is_hardcover = 1;
         }
@@ -81,6 +90,15 @@ class BookController extends Controller
             $user->paper_isbn = $request->paper_isbn;
             $user->paper_weight = $request->paper_weight;
             $user->paper_ship = $request->paper_ship;
+            if($request->paper_ship == 0){
+                $user->paper_allow_preorders = $request->paper_allow_preorder;
+                if($request->paper_allow_preorder == 1){
+                    $user->paper_expected_shipment = $request->paper_shipment_date;
+                } else {
+                    $user->paper_allow_preorders = 0;
+                    $user->paper_expected_shipment = NULL;
+                }
+            }
             $user->paper_stock = $request->paper_stock;
             $user->is_paperback = 1;
         }

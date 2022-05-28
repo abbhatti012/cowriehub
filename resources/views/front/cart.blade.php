@@ -22,6 +22,25 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
+            var shippingPrice = $('#shippingCharges :selected').data('price');
+            var totalPrice = $('.totalPrice').text();
+            $('#shippingCharges').change(function(){
+                $('#shippingCharges option:selected').each(function(){
+                    var price = $(this).data('price')
+                    $('.shippingFee').html(price);
+                    $('.totalPrice').html(+totalPrice + +price);
+                });
+            });
+           $('input[name="delivery"]').on('change',function(){
+                var type = $(this).val();
+                if(type == 'standard'){
+                    $('.standardDelivery').show();
+                    $('.expressDelivery').hide();
+                } else if(type == 'express'){
+                    $('.expressDelivery').show();
+                    $('.standardDelivery').hide();
+                }
+           });
             $(document).on('click','.removeCart',function(){
                 var id = $(this).data('id');
                 $.ajax({
@@ -52,6 +71,52 @@
                     }
                 })
             });
+            $(document).on('click','.proceedToCheckout',function(){
+                var shippingCharges = $('#shippingCharges option:selected').val();
+                var preciseLocation = $('#precise_location').val();
+                var postCode = $('#post_code').val();
+                var userId = "{{ Auth::id() }}";
+                if(userId == ''){
+                    $.notify('Please login first to continue');
+                    return false;
+                }
+                if(shippingCharges == ''){
+                    $.notify('Please choose location');
+                    return false;
+                } else if(preciseLocation == ''){
+                    $.notify('Please choose your precise location');
+                    return false;
+                } else {
+                    $.ajax({
+                        type : 'POST',
+                        url : "{{ route('before-payment') }}",
+                        data : {
+                            '_token' : '{{ csrf_token() }}',
+                            shippingCharges : shippingCharges,
+                            preciseLocation : preciseLocation,
+                            postCode : postCode,
+                            totalPrice : parseInt($('.totalPrice').text()),
+                            subTotal : parseInt($('.subtotalValue').text()),
+                            shippingPrice : parseInt($('#shippingCharges option:selected').data('price'))
+                        },
+                        success : function(data){
+                            location.href = "{{ route('checkout') }}?token="+data;
+                        }
+                    });
+                }
+            });
         });
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeEQgpHcPzV4BwOa60xgE9AwhlofidWh8&libraries=places"></script>
+    <script>
+        function initialize() {
+          var input = document.getElementById('precise_location');
+          var autocomplete = new google.maps.places.Autocomplete(input);
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                document.getElementById('city2').value = place.name;
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 @endsection

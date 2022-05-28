@@ -10,10 +10,13 @@ use App\Models\Banner;
 use App\Models\Setting;
 use App\Models\SubGenre;
 use App\Models\Marketing;
+use App\Models\Location;
 use App\Models\AuthorDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Models\MarketOrders;
+use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -52,14 +55,19 @@ class AdminController extends Controller
         return view('admin.affiliates');
     }
     public function books(){
-        $books = Book::get();
+        $books = Book::orderBy('id','desc')->get();
         return view('admin.books',compact('books'));
     }
     public function book_orders(){
-        return view('admin.book-orders');
+        $payments = Payment::orderBy('id','desc')->get();
+        return view('admin.book-orders', compact('payments'));
     }
     public function marketing_orders(){
-        return view('admin.marketing-orders');
+        $orders = MarketOrders::orderBy('marketing_orders.id','desc')
+        ->select('marketing.*','marketing_orders.*','marketing_orders.id as market_id')
+        ->join('marketing','marketing.id','=','marketing_orders.marketing_id')
+        ->get();
+        return view('admin.marketing-orders', compact('orders'));
     }
     public function offers(){
         return view('admin.offers');
@@ -140,6 +148,15 @@ class AdminController extends Controller
     public function banks(){
         return view('admin.banks');
     }
+    public function locations(){
+        $locations = Location::orderBy('id','desc')->get();
+        return view('admin.locations', compact('locations'));
+    }
+    public function view_book_detail($id){
+        $book = Book::where('id',$id)->first();
+        $genre = SubGenre::where('id', $book->genre)->first();
+        return view('admin.view_book_detail', compact('book', 'genre'));
+    }
     public function genre(){
         $genres = Genre::get();
         if(isset($_GET['id']) && !empty($_GET['id'])){
@@ -173,6 +190,7 @@ class AdminController extends Controller
         User::where('id',$id)->delete();
         return back()->with('message', ['text'=>'Author data has been updated','type'=>'success']);
     }
+    
     public function author_profile_update(Request $request, $id){
         unset($request->_token);
         $user = AuthorDetail::firstOrNew(array('id' => $id));
@@ -198,6 +216,27 @@ class AdminController extends Controller
         $user->website = $request->website;
         $user->facebook = $request->facebook;
         $user->instagram = $request->instagram;
+        $user->payment = $request->payment;
+        if($request->payment == 'mobile_money'){
+            $user->account_name = $request->account_name;
+            $user->account_number = $request->account_number;
+            $user->networks = $request->networks;
+
+            $user->bank_account_name = '';
+            $user->bank_account_number = '';
+            $user->branch = '';
+            $user->bank_name = '';
+        } elseif($request->payment == 'bank_settelments'){
+            $user->bank_account_name = $request->bank_account_name;
+            $user->bank_account_number = $request->bank_account_number;
+            $user->branch = $request->branch;
+            $user->bank_name = $request->bank_name;
+
+            $user->account_name = '';
+            $user->account_number = '';
+            $user->networks = '';
+        }
+        $user->cover_type = $request->cover_type;
         $user->twitter = $request->twitter;
         $user->save();
 
@@ -289,5 +328,18 @@ class AdminController extends Controller
         $banner->category = 'Hero Banner';
         $banner->save();
         return back()->with('message', ['text'=>'Banner data has been saved','type'=>'success']);
+    }
+    public function add_location(Request $request){
+        $location = new Location();
+        $location->weight = $request->min_weight.'-'.$request->max_weight;
+        $location->location = $request->location;
+        $location->price = $request->price;
+        $location->type = $request->type;
+        $location->save();
+        return back()->with('message', ['text'=>'Location added successfully!','type'=>'success']);
+    }
+    public function delete_location($id){
+        Location::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Location has been deleted','type'=>'success']);
     }
 } 

@@ -10,6 +10,11 @@
                     <div class="col-lg-8 mx-auto">
                         <div class="bg-white mt-n10 mt-md-n13 pt-5 pt-lg-7 px-3 px-md-5 pl-xl-10 pr-xl-3">
                             <div class="ml-xl-4">
+                            @if(Session::has('message'))
+                                <div class="alert alert-{{session('message')['type']}}">
+                                    {{session('message')['text']}}
+                                </div>
+                            @endif
                                 <div>
                                     <h6 class="font-weight-medium font-size-10 mb-3 pb-xl-1">Add Necessary Detail</h6>
                                      <form id="basic-validation" action="{{ route('add-marketing-orders') }}" method="POST">
@@ -28,9 +33,7 @@
                                                     <input id="last_name" type="text" class="form-control rounded-0" name="last_name" required="">
                                                 </div>
                                             </div>
-                                            <!-- End Input -->
 
-                                            <!-- Input -->
                                             <div class="col-sm-12 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="email">Email</label>
@@ -43,8 +46,13 @@
                                                     <input id="phone" type="text" class="form-control rounded-0" name="phone" required="">
                                                 </div>
                                             </div>
-                                                
-                                            <!-- End Input -->
+                                            <div class="col-sm-12 mb-5">
+                                                <div class="js-form-message">
+                                                    <label for="notes">Notes</label>
+                                                    <textarea type="text" class="form-control rounded-0" name="notes" required=""></textarea>
+                                                </div>
+                                            </div>
+                                                <input type="hidden" name="marketing_id" value="{{ $marketing_id }}">
                                             <div class="col d-flex justify-content-lg-start">
                                                 <button type="submit" class="btn btn-wide btn-dark text-white rounded-0 transition-3d-hover height-60">Sumbit Message</button>
                                             </div>

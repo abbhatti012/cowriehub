@@ -29,6 +29,8 @@ Route::get('/buy-marketing-package/{any}', [App\Http\Controllers\HomeController:
 Route::post('/add-marketing-orders', [App\Http\Controllers\HomeController::class, 'add_marketing_orders'])->name('add-marketing-orders');
 Route::post('/add-review', [App\Http\Controllers\HomeController::class, 'add_review'])->name('add-review');
 
+Route::post('/before-payment', [App\Http\Controllers\PaymentController::class, 'before_payment'])->name('before-payment');
+
 Route::post('/add-to-cart', [App\Http\Controllers\CartController::class, 'addToCart'])->name('add-to-cart');
 Route::post('/add-to-wishlist', [App\Http\Controllers\CartController::class, 'add_to_wishlist'])->name('add-to-wishlist');
 Route::get('/remove-cart', [App\Http\Controllers\CartController::class, 'remove_cart'])->name('remove-cart');
@@ -81,6 +83,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/update-settings', [App\Http\Controllers\Admin\AdminController::class, 'update_setting'])->name('admin.update-setting');
     Route::post('/cms/add-marketing', [App\Http\Controllers\Admin\AdminController::class, 'add_marketing'])->name('admin.add-marketing');
     Route::post('/cms/add-banner', [App\Http\Controllers\Admin\AdminController::class, 'add_banner'])->name('admin.add-banner');
+    Route::get('/cms/locations', [App\Http\Controllers\Admin\AdminController::class, 'locations'])->name('admin.locations');
+    Route::post('/cms/add-location', [App\Http\Controllers\Admin\AdminController::class, 'add_location'])->name('admin.add-location');
+    Route::get('/cms/delete-location/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_location'])->name('admin.delete-location');
+    Route::get('/cms/view-book-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_book_detail'])->name('admin.view-book-detail');
     
     Route::get('/cms/faq', [App\Http\Controllers\Admin\AdminController::class, 'faq'])->name('admin.faq');
     Route::get('/cms/slider', [App\Http\Controllers\Admin\AdminController::class, 'slider'])->name('admin.slider');
@@ -166,5 +172,5 @@ Route::get('/send-mail-using-mailchimp', [SocialiteController::class, 'mailchimp
 Route::get('pay', function () {
     return view('pay');
 });
-Route::post('/pay-now', [PaymentController::class, 'initialize'])->name('pay-now');
-Route::get('/rave/callback', [PaymentController::class, 'callback'])->name('flutterwave-callback');
+Route::post('/pay-now/{any}', [PaymentController::class, 'initialize'])->name('pay-now');
+Route::get('/rave/callback/{any}', [PaymentController::class, 'callback'])->name('flutterwave-callback');

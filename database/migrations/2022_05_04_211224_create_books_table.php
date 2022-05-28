@@ -35,12 +35,16 @@ return new class extends Migration
             $table->string('hard_isbn')->nullable();
             $table->float('hard_weight')->nullable();
             $table->string('hard_ship')->nullable();
+            $table->string('hard_allow_preorders')->nullable();
+            $table->string('hard_expected_shipment')->nullable();
             $table->float('hard_stock')->nullable();
             $table->float('paper_price')->nullable();
             $table->float('paper_page')->nullable();
             $table->string('paper_isbn')->nullable();
             $table->float('paper_weight')->nullable();
             $table->string('paper_ship')->nullable();
+            $table->string('paper_allow_preorders')->nullable();
+            $table->string('paper_expected_shipment')->nullable();
             $table->float('paper_stock')->nullable();
             $table->float('digital_price')->nullable();
             $table->string('digital_page')->nullable();
@@ -57,6 +61,10 @@ return new class extends Migration
             $table->integer('is_best')->default(0);
             $table->integer('is_campaign')->default(0);
             $table->integer('old_price')->nullable();
+            $table->string('cover_type')->nullable();
+            $table->integer('total_reviews')->nullable();
+            $table->integer('book_purchased')->default(0);
+            $table->integer('total_ratings')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

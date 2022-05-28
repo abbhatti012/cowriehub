@@ -6,10 +6,13 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
 use App\Models\Banner;
+use App\Models\Location;
 use App\Models\Review;
 use App\Models\Setting;
 use App\Models\Marketing;
 use App\Models\Wishlist;
+use App\Models\MarketOrders;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -22,35 +25,45 @@ class HomeController extends Controller
     }
     public function index(){
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.book_purchased','desc')->where('status',1)->where('books.book_purchased','!=',0)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
-        $data['best_selling'] = $query->where('books.is_best',1)->get();
+        $data['best_selling'] = $query->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.id','desc')->where('status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
-        $data['featured'] = $query->where('books.is_featured',1)->get();
+        $data['featured'] = $query->where('books.is_featured',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.id','desc')->where('status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
-        $data['sales'] = $query->where('books.is_sale',1)->get();
+        $data['sales'] = $query->where('books.is_sale',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.id','desc')->where('status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
-        $data['viewed'] = $query->where('books.is_most_viewed',1)->get();
+        $data['viewed'] = $query->where('books.is_most_viewed',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.id','desc')->where('status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['new_release'] = $query->where('books.is_new',1)->limit(3)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','asc')->where('status',1)
+        ->orderBy('books.id','desc')->where('status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
-        $data['biographies'] = $query->where('books.is_biographies',1)->get();
+        $data['biographies'] = $query->where('books.is_biographies',1)->limit(10)->get();
+        
+        $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
+        ->orderBy('books.id','desc')->where('status',1)
+        ->join('users','users.id','=','books.user_id')
+        ->join('reviews','reviews.book_id','=','books.id')
+        ->join('sub_genres','sub_genres.id','=','books.genre');
+        $data['marketer_picks'] = $query->where('books.is_biographies',1)
+        ->where('reviews.type','marketer')
+        ->where('rate','>=',3)
+        ->limit(10)->get();
 
         $data['authors'] = User::where('users.role','author')
         ->select('users.*','author-detail.profile as profile')
@@ -75,16 +88,19 @@ class HomeController extends Controller
         return view('front.index',compact('data'));
     }
     public function add_marketing_orders(Request $request){
-        echo 'In progress';exit;
         if(!Auth::check()){
             return redirect('/login')->with('message', ['text'=>'Pleas login first to proceed','type'=>'warning']);
         }
-        $data['user_id'] = Auth::user()->id;
-        $data['first_name'] = $request->first_name;
-        $data['last_name'] = $request->last_name;
-        $data['email'] = $request->email;
-        $data['phone'] = $request->phone;
-        $data['marketing_id'] = $request->marketing_id;
+        $market = new MarketOrders();
+        $market->user_id = Auth::user()->id;
+        $market->first_name = $request->first_name;
+        $market->last_name = $request->last_name;
+        $market->email = $request->email;
+        $market->phone = $request->phone;
+        $market->notes = $request->notes;
+        $market->marketing_id = $request->marketing_id;
+        $market->save();
+        return back()->with('message', ['text'=>'Your data has been saved. Someone will surely contact you soon on it!','type'=>'success']);
     }
     public function shop(){
         return view('front.shop');
@@ -135,7 +151,8 @@ class HomeController extends Controller
         return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist'));
     }
     public function cart(){
-        $cart_page = view('front.cart_item')->render(); 
+        $data['locations'] = Location::orderBy('id','desc')->get();
+        $cart_page = view('front.cart_item', $data)->render(); 
         return view('front.cart', compact('cart_page'));
     }
     public function wishlist(){
@@ -147,7 +164,9 @@ class HomeController extends Controller
         return view('front.wishlist', compact('wishlist_item'));
     }
     public function checkout(){
-        return view('front.checkout');
+        $token = $_GET['token'];
+        $payment = Payment::where('token', $token)->first();
+        return view('front.checkout', compact('payment'));
     }
     public function my_account(){
         return view('front.my-account');
@@ -192,8 +211,8 @@ class HomeController extends Controller
     public function order_tracking(){
         return view('front.order-tracking');
     }
-    public function buy_marketing_package(){
-        return view('front.buy-marketing-package');
+    public function buy_marketing_package($marketing_id){
+        return view('front.buy-marketing-package', compact('marketing_id'));
     }
     public function add_review(Request $request){
         if(!Auth::id()){
@@ -203,6 +222,11 @@ class HomeController extends Controller
         if($is_already){
             return back()->with('review_not_added','');
         }
+        $book = Book::findOrFail($request->book_id);
+        $book->total_reviews = $book->total_reviews + 1;
+        $book->total_ratings = $book->total_ratings + $request->rate;
+        $book->update();
+
         $review = new Review();
         $review->user_id = Auth::id();
         $review->book_id = $request->book_id;

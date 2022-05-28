@@ -19,45 +19,55 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th>
-                                        <th>#</th>
-                                        <th>Client</th>
-                                        <th>Invoice No.</th>
-                                        <th>Amount</th>
-                                        <th>Date</th>
-                                        <th>Permanent Category</th>
+                                        <th>View Detail</th>
+                                        <th>Transaction ID</th>
+                                        <th>Location</th>
+                                        <th>Precise Location</th>
+                                        <th>Email</th>
+                                        <th>Subtotal</th>
+                                        <th>Shipping Price</th>
+                                        <th>Total Amount</th>
+                                        <th>Status</th>
+                                        <th>Is Fraud?</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                <?php for($i = 1; $i <= 30; $i++): ?>
+                                @forelse($payments as $payment)
                                     <tr>
                                         <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
+                                        <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
                                         </td>
-                                        <td>{{ $i }}</td>
-                                        <td>Test Client</td>
-                                        <td>12345678</td>
-                                        <td>100</td>
-                                        <td>Fri Apr 01 2022 09:18:50</td>
-                                        <td>POS</td>
+                                        <td>{{ $payment->transaction_id }}</td>
+                                        <td>{{ $payment->location }}</td>
+                                        <td>{{ $payment->precise_location }}</td>
+                                        <td>{{ $payment->email }}</td>
+                                        <td>{{ $payment->subtotal }}</td>
+                                        <td>{{ $payment->shipping_price }}</td>
+                                        <td>{{ $payment->total_amount }}</td>
+                                        <td>
+                                            @if($payment->status == 'cancelled')
+                                                <span class="badge light badge-danger">{{ $payment->status }}</span>
+                                            @else
+                                                <span class="badge light badge-info">{{ $payment->status }}</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if($payment->is_fraud == 0)
+                                                <span class="badge light badge-info">No</span>
+                                            @else
+                                                <span class="badge light badge-danger">Yes</span>
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title=""><i class="fa fa-eye"></i></a>
                                                 <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>

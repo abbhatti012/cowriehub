@@ -1,27 +1,78 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Models\Book;
 
+use App\Models\Order;
+use App\Models\Payment;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+
 class PaymentController extends Controller
 {
-    public function initialize(Request $request){
-        $email = $request->email;
-        $amount = $request->amount;
+    public function before_payment(Request $request){
+        $userId = Auth::id();
+        if(!$userId){
+            return redirect('login');
+        }
+        $payment = new Payment();
+        $payment->user_id = $userId;
+        $payment->location = $request->shippingCharges;
+        $payment->precise_location = $request->preciseLocation;
+        $payment->post_code = $request->postCode;
+        $payment->token = Str::random(32);
+        $payment->subtotal = $request->subTotal;
+        $payment->total_amount = $request->totalPrice;
+        $payment->shipping_price = $request->shippingPrice;
+        $payment->save();
+        return response()->json($payment->token);
+    }
+    public function initialize(Request $request, $id){
+        $payment = Payment::find($id);
+        $payment->first_name = $request->first_name;
+        $payment->last_name = $request->last_name;
+        $payment->country = $request->country;
+        $payment->billing_address = $request->address;
+        $payment->phone = $request->phone;
+        $payment->email = $request->email;
+        $payment->notes = $request->notes;
+        $payment->save();
+        $carts = session()->get('cart');
 
-        //* Prepare our rave request
+        foreach($carts as $cart){
+            $order = new Order();
+            $order->payment_id = $payment->id;
+            $order->user_id = Auth::id();
+            $order->book_id = $cart['id'];
+            $order->is_preorder = $cart['is_preorder'];
+            $order->extra_type = $cart['extraType'];
+            $order->book_price = $cart['bookPrice'];
+            $order->extra_price = $cart['extraPrice'];
+            $order->total_price = $cart['bookPrice'] + $cart['extraPrice'] + $payment->shipping_price;
+            $order->quantity = $cart['quantity'];
+            if($cart['is_preorder'] == 1){
+                $order->amount_paid = round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2);
+                $order->remaining_price = $order->total_price - $order->amount_paid;
+            } else {
+                $order->amount_paid = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
+                $order->remaining_price = 0;
+            }
+            $order->save();
+        }
         $request = [
             'tx_ref' => time(),
-            'amount' => $amount,
+            'amount' => $payment->total_amount,
             'currency' => 'GHS',
             'payment_options' => 'card',
-            'redirect_url' => route('flutterwave-callback'),
+            'redirect_url' => route('flutterwave-callback', $payment->id),
             'customer' => [
-                'email' => $email,
+                'email' => $payment->email,
                 'name' => 'Zubdev'
             ],
             'meta' => [
-                'price' => $amount
+                'price' => $payment->total_amount
             ],
             'customizations' => [
                 'title' => 'Paying for a sample product',
@@ -29,7 +80,6 @@ class PaymentController extends Controller
             ]
         ];
 
-        //* Ca;; f;iterwave emdpoint
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
@@ -49,9 +99,7 @@ class PaymentController extends Controller
     ));
 
     $response = curl_exec($curl);
-
     curl_close($curl);
-    
     $res = json_decode($response);
     if($res->status == 'success')
     {
@@ -63,19 +111,25 @@ class PaymentController extends Controller
             echo 'We can not process your payment';
         }
     }
-    public function callback(Request $request){
-        if(isset($request->status))
-        {
-            //* check payment status
+    public function callback(Request $request, $id){
+        if(isset($request->status)) {
+            $payment = Payment::find($id);
+            $payment->status = $request->status;
+            $payment->transaction_id = $request->transaction_id;
             if($request->status == 'cancelled')
             {
-                // echo 'YOu cancel the payment';
-                return redirect('/')->with('payment_cancelled','Your payment has been cancelled');
+                Session::flash('payment_cancelled','Your payment has been cancelled');
             }
             elseif($request->status == 'successful')
             {
+                $carts = session()->get('cart');
+                foreach($carts as $cart){
+                    $book = Book::find($cart['id']);
+                    $book->book_purchased = $book->book_purchased + $cart['quantity'];
+                    $book->save();
+                }
+                session()->put('cart', []);
                 $txid = $request->transaction_id;
-
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
                     CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/{$txid}/verify",
@@ -93,30 +147,30 @@ class PaymentController extends Controller
                 ));
                 
                 $response = curl_exec($curl);
-                
                 curl_close($curl);
-                
                 $res = json_decode($response);
+                
                 if($res->status)
                 {
                     $amountPaid = $res->data->charged_amount;
                     $amountToPay = $res->data->meta->price;
                     if($amountPaid >= $amountToPay)
                     {
-                        echo 'Payment successful';
-
-                        //* Continue to give item to the user
+                        Session::flash('payment_successfull','Payment Successfull!');
                     }
                     else
                     {
-                        echo 'Fraud transactio detected';
+                        $payment->is_fraud = 1;
+                        Session::flash('fraud_payment','Fraud transaction detected!');
                     }
                 }
                 else
                 {
-                    echo 'Can not process payment';
+                    Session::flash('payment_cannot_process','Payment cannot process!');
                 }
             }
         }
+        $payment->save();
+        return redirect('/');
     }
 }

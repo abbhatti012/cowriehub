@@ -142,6 +142,129 @@
                                     @else
                                         <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                     @endif
+                                    
+                                    @if($book->total_reviews != 0)
+                                        @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                    @else
+                                        @php $avg_rating = 0; @endphp
+                                    @endif
+                                    <span class="text-yellow-darker">
+                                    @if($avg_rating < 5)
+                                        @for($i = 0; $i < $avg_rating; $i++)
+                                            <small class="fas fa-star"></small>
+                                        @endfor
+                                        @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                            <small class="far fa-star"></small>
+                                        @endfor
+                                    @else
+                                        @for($i = 0; $i < $avg_rating; $i++)
+                                            <small class="fas fa-star"></small>
+                                        @endfor
+                                    @endif
+                                    </span>
+                                </div>
+                                <div class="price d-flex align-items-center font-weight-medium font-size-3">
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                </div>
+                            </div>
+                            <div class="product__hover d-flex align-items-center">
+                                <a href="javascript:void(0)" class="addToCart text-uppercase text-dark h-dark font-weight-medium mr-auto" data-id="{{ $book->book_id }}">
+                                    <span class="product__add-to-cart">ADD TO CART</span>
+                                    <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
+                                </a>
+                                <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
+                                    <i class="flaticon-switch"></i>
+                                </a>
+                                <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
+                                    <i class="flaticon-heart"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @empty
+                @endforelse
+            </div>
+        </div>
+    </section>
+    <section class="space-bottom-3">
+        <div class="container">
+            <header class="mb-5 d-md-flex justify-content-between align-items-center">
+                <h2 class="font-size-7 mb-3 mb-md-0">Marketer Picks</h2>
+                <a href="{{ route('shop') }}" class="h-primary d-block">View All <i class="glyph-icon flaticon-next"></i></a>
+            </header>
+
+            <div class="js-slick-carousel products no-gutters border-top border-left border-right" data-pagi-classes="d-xl-none text-center position-absolute right-0 left-0 u-slick__pagination mt-4 mb-0" data-arrows-classes="d-none d-xl-block u-slick__arrow u-slick__arrow-centered--y"
+                data-arrow-left-classes="fas fa-chevron-left u-slick__arrow-inner u-slick__arrow-inner--left ml-lg-n10" data-arrow-right-classes="fas fa-chevron-right u-slick__arrow-inner u-slick__arrow-inner--right mr-lg-n10" data-slides-show="5" data-responsive='[{
+                   "breakpoint": 1500,
+                   "settings": {
+                     "slidesToShow": 4
+                   }
+                },{
+                   "breakpoint": 1199,
+                   "settings": {
+                     "slidesToShow": 3
+                   }
+                },{
+                   "breakpoint": 992,
+                   "settings": {
+                     "slidesToShow": 2
+                   }
+                }, {
+                   "breakpoint": 768,
+                   "settings": {
+                     "slidesToShow": 1
+                   }
+                }, {
+                   "breakpoint": 554,
+                   "settings": {
+                     "slidesToShow": 1
+                   }
+                }]'>
+                @forelse($data['marketer_picks'] as $book)
+                <div class="product">
+                    <div class="product__inner overflow-hidden p-3 p-md-4d875">
+                        <div class="woocommerce-LoopProduct-link woocommerce-loop-product__link d-block position-relative">
+                            <div class="woocommerce-loop-product__thumbnail">
+                                <a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{asset($book->hero_image)}}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid common-card-image" alt="{{ $book->title }}"></a>
+                            </div>
+                            <div class="woocommerce-loop-product__body product__body pt-3 bg-white">
+                                <div class="text-uppercase font-size-1 mb-1 text-truncate"><a href="{{ route('product', $book->slug) }}">
+                                    @if($book->is_paperback)
+                                        Paperback
+                                    @elseif($book->is_hardcover)
+                                        , Hardcover
+                                    @elseif($book->is_digital)
+                                        , Digital
+                                    @endif
+                                </a></div>
+                                <h2 class="woocommerce-loop-product__title product__title h6 text-lh-md mb-1 text-height-2 crop-text-2 h-dark"><a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a></h2>
+                                <div class="font-size-2  mb-1 text-truncate">
+                                    @if($book->role != 'admin')
+                                        <a href="{{ route('author-detail', $book->author_id) }}" class="text-gray-700">{{ $book->name }}</a>
+                                    @else
+                                        <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
+                                    @endif
+                                    
+                                    @if($book->total_reviews != 0)
+                                        @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                    @else
+                                        @php $avg_rating = 0; @endphp
+                                    @endif
+                                    <span class="text-yellow-darker">
+                                    @if($avg_rating < 5)
+                                        @for($i = 0; $i < $avg_rating; $i++)
+                                            <small class="fas fa-star"></small>
+                                        @endfor
+                                        @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                            <small class="far fa-star"></small>
+                                        @endfor
+                                    @else
+                                        @for($i = 0; $i < $avg_rating; $i++)
+                                            <small class="fas fa-star"></small>
+                                        @endfor
+                                    @endif
+                                    </span>
                                 </div>
                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                     <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -210,6 +333,27 @@
                                             @else
                                                 <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                             @endif
+
+                                            @if($book->total_reviews != 0)
+                                                @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                            @else
+                                                @php $avg_rating = 0; @endphp
+                                            @endif
+                                            <span class="text-yellow-darker">
+                                            @if($avg_rating < 5)
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                                @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                                    <small class="far fa-star"></small>
+                                                @endfor
+                                            @else
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                            @endif
+                                            </span>
+
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                             <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -260,6 +404,27 @@
                                             @else
                                                 <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                             @endif
+
+                                            @if($book->total_reviews != 0)
+                                                @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                            @else
+                                                @php $avg_rating = 0; @endphp
+                                            @endif
+                                            <span class="text-yellow-darker">
+                                            @if($avg_rating < 5)
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                                @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                                    <small class="far fa-star"></small>
+                                                @endfor
+                                            @else
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                            @endif
+                                            </span>
+
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                             <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -310,6 +475,27 @@
                                             @else
                                                 <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                             @endif
+
+                                            @if($book->total_reviews != 0)
+                                                @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                            @else
+                                                @php $avg_rating = 0; @endphp
+                                            @endif
+                                            <span class="text-yellow-darker">
+                                            @if($avg_rating < 5)
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                                @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                                    <small class="far fa-star"></small>
+                                                @endfor
+                                            @else
+                                                @for($i = 0; $i < $avg_rating; $i++)
+                                                    <small class="fas fa-star"></small>
+                                                @endfor
+                                            @endif
+                                            </span>
+
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                             <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -376,6 +562,27 @@
                                         @else
                                             <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                         @endif
+
+                                        @if($book->total_reviews != 0)
+                                            @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                        @else
+                                            @php $avg_rating = 0; @endphp
+                                        @endif
+                                        <span class="text-yellow-darker">
+                                        @if($avg_rating < 5)
+                                            @for($i = 0; $i < $avg_rating; $i++)
+                                                <small class="fas fa-star"></small>
+                                            @endfor
+                                            @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                                <small class="far fa-star"></small>
+                                            @endfor
+                                        @else
+                                            @for($i = 0; $i < $avg_rating; $i++)
+                                                <small class="fas fa-star"></small>
+                                            @endfor
+                                        @endif
+                                        </span>
+
                                     </div>
                                     <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                         <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span></ins>
@@ -502,6 +709,27 @@
                                                     @else
                                                         <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                                     @endif
+
+                                                    @if($book->total_reviews != 0)
+                                                        @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                                    @else
+                                                        @php $avg_rating = 0; @endphp
+                                                    @endif
+                                                    <span class="text-yellow-darker">
+                                                    @if($avg_rating < 5)
+                                                        @for($i = 0; $i < $avg_rating; $i++)
+                                                            <small class="fas fa-star"></small>
+                                                        @endfor
+                                                        @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                                            <small class="far fa-star"></small>
+                                                        @endfor
+                                                    @else
+                                                        @for($i = 0; $i < $avg_rating; $i++)
+                                                            <small class="fas fa-star"></small>
+                                                        @endfor
+                                                    @endif
+                                                    </span>
+
                                                 </div>
                                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                                     <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -566,6 +794,27 @@
                                 @else
                                     <a href="javascript:void(0)" class="text-gray-700">{{ $book->name }}</a>
                                 @endif
+
+                                @if($book->total_reviews != 0)
+                                    @php $avg_rating = round($book->total_ratings / $book->total_reviews) @endphp
+                                @else
+                                    @php $avg_rating = 0; @endphp
+                                @endif
+                                <span class="text-yellow-darker">
+                                @if($avg_rating < 5)
+                                    @for($i = 0; $i < $avg_rating; $i++)
+                                        <small class="fas fa-star"></small>
+                                    @endfor
+                                    @for($i = 0; $i < 5 - $avg_rating; $i++)
+                                        <small class="far fa-star"></small>
+                                    @endfor
+                                @else
+                                    @for($i = 0; $i < $avg_rating; $i++)
+                                        <small class="fas fa-star"></small>
+                                    @endfor
+                                @endif
+                                </span>
+
                             </div>
                             <div class="price d-flex align-items-center font-weight-medium font-size-3">
                                 <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
@@ -645,8 +894,6 @@
                 birthday = dayMonth + nextYear;
             }
             
-            //end
-            
             const countDown = new Date(birthday).getTime(),
                 x = setInterval(function() {
 
@@ -663,7 +910,6 @@
                         $('.inCampaign').css('display','none');
                         clearInterval(x);
                     }
-                    //seconds
                 }, 0)
             }());
     </script>

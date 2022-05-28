@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\Location;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -27,6 +28,7 @@ class CartController extends Controller
                 "bookPrice" => $request->bookPrice,
                 "title" => $request->title,
                 "image" => $request->image,
+                "is_preorder" => $request->is_preorder
             ];
         }
         session()->put('cart', $cart);
@@ -39,7 +41,8 @@ class CartController extends Controller
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
             session()->put('cart', $cart);
-            return response()->json(view('front.cart_item')->render());
+            $data['locations'] = Location::orderBy('id','desc')->get();
+            return response()->json(view('front.cart_item', $data)->render());
         }
     }
 
@@ -51,7 +54,8 @@ class CartController extends Controller
                 unset($cart[$request->id]);
                 session()->put('cart', $cart);
             }
-            return response()->json(view('front.cart_item')->render());
+            $data['locations'] = Location::orderBy('id','desc')->get();
+            return response()->json(view('front.cart_item', $data)->render());
         }
     }
     public function add_to_wishlist(Request $request){

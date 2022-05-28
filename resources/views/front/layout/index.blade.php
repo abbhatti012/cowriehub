@@ -123,6 +123,21 @@
     $.notify("Your Payment has been cancelled!");
 </script>
 @endif
+@if(Session::has('payment_cannot_process'))
+<script>
+    $.notify("Payment cannot process!");
+</script>
+@endif
+@if(Session::has('fraud_payment'))
+<script>
+    $.notify("Fraud transaction detected!");
+</script>
+@endif
+@if(Session::has('payment_successfull'))
+<script>
+    $.notify("Payment Successfull!", 'success');
+</script>
+@endif
 @if(Session::has('review_not_added'))
 <script>
     $.notify("You have already added a review against that product!");

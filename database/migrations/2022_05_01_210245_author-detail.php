@@ -27,6 +27,13 @@ return new class extends Migration
             $table->string('twitter')->nullable();
             $table->string('instagram')->nullable();
             $table->string('payment')->nullable();
+            $table->string('account_name')->nullable();
+            $table->string('account_number')->nullable();
+            $table->string('networks')->nullable();
+            $table->string('bank_account_name')->nullable();
+            $table->string('bank_account_number')->nullable();
+            $table->string('branch')->nullable();
+            $table->string('bank_name')->nullable();
             $table->string('cover_type')->nullable();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

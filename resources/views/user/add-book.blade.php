@@ -37,7 +37,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" required> Portrait?</label>
-                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" required> Landscape?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" checked name="cover_type" value="landscape" required> Landscape?</label>
                             </div>
                         </div>
                         <b>Size (<small id="size">1350x500</small>)</b>
@@ -455,16 +455,41 @@
                                     <label class="col-form-label col-sm-3 pt-0">Shipped to Cowriehub?</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="hard_ship" value="1" checked="">
+                                            <input class="form-check-input" type="radio" name="hard_ship" value="1" checked="" required>
                                             <label class="form-check-label">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="hard_ship" value="0">
+                                            <input class="form-check-input" type="radio" name="hard_ship" value="0" required>
                                             <label class="form-check-label">
                                                 No
                                             </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset style="display: none;" class="mb-3 hard_allow_preorders">
+                                <div class="row">
+                                    <label class="col-form-label col-sm-3 pt-0">Allow Preorders?</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="herd_allow_preorder" value="1" checked="" required>
+                                            <label class="form-check-label">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="herd_allow_preorder" value="0" required>
+                                            <label class="form-check-label">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="basic-form hard_shipment_date">
+                                        <div class="mb-3">
+                                            <label for="shipment_date">Shipment Date</label>
+                                            <input class="form-control form-control-lg" name="hard_shipment_date" type="date" min="<?= date('Y-m-d'); ?>" id="shipment_date" required>
                                         </div>
                                     </div>
                                 </div>
@@ -514,16 +539,41 @@
                                     <label class="col-form-label col-sm-3 pt-0">Shipped to Cowriehub?</label>
                                     <div class="col-sm-9">
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" checked="">
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="1" checked="" required>
                                             <label class="form-check-label">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="paper_ship" value="0">
+                                            <input class="form-check-input" type="radio" name="paper_ship" value="0" required>
                                             <label class="form-check-label">
                                                 No
                                             </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset style="display: none;" class="mb-3 paper_allow_preorders">
+                                <div class="row">
+                                    <label class="col-form-label col-sm-3 pt-0">Allow Preorders?</label>
+                                    <div class="col-sm-9">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paper_allow_preorder" value="1" checked="" required>
+                                            <label class="form-check-label">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="paper_allow_preorder" value="0" required>
+                                            <label class="form-check-label">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="basic-form paper_shipment_date">
+                                        <div class="mb-3">
+                                            <label for="shipment_date">Shipment Date</label>
+                                            <input class="form-control form-control-lg" name="paper_shipment_date" type="date" min="<?= date('Y-m-d'); ?>" id="shipment_date" required>
                                         </div>
                                     </div>
                                 </div>
@@ -621,6 +671,38 @@
                 return value != id;
             });
             $('#sub_author').val(authorsArray);
+        });
+        $('input[name="hard_ship"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.hard_allow_preorders').show();
+            } else if(type == 1){
+                $('.hard_allow_preorders').hide();
+            }
+        });
+        $('input[name="herd_allow_preorder"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.hard_shipment_date').hide();
+            } else if(type == 1){
+                $('.hard_shipment_date').show();
+            }
+        });
+        $('input[name="paper_ship"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.paper_allow_preorders').show();
+            } else if(type == 1){
+                $('.paper_allow_preorders').hide();
+            }
+        });
+        $('input[name="paper_allow_preorder"]').on('change',function(){
+            var type = $(this).val();
+            if(type == 0){
+                $('.paper_shipment_date').hide();
+            } else if(type == 1){
+                $('.paper_shipment_date').show();
+            }
         });
     });
 </script>

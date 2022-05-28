@@ -4,6 +4,9 @@
     .hard_cover, .digital_epub, .paper_back{
         display: none;
     }
+    .btn-lg, .btn-group-lg>.btn{
+        padding: 0.5rem 2rem !important;
+    }
 </style>
 <div class="content-body">
    <div class="container-fluid">
@@ -25,7 +28,7 @@
                     <div class="card-header">
                         <h4 class="card-title">All Books</h4>
                         <div class="d-flex">
-                            <a href="{{ route('admin.add-book') }}" class="btn btn-primary shadow btn-xs sharp" title="Add Book"><i class="fa fa-plus"></i></a>
+                            <a href="{{ route('admin.add-book') }}" class="btn btn-primary shadow btn-lg sharp" title="Add Book">Add Book</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -40,7 +43,7 @@
                                                 <label class="form-check-label" for="checkAll"></label>
                                             </div> -->
                                         </th>
-                                        <th>#</th>
+                                        <th>View Detail</th>
                                         <th>Title</th>
                                         <th>Sub-Title</th>
                                         <th>Genre</th>
@@ -68,7 +71,11 @@
                                                 <label class="form-check-label" for="customCheckBox2"></label>
                                             </div>
                                         </td> -->
-                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>
+                                            <div class="d-flex">
+                                                <a href="{{ route('admin.view-book-detail',$book->id) }}" class="btn btn-info shadow btn-xs sharp" title="Vide Detail"><i class="fa fa-eye"></i></a>
+                                            </div>
+                                        </td>
                                         <td><a href="{{ route('product', $book->id) }}" target="_blank">{{ $book->title }}</a></td>
                                         <td>{{ $book->subtitle }}</td>
                                         <td>{{ $book->genre_title }}</td>

@@ -410,7 +410,7 @@
                             <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                                 <h2 class="font-size-3 mb-3">OTHER ACCOUNTS </h2>
                                 <ul class="list-group list-group-flush list-group-borderless">
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('author.profile.edit') }}" <?php if(Auth::check()){echo 'target="_blank"';} ?> class="h-primary">Author Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('author.profile.edit') }}" class="h-primary">Author Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}" class="h-primary">Publisher Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.affiliate-account') }}" class="h-primary">Affiliate Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}" class="h-primary">Consultant Account</a></li>

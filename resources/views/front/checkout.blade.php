@@ -24,32 +24,8 @@
                         <!-- .entry-header -->
                         <div class="entry-content">
                             <div class="woocommerce">
-                                <div class="woocommerce-info p-4 bg-white border">Have a coupon?
-                                    <a class="showcoupon"
-                                        data-toggle="collapse"
-                                        href="#collapseExample9"
-                                        role="button"
-                                        aria-expanded="false"
-                                        aria-controls="collapseExample9">
-                                        Click here to enter your code
-                                    </a>
-                                </div>
-
-                                <form id="collapseExample9" class="collapse checkout_coupon mt-4 p-4 bg-white border" method="post">
-                                    <div class="row d-flex">
-                                        <p class="col-md-4 d-inline form-row form-row-first mb-3 mb-md-0">
-                                            <input type="text" name="coupon_code1" class="input-text form-control" placeholder="Coupon code" id="coupon_code1" value="">
-                                        </p>
-
-                                        <p class="col-md-3 d-inline form-row form-row-last">
-                                            <input type="submit" class="button form-control border-0 height-4 btn btn-dark rounded-0" name="apply_coupon" value="Apply coupon">
-                                        </p>
-                                    </div>
-
-                                    <div class="clear"></div>
-                                </form>
-
-                                <form name="checkout" method="post" class="checkout woocommerce-checkout row mt-8" action="https://themes.woocommerce.com/storefront/checkout/" enctype="multipart/form-data" novalidate="novalidate">
+                                <form name="checkout" method="post" class="checkout woocommerce-checkout row mt-8" action="{{ route('pay-now', $payment->id) }}" id="basic-validation" enctype="multipart/form-data" novalidate="novalidate">
+                                    @csrf
                                     <div class="col2-set col-md-6 col-lg-7 col-xl-8 mb-6 mb-md-0" id="customer_details">
                                         <div class="px-4 pt-5 bg-white border">
                                             <div class="woocommerce-billing-fields">
@@ -59,22 +35,17 @@
                                                 <div class="woocommerce-billing-fields__field-wrapper row">
                                                     <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field" id="billing_first_name_field" data-priority="10">
                                                         <label for="billing_first_name" class="form-label">First name <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="text" class="input-text form-control" name="billing_first_name" id="billing_first_name" placeholder="" value="" autocomplete="given-name" autofocus="autofocus">
+                                                        <input type="text" class="input-text form-control" name="first_name" id="billing_first_name" placeholder="" value="" autocomplete="given-name" autofocus="autofocus" required>
                                                     </p>
 
                                                     <p class="col-lg-6 mb-4d75 form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20">
                                                         <label for="billing_last_name" class="form-label">Last name <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="text" class="input-text form-control" name="billing_last_name" id="billing_last_name" placeholder="" value="" autocomplete="family-name">
-                                                    </p>
-
-                                                    <p class="col-12 mb-4d75 form-row form-row-wide" id="billing_company_field" data-priority="30">
-                                                        <label for="billing_company" class="form-label">Company name</label>
-                                                        <input type="text" class="input-text form-control" name="billing_company" id="billing_company" placeholder="" value="" autocomplete="organization">
+                                                        <input type="text" class="input-text form-control" name="last_name" id="billing_last_name" placeholder="" value="" autocomplete="family-name" required>
                                                     </p>
 
                                                     <p class="col-12 mb-4d75 form-row form-row-wide address-field update_totals_on_change validate-required woocommerce-validated" id="billing_country_field" data-priority="40">
                                                         <label for="billing_country" class="form-label">Country <abbr class="required" title="required">*</abbr></label>
-                                                        <select name="billing_country" id="billing_country" class="form-control country_to_state country_select  select2-hidden-accessible"
+                                                        <select name="country" required id="billing_country" class="form-control country_to_state country_select  select2-hidden-accessible"
                                                             autocomplete="country" tabindex="-1" aria-hidden="true">
                                                             <option value="">Select a country…</option>
                                                             <option value="AX">Åland Islands</option>
@@ -331,36 +302,17 @@
 
                                                     <p class="col-12 mb-3 form-row form-row-wide address-field validate-required" id="billing_address_1_field" data-priority="50">
                                                         <label for="billing_address_1" class="form-label">Street address <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="text" class="input-text form-control" name="billing_address_1" id="billing_address_1" placeholder="House number and street name" value="" autocomplete="address-line1">
-                                                    </p>
-
-                                                    <p class="col-12 mb-4d75 form-row form-row-wide address-field" id="billing_address_2_field" data-priority="60">
-                                                        <input type="text" class="input-text form-control" name="billing_address_2" id="billing_address_2" placeholder="Apartment, suite, unit etc. (optional)" value="" autocomplete="address-line2">
-                                                    </p>
-
-                                                    <p class="col-12 mb-4d75 form-row form-row-wide address-field validate-required" id="billing_city_field" data-priority="70" data-o_class="form-row form-row-wide address-field validate-required">
-                                                        <label for="billing_city" class="form-label">Town / City <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="text" class="input-text form-control" name="billing_city" id="billing_city" placeholder="" value="" autocomplete="address-level2">
-                                                    </p>
-
-                                                    <p class="col-12 mb-4d75 form-row form-row-wide address-field validate-state woocommerce-validated" id="billing_state_field" data-priority="80" data-o_class="form-row form-row-wide address-field validate-state">
-                                                        <label for="billing_state" class="form-label">County</label>
-                                                        <input type="text" class="input-text form-control" value="" placeholder="" name="billing_state" id="billing_state" autocomplete="address-level1">
-                                                    </p>
-
-                                                    <p class="col-12 mb-4d75 form-row form-row-wide address-field validate-postcode validate-required" id="billing_postcode_field" data-priority="90" data-o_class="form-row form-row-wide address-field validate-required validate-postcode">
-                                                        <label for="billing_postcode" class="form-label">Postcode <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="text" class="input-text form-control" name="billing_postcode" id="billing_postcode" placeholder="" value="" autocomplete="postal-code">
+                                                        <input type="text" class="input-text form-control" name="address" id="billing_address_1" required placeholder="House number and street name" value="" autocomplete="address-line1">
                                                     </p>
 
                                                     <p class="col-12 mb-4d75 form-row form-row-first validate-required validate-phone" id="billing_phone_field" data-priority="100">
                                                         <label for="billing_phone" class="form-label">Phone <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="tel" class="input-text form-control" name="billing_phone" id="billing_phone" placeholder="" value="" autocomplete="tel">
+                                                            <input type="tel" class="input-text form-control" name="phone" id="billing_phone" required placeholder="" value="" autocomplete="tel">
                                                     </p>
 
                                                     <p class="col-12 mb-4d75 form-row form-row-last validate-required validate-email" id="billing_email_field" data-priority="110">
                                                         <label for="billing_email" class="form-label">Email address <abbr class="required" title="required">*</abbr></label>
-                                                        <input type="email" class="input-text form-control" name="billing_email" id="billing_email" placeholder="" value="" autocomplete="email">
+                                                        <input type="email" class="input-text form-control" name="email" id="email" required placeholder="" value="" autocomplete="email">
                                                     </p>
                                                 </div>
                                             </div>
@@ -372,7 +324,7 @@
                                                 <div class="woocommerce-additional-fields__field-wrapper">
                                                     <p class="col-12 mb-4d75 px-0 form-row notes" id="order_comments_field" data-priority="">
                                                         <label for="order_comments" class="form-label">Order notes (optional)</label>
-                                                        <textarea name="order_comments" class="input-text form-control" id="order_comments" placeholder="Notes about your order, e.g. special notes for delivery." rows="8" cols="5"></textarea>
+                                                        <textarea name="notes" class="input-text form-control" id="order_comments" placeholder="Notes about your order, e.g. special notes for delivery." rows="8" cols="5"></textarea>
                                                     </p>
                                                 </div>
                                             </div>
@@ -407,42 +359,21 @@
                                                     aria-labelledby="checkoutHeadingOnee"
                                                     data-parent="#checkoutAccordion">
                                                     <table class="shop_table woocommerce-checkout-review-order-table">
-                                                        <thead class="d-none">
-                                                            <tr>
-                                                                <th class="product-name">Product</th>
-                                                                <th class="product-total">Total</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                        
+                                                            @foreach(session('cart') as $id => $cart)
                                                             <tr class="cart_item">
                                                                 <td class="product-name">
-                                                                    Touchscreen MP3 Player&nbsp; <strong class="product-quantity">× 1</strong>
+                                                                    {{ $cart['title'] }}&nbsp; <strong class="product-quantity">× {{ $cart['quantity'] }}</strong>
                                                                 </td>
                                                                 <td class="product-total">
-                                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>79.99</span>
+                                                                    @if($cart['is_preorder'] == 1)
+                                                                        <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS <sup>{{ round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2)  }}</sup>  <del>{{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</del></span>
+                                                                    @else
+                                                                        <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS {{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</span>
+                                                                    @endif
                                                                 </td>
                                                             </tr>
-
-                                                            <tr class="cart_item">
-                                                                <td class="product-name">
-                                                                    Happy Ninja&nbsp; <strong class="product-quantity">× 1</strong>
-                                                                </td>
-                                                                <td class="product-total">
-                                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>18.00</span>
-                                                                </td>
-                                                            </tr>
-                                                        </tbody>
-                                                        <tfoot class="d-none">
-                                                            <tr class="cart-subtotal">
-                                                                <th>Subtotal</th>
-                                                                <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>97.99</span></td>
-                                                            </tr>
-
-                                                            <tr class="order-total">
-                                                                <th>Total</th>
-                                                                <td><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>97.99</span></strong> </td>
-                                                            </tr>
-                                                        </tfoot>
+                                                            @endforeach
                                                     </table>
                                                 </div>
                                             </div>
@@ -474,60 +405,20 @@
                                                         <tbody>
                                                             <tr class="checkout-subtotal">
                                                                 <th>Subtotal</th>
-                                                                <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>79.99</span></td>
+                                                                <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS </span>{{ $payment->subtotal }}</span></td>
                                                             </tr>
 
                                                             <tr class="order-shipping">
                                                                 <th>Shipping</th>
-                                                                <td data-title="Shipping">Free Shipping</td>
+                                                                <td data-title="Shipping">GHS {{ $payment->shipping_price }}</td>
+                                                            </tr>
+                                                            
+                                                            <tr class="order-shipping">
+                                                                <th>Total Price</th>
+                                                                <td data-title="Shipping">GHS {{ $payment->total_amount }}</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
-                                                </div>
-                                            </div>
-
-                                            <div class="p-4d875 border">
-                                                <div id="checkoutHeadingTwo" class="checkout-head">
-                                                    <a href="#" class="text-dark d-flex align-items-center justify-content-between"
-                                                        data-toggle="collapse"
-                                                        data-target="#checkoutCollapseTwo"
-                                                        aria-expanded="false"
-                                                        aria-controls="checkoutCollapseTwo">
-
-                                                        <h3 class="checkout-title mb-0 font-weight-medium font-size-3">Shipping</h3>
-
-                                                        <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                                            <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
-                                                        </svg>
-
-                                                        <svg class="plus" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                                            <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z" />
-                                                        </svg>
-                                                    </a>
-                                                </div>
-
-                                                <div id="checkoutCollapseTwo" class="mt-4 checkout-content collapse"
-                                                    aria-labelledby="checkoutHeadingTwo"
-                                                    data-parent="#checkoutAccordion">
-                                                    <!-- Checkboxes -->
-                                                    <ul id="shipping_method">
-                                                        <li>
-                                                            <input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_flat_rate1" value="flat_rate:1" class="shipping_method">
-                                                            <label for="shipping_method_0_flat_rate1">Free shipping</label>
-                                                        </li>
-
-                                                        <li>
-                                                            <input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_flat_rate2" value="flat_rate:2" class="shipping_method" checked="checked">
-                                                            <label for="shipping_method_0_flat_rate2">Flat rate: <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>15</span></label>
-                                                        </li>
-
-                                                        <li>
-                                                            <input type="radio" name="shipping_method[0]" data-index="0" id="shipping_method_0_flat_rate3" value="flat_rate:2" class="shipping_method" checked="checked">
-                                                            <label for="shipping_method_0_flat_rate3">Local pickup:: <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">$</span>8</span></label>
-                                                        </li>
-                                                    </ul>
-                                                    <!-- End Checkboxes -->
-                                                    <span class="font-size-2">Shipping to Turkey.</span><a href="#" class="font-weight-medium h-primary ml-3 font-size-2">Change Address</a>
                                                 </div>
                                             </div>
 
@@ -557,7 +448,7 @@
                                                     <div class="coupon">
                                                         <label for="coupon_code">Coupon:</label>
                                                         <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code" autocomplete="off">
-                                                        <input type="submit" class="button" name="apply_coupon" value="Apply coupon">
+                                                        <input type="button" class="button" name="apply_coupon" value="Apply coupon">
                                                     </div>
                                                 </div>
                                             </div>
@@ -567,7 +458,7 @@
                                                     <tbody>
                                                         <tr class="order-total">
                                                             <th>Total</th>
-                                                            <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">£</span>97.99</span></strong> </td>
+                                                            <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS </span>{{ $payment->total_amount }}</span></strong> </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -607,15 +498,6 @@
                                                                 </div>
                                                             </li>
 
-                                                            <li class="wc_payment_method payment_method_cheque">
-                                                                <input id="payment_method_cheque" type="radio" class="input-radio" name="payment_method" value="cheque" data-order_button_text="">
-
-                                                                <label for="payment_method_cheque">Check payments </label>
-                                                                <div class="payment_box payment_method_cheque" style="display: block;">
-                                                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State / County, Store Postcode.</p>
-                                                                </div>
-                                                            </li>
-
                                                             <li class="wc_payment_method payment_method_cod">
                                                                 <input id="payment_method_cod" type="radio" class="input-radio" name="payment_method" value="cod" checked="checked" data-order_button_text="">
 
@@ -630,22 +512,15 @@
                                             </div>
                                         </div>
                                         <div class="form-row place-order">
-                                            <a href="{{ url('/') }}" class="button alt btn btn-dark btn-block rounded-0 py-4" name="woocommerce_checkout_place_order" id="place_order" data-value="Place order">Place order</a>
-
-                                            <input type="hidden" id="_wpnonce" name="_wpnonce" value="926470d564"><input type="hidden" name="_wp_http_referer" value="/storefront/?wc-ajax=update_order_review">
+                                            <button type="submit" class="button alt btn btn-dark btn-block rounded-0 py-4" name="woocommerce_checkout_place_order" id="place_order" data-value="Place order">Place order</button>
                                         </div>
                                     </div>
                                 </form>
                             </div>
                         </div>
-                        <!-- .entry-content -->
                     </article>
-                    <!-- #post-## -->
                 </main>
-                <!-- #main -->
             </div>
-            <!-- #primary -->
         </div>
-        <!-- .col-full -->
     </div>
 @endsection

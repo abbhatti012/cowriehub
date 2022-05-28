@@ -1,4 +1,21 @@
 @extends('admin.layout.index')
+<style>
+    <?php if($user): ?>
+    <?php if($user->payment == 'mobile_money'): ?>
+        .bank_fields{
+            display: none;
+        }
+    <?php elseif($user->payment == 'bank_settelments'): ?>
+        .mobile_money_fields{
+            display: none;
+        }
+    <?php endif; ?>
+    <?php else: ?>
+        .mobile_money_fields, .bank_fields{
+            display: none;
+        }
+    <?php endif; ?>
+</style>
 @section('content')
 <div class="content-body">
    <div class="container-fluid">
@@ -24,6 +41,16 @@
                     @csrf
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
+                        <h3 for="instagram">Cover Type</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" <?php if($user->cover_type == 'portrait'){echo 'checked';} ?> required> Portrait?</label>
+                                <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" <?php if($user->cover_type == 'landscape'){echo 'checked';} ?> required> Landscape?</label>
+                            </div>
+                        </div>
+                        <b>Size (<small id="size">1350x500</small>)</b>
+
                         @if($user && $user->cover)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($user->cover) }}" id="commonImage1" alt="">
@@ -112,6 +139,54 @@
                                 <input class="form-control form-control-lg" name="instagram" type="text" id="instagram" value="{{ $user->instagram }}">
                             </div>
                         </div>
+                        <h3 for="instagram">Payment Details</h3>
+                        <hr>
+                        <div class="basic-form">
+                            <div class="mb-3 mb-0">
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Settelments</label>
+                            </div>
+                        </div>
+                        <div class="mobile_money_fields">
+                            <div class="basic-form">
+                                <div class="mb-3">
+                                    <label for="account_name">Account Name</label>
+                                    <input class="form-control form-control-lg" name="account_name" type="text" id="account_name" value="{{ $user->account_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="account_number">Account Number</label>
+                                    <input class="form-control form-control-lg" name="account_number" type="text" id="account_number" value="{{ $user->account_number }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="networks">Mobile Money Networks</label>
+                                    <select class="form-control form-control-lg" name="networks" required>
+                                        <option <?php if($user->networks == 'mtn'){echo 'selected';} ?> value="mtn">MTN</option>
+                                        <option <?php if($user->networks == 'at'){echo 'selected';} ?> value="at">AIrtelTigo</option>
+                                        <option <?php if($user->networks == 'vc'){echo 'selected';} ?> value="vc">Vodafone Cash</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bank_fields">
+                            <div class="basic-form">
+                                <div class="mb-3">
+                                    <label for="bank_account_name">Bank Account Name</label>
+                                    <input class="form-control form-control-lg" name="bank_account_name" type="text" id="bank_account_name" value="{{ $user->bank_account_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bank_account_number">Bank Account Number</label>
+                                    <input class="form-control form-control-lg" name="bank_account_number" type="text" id="bank_account_number	" value="{{ $user->bank_account_number	 }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="branch">Branch</label>
+                                    <input class="form-control form-control-lg" name="branch" type="text" id="branch" value="{{ $user->branch }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bank_name">Bank Name</label>
+                                    <input class="form-control form-control-lg" name="bank_name" type="text" id="bank_name" value="{{ $user->bank_name }}" required>
+                                </div>
+                            </div>
+                        </div>
                         <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
@@ -122,3 +197,15 @@
    </div>
 </div>
 @endsection
+<script>
+    $(document).ready(function(){
+        $('.cover_type').on('change',function(){
+            var size = $(this).data('size');
+            $('#size').html(size);
+        });
+    });
+    function paymentFields(newClass, previousClass){
+        $('.'+newClass).show();
+        $('.'+previousClass).hide();
+    }
+</script>
