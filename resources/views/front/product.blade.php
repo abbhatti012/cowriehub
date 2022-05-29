@@ -738,6 +738,7 @@
                         is_preorder : is_preorder
                     },
                     success : function(data){
+                        $('body .cartItemsLength').html(data.cartLength);
                         $.notify(data.message, data.type);
                     }
                 });

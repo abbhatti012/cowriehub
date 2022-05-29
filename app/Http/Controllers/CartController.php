@@ -32,7 +32,8 @@ class CartController extends Controller
             ];
         }
         session()->put('cart', $cart);
-        return response()->json(['message' => 'Product added to cart successfully!', 'type'=>'success']);
+        $cartCount = session()->get('cart');
+        return response()->json(['message' => 'Product added to cart successfully!', 'type'=>'success','cartLength' => count($cartCount)]);
     }
 
     public function update_cart(Request $request)

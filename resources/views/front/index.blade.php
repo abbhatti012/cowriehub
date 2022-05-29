@@ -36,7 +36,7 @@
 </style>
 @extends('front.layout.index')
 @section('content')
-<section class="space-bottom-3">
+    <section class="space-bottom-3">
         <div class="bg-gray-200 space-2 space-lg-0 bg-img-hero" style="background-image: url(../../assets/img/1920x588/img1.jpg);">
             <div class="container">
                 <div class="js-slick-carousel u-slick" data-pagi-classes="text-center u-slick__pagination position-absolute right-0 left-0 mb-n8 mb-lg-4 bottom-0">
@@ -861,7 +861,7 @@
                         <img src="{{ asset($author->profile) }}" class="author-img mx-auto mb-5 d-block rounded-circle" alt="{{ $author->name }}">
                         <div class="author__body text-center">
                             <h2 class="author__name h6 mb-0">{{ $author->name }}</h2>
-                            <div class="text-gray-700 font-size-2">25 Published Books</div>
+                            <div class="text-gray-700 font-size-2">{{ count($author->books_published) }} Published Books</div>
                         </div>
                     </a>
                 </li>

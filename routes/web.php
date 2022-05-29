@@ -87,6 +87,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/add-location', [App\Http\Controllers\Admin\AdminController::class, 'add_location'])->name('admin.add-location');
     Route::get('/cms/delete-location/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_location'])->name('admin.delete-location');
     Route::get('/cms/view-book-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_book_detail'])->name('admin.view-book-detail');
+    Route::get('/cms/view-order-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_order_detail'])->name('admin.view-order-detail');
     
     Route::get('/cms/faq', [App\Http\Controllers\Admin\AdminController::class, 'faq'])->name('admin.faq');
     Route::get('/cms/slider', [App\Http\Controllers\Admin\AdminController::class, 'slider'])->name('admin.slider');
@@ -149,13 +150,14 @@ Route::group(['middleware' => 'consultant'], function () {
 // Route::group(['middleware' => 'user'], function () {
     Route::get('/user', [App\Http\Controllers\User\UserController::class, 'index'])->name('user');
     Route::get('/checkout', [App\Http\Controllers\HomeController::class, 'checkout'])->name('checkout');
+    Route::get('/order-received', [App\Http\Controllers\HomeController::class, 'order_received'])->name('order-received');
+    Route::get('/order-tracking', [App\Http\Controllers\HomeController::class, 'order_tracking'])->name('order-tracking');
+    Route::get('/get-filtered-data', [App\Http\Controllers\HomeController::class, 'get_filtered_data'])->name('get-filtered-data');
+    
+    
     Route::get('/author/edit', [App\Http\Controllers\User\UserController::class, 'author_profile_edit'])->name('author.profile.edit')->middleware('auth');
     Route::post('/author/update', [App\Http\Controllers\User\UserController::class, 'author_profile_update'])->name('update-author-profile')->middleware('auth');
     Route::get('/author/autocomplete', [App\Http\Controllers\User\UserController::class, 'autocomplete'])->name('autocomplete')->middleware('auth');
-
-
-    Route::get('/order-received', [App\Http\Controllers\HomeController::class, 'order_received'])->name('order-received');
-    Route::get('/order-tracking', [App\Http\Controllers\HomeController::class, 'order_tracking'])->name('order-tracking');
     Route::get('/author', [App\Http\Controllers\User\UserController::class, 'author_account'])->name('user.author-account');
     Route::get('/publisher', [App\Http\Controllers\User\UserController::class, 'publisher_account'])->name('user.publisher-account');
     Route::get('/affiliate', [App\Http\Controllers\User\UserController::class, 'affiliate_account'])->name('user.affiliate-account');

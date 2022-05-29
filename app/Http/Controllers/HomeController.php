@@ -25,38 +25,38 @@ class HomeController extends Controller
     }
     public function index(){
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.book_purchased','desc')->where('status',1)->where('books.book_purchased','!=',0)
+        ->orderBy('books.book_purchased','desc')->where('books.status',1)->where('books.book_purchased','!=',0)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['best_selling'] = $query->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['featured'] = $query->where('books.is_featured',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['sales'] = $query->where('books.is_sale',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['viewed'] = $query->where('books.is_most_viewed',1)->limit(10)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['new_release'] = $query->where('books.is_new',1)->limit(3)->get();
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['biographies'] = $query->where('books.is_biographies',1)->limit(10)->get();
         
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
-        ->orderBy('books.id','desc')->where('status',1)
+        ->orderBy('books.id','desc')->where('books.status',1)
         ->join('users','users.id','=','books.user_id')
         ->join('reviews','reviews.book_id','=','books.id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
@@ -67,7 +67,9 @@ class HomeController extends Controller
 
         $data['authors'] = User::where('users.role','author')
         ->select('users.*','author-detail.profile as profile')
-        ->join('author-detail','author-detail.user_id','=','users.id')->get();
+        ->join('author-detail','author-detail.user_id','=','users.id')
+        ->with('books_published')
+        ->get();
         $data['setting'] = Setting::first();
         $start_date = $data['setting']->start_date;
         $end_date = $data['setting']->end_date;
@@ -103,7 +105,9 @@ class HomeController extends Controller
         return back()->with('message', ['text'=>'Your data has been saved. Someone will surely contact you soon on it!','type'=>'success']);
     }
     public function shop(){
-        return view('front.shop');
+        $genres = Genre::with('subgenres')->get();
+        $users = User::where('role','author')->get();
+        return view('front.shop', compact('genres', 'users'));
     }
     public function product($slug){
         $book = Book::where('slug',$slug)->first();
@@ -175,7 +179,18 @@ class HomeController extends Controller
         return view('front.about-us');
     }
     public function authors_list(){
-        return view('front.authors-list');
+        if(isset($_GET['param'])){
+            $param = $_GET['param'];
+        } else {
+            $param = '';
+        }
+        $authors = User::where('users.role','author')
+        ->select('users.*','author-detail.profile as profile')
+        ->join('author-detail','author-detail.user_id','=','users.id')
+        ->with('books_published')
+        ->where('users.name', 'like', $param.'%')
+        ->get();
+        return view('front.authors-list', compact('authors'));
     }
     public function author_detail($id){
         return view('front.author-detail');
@@ -240,5 +255,40 @@ class HomeController extends Controller
         } else {
             return back()->with('review_error', 'Review not added. There is something went wrong.');
         }
+    }
+    public function get_filtered_data(Request $request){
+        $page = request('sortBy');
+        $minimum_price = request('minimum_price');
+        $maximum_price = request('maximum_price');
+        
+        $products = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
+        ->where('books.status',1)
+        ->join('users','users.id','=','books.user_id')
+        ->join('sub_genres','sub_genres.id','=','books.genre');
+        $data['total_count'] = $products->count();
+        if (isset($minimum_price) && isset($maximum_price)) {
+            $products->where('books.price', '>=', $minimum_price)->Where('books.price', '<=', $maximum_price);
+        }
+        if (isset($genre) && !empty($genre)) {
+            $products->whereIn('books.genre', $genre);
+        }
+        if (isset($request->reviews) && !empty($request->reviews)) {
+            $products->whereIn('books.total_ratings', $request->reviews);
+        }
+        if (isset($request->formatField) && !empty($request->formatField)) {
+            $products->where('books.'.$request->formatField, $request->formatValue);
+        }
+        if (isset($request->genreField) && !empty($request->genreField)) {
+            $products->where('books.'.$request->genreField, $request->genreValue);
+        }
+        if (isset($request->authorField) && !empty($request->authorField)) {
+            $products->where('books.user_id', $request->authorValue);
+        }
+        $books = $products->paginate($page);
+        // $data['count'] = $books->count();
+        $data['links'] = $books->links('vendor.pagination.default')->render();
+        $data['filter_grid_data'] = view('front.filter_grid_data', compact('books'))->render();
+        $data['filter_list_data'] = view('front.filter_list_data', compact('books'))->render();
+        return response()->json($data);
     }
 }

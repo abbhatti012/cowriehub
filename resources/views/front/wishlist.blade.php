@@ -14,7 +14,7 @@
             </div>
         </div>
     </div>
-    <div class="site-content bg-punch-light overflow-hidden wishtemHere" id="content">
+    <div class="wishtemHere" id="content">
         <?php echo $wishlist_item ?>
     </div>
     

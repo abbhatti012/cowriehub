@@ -111,7 +111,6 @@
                                                     $singlePrice = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
                                                     $subtotal = $subtotal +  $singlePrice;
                                                 @endphp
-
                                             @endif
                                         @endforeach
                                         @endif

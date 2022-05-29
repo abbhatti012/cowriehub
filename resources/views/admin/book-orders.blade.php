@@ -37,7 +37,7 @@
                                 @forelse($payments as $payment)
                                     <tr>
                                         <td>
-                                        <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
+                                        <a href="{{ route('admin.view-order-detail', $payment->id) }}" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
                                         </td>
                                         <td>{{ $payment->transaction_id }}</td>
                                         <td>{{ $payment->location }}</td>
@@ -49,6 +49,8 @@
                                         <td>
                                             @if($payment->status == 'cancelled')
                                                 <span class="badge light badge-danger">{{ $payment->status }}</span>
+                                            @elseif($payment->status == '')
+                                                <span class="badge light badge-warning">Pending</span>
                                             @else
                                                 <span class="badge light badge-info">{{ $payment->status }}</span>
                                             @endif

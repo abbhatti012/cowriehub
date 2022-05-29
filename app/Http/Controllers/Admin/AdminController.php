@@ -6,17 +6,18 @@ use App\Models\c;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Order;
 use App\Models\Banner;
+use App\Models\Payment;
 use App\Models\Setting;
+use App\Models\Location;
 use App\Models\SubGenre;
 use App\Models\Marketing;
-use App\Models\Location;
 use App\Models\AuthorDetail;
+use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use App\Models\MarketOrders;
-use App\Models\Payment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -156,6 +157,12 @@ class AdminController extends Controller
         $book = Book::where('id',$id)->first();
         $genre = SubGenre::where('id', $book->genre)->first();
         return view('admin.view_book_detail', compact('book', 'genre'));
+    }
+    public function view_order_detail($id){
+        $payment = Payment::where('id',$id)->first();
+        $orders = Order::where('payment_id', $payment->id)->get();
+        $user = User::where('id', $payment->user_id)->first();
+        return view('admin.view_order_detail', compact('payment', 'orders', 'user'));
     }
     public function genre(){
         $genres = Genre::get();
