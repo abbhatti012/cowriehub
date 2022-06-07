@@ -168,7 +168,7 @@
 			setTimeout(function(){
 				$('#site_preloader').hide();
 				$('.content-body').show();
-			},1000)
+			},1000);
 		})
 		var loadFile = function(event, id) {
 			var output = document.getElementById(id);

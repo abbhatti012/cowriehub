@@ -12,6 +12,7 @@
         cursor: pointer;
     }
 </style>
+
     <!-- ====== MAIN CONTENT ====== -->
     <div class="page-header border-bottom">
         <div class="container">
@@ -76,7 +77,8 @@
                                     <span class="woocommerce-Price-amount amount">
                                         <span class="woocommerce-Price-currencySymbol">GHS</span><span class="totalPrice">{{ $book->price + $paperPrice}}</span>
                                     </span>
-                                </p>
+                                </p>  
+
                                 <div class="mb-2 font-size-2">
                                     <span class="font-weight-medium">Book Format:</span>
                                     <span class="ml-2 text-gray-600">Choose an option</span>
@@ -117,6 +119,7 @@
                                 </div>
 
                                 <form class="cart d-md-flex align-items-center" method="post" enctype="multipart/form-data">
+                                @if($book->hard_allow_preorders == '' && $book->paper_allow_preorders == '')
                                     <div class="quantity mb-4 mb-md-0 d-flex align-items-center">
                                         <div class="border px-3 width-120">
                                             <div class="js-quantity">
@@ -137,8 +140,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                @endif
                                 @if($book->hard_allow_preorders == 1 || $book->paper_allow_preorders == 1)
-                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
+                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt" data-toggle="modal" data-target="#preOrderModalModal" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
                                 @else
                                     <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}">Add to cart</a>
                                 @endif
@@ -146,7 +150,56 @@
                                 </form>
                             </div>
                             
-                            <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="preOrderModalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header border-bottom-0">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                        Your Shopping Cart
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="p-4d875 border">
+                                            <div id="cartHeadingTwo" class="cart-head">
+                                                <a class="d-flex align-items-center justify-content-between text-dark" href="#"
+                                                    data-toggle="collapse"
+                                                    data-target="#cartCollapseTwo"
+                                                    aria-expanded="true"
+                                                    aria-controls="cartCollapseTwo">
+
+                                                    <h3 class="cart-title mb-0 font-weight-medium font-size-3">Location</h3>
+
+                                                    <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
+                                                        <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
+                                                    </svg>
+
+                                                </a>
+                                            </div>
+
+                                            <div id="cartCollapseTwo" class="mt-4 cart-content collapse show" aria-labelledby="cartHeadingTwo">
+                                                <div>
+                                                    <label for="precise_location"></label>
+                                                    <input type="text" id="precise_location" class="form-control" required placeholder="Enter precise location">
+                                                </div>
+                                                <div>
+                                                    <label for="post_code"></label>
+                                                    <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana POST Code">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-top-0 d-flex text-right">
+                                        <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
+                                        <a href="javascript:void(0)" data-id="{{ $book->id }}" data-total="{{ $book->price }}" class="btn btn-dark proceedToCheckout">Proceed to checkout</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                                     <div class="modal-content">
                                     <div class="modal-header border-bottom-0">
@@ -196,8 +249,34 @@
                                     </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
+                            @if($book->hard_expected_shipment != null && $book->hard_expected_shipment > date('Y-m-d'))
+                            <div style="padding-left: 65px;" class="countdown-timer">
+                                <br><h6>Book to be shipped: ({{ date('F jS, Y', strtotime($book->hard_expected_shipment)) }})</h6>
+                                <div class="d-flex align-items-stretch justify-content-between">
+                                    <div class="py-2d75">
+                                        <span class="font-weight-medium font-size-3 days"></span>
+                                        <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Days</span>
+                                    </div>
+                                    <div class="border-left pr-3 pr-md-0">&nbsp;</div>
+                                    <div class="py-2d75">
+                                        <span class="font-weight-medium font-size-3 hours"></span>
+                                        <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Hours</span>
+                                    </div>
+                                    <div class="border-left pr-3 pr-md-0">&nbsp;</div>
+                                    <div class="py-2d75">
+                                        <span class="font-weight-medium font-size-3 minutes"></span>
+                                        <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Mins</span>
+                                    </div>
+                                    <div class="border-left pr-3 pr-md-0">&nbsp;</div>
+                                    <div class="py-2d75">
+                                        <span class="font-weight-medium font-size-3 seconds"></span>
+                                        <span class="font-size-2 ml-md-2 ml-xl-0 ml-wd-2 d-xl-block d-wd-inline">Secs</span>
+                                    </div>
+                                </div>
+                            </div>   
+                            @endif
                             <div class="px-4 px-xl-7 py-5 d-flex align-items-center">
                                 <ul class="list-unstyled nav">
                                     <li class="mr-6 mb-4 mb-md-0">
@@ -743,6 +822,43 @@
                     }
                 });
             });
+
+            $(document).on('click','.proceedToCheckout',function(){
+                var preciseLocation = $('#precise_location').val();
+                var postCode = $('#post_code').val();
+                var userId = "{{ Auth::id() }}";
+                var bookId = "{{ $book->id }}";
+                var totalPrice = $(this).data('total');
+                var subTotal = $("input[name='extraPrices']:checked").val();
+                var extraPrice = $("input[name='extraPrices']:checked").val();
+                var extraType = $("input[name='extraPrices']:checked").val();
+                if(userId == ''){
+                    $.notify('Please login first to continue');
+                    return false;
+                }
+                if(preciseLocation == ''){
+                    $.notify('Please choose your precise location');
+                    return false;
+                } else {
+                    $.ajax({
+                        type : 'POST',
+                        url : "{{ route('preorder-before-payment') }}",
+                        data : {
+                            '_token' : '{{ csrf_token() }}',
+                            preciseLocation : preciseLocation,
+                            postCode : postCode,
+                            totalPrice : parseFloat(totalPrice),
+                            subTotal : parseFloat(subTotal),
+                            extraPrice : extraPrice,
+                            extraType : extraType,
+                            bookId : bookId,
+                        },
+                        success : function(data){
+                            location.href = "{{ route('checkout') }}?token="+data;
+                        }
+                    });
+                }
+            });
         
             $(".rating-component .stars-box .star").on("click", function () {
                 var onStar = parseInt($(this).data("value"), 10);
@@ -787,5 +903,43 @@
         }, function() {
             $('.addthis_toolbox > a').not(this).stop().fadeTo( "fast" , 1);
         });
+    </script>
+
+    <script>
+        (function () {
+            const second = 1000,
+                minute = second * 60,
+                hour = minute * 60,
+                day = hour * 24;
+            var end_date = "<?= date('Y-m-d') ?>";
+            let today = new Date(end_date),
+                dd = String(today.getDate()).padStart(2, "0"),
+                mm = String(today.getMonth() + 1).padStart(2, "0"),
+                yyyy = today.getFullYear(),
+                nextYear = yyyy + 1,
+                dayMonth = "<?= $book->hard_expected_shipment ?>",
+                birthday = dayMonth;
+            
+            today = mm + "/" + dd + "/" + yyyy;
+            if (today > birthday) {
+                birthday = dayMonth + nextYear;
+            }
+            
+            const countDown = new Date(birthday).getTime(),
+                x = setInterval(function() {
+
+                    const now = new Date().getTime(),
+                    distance = countDown - now;
+                    
+                    $('.days').html(Math.floor(distance / (day)));
+                    $('.hours').html(Math.floor((distance % (day)) / (hour)));
+                    $('.minutes').html(Math.floor((distance % (hour)) / (minute)));
+                    $('.seconds').html(Math.floor((distance % (minute)) / second));
+                    
+                    if (distance < 0) {
+                        clearInterval(x);
+                    }
+                }, 0)
+            }());
     </script>
 @endsection

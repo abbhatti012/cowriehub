@@ -54,9 +54,9 @@
                         <span class="product__add-to-cart">ADD TO CART</span>
                         <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                     </a>
-                    <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
+                    <!-- <a href="javascript:void(0)" class="addToCompare mr-1 h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                         <i class="flaticon-switch"></i>
-                    </a>
+                    </a> -->
                     <a href="javascript:void(0)" class="addToWishlist h-p-bg btn btn-outline-primary border-0" data-id="{{ $book->book_id }}">
                         <i class="flaticon-heart"></i>
                     </a>

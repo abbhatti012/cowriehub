@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\User;
 
+use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Payment;
 use App\Models\SubGenre;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
@@ -52,8 +54,41 @@ class UserController extends Controller
         ->get();
         return view('user.marketing', compact('orders'));
     }
-    public function author_sales(){
-        return view('user.author.sales');
+    public function author_sales(Request $request){
+        if(isset($request->year)){
+            $users = Payment::select('*')->where('user_id',Auth::id())
+            ->whereYear('created_at', $request->year)
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+            $filter['year'] = $request->year;
+        } else {
+            $users = Payment::select('*')->where('user_id',Auth::id())
+            ->whereYear('created_at', date('Y'))
+            ->get()
+            ->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+            $filter['year'] = date('Y');
+        }
+
+        $usermcount = [];
+        $userArr = [];
+
+        foreach ($users as $key => $value) {
+            $usermcount[(int)$key] = count($value);
+        }
+
+        for($i = 1; $i <= 12; $i++){
+            if(!empty($usermcount[$i])){
+                $userArr[$i] = $usermcount[$i];    
+            }else{
+                $userArr[$i] = 0;    
+            }
+        }
+        
+        return view('user.author.sales',compact('userArr','filter'));
     }
     public function author_profile_update(Request $request){
         unset($request->_token);
@@ -127,5 +162,8 @@ class UserController extends Controller
                 ->where('id','!=',Auth::id())
                 ->get();
         return response()->json($data);
+    }
+    public function search_author(){
+        return view('user.consultant.search-author');
     }
 }

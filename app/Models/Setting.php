@@ -13,5 +13,6 @@ class Setting extends Model
         'id',
         'start_date',
         'end_date',
+        'admin_commission',
     ];
 }

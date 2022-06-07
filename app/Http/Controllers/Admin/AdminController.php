@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Genre;
 use App\Models\Order;
 use App\Models\Banner;
+use App\Models\Coupon;
 use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Location;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
@@ -76,8 +78,87 @@ class AdminController extends Controller
     public function subscribed_users(){
         return view('admin.subscribed-users');
     }
-    public function book_sellers(){
-        return view('admin.book-sellers');
+    public function order_reports(Request $request){
+        $query = Payment::orderBy('payments.id','desc')->select('payments.*','users.*','payments.id as payment_id','users.email as user_email');
+        if(isset($request->range)){
+            $dateRange = array_map('trim', explode('-', $request->range));
+            $filter['start_date'] = date("Y-m-d", strtotime($dateRange[0]));
+            $filter['end_date'] = date("Y-m-d", strtotime($dateRange[1]));  
+            $query->where('payments.created_at','>=',$filter['start_date'])->where('payments.created_at','<=', $filter['end_date']);
+        } else {
+            $filter['start_date'] = now();
+            $filter['end_date'] = now();
+        }
+        if(isset($request->location)){
+            $filter['location'] = $request->location;
+            $query->where('payments.location',$filter['location']);
+        } else {
+            $filter['location'] = '';
+        }
+        if(isset($request->payment)){
+            $filter['payment'] = $request->payment;
+            $query->where('payments.payment_method',$filter['payment']);
+        } else {
+            $filter['payment'] = '';
+        }
+        if(isset($request->pre_order)){
+            $filter['pre_order'] = $request->pre_order;
+            $query->where('payments.is_preorder',$filter['pre_order']);
+        } else {
+            $filter['pre_order'] = '';
+        }
+        if(isset($request->fraud)){
+            $filter['fraud'] = $request->fraud;
+            $query->where('payments.is_fraud',$filter['fraud']);
+        } else {
+            $filter['fraud'] = '';
+        }
+        if(isset($request->user)){
+            $filter['user'] = $request->user;
+            $query->where('payments.user_id',$filter['user']);
+        } else {
+            $filter['user'] = '';
+        }
+        if(isset($request->status)){
+            $filter['status'] = $request->status;
+            $query->where('payments.status',$filter['status']);
+        } else {
+            $filter['status'] = '';
+        }
+        $payments = $query->join('users','users.id','=','payments.user_id')->get();
+        $locations = Location::orderBy('id','desc')->get();
+        $users = User::orderBy('id','desc')->get();
+        $setting = Setting::select('admin_commission')->pluck('admin_commission');
+        $admin_commission = 100 - $setting[0];
+        return view('admin.order-reports', compact('payments','filter','locations','users','admin_commission'));
+    }
+    public function book_reports(Request $request){
+        $query = Book::orderBy('books.id','desc')->where('books.status',1)
+        ->select('books.*','users.*','books.id as book_id')->join('users','users.id','=','books.user_id');
+        if(isset($request->range)){
+            $dateRange = array_map('trim', explode('-', $request->range));
+            $filter['start_date'] = date("Y-m-d", strtotime($dateRange[0]));
+            $filter['end_date'] = date("Y-m-d", strtotime($dateRange[1]));  
+            $query->where('books.created_at','>=',$filter['start_date'])->where('books.created_at','<=', $filter['end_date']);
+        } else {
+            $filter['start_date'] = now();
+            $filter['end_date'] = now();
+        }
+        if(isset($request->user)){
+            $filter['user'] = $request->user;
+            $query->where('books.user_id',$filter['user']);
+        } else {
+            $filter['user'] = '';
+        }
+        if(isset($request->status)){
+            $filter['status'] = $request->status;
+            $query->where('books.status',$filter['status']);
+        } else {
+            $filter['status'] = '';
+        }
+        $books = $query->get();
+        $users = User::orderBy('id','desc')->get();
+        return view('admin.book-reports', compact('users','books','filter'));
     }
     public function author_settelments(){
         return view('admin.author-settelments');
@@ -89,7 +170,8 @@ class AdminController extends Controller
         return view('admin.faq');
     }
     public function packages(){
-        return view('admin.packages');
+        $marketing = Marketing::get();
+        return view('admin.packages', compact('marketing'));
     }
     public function system_users(){
         return view('admin.system-users');
@@ -152,6 +234,10 @@ class AdminController extends Controller
     public function locations(){
         $locations = Location::orderBy('id','desc')->get();
         return view('admin.locations', compact('locations'));
+    }
+    public function coupons(){
+        $coupons = Coupon::orderBy('id','desc')->get();
+        return view('admin.coupons', compact('coupons'));
     }
     public function view_book_detail($id){
         $book = Book::where('id',$id)->first();
@@ -337,16 +423,47 @@ class AdminController extends Controller
         return back()->with('message', ['text'=>'Banner data has been saved','type'=>'success']);
     }
     public function add_location(Request $request){
+        $validation = [
+            'location' => 'required|unique:locations'
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
         $location = new Location();
         $location->weight = $request->min_weight.'-'.$request->max_weight;
         $location->location = $request->location;
         $location->price = $request->price;
         $location->type = $request->type;
+        $location->is_cod = $request->is_cod;
         $location->save();
         return back()->with('message', ['text'=>'Location added successfully!','type'=>'success']);
     }
     public function delete_location($id){
         Location::where('id',$id)->delete();
         return back()->with('message', ['text'=>'Location has been deleted','type'=>'success']);
+    }
+    public function add_coupon(Request  $request){
+        $validation = [
+            'code' => 'required|unique:coupons',
+            'start_date' => 'required|date',
+            'end_date' => 'date|after:start_date',
+            'off' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
+        $coupon = new Coupon();
+        $coupon->start_date = $request->start_date;
+        $coupon->end_date = $request->end_date;
+        $coupon->code = $request->code;
+        $coupon->off = $request->off;
+        $coupon->save();
+        return back()->with('message', ['text'=>'Coupon added successfully!','type'=>'success']);
+    }
+    public function delete_coupon($id){
+        Coupon::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Coupon has been deleted','type'=>'success']);
     }
 } 

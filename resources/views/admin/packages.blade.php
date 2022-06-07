@@ -5,62 +5,108 @@
         <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Packages</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Marketing Packages</a></li>
             </ol>
         </div>
+      
+        @if(Session::has('message'))
+            <div class="alert alert-{{session('message')['type']}}">
+                {{session('message')['text']}}
+            </div>
+        @endif
+        <form id="basic-validation" action="{{ route('admin.add-marketing') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Marketing Packages</h4>
+                        </div>
+                        <div class="card-body row">
+                            <div class="basic-form col-lg-4">
+                                <div class="mb-3">
+                                    <label for="package">Package Type</label>
+                                    <input class="form-control form-control-lg" name="package" type="text" id="package" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-4">
+                                <div class="mb-3">
+                                    <label for="biography">Price</label>
+                                    <input class="form-control form-control-lg" name="price" type="number" id="price" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-4">
+                                <div class="mb-3">
+                                    <label for="">Duration</label>
+                                    <input class="form-control form-control-lg" name="duration" type="text" id="duration" required>
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-11">
+                                <div class="mb-3">
+                                    <label for="email">Additional Point</label>
+                                    <input class="form-control form-control-lg" name="point[]" type="text">
+                                </div>
+                            </div>
+                            <div class="basic-form col-lg-1">
+                                <div style="margin-top: 30px;" class="mb-3">
+                                    <div class="d-flex">
+                                        <a href="javascript:void(0)" class="btn btn-primary shadow btn-xs sharp me-1" title="Add Field" id="add_end_detail_fields"><i class="fa fa-plus"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="save_end_fields"></div>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                     <div class="card-header">
-                        <h4 class="card-title">Packages</h4>
+                        <h4 class="card-title">Author</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th>
                                         <th>No</th>
-                                        <th>Name</th>
-                                        <th>Cost</th>
-                                        <th>Category</th>
-                                        <th>Minimum Duration</th>
-                                        <th>Fixed Duration</th>
-                                        <th>Hidden Duration</th>
-                                        <th>Action</th>
+                                        <th>Package</th>
+                                        <th>Price</th>
+                                        <th>Duration</th>
+                                        <th>Points</th>
+                                        <th>Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                <?php for($i = 1; $i <= 30; $i++): ?>
+                                @forelse($marketing as $point)
                                     <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $point->package }}</td>
+                                        <td>{{ $point->price }}</td>
+                                        <td>{{ $point->duration }}</td>
                                         <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
+                                            @foreach(unserialize($point->point) as $sub)
+                                            <li>{{ $sub }}</li>
+                                            @endforeach
                                         </td>
-                                        <td>{{ $i }}</td>
-                                        <td>Test Name</td>
-                                        <td>100</td>
-                                        <td>Editorial</td>
-                                        <td>1</td>
-                                        <td>Yes</td>
-                                        <td>Yes</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-info shadow btn-xs sharp me-1" title=""><i class="fa fa-edit"></i></a>
-                                                <a href="#" class="btn btn-warning shadow btn-xs sharp me-1" title=""><i class="fa fa-eye"></i></a>
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-marketing', $point->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Marketign"><i class="fa fa-trash"></i></a>
                                             </div>
-                                        </td>												
+                                        </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                    @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -70,4 +116,34 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $("#add_end_detail_fields").click(function () {
+                var html = 
+                '<div id="remove_end_course">'+
+                    '<div class="form-group row">'+
+                        '<div class="basic-form col-lg-11">'+
+                            '<div class="mb-3">'+
+                                '<label for="email">Additional Point</label>'+
+                                '<input class="form-control form-control-lg" name="point[]" type="text">'+
+                            '</div>'+
+                        '</div>'+
+                        '<div class="basic-form col-lg-1">'+
+                            '<div style="margin-top: 30px;" class="mb-3">'+
+                                '<div class="d-flex">'+
+                                    '<a href="javascript:void(0)" class="btn btn-danger shadow btn-xs sharp me-1" title="Remove Field" id="remove_end_fields"><i class="fa fa-trash"></i></a>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>';
+                $('#save_end_fields').append(html);
+            });
+            $(document).on('click', '#remove_end_fields', function () {
+                $(this).closest('#remove_end_course').remove();
+            });
+        })
+    </script>
 @endsection

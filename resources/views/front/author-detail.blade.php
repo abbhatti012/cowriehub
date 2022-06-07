@@ -58,9 +58,9 @@
                                                             <span class="product__add-to-cart">ADD TO CART</span>
                                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                                         </a>
-                                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
+                                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
                                                             <i class="flaticon-switch"></i>
-                                                        </a>
+                                                        </a> -->
                                                         <a href="{{ route('product', 4) }}" class="h-p-bg" tabindex="0">
                                                             <i class="flaticon-heart"></i>
                                                         </a>
@@ -87,9 +87,9 @@
                                                             <span class="product__add-to-cart">ADD TO CART</span>
                                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                                         </a>
-                                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
+                                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
                                                             <i class="flaticon-switch"></i>
-                                                        </a>
+                                                        </a> -->
                                                         <a href="{{ route('product', 4) }}" class="h-p-bg" tabindex="0">
                                                             <i class="flaticon-heart"></i>
                                                         </a>
@@ -116,9 +116,9 @@
                                                             <span class="product__add-to-cart">ADD TO CART</span>
                                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                                         </a>
-                                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
+                                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
                                                             <i class="flaticon-switch"></i>
-                                                        </a>
+                                                        </a> -->
                                                         <a href="{{ route('product', 4) }}" class="h-p-bg" tabindex="0">
                                                             <i class="flaticon-heart"></i>
                                                         </a>
@@ -145,9 +145,9 @@
                                                             <span class="product__add-to-cart">ADD TO CART</span>
                                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                                         </a>
-                                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
+                                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg" tabindex="0">
                                                             <i class="flaticon-switch"></i>
-                                                        </a>
+                                                        </a> -->
                                                         <a href="{{ route('product', 4) }}" class="h-p-bg" tabindex="0">
                                                             <i class="flaticon-heart"></i>
                                                         </a>
@@ -215,9 +215,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -254,9 +254,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -293,9 +293,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -332,9 +332,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -371,9 +371,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -410,9 +410,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -449,9 +449,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>
@@ -488,9 +488,9 @@
                                             <span class="product__add-to-cart">ADD TO CART</span>
                                             <span class="product__add-to-cart-icon font-size-4"><i class="flaticon-icon-126515"></i></span>
                                         </a>
-                                        <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
+                                        <!-- <a href="{{ route('product', 4) }}" class="mr-1 h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-switch"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="{{ route('product', 4) }}" class="h-p-bg border-0 btn btn-outline-primary">
                                             <i class="flaticon-heart"></i>
                                         </a>

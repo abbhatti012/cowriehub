@@ -34,8 +34,10 @@
                         <p><b>Subtotal:&emsp;</b>{{ $payment->subtotal }}</p>
                         <p><b>Shipping Price:&emsp;</b>{{ $payment->shipping_price }}</p>
                         <p><b>Total Amount:&emsp;</b>{{ $payment->total_amount }}</p>
+                        <p><b>Amount Paid:&emsp;</b>{{ $payment->amount_paid }}</p>
                         <p><b>Status:&emsp;</b>@if($payment->status == '') Pending @else {{ $payment->status }} @endif</p>
                         <p><b>Fraud?:&emsp;</b>@if($payment->fraud == 0) No Fraud @else Fraud Detected @endif</p>
+                        <p><b>Payment Method:&emsp;</b>{{ $payment->payment_method }}</p>
                     </div>
                 </div> 
                 <div class="col-12"><hr>

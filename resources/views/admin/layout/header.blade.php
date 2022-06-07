@@ -207,6 +207,11 @@
                     <span class="nav-text">Locations</span>
                 </a>
             </li>
+            <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('admin.coupons') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-gift"></i>
+                    <span class="nav-text">Coupons</span>
+                </a>
+            </li>
             
             <li class="<?php if(request()->segment(2) == 'genre' || request()->segment(2) == 'sub-genre'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-first-order"></i>
@@ -239,10 +244,13 @@
             </li>
             <li class="<?php if(request()->segment(2) == 'reports'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-bar-chart"></i>
-                    <span class="nav-text">Reports</span>
+                    <span class="nav-text">Report & Payouts</span>
                 </a>
                 <ul aria-expanded="false">
-                    <li><a href="{{ route('admin.book-sellers') }}">Book Sellers</a></li>
+                    <li><a href="{{ route('admin.order-reports') }}">Order reports</a></li>
+                </ul>
+                <ul aria-expanded="false">
+                    <li><a href="{{ route('admin.book-reports') }}">Book reports</a></li>
                 </ul>
             </li>
             <li class="<?php if(request()->segment(2) == 'accounts'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">

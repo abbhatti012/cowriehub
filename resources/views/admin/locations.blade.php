@@ -5,7 +5,7 @@
         <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Banks</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Locations</a></li>
             </ol>
         </div>
         @if(Session::has('message'))
@@ -25,8 +25,8 @@
                         <div class="card-body">
                             <div class="basic-form">
                                 <div class="mb-3 mb-0">
-                                    <label class="radio-inline me-3"><input type="radio" name="type" value="standard" required>  Standard</label>
-                                    <label class="radio-inline me-3"><input type="radio" name="type" value="express" required>  Express</label>
+                                    <label class="radio-inline me-3" for="standard"><input type="radio" name="type" id="standard" value="standard" required>  Standard</label>
+                                    <label class="radio-inline me-3" for="express"><input type="radio" name="type" id="express" value="express" required>  Express</label>
                                 </div>
                             </div>
                             <div class="basic-form row col-md-12">
@@ -45,6 +45,11 @@
                                 <div class="mb-3 col-md-6">
                                     <label for="price">Price</label>
                                     <input class="form-control form-control-lg" name="price" type="number" id="price" required>
+                                </div>
+                            </div>
+                            <div class="basic-form">
+                                <div class="mb-3 mb-0">
+                                    <label class="radio-inline me-3" for="is_cod"><input type="radio" id="is_cod" name="is_cod" value=1>  Enable COD for that location?</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Add</button>
@@ -68,6 +73,7 @@
                                         <th>Location</th>
                                         <th>Price</th>
                                         <th>Type</th>
+                                        <th>Is COD?</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -80,6 +86,13 @@
                                         <td>{{ $location->location }}</td>
                                         <td>{{  $location->price }}</td>
                                         <td>{{  $location->type }}</td>
+                                        <td>
+                                            @if($location->is_cod == "1")
+                                                Yes
+                                            @else
+                                                No
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin.delete-location', $location->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Location"><i class="fa fa-trash"></i></a>

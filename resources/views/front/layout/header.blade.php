@@ -42,7 +42,13 @@
                                 data-unfold-animation-in="fadeInRight"
                                 data-unfold-animation-out="fadeOutRight"
                                 data-unfold-duration="500">
-                                <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0 cartItemsLength">{{ count(session()->get('cart')) }}</span>
+                                <span class="position-absolute bg-dark width-16 height-16 rounded-circle d-flex align-items-center justify-content-center text-white font-size-n9 right-0 cartItemsLength">
+                                @if(session('cart'))
+                                    {{ count(session()->get('cart')) }}
+                                @else
+                                    0
+                                @endif
+                                </span>
                                 <i class="glph-icon flaticon-icon-126515"></i>
                             </a>
                             <!-- End Cart Sidebar Toggle Button -->
@@ -252,7 +258,7 @@
                                 <div class="input-group-prepend">
                                     <i class="glph-icon flaticon-loupe input-group-text py-2d75 bg-white-100 border-white-100"></i>
                                 </div>
-                                <input class="form-control bg-white-100 min-width-380 py-2d75 height-4 border-white-100" type="search" placeholder="Search for Books..." aria-label="Search">
+                                <input class="typeahead form-control bg-white-100 min-width-380 py-2d75 height-4 border-white-100" type="search" placeholder="Search for Books..." aria-label="Search">
                             </div>
                             <button class="btn btn-outline-success my-2 my-sm-0 sr-only" type="submit">Search</button>
                         </form>
@@ -291,10 +297,18 @@
                         <div class="u-sidebar__content u-header-sidebar__content">
                             <!-- Title -->
                             <header class="border-bottom px-4 px-md-6 py-4">
-                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i class="flaticon-icon-126515 mr-3 font-size-5"></i>Your shopping bag (<span class="cartItemsLength">{{ count(session()->get('cart')) }}</span>)</h2>
+                                <h2 class="font-size-3 mb-0 d-flex align-items-center"><i class="flaticon-icon-126515 mr-3 font-size-5"></i>Your shopping bag 
+                                (<span class="cartItemsLength">
+                                    @if(session('cart'))
+                                        {{ count(session()->get('cart')) }}
+                                    @else
+                                        0
+                                    @endif
+                                </span>)</h2>
                             </header>
                             <!-- End Title -->
                             @php $subtotal = 0; @endphp
+                            @if(session('cart'))
                             @forelse(session()->get('cart') as $cart)
                             <div class="px-4 py-5 px-md-6 border-bottom">
                                 <div class="media">
@@ -329,7 +343,7 @@
                             </div>
                             @empty
                             @endforelse
-
+                            @endif
                             <div class="px-4 py-5 px-md-6 d-flex justify-content-between align-items-center font-size-3">
                                 <h4 class="mb-0 font-size-3">Subtotal:</h4>
                                 <div class="font-weight-medium">GHS {{ $subtotal }}</div>
@@ -379,7 +393,7 @@
                             <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                                 <h2 class="font-size-3 mb-3">HELP & SETTINGS </h2>
                                 <ul class="list-group list-group-flush list-group-borderless">
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="" class="h-primary">Your Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('my-account') }}" class="h-primary">Your Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('contact-us') }}" class="h-primary">Help</a></li>
                                 </ul>
                             </div>
@@ -431,13 +445,10 @@
                                         </a>
                                     </li>
                                 </ul>
-                                <!-- End Social Networks -->
                             </div>
                         </div>
                     </div>
-                    <!-- End Content -->
                 </div>
             </div>
         </div>
     </aside>
-    <!-- End Categories Sidebar Navigation -->

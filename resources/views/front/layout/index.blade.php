@@ -65,48 +65,30 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script> -->
+
 <!-- JS Bookworm -->
 <!-- <script src="../../assets/js/bookworm.js"></script> -->
 <script>
     $(document).on('ready', function() {
             $("#basic-validation").validate();
-            // initialization of unfold component
+            $("#basic-validations").validate();
             $.HSCore.components.HSUnfold.init($('[data-unfold-target]'));
-
-            // initialization of slick carousel
             $.HSCore.components.HSSlickCarousel.init('.js-slick-carousel');
-
-            // initialization of header
             $.HSCore.components.HSHeader.init($('#header'));
-
-            // initialization of malihu scrollbar
             $.HSCore.components.HSMalihuScrollBar.init($('.js-scrollbar'));
-
-            // initialization of show animations
             $.HSCore.components.HSShowAnimation.init('.js-animation-link');
-
-            // init zeynepjs
             var zeynep = $('.zeynep').zeynep({
                 onClosed: function() {
-                    // enable main wrapper element clicks on any its children element
                     $("body main").attr("style", "");
-
-                    console.log('the side menu is closed.');
                 },
                 onOpened: function() {
-                    // disable main wrapper element clicks on any its children element
                     $("body main").attr("style", "pointer-events: none;");
-
-                    console.log('the side menu is opened.');
                 }
             });
-
-            // handle zeynep overlay click
             $(".zeynep-overlay").click(function() {
                 zeynep.close();
             });
-
-            // open side menu if the button is clicked
             $(".cat-menu").click(function() {
                 if ($("html").hasClass("zeynep-opened")) {
                     zeynep.close();
@@ -114,7 +96,34 @@
                     zeynep.open();
                 }
             });
+            $(document).on('click','.addToWishlist',function(){
+                var user_id = "{{ Auth::id() }}";
+                if(user_id == ''){
+                   return $.notify('Please login first');
+                }
+                var id = $(this).data('id');
+                $.ajax({
+                    type : 'POST',
+                    url : '{{ route("add-to-wishlist") }}',
+                    data : {
+                        "_token": "{{ csrf_token() }}",
+                        id : id,
+                    },
+                    success : function(data){
+                        $.notify(data.message, data.type);
+                    }
+                });
+            });
         });
+
+        // var searchPath = "{{ route('front-autocomplete') }}";
+        // $('input.typeahead').typeahead({
+        //     source:  function (query, process) {
+        //     return $.get(searchPath, { query: query }, function (data) {
+        //             return process(data);
+        //         });
+        //     }
+        // });
     </script>
 @yield('scripts')
 <script src="//code.tidio.co/wa0smygsidvita41rbcfrurkda8guxqc.js" async></script>

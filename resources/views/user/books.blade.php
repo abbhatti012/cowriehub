@@ -71,7 +71,9 @@
                                         <td>{{ $book->publisher }}</td>
                                         <td>{{ $book->publication_date }}</td>
                                         <td>{{ $book->country }}</td>
-                                        <td>@if($book->status == 1) <span class="badge light badge-info">Approved</span> @else <span class="badge light badge-danger">Pending</span> @endif</td>
+                                        <td>@if($book->status == 1) <span class="badge light badge-info">Approved</span> @else 
+                                            <span class="badge light badge-danger">your upload is being reviewed. <br>you will be notified when it goes live</span> 
+                                        @endif</td>
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('edit-book',$book->id) }}" class="btn btn-primary shadow btn-xs sharp" title="Edit Book"><i class="fa fa-edit"></i></a>

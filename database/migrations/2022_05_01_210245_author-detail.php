@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('author-detail', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('cover');
-            $table->string('profile');
-            $table->string('name');
-            $table->longText('biography');
+            $table->string('cover')->nullable();
+            $table->string('profile')->nullable();
+            $table->string('name')->nullable();
+            $table->longText('biography')->nullable();
             $table->longText('achievement')->nullable();
             $table->string('email')->nullable();
             $table->string('website')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AuthorDetail;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
@@ -26,6 +27,8 @@ class HomeController extends Controller
     public function index(){
         $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
         ->orderBy('books.book_purchased','desc')->where('books.status',1)->where('books.book_purchased','!=',0)
+        ->where('books.hard_allow_preorders','!=',1)
+        ->where('books.paper_allow_preorders','!=',1)
         ->join('users','users.id','=','books.user_id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
         $data['best_selling'] = $query->limit(10)->get();
@@ -60,16 +63,34 @@ class HomeController extends Controller
         ->join('users','users.id','=','books.user_id')
         ->join('reviews','reviews.book_id','=','books.id')
         ->join('sub_genres','sub_genres.id','=','books.genre');
+
         $data['marketer_picks'] = $query->where('books.is_biographies',1)
         ->where('reviews.type','marketer')
         ->where('rate','>=',3)
         ->limit(10)->get();
-
+        
+        $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
+        ->orderBy('books.id','desc')->where('books.status',1)
+        ->join('users','users.id','=','books.user_id')
+        ->join('sub_genres','sub_genres.id','=','books.genre');
+        
+        $data['preorder'] = $query->where('books.hard_allow_preorders',1)
+        ->orWhere('books.paper_allow_preorders',1)
+        ->limit(10)->get();
+        
         $data['authors'] = User::where('users.role','author')
         ->select('users.*','author-detail.profile as profile')
         ->join('author-detail','author-detail.user_id','=','users.id')
         ->with('books_published')
         ->get();
+
+        // $data = DB::table('books')
+        //     ->where('status',1)
+        //     ->orWhere(function ($query) {
+        //         $query->where('is_featured', 1);
+        //     })
+        //     ->get();
+        // dd($data);
         $data['setting'] = Setting::first();
         $start_date = $data['setting']->start_date;
         $end_date = $data['setting']->end_date;
@@ -170,10 +191,18 @@ class HomeController extends Controller
     public function checkout(){
         $token = $_GET['token'];
         $payment = Payment::where('token', $token)->first();
-        return view('front.checkout', compact('payment'));
+        $user = AuthorDetail::where('user_id',Auth::id())->first();
+        $user = unserialize($user->billing_detail);
+        $location = Location::where('location',$payment->location)->first();
+        return view('front.checkout', compact('payment','user','location'));
     }
     public function my_account(){
-        return view('front.my-account');
+        $user = AuthorDetail::where('user_id',Auth::id())->first();
+        $billing = unserialize($user->billing_detail);
+        if(!$billing){
+            $billing = [];
+        }
+        return view('front.my-account', compact('user','billing'));
     }
     public function about_us(){
         return view('front.about-us');
@@ -291,4 +320,26 @@ class HomeController extends Controller
         $data['filter_list_data'] = view('front.filter_list_data', compact('books'))->render();
         return response()->json($data);
     }
+    public function success_page(Request $request){
+        $token = $_GET['token'];
+        $payment = Payment::where('token',$token)->first();
+        return view('front.success-page',compact('payment'));
+    }
+    public function billing_detail(request $request){
+        $detail = AuthorDetail::where('user_id',Auth::id())->first();
+        if($detail){
+            AuthorDetail::where('user_id',Auth::id())->update(['billing_detail' => serialize($request->all())]);
+        } else {
+            $data['billing_detail'] = serialize($request->all());
+            $data['user_id'] = Auth::id();
+            AuthorDetail::insert($data);
+        }
+        return back()->with('message', ['text'=>'Data has been updated','type'=>'success']);
+    }
+    // public function front_autocomplete(Request $request){
+    //     $data = Book::select("title")
+    //             ->where("title","LIKE","%{$request->input('query')}%")
+    //             ->get();
+    //     return response()->json($data);
+    // }
 }
