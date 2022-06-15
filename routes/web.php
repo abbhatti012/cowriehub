@@ -98,7 +98,6 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/view-book-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_book_detail'])->name('admin.view-book-detail');
     Route::get('/cms/view-order-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_order_detail'])->name('admin.view-order-detail');
     
-    Route::get('/cms/check-coupon', [App\Http\Controllers\CouponController::class, 'check_coupon'])->name('admin.check-coupon');
     
     Route::get('/cms/faq', [App\Http\Controllers\Admin\AdminController::class, 'faq'])->name('admin.faq');
     Route::get('/cms/slider', [App\Http\Controllers\Admin\AdminController::class, 'slider'])->name('admin.slider');
@@ -123,7 +122,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/add-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'store'])->name('admin.add-sub-genre');
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
 });
-
+Route::get('/cms/check-coupon', [App\Http\Controllers\CouponController::class, 'check_coupon'])->name('admin.check-coupon');
 //Author Routes
 Route::group(['middleware' => 'author'], function () {
     // Route::get('/author', [App\Http\Controllers\Author\AuthorController::class, 'index'])->name('author');
@@ -167,6 +166,7 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/get-filtered-data', [App\Http\Controllers\HomeController::class, 'get_filtered_data'])->name('get-filtered-data');
     Route::get('/my-account', [App\Http\Controllers\HomeController::class, 'my_account'])->name('my-account')->middleware('auth');
     Route::post('/billing-detail', [App\Http\Controllers\HomeController::class, 'billing_detail'])->name('billing-detail');
+    Route::post('/shipping-detail', [App\Http\Controllers\HomeController::class, 'shipping_detail'])->name('shipping-detail');
     
     Route::get('/author/edit', [App\Http\Controllers\User\UserController::class, 'author_profile_edit'])->name('author.profile.edit')->middleware('auth');
     Route::post('/author/update', [App\Http\Controllers\User\UserController::class, 'author_profile_update'])->name('update-author-profile')->middleware('auth');
@@ -177,6 +177,7 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/consultant', [App\Http\Controllers\User\UserController::class, 'consultant_account'])->name('user.consultant-account');
     Route::get('/pos', [App\Http\Controllers\User\UserController::class, 'pos'])->name('user.pos-account');
     Route::get('/consultant/search-author', [App\Http\Controllers\User\UserController::class, 'search_author'])->name('consultant.search-author');
+    Route::get('/dashboard', [App\Http\Controllers\User\UserController::class, 'dashboard'])->name('dashboard');
 // });
 
 Route::get('/auth/facebook', [SocialiteController::class, 'redirectToFB']);

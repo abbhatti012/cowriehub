@@ -237,7 +237,8 @@ class AdminController extends Controller
     }
     public function coupons(){
         $coupons = Coupon::orderBy('id','desc')->get();
-        return view('admin.coupons', compact('coupons'));
+        $books = Book::where('status',1)->get();
+        return view('admin.coupons', compact('coupons','books'));
     }
     public function view_book_detail($id){
         $book = Book::where('id',$id)->first();
@@ -459,6 +460,7 @@ class AdminController extends Controller
         $coupon->end_date = $request->end_date;
         $coupon->code = $request->code;
         $coupon->off = $request->off;
+        $coupon->book_id = serialize($request->bookId);
         $coupon->save();
         return back()->with('message', ['text'=>'Coupon added successfully!','type'=>'success']);
     }

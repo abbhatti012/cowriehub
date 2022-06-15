@@ -91,21 +91,38 @@
                     </div>
                 </div>
               </div><hr>
+            @php
+                $billing = unserialize($payment->billing_detail);
+                $shipping = unserialize($payment->shipping_detail);
+            @endphp
                 <div class="row col-12">
-                    <div class="col-6">
+                    <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-book"></i> Billing Details</h4>
                         <p class="text-muted"></p>
                         <div class="post">                     
-                            <p><b>Billing First Name:&emsp;</b>{{ $payment->first_name }}</p>
-                            <p><b>Billing Last Name:&emsp;</b>{{ $payment->last_name }}</p>
-                            <p><b>Billing Address:&emsp;</b>{{ $payment->address }}</p>
-                            <p><b>Country:&emsp;</b>{{ $payment->country }}</p>
-                            <p><b>Billing Email:&emsp;</b>{{ $payment->email }}</p>
-                            <p><b>Billing Phone:&emsp;</b>{{ $payment->phone }}</p>
-                            <p><b>Additional Comments:&emsp;</b>{{ $payment->notes }}</p>
+                            <p><b>Billing First Name:&emsp;</b>{{ $billing['first_name'] }}</p>
+                            <p><b>Billing Last Name:&emsp;</b>{{ $billing['last_name'] }}</p>
+                            <p><b>Billing Address:&emsp;</b>{{ $billing['billing_address'] }}</p>
+                            <p><b>Country:&emsp;</b>{{ $billing['country'] }}</p>
+                            <p><b>Billing Email:&emsp;</b>{{ $billing['email'] }}</p>
+                            <p><b>Billing Phone:&emsp;</b>{{ $billing['phone'] }}</p>
+                            <p><b>Additional Comments:&emsp;</b>{{ $billing['notes'] }}</p>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-4">
+                        <h4 class="text-primary"><i class="fas fa-book"></i> Shipping Details</h4>
+                        <p class="text-muted"></p>
+                        <div class="post">                     
+                            <p><b>Shipping First Name:&emsp;</b>{{ $shipping['first_name'] }}</p>
+                            <p><b>Shipping Last Name:&emsp;</b>{{ $shipping['last_name'] }}</p>
+                            <p><b>Shipping Address:&emsp;</b>{{ $shipping['shipping_address'] }}</p>
+                            <p><b>Country:&emsp;</b>{{ $shipping['country'] }}</p>
+                            <p><b>Shipping Email:&emsp;</b>{{ $shipping['email'] }}</p>
+                            <p><b>Shipping Phone:&emsp;</b>{{ $shipping['phone'] }}</p>
+                            <p><b>Additional Comments:&emsp;</b>{{ $shipping['notes'] }}</p>
+                        </div>
+                    </div>
+                    <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-user"></i> User Details</h4>
                         <p class="text-muted"></p>
                         <div class="post">                     

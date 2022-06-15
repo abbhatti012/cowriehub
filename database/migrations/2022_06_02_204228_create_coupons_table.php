@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('code');
             $table->date('start_date');
             $table->date('end_date');
+            $table->integer('off');
+            $table->longText('book_id');
             $table->timestamps();
         });
     }

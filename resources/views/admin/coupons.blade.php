@@ -1,5 +1,6 @@
 @extends('admin.layout.index')
 @section('content')
+<link rel="stylesheet" href="{{asset('admin_assets/vendor/select2/css/select2.min.css')}}">
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -40,6 +41,17 @@
                                     <label for="off">Off (%)</label>
                                     <input class="form-control form-control-lg" name="off" type="number" min="1" max="100" value="{{ old('off') }}" id="off" required>
                                 </div>
+                                <div class="mb-3 col-md-12">
+                                    <label class="select2-label form-label">Select Books</label> <br>
+                                    <div class="mt-4">
+                                        <select class="js-example-programmatic-multi" multiple="multiple" name="bookId[]" required>
+                                            @foreach($books as $book)
+                                                <option value="{{ $book->id }}">{{ $book->title }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Add</button>
@@ -92,4 +104,9 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
+<script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
 @endsection

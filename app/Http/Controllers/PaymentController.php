@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\Book;
 
+use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Payment;
+use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,41 +42,79 @@ class PaymentController extends Controller
         $payment->precise_location = $request->preciseLocation;
         $payment->post_code = $request->postCode;
         $payment->token = Str::random(32);
-        $payment->subtotal = $request->totalPrice + $request->subTotal;
-        $payment->total_amount = round((($request->totalPrice + $request->subTotal) / 100) * 10, 2);
-        $payment->shipping_price = 0;
+        $payment->subtotal = round((($request->totalPrice + $request->subTotal) / 100) * 10, 2);
+        $payment->total_amount = $request->totalPrice + $request->subTotal;
+        $payment->shipping_price = $request->shippingPrice;
         $payment->is_preorder = 1;
         $payment->extraType = $request->extraType;
         $payment->extraPrice = $request->extraPrice;
         $payment->book_id = $request->bookId;
+        $payment->location = $request->shippingCharges;
         $payment->save();
         return response()->json($payment->token);
     }
 
     public function initialize(Request $request, $id){
+        $user = User::where('id',Auth::id())->first();
         $payment = Payment::find($id);
-        $payment->first_name = $request->first_name;
-        $payment->last_name = $request->last_name;
-        $payment->country = $request->country;
-        $payment->billing_address = $request->address;
-        $payment->phone = $request->phone;
-        $payment->email = $request->email;
-        $payment->notes = $request->notes;
+        $billing['first_name'] = $request->billing_first_name;
+        $billing['last_name'] = $request->billing_last_name;
+        $billing['country'] = $request->billing_country;
+        $billing['billing_address'] = $request->billing_address;
+        $billing['phone'] = $request->billing_phone;
+        $billing['email'] = $request->billing_email;
+        $billing['notes'] = $request->billing_notes;
+        $shipping['first_name'] = $request->shipping_first_name;
+        $shipping['last_name'] = $request->shipping_last_name;
+        $shipping['country'] = $request->shipping_country;
+        $shipping['shipping_address'] = $request->shipping_address;
+        $shipping['phone'] = $request->shipping_phone;
+        $shipping['email'] = $request->shipping_email;
+        $shipping['notes'] = $request->shipping_notes;
+        $payment->billing_detail = serialize($billing);
+        $payment->shipping_detail = serialize($shipping);
         $payment->payment_method = $request->payment_method;
         $payment->is_coupon = $request->is_coupon;
         $payment->coupon_code = $request->coupon_code;
         
         if($payment->is_coupon == 1){
-            $code = Coupon::where('code',$payment->coupon_code)->first();
-            $total_amount = round(($payment->total_amount / 100) * $code->off, 2);
+            $check = Coupon::where('code',$payment->coupon_code)->first();
+            if($payment->is_preorder == 0){
+                $carts = session()->get('cart');
+                $totalPrice = 0;
+                foreach($carts as $cart){
+                    if(in_array($cart['id'], unserialize($check->book_id))) {
+                        $price = round(((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']) / 100)*$check->off,2);
+                        $totalPrice = $totalPrice + $price;
+                    } else {
+                        $totalPrice = 0;
+                    }
+                }
+            } else {
+                $book = Book::where('id',$payment->book_id)->first();
+                $setting = Setting::first();
+                if(in_array($payment->book_id, unserialize($check->book_id))) {
+                    $book_price = (($book->price) / 100)*$setting->admin_commission;
+                    $totalPrice = round(((($book_price)) / 100)*$check->off,2);
+                } else {
+                    $totalPrice = 0;
+                }
+            }
+            if($payment->is_preorder == 1){
+                $total_amount = $payment->subtotal - $totalPrice;
+            } else {
+                $total_amount = $payment->total_amount - $totalPrice;
+            }
         } else {
-            $total_amount = $payment->total_amount;
+            $total_amount = $payment->subtotal;
         }
         
         $payment->amount_paid = $total_amount;
         $payment->save();
         $carts = session()->get('cart');
         if($payment->is_preorder == 0){
+            $check = Coupon::where('code',$payment->coupon_code)->first();
+            $totalPrice = 0;
             foreach($carts as $cart){
                 $order = new Order();
                 $order->payment_id = $payment->id;
@@ -90,7 +130,17 @@ class PaymentController extends Controller
                     $order->amount_paid = round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2);
                     $order->remaining_price = $order->total_price - $order->amount_paid;
                 } else {
-                    $order->amount_paid = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
+                    if($payment->is_coupon == 1){
+                        if(in_array($cart['id'], unserialize($check->book_id))) {
+                            $totalPrice = round(((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']) / 100)*$check->off,2);
+                        } else {
+                            $totalPrice = 0;
+                        }
+                        $order->amount_paid = (($cart['bookPrice'] + $cart['extraPrice']) * $cart['quantity']) - $totalPrice;
+                    } else {
+                        $totalPrice = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
+                        $order->amount_paid = $totalPrice;
+                    }
                     $order->remaining_price = 0;
                 }
                 $order->save();
@@ -107,7 +157,20 @@ class PaymentController extends Controller
             $order->extra_price = $payment->extraPrice;
             $order->total_price = $book->price + $payment->extraPrice + $payment->shipping_price;
             $order->quantity = 1;
-            $order->amount_paid = $payment->total_amount;
+            if($payment->is_coupon == 1){
+                $book = Book::where('id',$payment->book_id)->first();
+                $setting = Setting::first();
+                if(in_array($payment->book_id, unserialize($check->book_id))) {
+                    $book_price = (($book->price) / 100)*$setting->admin_commission;
+                    $totalPrice = round(((($book_price)) / 100)*$check->off,2);
+                } else {
+                    $totalPrice = 0;
+                }
+                $order->amount_paid = round(((($payment->extraPrice + $book->price)/100 )* 10), 2) - $totalPrice;
+            } else {
+                $order->amount_paid = round(((($payment->extraPrice + $book->price)/100 )* 10), 2);
+                $totalPrice = $book->price;
+            }
             $order->remaining_price = $order->total_price - $order->amount_paid;
             $order->save();
         }
@@ -130,7 +193,6 @@ class PaymentController extends Controller
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
-        
         $request = [
             'tx_ref' => time(),
             'amount' => $total_amount,
@@ -138,7 +200,7 @@ class PaymentController extends Controller
             'payment_options' => 'card',
             'redirect_url' => route('flutterwave-callback', $payment->id),
             'customer' => [
-                'email' => $payment->email,
+                'email' => $user->email,
                 'name' => 'Zubdev'
             ],
             'meta' => [

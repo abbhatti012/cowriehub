@@ -173,7 +173,8 @@ class HomeController extends Controller
         } else {
             $wishlist = 0;
         }
-        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist'));
+        $locations = Location::orderBy('id','desc')->get();
+        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations'));
     }
     public function cart(){
         $data['locations'] = Location::orderBy('id','desc')->get();
@@ -192,17 +193,22 @@ class HomeController extends Controller
         $token = $_GET['token'];
         $payment = Payment::where('token', $token)->first();
         $user = AuthorDetail::where('user_id',Auth::id())->first();
-        $user = unserialize($user->billing_detail);
+        $billing = unserialize($user->billing_detail);
+        $shipping = unserialize($user->shipping_detail);
         $location = Location::where('location',$payment->location)->first();
-        return view('front.checkout', compact('payment','user','location'));
+        return view('front.checkout', compact('payment','billing','shipping','location'));
     }
     public function my_account(){
         $user = AuthorDetail::where('user_id',Auth::id())->first();
         $billing = unserialize($user->billing_detail);
+        $shipping = unserialize($user->shipping_detail);
         if(!$billing){
             $billing = [];
         }
-        return view('front.my-account', compact('user','billing'));
+        if(!$shipping){
+            $shipping = [];
+        }
+        return view('front.my-account', compact('user','billing','shipping'));
     }
     public function about_us(){
         return view('front.about-us');
@@ -331,6 +337,17 @@ class HomeController extends Controller
             AuthorDetail::where('user_id',Auth::id())->update(['billing_detail' => serialize($request->all())]);
         } else {
             $data['billing_detail'] = serialize($request->all());
+            $data['user_id'] = Auth::id();
+            AuthorDetail::insert($data);
+        }
+        return back()->with('message', ['text'=>'Data has been updated','type'=>'success']);
+    }
+    public function shipping_detail(request $request){
+        $detail = AuthorDetail::where('user_id',Auth::id())->first();
+        if($detail){
+            AuthorDetail::where('user_id',Auth::id())->update(['shipping_detail' => serialize($request->all())]);
+        } else {
+            $data['shipping_detail'] = serialize($request->all());
             $data['user_id'] = Auth::id();
             AuthorDetail::insert($data);
         }

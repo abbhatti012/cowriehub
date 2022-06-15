@@ -20,12 +20,6 @@ return new class extends Migration
             $table->string('location')->nullable();
             $table->string('precise_location');
             $table->string('post_code')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('country')->nullable();
-            $table->string('billing_address')->nullable();
-            $table->string('email')->nullable();
-            $table->string('phone')->nullable();
             $table->longText('notes')->nullable();
             $table->string('subtotal');
             $table->string('total_amount');
@@ -41,6 +35,8 @@ return new class extends Migration
             $table->longText('payment_method')->nullable();
             $table->integer('is_coupon')->default(0);
             $table->string('coupon_code')->nullable();
+            $table->longText('billing_detail')->nullable();
+            $table->longText('shipping_detail')->nullable();
             $table->softDeletes();
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -11,6 +11,9 @@
     .cursor-pointer{
         cursor: pointer;
     }
+    div.pac-container {
+   z-index: 1050 !important;
+}
 </style>
 
     <!-- ====== MAIN CONTENT ====== -->
@@ -178,8 +181,39 @@
 
                                                 </a>
                                             </div>
-
+                                            
                                             <div id="cartCollapseTwo" class="mt-4 cart-content collapse show" aria-labelledby="cartHeadingTwo">
+                                            <div>
+                                                <label for="standard">
+                                                    <input type="radio" id="standard" name="delivery" value="standard" checked>
+                                                    Standard
+                                                    </label>
+                                                <label for="express">
+                                                    <input type="radio" id="express" name="delivery" value="express">
+                                                    Express
+                                                    </label>
+                                            </div>
+                                                <div class="standardDelivery">
+                                                <select name="shipping" id="shippingCharges" class="form-control">
+                                                    <option value="" selected disabled data-price="0">---Choose Location</option>
+                                                    @foreach($locations as $location)
+                                                    @if($location->type == 'standard')
+                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                                                    @endif
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+                                                <div style="display: none;" class="expressDelivery">
+                                                <select name="shipping" id="shippingCharges" class="form-control">
+                                                    <option value="" selected disabled data-price="0">---Choose Location</option>
+                                                    @foreach($locations as $location)
+                                                    @if($location->type == 'express')
+                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                                                    @endif
+                                                    @endforeach
+                                                    </select>
+                                                </div>
+
                                                 <div>
                                                     <label for="precise_location"></label>
                                                     <input type="text" id="precise_location" class="form-control" required placeholder="Enter precise location">
@@ -253,7 +287,8 @@
 
                             @if($book->hard_expected_shipment != null && $book->hard_expected_shipment > date('Y-m-d'))
                             <div style="padding-left: 65px;" class="countdown-timer">
-                                <br><h6>Book to be shipped: ({{ date('F jS, Y', strtotime($book->hard_expected_shipment)) }})</h6>
+                                <br><h6>Preorder Ends: ({{ date('F jS, Y', strtotime($book->hard_expected_shipment)) }})</h6>
+                                <h6>Time Left for Book to be Shipped:</h6>
                                 <div class="d-flex align-items-stretch justify-content-between">
                                     <div class="py-2d75">
                                         <span class="font-weight-medium font-size-3 days"></span>
@@ -749,6 +784,16 @@
     <script>
         $(document).ready(function(){
             // $('#cartModal').modal('show');
+            $('input[name="delivery"]').on('change',function(){
+                var type = $(this).val();
+                if(type == 'standard'){
+                    $('.standardDelivery').show();
+                    $('.expressDelivery').hide();
+                } else if(type == 'express'){
+                    $('.expressDelivery').show();
+                    $('.standardDelivery').hide();
+                }
+           });
             $('.description-link').on('click',function(){
                 $('html, body').animate({
                     scrollTop: $(".description").offset().top
@@ -824,6 +869,8 @@
             });
 
             $(document).on('click','.proceedToCheckout',function(){
+                var shippingCharges = $('#shippingCharges option:selected').val();
+                var shippingPrice = $('#shippingCharges option:selected').data('price');
                 var preciseLocation = $('#precise_location').val();
                 var postCode = $('#post_code').val();
                 var userId = "{{ Auth::id() }}";
@@ -832,11 +879,13 @@
                 var subTotal = $("input[name='extraPrices']:checked").val();
                 var extraPrice = $("input[name='extraPrices']:checked").val();
                 var extraType = $("input[name='extraPrices']:checked").val();
-                if(userId == ''){
+                if(shippingCharges == ''){
+                    $.notify('Please choose location');
+                    return false;
+                } else if(userId == ''){
                     $.notify('Please login first to continue');
                     return false;
-                }
-                if(preciseLocation == ''){
+                } else if(preciseLocation == ''){
                     $.notify('Please choose your precise location');
                     return false;
                 } else {
@@ -852,6 +901,8 @@
                             extraPrice : extraPrice,
                             extraType : extraType,
                             bookId : bookId,
+                            shippingCharges : shippingCharges,
+                            shippingPrice : shippingPrice
                         },
                         success : function(data){
                             location.href = "{{ route('checkout') }}?token="+data;
@@ -941,5 +992,17 @@
                     }
                 }, 0)
             }());
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeEQgpHcPzV4BwOa60xgE9AwhlofidWh8&libraries=places"></script>
+    <script>
+        function initialize() {
+          var input = document.getElementById('precise_location');
+          var autocomplete = new google.maps.places.Autocomplete(input);
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                document.getElementById('city2').value = place.name;
+            });
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
     </script>
 @endsection

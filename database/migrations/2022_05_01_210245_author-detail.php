@@ -35,6 +35,8 @@ return new class extends Migration
             $table->string('branch')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('cover_type')->nullable();
+            $table->longText('billing_detail');
+            $table->longText('shipping_detail');
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

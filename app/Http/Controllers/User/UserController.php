@@ -166,4 +166,11 @@ class UserController extends Controller
     public function search_author(){
         return view('user.consultant.search-author');
     }
+    public function dashboard(){
+        $books = Book::where('user_id',Auth::id())->where('status',1)->count();
+        $orders = Payment::where('user_id',Auth::id())->count();
+        $earning = Payment::where('user_id',Auth::id())->where('status','successfull')->sum('total_amount');
+        $pending_earning = Payment::where('user_id',Auth::id())->where('status','!=','successfull')->sum('total_amount');
+        return view('user.dashboard',compact('books','orders','earning','pending_earning'));
+    }
 }

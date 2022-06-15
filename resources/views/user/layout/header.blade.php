@@ -151,6 +151,11 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
+            <li class="<?php if(request()->segment(1) == 'dashboard'){echo 'mm-active';} ?>"><a href="{{ route('dashboard') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-dashboard"></i>
+                    <span class="nav-text">Dashboard</span>
+                </a>
+            </li>
             <li class="<?php if(request()->segment(1) == 'author'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-user"></i>
                     <span class="nav-text">Author</span>
