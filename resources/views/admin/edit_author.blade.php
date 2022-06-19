@@ -1,6 +1,6 @@
 @extends('admin.layout.index')
 <style>
-    <?php if($user): ?>
+    <?php if($user->payment): ?>
     <?php if($user->payment == 'mobile_money'): ?>
         .bank_fields{
             display: none;
@@ -11,7 +11,10 @@
         }
     <?php endif; ?>
     <?php else: ?>
-        .mobile_money_fields, .bank_fields{
+        .mobile_money_fields{
+            display: none;
+        }
+        .bank_fields{
             display: none;
         }
     <?php endif; ?>

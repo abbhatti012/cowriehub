@@ -13,7 +13,7 @@ class CouponController extends Controller
     public function check_coupon(Request $request){
         $code = $request->code;
         $date = date('Y-m-d');
-        $check = Coupon::where('code',$code)->first();
+        $check = Coupon::where('code',$code)->where('is_active',1)->first();
         if($check){
             if($check->end_date < $date){
                 return response()->json(['message'=>'Coupon expired!','status'=>false]);

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Book;
+use App\Models\AuthorDetail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -45,5 +46,8 @@ class User extends Authenticatable
     ];
     public function books_published(){
         return $this->hasMany(Book::class, 'user_id', 'id');
+    }
+    public function author_detail(){
+        return $this->hasOne(AuthorDetail::class, 'user_id', 'id');
     }
 }

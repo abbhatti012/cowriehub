@@ -69,6 +69,29 @@
                 </div>
             </div>
         </form>
+        <form id="basic-validation" action="{{ route('admin.update-setting') }}" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Consultant Comission</h4>
+                        </div>
+                        @csrf
+                        <div class="card-body row">
+                            <div class="basic-form custom_file_input col-xl-5">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Consultant Comission</span>
+                                    <div class="form-file">
+                                        <input type="number" min="1" max="100" name="consultant_commission" value="{{ $setting->consultant_commission }}" class="form-file-input form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

@@ -14,5 +14,6 @@ class Setting extends Model
         'start_date',
         'end_date',
         'admin_commission',
+        'consultant_commission',
     ];
 }

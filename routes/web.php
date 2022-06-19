@@ -92,9 +92,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/locations', [App\Http\Controllers\Admin\AdminController::class, 'locations'])->name('admin.locations');
     Route::get('/cms/coupons', [App\Http\Controllers\Admin\AdminController::class, 'coupons'])->name('admin.coupons');
     Route::post('/cms/add-location', [App\Http\Controllers\Admin\AdminController::class, 'add_location'])->name('admin.add-location');
-    Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon');
+    Route::post('/cms/add-skills', [App\Http\Controllers\Admin\AdminController::class, 'add_skills'])->name('admin.add-skills');
     Route::get('/cms/delete-location/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_location'])->name('admin.delete-location');
-    Route::get('/cms/delete-coupon/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_coupon'])->name('admin.delete-coupon');
+    Route::get('/cms/delete-skill/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_skill'])->name('admin.delete-skill');
     Route::get('/cms/view-book-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_book_detail'])->name('admin.view-book-detail');
     Route::get('/cms/view-order-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_order_detail'])->name('admin.view-order-detail');
     
@@ -121,7 +121,13 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/delete-genre/{any}', [App\Http\Controllers\Admin\GenreController::class, 'delete'])->name('admin.delete-genre');
     Route::post('/cms/add-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'store'])->name('admin.add-sub-genre');
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
+    Route::get('/cms/skills', [App\Http\Controllers\Admin\AdminController::class, 'skills'])->name('admin.skills');
+    Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
 });
+
+Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon')->middleware('auth');
+Route::get('/cms/delete-coupon/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_coupon'])->name('admin.delete-coupon')->middleware('auth');
+Route::get('/cms/update-coupon-status/{id}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon_status'])->name('admin.update-coupon-status')->middleware('auth');
 Route::get('/cms/check-coupon', [App\Http\Controllers\CouponController::class, 'check_coupon'])->name('admin.check-coupon');
 //Author Routes
 Route::group(['middleware' => 'author'], function () {
@@ -135,6 +141,7 @@ Route::group(['middleware' => 'author'], function () {
     Route::post('/author/insert-book/{any}', [App\Http\Controllers\BookController::class, 'insert_book'])->name('insert-book');
     Route::get('/author/delete-book/{any}', [App\Http\Controllers\BookController::class, 'delete_book'])->name('delete-book');
     Route::get('/author/edit-book/{any}', [App\Http\Controllers\BookController::class, 'edit_book'])->name('edit-book');
+    Route::get('/author/coupons', [App\Http\Controllers\User\UserController::class, 'coupons'])->name('author.coupons');
 });
 
 //Publisher Routes
@@ -154,7 +161,14 @@ Route::group(['middleware' => 'pos'], function () {
 
 //Consultant Routes
 Route::group(['middleware' => 'consultant'], function () {
-    Route::get('/consultant', [App\Http\Controllers\Consultant\ConsultantController::class, 'index'])->name('consultant');
+    Route::get('/consultant/payment-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'payment_detail'])->name('consultant.payment-detail');
+    Route::post('/consultant/update-payment-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'update_payment_detail'])->name('consultant.update-payment-detail');
+    Route::get('/consultant/jobs', [App\Http\Controllers\Consultant\ConsultantController::class, 'jobs'])->name('consultant.jobs');
+    Route::get('/consultant/get-author-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'get_author_detail'])->name('get-author-detail');
+    Route::get('/consultant/get-marketing-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'get_marketing_detail'])->name('get-marketing-detail');
+    Route::get('/consultant/approve-marketing-status/{any}/{num}', [App\Http\Controllers\Consultant\ConsultantController::class, 'approve_marketing_status'])->name('consultant.approve-marketing-status');
+    Route::post('/consultant/upload-document/{any}', [App\Http\Controllers\Consultant\ConsultantController::class, 'upload_document'])->name('consultant.upload-document');
+    Route::get('/consultant/sales', [App\Http\Controllers\Consultant\ConsultantController::class, 'stat'])->name('consultant.stat');
 });
 
 //User Routes
@@ -174,10 +188,16 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/author', [App\Http\Controllers\User\UserController::class, 'author_account'])->name('user.author-account');
     Route::get('/publisher', [App\Http\Controllers\User\UserController::class, 'publisher_account'])->name('user.publisher-account');
     Route::get('/affiliate', [App\Http\Controllers\User\UserController::class, 'affiliate_account'])->name('user.affiliate-account');
-    Route::get('/consultant', [App\Http\Controllers\User\UserController::class, 'consultant_account'])->name('user.consultant-account');
     Route::get('/pos', [App\Http\Controllers\User\UserController::class, 'pos'])->name('user.pos-account');
     Route::get('/consultant/search-author', [App\Http\Controllers\User\UserController::class, 'search_author'])->name('consultant.search-author');
     Route::get('/dashboard', [App\Http\Controllers\User\UserController::class, 'dashboard'])->name('dashboard');
+    
+    Route::get('/consultant', [App\Http\Controllers\Consultant\ConsultantController::class, 'index'])->name('consultant.dashboard')->middleware('auth');
+    Route::get('/update-consultant-status/{num}/{any}', [App\Http\Controllers\Consultant\ConsultantController::class, 'update_consultant_status'])->name('consultant.update-consultant-status')->middleware('auth');
+    Route::post('/update-consultant-signup/{num}', [App\Http\Controllers\Consultant\ConsultantController::class, 'update_consultant_signup'])->name('consultant.update-consultant-signup')->middleware('auth');
+    Route::get('/delete-consultant/{num}', [App\Http\Controllers\Consultant\ConsultantController::class, 'delete_consultant'])->name('consultant.delete-consultant')->middleware('auth');
+    Route::get('consultant/consultant-register', [App\Http\Controllers\Consultant\ConsultantController::class, 'consultant_account'])->name('user.consultant-account')->middleware('auth');
+    Route::post('/consultant/consultant-signup', [App\Http\Controllers\Consultant\ConsultantController::class, 'consultant_signup'])->name('consultant.consultant-signup')->middleware('auth');
 // });
 
 Route::get('/auth/facebook', [SocialiteController::class, 'redirectToFB']);

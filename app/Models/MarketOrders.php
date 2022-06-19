@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Marketing;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,4 +20,7 @@ class MarketOrders extends Model
         'phone',
         'notes',
     ];
+    public function marketing_detail(){
+        return $this->hasOne(Marketing::class, 'id', 'marketing_id');
+    }
 }

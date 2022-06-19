@@ -207,6 +207,11 @@
                     <span class="nav-text">Locations</span>
                 </a>
             </li>
+            <li class="<?php if(request()->segment(2) == 'skills'){echo 'mm-active';} ?>"><a href="{{ route('admin.skills') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-tasks"></i>
+                    <span class="nav-text">Skills</span>
+                </a>
+            </li>
             <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('admin.coupons') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-gift"></i>
                     <span class="nav-text">Coupons</span>

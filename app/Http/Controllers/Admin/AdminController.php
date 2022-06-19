@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
 use App\Models\Order;
+use App\Models\Skill;
 use App\Models\Banner;
 use App\Models\Coupon;
 use App\Models\Payment;
@@ -14,6 +15,7 @@ use App\Models\Setting;
 use App\Models\Location;
 use App\Models\SubGenre;
 use App\Models\Marketing;
+use App\Models\Consultant;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
@@ -42,7 +44,13 @@ class AdminController extends Controller
         return view('admin.author', compact('authors'));
     }
     public function consultant(){
-        return view('admin.consultant');
+        $consultants = Consultant::orderBy('id','desc')->with('marketing')->get();
+        $jobs = MarketOrders::orderBy('marketing_orders.id','desc')
+        ->select('marketing.*','marketing_orders.*','marketing_orders.id as market_id')
+        ->where('marketing_orders.job_type','!=',1)
+        ->join('marketing','marketing.id','=','marketing_orders.marketing_id')->get();
+        $setting = Setting::first();
+        return view('admin.consultant',compact('consultants','jobs','setting'));
     }
     public function general_user(){
         $users = User::where('role','user')->get();
@@ -236,7 +244,8 @@ class AdminController extends Controller
         return view('admin.locations', compact('locations'));
     }
     public function coupons(){
-        $coupons = Coupon::orderBy('id','desc')->get();
+        $coupons = Coupon::orderBy('coupons.id','desc')
+        ->select('coupons.*','users.*')->join('users','users.id','=','coupons.user_id')->get();
         $books = Book::where('status',1)->get();
         return view('admin.coupons', compact('coupons','books'));
     }
@@ -461,11 +470,43 @@ class AdminController extends Controller
         $coupon->code = $request->code;
         $coupon->off = $request->off;
         $coupon->book_id = serialize($request->bookId);
+        $coupon->user_id = Auth::id();
+        if(Auth::user()->role == 'admin'){
+            $coupon->is_active = 1;
+        } else {
+            $coupon->is_active = 0;
+        }
         $coupon->save();
         return back()->with('message', ['text'=>'Coupon added successfully!','type'=>'success']);
     }
     public function delete_coupon($id){
         Coupon::where('id',$id)->delete();
         return back()->with('message', ['text'=>'Coupon has been deleted','type'=>'success']);
+    }
+    public function update_coupon_status($id){
+        Coupon::where('id',$id)->update(['is_active'=>1]);
+        return back()->with('message', ['text'=>'Coupon has been activated','type'=>'success']);
+    }
+    public function skills(){
+        $skills = Skill::orderBy('id','desc')->with('users')->get();
+        return view('admin.skills',compact('skills'));
+    }
+    public function add_skills(Request $request){
+        $validation = [
+            'skill' => 'required|unique:skills'
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
+        $skill = new Skill();
+        $skill->skill = $request->skill;
+        $skill->user_id = Auth::id();
+        $skill->save();
+        return back()->with('message', ['text'=>'Skill added successfully!','type'=>'success']);
+    }
+    public function delete_skill($id){
+        Skill::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Skill has been deleted','type'=>'success']);
     }
 } 

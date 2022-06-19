@@ -165,6 +165,7 @@
                     <li><a @if(request()->segment(2) == 'books')class='mm-active'@endif href="{{ route('author.books') }}">My Books</a></li>
                     <li><a @if(request()->segment(2) == 'strategies')class='mm-active'@endif href="{{ route('author.marketing') }}">My Marketing</a></li>
                     <li><a @if(request()->segment(2) == 'sales')class='mm-active'@endif href="{{ route('author.sales') }}">My Sales</a></li>
+                    <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('author.coupons') }}" class="ai-icon" aria-expanded="false">Coupons</a></li>
                 </ul>
             </li>
             <li class="<?php if(request()->segment(1) == 'consultant'){echo 'mm-active';} ?>"><a href="{{ route('consultant.search-author') }}" class="ai-icon" aria-expanded="false">
@@ -172,7 +173,6 @@
                     <span class="nav-text">Cousultant</span>
                 </a>
             </li>
-            
         </ul>
     </div>
 </div>

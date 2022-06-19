@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
+use App\Models\Coupon;
 use App\Models\Payment;
 use App\Models\SubGenre;
 use App\Models\AuthorDetail;
@@ -172,5 +173,11 @@ class UserController extends Controller
         $earning = Payment::where('user_id',Auth::id())->where('status','successfull')->sum('total_amount');
         $pending_earning = Payment::where('user_id',Auth::id())->where('status','!=','successfull')->sum('total_amount');
         return view('user.dashboard',compact('books','orders','earning','pending_earning'));
+    }
+    public function coupons(){
+        $coupons = Coupon::orderBy('coupons.id','desc')->where('coupons.user_id',Auth::id())
+        ->select('coupons.*','users.*')->join('users','users.id','=','coupons.user_id')->get();
+        $books = Book::where('status',1)->get();
+        return view('user.author.coupons',compact('coupons','books'));
     }
 }

@@ -27,11 +27,11 @@
                             <div class="basic-form row col-md-12">
                                 <div class="mb-3 col-md-6">
                                     <label for="start_date">Start Date</label>
-                                    <input class="form-control form-control-lg" name="start_date" type="date" value="{{ old('start_date') }}" id="start_date" required>
+                                    <input class="form-control form-control-lg" name="start_date" type="date" value="{{ old('start_date') }}" max="{{ date('Y-m-d') }}" id="start_date" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="end_date">End Date</label>
-                                    <input class="form-control form-control-lg" name="end_date" type="date" value="{{ old('end_date') }}" id="end_date" required>
+                                    <input class="form-control form-control-lg" name="end_date" type="date" value="{{ old('end_date') }}" id="end_date" min="{{ date('Y-m-d') }}" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
                                     <label for="code">Code</label>
@@ -71,6 +71,8 @@
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Added By</th>
+                                        <th>Role</th>
                                         <th>Start Date</th>
                                         <th>End Date</th>
                                         <th>Code</th>
@@ -83,13 +85,18 @@
                                 @forelse($coupons as $coupon)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
+                                        <td>{{ $coupon->name }}</td>
+                                        <td>{{ $coupon->role }}</td>
                                         <td>{{ $coupon->start_date }}</td>
                                         <td>{{ $coupon->end_date }}</td>
                                         <td>{{ $coupon->code }}</td>
                                         <td>{{ $coupon->off }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin.delete-coupon', $coupon->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-coupon', $coupon->id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                                @if($coupon->is_active == 0)
+                                                    <a href="{{ route('admin.update-coupon-status', $coupon->id) }}" onclick="return confirm('Are you sure you want to mark it as active?');" class="btn btn-success shadow btn-xs sharp" title="Approve Coupon"><i class="fa fa-times"></i></a>
+                                                @endif
                                             </div>
                                         </td>												
                                     </tr>

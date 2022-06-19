@@ -201,3 +201,7 @@
     height: 150px;
     object-fit: cover;
 }
+
+.alert-success {
+    color: #000000 !important;
+}

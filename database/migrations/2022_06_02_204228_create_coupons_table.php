@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('coupons', function (Blueprint $table) {
             $table->id();
+            $table->longText('book_id');
+            $table->unsignedBigInteger('user_id');
             $table->string('code');
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('off');
-            $table->longText('book_id');
+            $table->integer('is_active')->default(0);
             $table->timestamps();
         });
     }
