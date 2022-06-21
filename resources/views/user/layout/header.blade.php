@@ -168,11 +168,11 @@
                     <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('author.coupons') }}" class="ai-icon" aria-expanded="false">Coupons</a></li>
                 </ul>
             </li>
-            <li class="<?php if(request()->segment(1) == 'consultant'){echo 'mm-active';} ?>"><a href="{{ route('consultant.search-author') }}" class="ai-icon" aria-expanded="false">
+            <!-- <li class="<?php //if(request()->segment(1) == 'consultant'){echo 'mm-active';} ?>"><a href="" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-handshake-o"></i>
                     <span class="nav-text">Cousultant</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

@@ -25,6 +25,8 @@ return new class extends Migration
             $table->integer('job_status')->default(0);
             $table->integer('job_type')->default(0);
             $table->string('prove_document')->nullable();
+            $table->longText('payment_note')->nullable();
+            $table->string('payment_proof')->nullable();
             $table->timestamps();
         });
     }

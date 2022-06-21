@@ -176,8 +176,8 @@ class UserController extends Controller
     }
     public function coupons(){
         $coupons = Coupon::orderBy('coupons.id','desc')->where('coupons.user_id',Auth::id())
-        ->select('coupons.*','users.*')->join('users','users.id','=','coupons.user_id')->get();
-        $books = Book::where('status',1)->get();
+        ->select('coupons.*','users.*', 'coupons.id as coupon_id')->join('users','users.id','=','coupons.user_id')->get();
+        $books = Book::where('status',1)->where('user_id',Auth::id())->get();
         return view('user.author.coupons',compact('coupons','books'));
     }
 }

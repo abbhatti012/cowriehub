@@ -21,7 +21,7 @@ class Consultant
             return redirect()->route('login');
         }
         if (Auth::user()->role == 'author') {
-            return redirect()->route('author');
+            return redirect()->route('dashboard');
         }
         if (Auth::user()->role == 'publisher') {
             return redirect()->route('publisher');

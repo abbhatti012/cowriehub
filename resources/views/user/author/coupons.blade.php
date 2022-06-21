@@ -34,11 +34,11 @@
                                     <input class="form-control form-control-lg" name="end_date" type="date" value="{{ old('end_date') }}" id="end_date" min="{{ date('Y-m-d') }}" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="code">Code</label>
+                                    <label for="code">Coupon Code</label>
                                     <input class="form-control form-control-lg" name="code" type="text" value="{{ old('code') }}" id="code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="off">Off (%)</label>
+                                    <label for="off">Coupon Discount (%)</label>
                                     <input class="form-control form-control-lg" name="off" type="number" min="1" max="100" value="{{ old('off') }}" id="off" required>
                                 </div>
                                 <div class="mb-3 col-md-12">
@@ -95,7 +95,7 @@
                                         <td>@if($coupon->is_active == 0) <span class="badge light badge-danger">Pending<span> @else <span class="badge light badge-info">Active</span>@endif</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin.delete-coupon', $coupon->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-coupon', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>												
                                     </tr>

@@ -4,6 +4,9 @@
     .hard_cover, .digital_epub, .paper_back{
         display: none;
     }
+    .iti--allow-dropdown{
+        width: 100%;
+    }
 </style>
 <div class="content-body">
    <div class="container-fluid">
@@ -68,8 +71,20 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
-                                <label for="phone_number">Phone Number</label>
-                                <input class="form-control form-control-lg" name="phone_number" value="{{ old('phone_number') }}" type="text" id="phone_number">
+                                <label for="address-country">Country Residance</label>
+                                <select class="form-control form-control-lg" name="country" id="address-country"></select>
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
+                                <label for="phone">Address</label>
+                                <input class="form-control form-control-lg" name="address"  value="{{ old('address') }}" type="text" id="address">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
+                                <label for="phone">Phone Number</label>
+                                <input class="form-control form-control-lg" name="phone_number"  value="+233 " type="text" id="phone">
                             </div>
                         </div>
                        
@@ -130,7 +145,7 @@
                             <h4>National Identity</h4><hr>
                             <div class="basic-form custom_file_input">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Upload Slef Video</span>
+                                    <span class="input-group-text">Selfie Verification</span>
                                     <div class="form-file">
                                         <input type="file" name="intro_viedo" class="form-file-input form-control" required accept="file_extension|audio/*|video/*|image/*|media_type">
                                     </div>
@@ -207,8 +222,20 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
-                                <label for="phone_number">Phone Number</label>
-                                <input class="form-control form-control-lg" name="phone_number" value="{{ $user->phone_number }}" type="text" id="phone_number">
+                                <label for="address-country">Country Residance</label>
+                                <select class="form-control form-control-lg" name="country" id="address-country"></select>
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
+                                <label for="phone">Address</label>
+                                <input class="form-control form-control-lg" name="address"  value="{{ $user->address }}" type="text" id="address">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
+                                <label for="phone">Phone Number</label>
+                                <input class="form-control form-control-lg" name="phone_number"  value="{{ $user->phone_number }}" type="text" id="phone">
                             </div>
                         </div>
                        
@@ -338,6 +365,14 @@
                                     <td>{{ $user->phone_number }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Country:</th>
+                                    <td>{{ $user->country }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Address:</th>
+                                    <td>{{ $user->address }}</td>
+                                </tr>
+                                <tr>
                                     <th>Institution:</th>
                                     <td>{{ $user->institution }}</td>
                                 </tr>
@@ -387,6 +422,44 @@
                 $('.customSkill').hide();
             }
         });
+    });
+</script>
+<link rel='stylesheet' href='https://intl-tel-input.com/node_modules/intl-tel-input/build/css/intlTelInput.css?1549804213570'>
+<script src='https://intl-tel-input.com/node_modules/intl-tel-input/build/js/intlTelInput.js?1549804213570'></script>
+<script>
+    // International telephone format
+    // $("#phone").intlTelInput();
+    // get the country data from the plugin
+    var countryData = window.intlTelInputGlobals.getCountryData(),
+    input = document.querySelector("#phone"),
+    addressDropdown = document.querySelector("#address-country");
+
+    // init plugin
+    var iti = window.intlTelInput(input, {
+    hiddenInput: "full_phone",
+    utilsScript: "https://intl-tel-input.com/node_modules/intl-tel-input/build/js/utils.js?1549804213570" // just for formatting/placeholders etc
+    });
+
+    // populate the country dropdown
+    for (var i = 0; i < countryData.length; i++) {
+    var country = countryData[i];
+    var optionNode = document.createElement("option");
+    optionNode.value = country.iso2;
+    var textNode = document.createTextNode(country.name);
+    optionNode.appendChild(textNode);
+    addressDropdown.appendChild(optionNode);
+    }
+    // set it's initial value
+    addressDropdown.value = iti.getSelectedCountryData().iso2;
+
+    // listen to the telephone input for changes
+    input.addEventListener('countrychange', function(e) {
+    addressDropdown.value = iti.getSelectedCountryData().iso2;
+    });
+
+    // listen to the address dropdown for changes
+    addressDropdown.addEventListener('change', function() {
+    iti.setCountry(this.value);
     });
 </script>
 @endsection

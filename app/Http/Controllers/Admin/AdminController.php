@@ -245,7 +245,7 @@ class AdminController extends Controller
     }
     public function coupons(){
         $coupons = Coupon::orderBy('coupons.id','desc')
-        ->select('coupons.*','users.*')->join('users','users.id','=','coupons.user_id')->get();
+        ->select('coupons.*','users.*', 'coupons.id as coupon_id')->join('users','users.id','=','coupons.user_id')->get();
         $books = Book::where('status',1)->get();
         return view('admin.coupons', compact('coupons','books'));
     }

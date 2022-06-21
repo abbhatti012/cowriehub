@@ -63,7 +63,11 @@
                                                 @if($job->marketing->job_type == 1)
                                                     @php $market = DB::table('marketing')->where('id',$job->marketing->marketing_id)->first(); @endphp
                                                     GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
-                                                    <a href="javascript:void(0)" class="text-danger">PENDING</a>
+                                                    @if($job->marketing->payment_proof == '')
+                                                        <a href="javascript:void(0)" class="text-danger">PENDING</a>
+                                                    @else
+                                                        <a href="javascript:void(0)" class="text-success viewPaymentProof" data-bs-toggle="modal" data-bs-target="#viewPaymentProof" data-proof="{{ asset($job->marketing->payment_proof) }}" data-note="{{ $job->marketing->payment_note }}">PAID</a>
+                                                    @endif
                                                 @else
                                                     
                                                 @endif
@@ -75,12 +79,16 @@
                                                     <a class="text-primary" href="{{ route('consultant.approve-marketing-status', [$job->marketing->id, 1]) }}" onclick="return confirm('Are you sre you want to approve the job?')">Approve </a>&nbsp;|&nbsp;
                                                     <a class="text-danger" href="{{ route('consultant.approve-marketing-status', [$job->marketing->id, 2]) }}" onclick="return confirm('Are you sre you want to reject the job?')"> Reject</a>
                                                 @else
-                                                    @if($job->marketing->job_type == 0 || $job->marketing->job_type == 2)
-                                                        <a class="btn btn-primary shadow btn-xs sharp me-1 uploadJob" href="javascript:void(0)" data-id="{{ $job->marketing->id }}" title="Upload Document" data-bs-toggle="modal" data-bs-target="#uploadJob" ><span class="fa fa-upload"></span></a>
-                                                    @endif
-                                                    
-                                                    @if($job->marketing->job_type == 1)
-                                                        <a class="text-primary" href="javascript:void(0)">Completed</a>
+                                                    @if($job->marketing->job_status == 1)
+                                                        @if($job->marketing->job_type == 0 || $job->marketing->job_type == 2)
+                                                            <a class="btn btn-primary shadow btn-xs sharp me-1 uploadJob" href="javascript:void(0)" data-id="{{ $job->marketing->id }}" title="Upload Document" data-bs-toggle="modal" data-bs-target="#uploadJob" ><span class="fa fa-upload"></span></a>
+                                                        @endif
+                                                        
+                                                        @if($job->marketing->job_type == 1)
+                                                            <a class="text-primary" href="javascript:void(0)">Completed</a>
+                                                        @endif
+                                                        @else
+                                                        <a class="text-danger" href="javascript:void(0)">Rejected</a>
                                                     @endif
                                                 @endif
                                             </div>
@@ -189,7 +197,24 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" id="viewPaymentProof">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Proof</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body iframeHere">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary"><a class="downloadDocument" href="" download>Download</a></button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('scripts')
 <script>
@@ -244,6 +269,11 @@
                 }
             });
         });
+        $('.viewPaymentProof').on('click',function(){
+            var proof = $(this).data('proof');
+            var note = $(this).data('note');
+            $('.iframeHere').html('<div><iframe style="width: 100%; height: 300px;" src="'+proof+'"></iframe></div><br><h4>Payment Note: </h4><div><p>'+note+'</p></div>')
+        })
     });
 </script>
 @endsection

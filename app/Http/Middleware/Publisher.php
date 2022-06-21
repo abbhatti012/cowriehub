@@ -21,7 +21,7 @@ class Publisher
             return redirect()->route('login');
         }
         if (Auth::user()->role == 'author') {
-            return redirect()->route('author');
+            return redirect()->route('dashboard');
         }
         if (Auth::user()->role == 'affiliate') {
             return redirect()->route('affiliate');
@@ -30,7 +30,7 @@ class Publisher
             return redirect()->route('pos');
         }
         if (Auth::user()->role == 'consultant') {
-            return redirect()->route('consultant');
+            return redirect()->route('consultant/consultant-register');
         }
         if (Auth::user()->role == 'user') {
             return redirect()->route('home');

@@ -18,7 +18,7 @@ class LoginController extends Controller
             return '/admin';
             break;
         case 'author':
-            return '/author';
+            return '/dashboard';
             break; 
         case 'publisher':
             return '/publisher';
@@ -30,7 +30,7 @@ class LoginController extends Controller
             return '/pos';
             break; 
         case 'consultant':
-            return '/consultant';
+            return '/consultant/consultant-register';
             break; 
           default:
             return route('home');
@@ -43,7 +43,7 @@ class LoginController extends Controller
             return redirect(route('admin'));
         }
         if($user->role === 'author') {
-            return redirect('/author');
+            return redirect('/dashboard');
         }
         if($user->role === 'publisher') {
             return redirect('/publisher');
@@ -55,7 +55,7 @@ class LoginController extends Controller
             return redirect('/pos');
         }
         if($user->role === 'consultant') {
-            return redirect('/consultant');
+            return redirect('/consultant/consultant-register');
         }
         return redirect(route('home'));
     }

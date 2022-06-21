@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('custom_skill')->nullable();
             $table->string('skill_certificate');
             $table->string('phone_number')->nullable();
+            $table->string('country')->nullable();
+            $table->string('address')->nullable();
             $table->string('institution');
             $table->string('year_of_completion');
             $table->string('id_type');

@@ -37,7 +37,7 @@ class ConsultantController extends Controller
             'institution' => 'required',
             'id_type' => 'required',
             'identity_card' => 'required',
-            'intro_viedo' => 'required|mimetypes:video/x-ms-asf,video/x-flv,video/mp4,application/x-mpegURL,video/MP2T,video/3gpp,video/quicktime,video/x-msvideo,video/x-ms-wmv,video/avi',
+            'intro_viedo' => 'required|mimes:jpeg,png,jpg,svg,doc,docx,odt,pdf,tex,txt,wpd,tiff,tif,csv,psd,key,odp,pps,ppt,pptx,ods,xls,xlsm,xlsx',
             'description' => 'required',
             'portfolio' => 'required',
             'terms' => 'required',
@@ -85,16 +85,18 @@ class ConsultantController extends Controller
             unset($user->portfolio);
         }
         $user->description = $request->description;
+        $user->country = $request->country;
+        $user->address = $request->address;
         $user->terms = $request->terms;
         if($user->save()){
-            $data['title'] = 'New Consultant';
+            $data['title'] = 'New Applicant';
             $data['to'] = 'cowriehubllc@gmail.com';
             $data['username'] = 'Admin';
-            $data['body'] = 'New consultant is just added to cowriehub. Please check below link to view!';
+            $data['body'] = 'New application as a cowriehub consultant is just added to cowriehub. Please check below link to view!';
             $data['link'] = "admin.consultant";
             $data['linkText'] = "View";
             Mail::send('email', $data,function ($m) use ($data) {
-                $m->to($data['to'])->subject('New Consultant!');
+                $m->to($data['to'])->subject('New Applicant!');
             });
 
             return back()->with('message', ['text'=>'Thank you for your application! Cowriehub will review your application in the next 24-48 hours.
@@ -157,17 +159,19 @@ class ConsultantController extends Controller
             unset($user->portfolio);
         }
         $user->description = $request->description;
+        $user->country = $request->country;
+        $user->address = $request->address;
         $user->terms = $request->terms;
         $user->status = 0;
         if($user->save()){
-            $data['title'] = 'New Consultant';
+            $data['title'] = 'New Applicant';
             $data['to'] = 'cowriehubllc@gmail.com';
             $data['username'] = 'Admin';
             $data['body'] = 'Consultant just updated its record. Please check below link to view!';
             $data['link'] = "admin.consultant";
             $data['linkText'] = "View";
             Mail::send('email', $data,function ($m) use ($data) {
-                $m->to($data['to'])->subject('New Consultant!');
+                $m->to($data['to'])->subject('New Applicant!');
             });
 
             return back()->with('message', ['text'=>'Thank you for your application! Cowriehub will review your application in the next 24-48 hours.
@@ -186,15 +190,15 @@ class ConsultantController extends Controller
             $data['body'] = 'You have been approved as a consultant successfully! You will be assign a specific job soon! We will be keep in touch with you. ';
             $data['body'] .= 'Please click on below link to view your status!';
             $data['link'] = "user.consultant-account";
-            $data['param'] = "id=$user->id";
+            $data['param'] = "id=$user->user_id";
             $data['linkText'] = "View";
             $user_detail->role = 'consultant';
         } else {
             $data['title'] = 'Consultant Declined';
             $data['body'] = 'Sorry! we are not going to accept your consultant proposal right now because of incomplete profile.';
-            $data['body'] .= 'Please try to complete your profile with accurate data by clicking on below link. Thanks!';
+            $data['body'] .= 'If you have any question then you can reach to support. By clicking on below link to view status. Thanks!';
             $data['link'] = "user.consultant-account";
-            $data['param'] = "id=$user->id";
+            $data['param'] = "id=$user->user_id";
             $data['linkText'] = "View";
             $user_detail->role = 'user';
         }
@@ -343,6 +347,35 @@ class ConsultantController extends Controller
         });
 
         return back()->with('message', ['text'=>'Job status has been updated succesfully!','type'=>'success']);
+    }
+    public function submit_payment_proof(Request $request){
+        $id = $request->marketingId;
+        if($id == 0){
+            return back()->with('message', ['text'=>'Proof not sent! Something goes wrong','type'=>'danger']);
+        }
+        $user = MarketOrders::find($id);
+        $user->payment_note = $request->payment_note;
+        if($request->payment_proof != null){
+            $UploadImage = time().'.'.$request->payment_proof->extension();
+            $request->payment_proof->move(public_path('images/consultant'), $UploadImage);
+            $user->payment_proof = 'images/consultant/'.$UploadImage;
+        } else {
+            unset($user->payment_proof);
+        }
+        $user->save();
+
+        $user_detail = User::where('id',$user->user_id)->first();
+
+        $data['title'] = 'Payment Sent';
+        $data['body'] = 'COWRIEHUB just make a payment of you, Please click on below link to view your payment proof!';
+        $data['link'] = "consultant.jobs";
+        $data['linkText'] = "View";
+        $data['to'] = $user_detail->email;
+        $data['username'] = $user_detail->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('Payment Sent!');
+        });
+        return back()->with('message', ['text'=>'Payment proof sent succesfully!','type'=>'success']);
     }
     public function stat(Request $request){
         $users = Payment::select('*')->where('user_id',$request->id)

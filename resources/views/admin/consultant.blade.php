@@ -25,7 +25,7 @@
                                 <thead>
                                     <tr>
                                         <th>Payment Detail</th>
-                                        <th>Phone</th>
+                                        <th>User Detail</th>
                                         <th>Skill</th>
                                         <th>Skill Certificate</th>
                                         <th>Institution</th>
@@ -46,7 +46,7 @@
                                     <tr>
                                         <td>
                                             @if($consultant->payment)
-                                                <a href="javascript:void(0)" class="btn btn-primary shadow btn-xs sharp me-1 viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
+                                                <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
                                                 data-payment = "{{ $consultant->payment }}"
                                                 data-account_name = "{{ $consultant->account_name }}"
                                                 data-account_number = "{{ $consultant->account_number }}"
@@ -55,10 +55,16 @@
                                                 data-bank_account_number = "{{ $consultant->bank_account_number }}"
                                                 data-branch = "{{ $consultant->branch }}"
                                                 data-bank_name = "{{ $consultant->bank_name }}"
-                                                title="View Payment Detail"><i class="fa fa-eye"></i></a>
+                                                title="View Payment Detail">View</a>
                                             @endif
                                         </td>
-                                        <td>{{ $consultant->phone_number }}</td>
+                                        <td>
+                                        <a href="javascript:void(0)" class="text-primary viewUserDetail" data-bs-toggle="modal" data-bs-target="#viewUserDetail"
+                                            data-phone_number = "{{ $consultant->phone_number }}"
+                                            data-country = "{{ $consultant->country }}"
+                                            data-address = "{{ $consultant->address }}"
+                                            title="View User Detail">View</a>
+                                        </td>
                                         <td>
                                             @if($consultant->custom_skill != '')
                                             {{ $consultant->custom_skill }}
@@ -77,14 +83,18 @@
                                         <td style="display:none;" id="viewLess{{ $consultant->id }}">{{ $consultant->description }}...<span><a href="javascript:void(0)" class="text-primary viewLess" data-id="{{ $consultant->id }}">Less</a></span></td>
                                         <td>
                                             @if($consultant->marketing)
-                                                @if($consultant->marketing->job_type == 2)
-                                                    <a href="javascript:void(0)" class="text-primary"> Partial </a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
+                                                @if($consultant->marketing->job_status == 2)
+                                                    <a href="javascript:void(0)" class="text-danger">REJECTED FROM CONSULTANT</a>
+                                                @else
+                                                    @if($consultant->marketing->job_type == 2)
+                                                        <a href="javascript:void(0)" class="text-primary"> Partial </a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
+                                                    @endif
+                                                    @if($consultant->marketing->job_type == 1)
+                                                        <a href="javascript:void(0)" class="text-success">Completed from consultalt</a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
+                                                    @endif
                                                 @endif
-                                                @if($consultant->marketing->job_type == 1)
-                                                    <a href="javascript:void(0)" class="text-success">Completed from consultalt</a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
-                                                @endif
-                                            @else
-                                                <a href="javascript:void(0)" class="text-danger"> Pending </a>
+                                                @else
+                                                    <a href="javascript:void(0)" class="text-danger"> Pending </a>
                                             @endif
                                         </td>
                                         <td>
@@ -92,7 +102,11 @@
                                                 @if($consultant->marketing->job_type == 1)
                                                     @php $market = DB::table('marketing')->where('id',$consultant->marketing->marketing_id)->first(); @endphp
                                                     GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
-                                                    <a href="javascript:void(0)" class="text-success">PAY</a>
+                                                    @if($consultant->marketing->payment_proof == '')
+                                                    <a href="javascript:void(0)" class="text-danger paymentProof" data-id="{{ $consultant->marketing->id }}" data-bs-toggle="modal" data-bs-target="#paymentProof"> PAY</a>
+                                                    @else
+                                                    <a href="javascript:void(0)" class="text-success"> PAID</a>
+                                                    @endif
                                                 @else
                                                     
                                                 @endif
@@ -123,6 +137,43 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="modal fade" id="paymentProof">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <form id="basic-validation" action="{{ route('admin.submit-payment-proof') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Proof</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="basic-form custom_file_input">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Payment Proof Screenshot</span>
+                            <div class="form-file">
+                                <input type="file" name="payment_proof" class="form-file-input form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="basic-form custom_file_input">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Additional Note</span>
+                            <div class="form-file">
+                                <textarea name="payment_note" class="form-file-input form-control"  required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" value="0" name="marketingId" id="marketingId">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary submitProof">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 <div class="modal fade" id="viewDocument">
@@ -180,6 +231,44 @@
                                         <td class="bank_account_number"></td>
                                         <td class="branch"></td>
                                         <td class="bank_name"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="viewUserDetail">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Consultant Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="basic-form">
+                        <div class="mb-3">
+                            <table class="table table-hover table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>---</th>
+                                        <th>Phone Number</th>
+                                        <th>Country</th>
+                                        <th>Address</th>
+                                    </tr>
+                                    <tr>
+                                        <th>User Detail</th>
+                                        <td class="phone_number"></td>
+                                        <td class="country"></td>
+                                        <td class="address"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -294,6 +383,11 @@
                 });
             }
         });
+        $('.paymentProof').on('click',function(){
+            var id = $(this).data('id');
+            $('#marketingId').val(id);
+        })
+        
         $('.viewPaymentDetail').on('click',function(){
             var payment = $(this).data('payment');
             var account_name = $(this).data('account_name');
@@ -309,6 +403,14 @@
             $('.bank_account_name').html(bank_account_name);
             $('.branch').html(branch);
             $('.bank_name').html(bank_name);
+        });
+        $('.viewUserDetail').on('click',function(){
+            var phone_number = $(this).data('phone_number');
+            var country = $(this).data('country');
+            var address = $(this).data('address');
+            $('.phone_number').html(phone_number);
+            $('.country').html(country);
+            $('.address').html(address);
         });
     });
 </script>

@@ -34,11 +34,11 @@
                                     <input class="form-control form-control-lg" name="end_date" type="date" value="{{ old('end_date') }}" id="end_date" min="{{ date('Y-m-d') }}" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="code">Code</label>
+                                    <label for="code">Coupon Code</label>
                                     <input class="form-control form-control-lg" name="code" type="text" value="{{ old('code') }}" id="code" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="off">Off (%)</label>
+                                    <label for="off">Coupon Discount (%)</label>
                                     <input class="form-control form-control-lg" name="off" type="number" min="1" max="100" value="{{ old('off') }}" id="off" required>
                                 </div>
                                 <div class="mb-3 col-md-12">
@@ -93,9 +93,9 @@
                                         <td>{{ $coupon->off }}</td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="{{ route('admin.delete-coupon', $coupon->id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.delete-coupon', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
                                                 @if($coupon->is_active == 0)
-                                                    <a href="{{ route('admin.update-coupon-status', $coupon->id) }}" onclick="return confirm('Are you sure you want to mark it as active?');" class="btn btn-success shadow btn-xs sharp" title="Approve Coupon"><i class="fa fa-times"></i></a>
+                                                    <a href="{{ route('admin.update-coupon-status', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to mark it as active?');" class="btn btn-success shadow btn-xs sharp" title="Approve Coupon"><i class="fa fa-times"></i></a>
                                                 @endif
                                             </div>
                                         </td>												

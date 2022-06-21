@@ -123,6 +123,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
     Route::get('/cms/skills', [App\Http\Controllers\Admin\AdminController::class, 'skills'])->name('admin.skills');
     Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
+    Route::post('/cms/submit-payment-proof/', [App\Http\Controllers\Consultant\ConsultantController::class, 'submit_payment_proof'])->name('admin.submit-payment-proof');
 });
 
 Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon')->middleware('auth');
