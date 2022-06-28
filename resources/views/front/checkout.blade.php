@@ -355,16 +355,18 @@
                                         <div class="px-4 pt-5 bg-white border">
                                             <div id="payment" class="woocommerce-checkout-payment">
                                                 <ul class="wc_payment_methods payment_methods methods">
-                                                    @if($billing)
-                                                        <li class="wc_payment_method existing_address">
-                                                            <input id="existing_address" type="radio" class="input-radio">
-                                                            <label for="existing_address">Use an existing address? </label>
-                                                        </li>
-                                                    @else
-                                                        <li class="wc_payment_method existing_address_model" data-toggle="modal" data-target="#preOrderModalModal">
-                                                            <input id="existing_address_model" type="radio" class="input-radio">
-                                                            <label for="existing_address_model">Add forever address! </label>
-                                                        </li>
+                                                    @if($is_hide_address)
+                                                        @if($billing)
+                                                            <li class="wc_payment_method existing_address">
+                                                                <input id="existing_address" type="radio" class="input-radio">
+                                                                <label for="existing_address">Use an existing address? </label>
+                                                            </li>
+                                                        @else
+                                                            <li class="wc_payment_method existing_address_model" data-toggle="modal" data-target="#preOrderModalModal">
+                                                                <input id="existing_address_model" type="radio" class="input-radio">
+                                                                <label for="existing_address_model">Add forever address! </label>
+                                                            </li>
+                                                        @endif
                                                     @endif
                                                 </ul>
                                             </div>
@@ -660,6 +662,7 @@
                                             <div class="woocommerce-billing-fields">
 
                                                 <h3 class="mb-4 font-size-3">Shipping details</h3>
+                                                @if($is_hide_address)
                                                 <div id="payment" class="woocommerce-checkout-payment">
                                                     <ul class="wc_payment_methods payment_methods methods">
                                                         <li class="wc_payment_method use_shipping_address">
@@ -668,7 +671,16 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-
+                                                @else
+                                                <div id="payment" class="woocommerce-checkout-payment">
+                                                    <ul class="wc_payment_methods payment_methods methods">
+                                                        <li class="wc_payment_method use_billing_address">
+                                                            <input id="use_billing_address" type="radio" class="input-radio">
+                                                            <label for="use_billing_address">Use billing address </label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                                @endif
                                                 <div class="woocommerce-billing-fields__field-wrapper row">
                                                     <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field" id="billing_first_name_field" data-priority="10">
                                                         <label for="shipping_first_name" class="form-label">First name <abbr class="required" title="required">*</abbr></label>
@@ -1231,6 +1243,14 @@
         @endif
     <script>
         $(document).on('ready',function(){
+            $('#use_billing_address').on('change',function(){
+                $('#shipping_first_name').val($('#billing_first_name').val());
+                    $('#shipping_last_name').val($('#billing_last_name').val());
+                    $("#shipping_country option").val($('#billing_country').val()).attr('selected', true);
+                    $('#shipping_address').val($('#billing_address').val());
+                    $('#shipping_email').val($('#billing_email').val());
+                    $('#shipping_phone').val($('#billing_phone').val());
+            })
             $('#apply_coupon').on('click',function(){
                 var code = $('#coupon_code').val();
                 if(code == ''){

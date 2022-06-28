@@ -407,21 +407,22 @@
                             <div id="widgetCollapse25" class="mt-5 widget-content collapse show"
                                 aria-labelledby="widgetHeading25"
                                 data-parent="#widgetAccordion">
-
+                                @forelse($featured as $book)
                                 <div class="mb-5">
                                     <div class="media d-md-flex">
-                                        <a class="d-block" href="{{ route('product', 4) }}">
-                                            <img class="img-fluid-aside" src="{{asset('assets/img/books/side filter.jpg')}}" alt="Image-Description">
+                                        <a class="d-block" href="{{ route('product', $book->slug) }}">
+                                            <img class="img-fluid-aside" src="{{asset($book->hero_image)}}" alt="Image-Description">
                                         </a>
                                         <div class="media-body ml-3 pl-1">
                                             <h6 class="font-size-2 text-lh-md font-weight-normal">
-                                                <a href="{{ route('product', 4) }}">Lessons Learned from  15 Years as CEO...</a>
+                                                <a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a>
                                             </h6>
-                                            <span class="font-weight-medium">$37</span>
+                                            <span class="font-weight-medium">GHS {{ $book->price }}</span>
                                         </div>
                                     </div>
                                 </div>
-                              
+                                @empty
+                                @endforelse
                             </div>
                         </div>
                     </div>

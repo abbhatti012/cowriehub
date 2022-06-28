@@ -35,8 +35,6 @@
                                         <th>About Consultant</th>
                                         <th>Portfolio</th>
                                         <th>Description</th>
-                                        <th>Job Status</th>
-                                        <th>Amount to be pay</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -82,47 +80,11 @@
                                         <td id="viewMore{{ $consultant->id }}">{{ substr($consultant->description,0,60) }}... <span><a href="javascript:void(0)" class="text-primary  viewMore" data-id="{{ $consultant->id }}">More</a></span></td>
                                         <td style="display:none;" id="viewLess{{ $consultant->id }}">{{ $consultant->description }}...<span><a href="javascript:void(0)" class="text-primary viewLess" data-id="{{ $consultant->id }}">Less</a></span></td>
                                         <td>
-                                            @if($consultant->marketing)
-                                                @if($consultant->marketing->job_status == 2)
-                                                    <a href="javascript:void(0)" class="text-danger">REJECTED FROM CONSULTANT</a>
-                                                @else
-                                                    @if($consultant->marketing->job_type == 2)
-                                                        <a href="javascript:void(0)" class="text-primary"> Partial </a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
-                                                    @endif
-                                                    @if($consultant->marketing->job_type == 1)
-                                                        <a href="javascript:void(0)" class="text-success">Completed from consultalt</a> | <a class="btn btn-warning shadow btn-xs sharp me-1" href="{{ asset($consultant->marketing->prove_document) }}" target="_blank" title="View Document"><span class="fa fa-eye"></span></a>
-                                                    @endif
-                                                @endif
-                                                @else
-                                                    <a href="javascript:void(0)" class="text-danger"> Pending </a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($consultant->marketing)
-                                                @if($consultant->marketing->job_type == 1)
-                                                    @php $market = DB::table('marketing')->where('id',$consultant->marketing->marketing_id)->first(); @endphp
-                                                    GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
-                                                    @if($consultant->marketing->payment_proof == '')
-                                                    <a href="javascript:void(0)" class="text-danger paymentProof" data-id="{{ $consultant->marketing->id }}" data-bs-toggle="modal" data-bs-target="#paymentProof"> PAY</a>
-                                                    @else
-                                                    <a href="javascript:void(0)" class="text-success"> PAID</a>
-                                                    @endif
-                                                @else
-                                                    
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
                                             <div class="d-flex">
                                                 @if($consultant->status == 0)
                                                     <a href="{{ route('consultant.update-consultant-status', [$consultant->id, 1]) }}" onclick="return confirm('Are you sure you want to approve as consultant?')" class="btn btn-success shadow btn-xs sharp me-1" title="Approve Consultant"><i class="fa fa-check"></i></a>
                                                 @else
                                                     <a href="{{ route('consultant.update-consultant-status', [$consultant->id, 0]) }}" onclick="return confirm('Are you sure you want the disapprove as consultant?')" class="btn btn-danger shadow btn-xs sharp me-1" title="Disapprove Consultant"><i class="fa fa-times"></i></a>
-                                                @endif
-                                                @if($consultant->status == 1)
-                                                    @if($consultant->job_id == '')
-                                                        <a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#assignJobModal" class="btn btn-primary shadow btn-xs sharp me-1 assignJob" data-id="{{ $consultant->id }}" title="Assign Job"><i class="fa fa-tasks"></i></a>
-                                                    @endif
                                                 @endif
                                                 <a href="{{ route('consultant.delete-consultant', $consultant->id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete consultant?')" title="Delete Consultant"><i class="fa fa-trash"></i></a>
                                             </div>

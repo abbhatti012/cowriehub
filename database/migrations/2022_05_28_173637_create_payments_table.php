@@ -39,7 +39,7 @@ return new class extends Migration
             $table->longText('shipping_detail')->nullable();
             $table->softDeletes();
             $table->timestamps();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\c;
+use App\Models\Job;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
@@ -15,6 +16,7 @@ use App\Models\Setting;
 use App\Models\Location;
 use App\Models\SubGenre;
 use App\Models\Marketing;
+use App\Models\Publisher;
 use App\Models\Consultant;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
@@ -22,6 +24,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -32,15 +35,16 @@ class AdminController extends Controller
         return view('admin.index');
     }
     public function author(){
-        $authors = User::where('role','author')
-        ->join('author-detail','author-detail.user_id','=','users.id')
-        ->select(
-            'users.*',
-            'author-detail.email as work_email',
-            'author-detail.id as author_id',
-            'author-detail.user_id as user_id',
-            'author-detail.cover as cover')
-        ->get();
+        // $authors = User::where('role','author')
+        // ->join('author-detail','author-detail.user_id','=','users.id')
+        // ->select(
+        //     'users.*',
+        //     'author-detail.email as work_email',
+        //     'author-detail.id as author_id',
+        //     'author-detail.user_id as user_id',
+        //     'author-detail.cover as cover')
+        // ->get();
+        $authors = User::where('role','author')->orderBy('id','desc')->with('author_detail')->get();
         return view('admin.author', compact('authors'));
     }
     public function consultant(){
@@ -57,7 +61,8 @@ class AdminController extends Controller
         return view('admin.general-user',compact('users'));
     }
     public function publisher(){
-        return view('admin.publisher');
+        $publishers = Publisher::orderBy('id','desc')->get();
+        return view('admin.publisher',compact('publishers'));
     }
     public function pos(){
         return view('admin.pos');
@@ -508,5 +513,61 @@ class AdminController extends Controller
     public function delete_skill($id){
         Skill::where('id',$id)->delete();
         return back()->with('message', ['text'=>'Skill has been deleted','type'=>'success']);
+    }
+    public function assign_job(){
+        $users = User::where('role','consultant')->get();
+        $marketings = MarketOrders::orderBy('id','desc')->with('marketing_detail')->get();
+        $jobs = Job::where('job_status',0)->orderBy('id','desc')
+        ->with('marketing')->with('user')->with('consultant')->get();
+        return view('admin.assign-job', compact('users', 'marketings', 'jobs'));
+    }
+    public function active_jobs(){
+        $users = User::where('role','consultant')->get();
+        $marketings = MarketOrders::orderBy('id','desc')->with('marketing_detail')->get();
+        $jobs = Job::where('job_status',1)->where('is_completed',0)->orderBy('id','desc')
+        ->with('marketing')->with('user')->with('consultant')->get();
+        return view('admin.active-job', compact('users', 'marketings', 'jobs'));
+    }
+    public function completed_jobs(){
+        $users = User::where('role','consultant')->get();
+        $marketings = MarketOrders::orderBy('id','desc')->with('marketing_detail')->get();
+        $jobs = Job::where('job_status',1)->where('is_completed',1)->orderBy('id','desc')
+        ->with('marketing')->with('user')->with('consultant')->get();
+        $setting = Setting::first();
+        return view('admin.completed-job', compact('users', 'marketings', 'jobs','setting'));
+    }
+    public function add_assign_job(Request $request){
+        $request->validate([
+            'user_id' => 'required',
+            'marketing_id' => 'required',
+            'admin_note' => 'required',
+        ]);
+        $job = new Job();
+        $job->user_id = $request->user_id;
+        $job->assign_to = $request->assign_to;
+        $job->marketing_id = $request->marketing_id;
+        $job->admin_note = $request->admin_note;
+        $user = User:: where('id',$request->id)->first();
+        if($job->save()){
+            $user_detail = User::where('id',$request->assign_to)->first();
+
+            $data['title'] = 'Job Assigned';
+            $data['body'] = 'Congratulations!. New job has been assigned to you';
+            $data['body'] .= ' Click on below link to view the job!';
+            $data['link'] = "consultant.jobs";
+            $data['linkText'] = "View";
+            $data['to'] = $user_detail->email;
+            $data['username'] = $user_detail->name;
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Job Assigned!');
+            });
+            return back()->with('message', ['text'=>'Job has been added','type'=>'success']);
+        } else {
+            return back()->with('message', ['text'=>'Oops! something web wrong','type'=>'danger']);
+        }
+    }
+    public function remove_job($id){
+        Job::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Job has been remived successfully!','type'=>'success']);
     }
 } 

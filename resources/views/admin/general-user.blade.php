@@ -24,12 +24,6 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <!-- <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th> -->
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Email</th>
@@ -42,12 +36,6 @@
                                 @if(isset($users) && !empty($users))
                                 @foreach($users as $user)
                                     <tr>
-                                        <!-- <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
-                                        </td> -->
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>

@@ -2,8 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\SocialiteController;
 
 
 Auth::routes();
@@ -96,9 +96,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/delete-location/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_location'])->name('admin.delete-location');
     Route::get('/cms/delete-skill/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_skill'])->name('admin.delete-skill');
     Route::get('/cms/view-book-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_book_detail'])->name('admin.view-book-detail');
-    Route::get('/cms/view-order-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_order_detail'])->name('admin.view-order-detail');
-    
-    
+    Route::get('/cms/view-order-detail/{id}', [App\Http\Controllers\Admin\AdminController::class, 'view_order_detail'])->name('admin.view-order-detail');    
     Route::get('/cms/faq', [App\Http\Controllers\Admin\AdminController::class, 'faq'])->name('admin.faq');
     Route::get('/cms/slider', [App\Http\Controllers\Admin\AdminController::class, 'slider'])->name('admin.slider');
     Route::get('/cms/ads', [App\Http\Controllers\Admin\AdminController::class, 'ads'])->name('admin.ads');
@@ -116,14 +114,25 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/banks', [App\Http\Controllers\Admin\AdminController::class, 'banks'])->name('admin.banks');
     Route::get('/cms/delete-marketing/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_marketing'])->name('admin.delete-marketing');
     Route::get('/cms/delete-banner/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_banner'])->name('admin.delete-banner');
+    Route::get('/cms/skills', [App\Http\Controllers\Admin\AdminController::class, 'skills'])->name('admin.skills');
+    
+    Route::get('/cms/assign-job', [App\Http\Controllers\Admin\AdminController::class, 'assign_job'])->name('admin.assign-job');
+    Route::get('/cms/active-jobs', [App\Http\Controllers\Admin\AdminController::class, 'active_jobs'])->name('admin.active-jobs');
+    Route::get('/cms/completed-jobs', [App\Http\Controllers\Admin\AdminController::class, 'completed_jobs'])->name('admin.completed-jobs');
+    Route::post('/cms/add-assign-job', [App\Http\Controllers\Admin\AdminController::class, 'add_assign_job'])->name('admin.add-assign-job');
+    Route::get('/cms/remove-job/{any}', [App\Http\Controllers\Admin\AdminController::class, 'remove_job'])->name('admin.remove-job');
     
     Route::post('/cms/add-genre/{any}', [App\Http\Controllers\Admin\GenreController::class, 'store'])->name('admin.add-genre');
     Route::get('/cms/delete-genre/{any}', [App\Http\Controllers\Admin\GenreController::class, 'delete'])->name('admin.delete-genre');
+    
     Route::post('/cms/add-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'store'])->name('admin.add-sub-genre');
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
-    Route::get('/cms/skills', [App\Http\Controllers\Admin\AdminController::class, 'skills'])->name('admin.skills');
-    Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
+    
+    // Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
     Route::post('/cms/submit-payment-proof/', [App\Http\Controllers\Consultant\ConsultantController::class, 'submit_payment_proof'])->name('admin.submit-payment-proof');
+    Route::get('/cms/update-publisher-status/{any}/{num}', [App\Http\Controllers\PublisherController::class, 'update_publisher_status'])->name('admin.update-publisher-status');
+    
+    Route::get('/cms/delete-publisher/{any}', [App\Http\Controllers\PublisherController::class, 'delete_publisher'])->name('admin.delete-publisher');
 });
 
 Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon')->middleware('auth');
@@ -146,8 +155,19 @@ Route::group(['middleware' => 'author'], function () {
 });
 
 //Publisher Routes
+Route::post('/publisher-register', [App\Http\Controllers\PublisherController::class, 'signup'])->name('publisher-register')->middleware('auth');
+Route::get('/view-book-detail', [App\Http\Controllers\PublisherController::class, 'view_book_detail'])->name('view-book-detail')->middleware('auth');
 Route::group(['middleware' => 'publisher'], function () {
-    Route::get('/publisher', [App\Http\Controllers\Publisher\PublisherController::class, 'index'])->name('publisher');
+    Route::get('/create-author', [App\Http\Controllers\PublisherController::class, 'create_author'])->name('publisher.create-author');
+    Route::post('/register-author', [App\Http\Controllers\PublisherController::class, 'register_author'])->name('publisher.register-author');
+    Route::get('/add-book-for-author', [App\Http\Controllers\PublisherController::class, 'add_book_for_author'])->name('publisher.add-book-for-author');
+    Route::post('/author/insert-book-for-author/{any}', [App\Http\Controllers\PublisherController::class, 'insert_book'])->name('insert-book-for-author');
+    Route::get('/all-books', [App\Http\Controllers\PublisherController::class, 'all_books'])->name('publisher.all-books');
+    Route::get('/marketing', [App\Http\Controllers\PublisherController::class, 'marketing'])->name('publisher.marketing');
+    Route::get('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
+    Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
+    Route::get('/payment-details', [App\Http\Controllers\PublisherController::class, 'payment_details'])->name('publisher.payment-details');
+    Route::post('/update-payment-detail', [App\Http\Controllers\PublisherController::class, 'update_payment_detail'])->name('publisher.update-payment-detail');
 });
 
 //AFFILIATE Routes
@@ -165,6 +185,8 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/consultant/payment-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'payment_detail'])->name('consultant.payment-detail');
     Route::post('/consultant/update-payment-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'update_payment_detail'])->name('consultant.update-payment-detail');
     Route::get('/consultant/jobs', [App\Http\Controllers\Consultant\ConsultantController::class, 'jobs'])->name('consultant.jobs');
+    Route::get('/consultant/active-jobs', [App\Http\Controllers\Consultant\ConsultantController::class, 'active_jobs'])->name('consultant.active-jobs');
+    Route::get('/consultant/completed-jobs', [App\Http\Controllers\Consultant\ConsultantController::class, 'completed_jobs'])->name('consultant.completed-jobs');
     Route::get('/consultant/get-author-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'get_author_detail'])->name('get-author-detail');
     Route::get('/consultant/get-marketing-detail', [App\Http\Controllers\Consultant\ConsultantController::class, 'get_marketing_detail'])->name('get-marketing-detail');
     Route::get('/consultant/approve-marketing-status/{any}/{num}', [App\Http\Controllers\Consultant\ConsultantController::class, 'approve_marketing_status'])->name('consultant.approve-marketing-status');
@@ -212,3 +234,7 @@ Route::get('pay', function () {
 });
 Route::post('/pay-now/{any}', [PaymentController::class, 'initialize'])->name('pay-now');
 Route::get('/rave/callback/{any}', [PaymentController::class, 'callback'])->name('flutterwave-callback');
+
+Route::get('/home', function(){
+    return view('home');
+});

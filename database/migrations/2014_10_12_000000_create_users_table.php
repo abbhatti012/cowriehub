@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText('fcm_token')->nullable();
+            $table->unsignedBigInteger('created_by')->default(0);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

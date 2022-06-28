@@ -164,10 +164,31 @@
                     <span class="nav-text">Payment Detail</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(2) == 'jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>"><a href="{{ route('consultant.jobs') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-tasks"></i>
+            <li class="<?php if(request()->segment(2) == 'jobs'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
+                    <i class="fa fa-bar-chart"></i>
                     <span class="nav-text">Jobs</span>
                 </a>
+                <ul aria-expanded="false">
+                    <li class="<?php if(request()->segment(2) == 'jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                        <a href="{{ route('consultant.jobs') }}" class="ai-icon" aria-expanded="false">
+                            <span class="nav-text">Pending Jobs</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul aria-expanded="false">
+                    <li class="<?php if(request()->segment(2) == 'active-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                        <a href="{{ route('consultant.active-jobs') }}" class="ai-icon" aria-expanded="false">
+                            <span class="nav-text">Active Jobs</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul aria-expanded="false">
+                    <li class="<?php if(request()->segment(2) == 'completed-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                        <a href="{{ route('consultant.completed-jobs') }}" class="ai-icon" aria-expanded="false">
+                            <span class="nav-text">Completed Jobs</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
             @endif
         </ul>

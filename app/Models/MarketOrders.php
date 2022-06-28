@@ -23,4 +23,7 @@ class MarketOrders extends Model
     public function marketing_detail(){
         return $this->hasOne(Marketing::class, 'id', 'marketing_id');
     }
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

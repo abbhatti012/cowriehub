@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('synopsis');
             $table->string('genre');
             $table->string('sub_author')->nullable();
+            $table->integer('publisher_id')->default(0);
             $table->string('publisher');
             $table->string('country');
             $table->string('publication_date');

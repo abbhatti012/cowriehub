@@ -18,7 +18,7 @@ class PaymentController extends Controller
     public function before_payment(Request $request){
         $userId = Auth::id();
         if(!$userId){
-            return redirect('login');
+            $userId = 0;
         }
         $payment = new Payment();
         $payment->user_id = $userId;
@@ -35,7 +35,7 @@ class PaymentController extends Controller
     public function preorder_before_payment(Request $request){
         $userId = Auth::id();
         if(!$userId){
-            return redirect('login');
+            $userId = 0;
         }
         $payment = new Payment();
         $payment->user_id = $userId;
@@ -55,7 +55,7 @@ class PaymentController extends Controller
     }
 
     public function initialize(Request $request, $id){
-        $user = User::where('id',Auth::id())->first();
+        // $user = User::where('id',Auth::id())->first();
         $payment = Payment::find($id);
         $billing['first_name'] = $request->billing_first_name;
         $billing['last_name'] = $request->billing_last_name;
@@ -112,13 +112,18 @@ class PaymentController extends Controller
         $payment->amount_paid = $total_amount;
         $payment->save();
         $carts = session()->get('cart');
+        if(!Auth::id()){
+            $userId = 0;
+        } else {
+            $userId = Auth::id();
+        }
         if($payment->is_preorder == 0){
             $check = Coupon::where('code',$payment->coupon_code)->first();
             $totalPrice = 0;
             foreach($carts as $cart){
                 $order = new Order();
                 $order->payment_id = $payment->id;
-                $order->user_id = Auth::id();
+                $order->user_id = $userId;
                 $order->book_id = $cart['id'];
                 $order->is_preorder = $cart['is_preorder'];
                 $order->extra_type = $cart['extraType'];
@@ -149,7 +154,7 @@ class PaymentController extends Controller
             $book = Book::find($payment->book_id);
             $order = new Order();
             $order->payment_id = $payment->id;
-            $order->user_id = Auth::id();
+            $order->user_id = $userId;
             $order->book_id = $payment->book_id;
             $order->is_preorder = 1;
             $order->extra_type = $payment->extraType;
@@ -200,7 +205,7 @@ class PaymentController extends Controller
             'payment_options' => 'card',
             'redirect_url' => route('flutterwave-callback', $payment->id),
             'customer' => [
-                'email' => $user->email,
+                'email' => $request->billing_email,
                 'name' => 'Zubdev'
             ],
             'meta' => [

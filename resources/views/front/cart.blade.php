@@ -75,11 +75,7 @@
                 var shippingCharges = $('#shippingCharges option:selected').val();
                 var preciseLocation = $('#precise_location').val();
                 var postCode = $('#post_code').val();
-                var userId = "{{ Auth::id() }}";
-                if(userId == ''){
-                    $.notify('Please login first to continue');
-                    return false;
-                }
+                
                 if(shippingCharges == ''){
                     $.notify('Please choose location');
                     return false;

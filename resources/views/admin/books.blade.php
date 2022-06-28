@@ -37,11 +37,6 @@
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <!-- <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div> -->
                                         </th>
                                         <th>View Detail</th>
                                         <th>Title</th>
@@ -65,12 +60,6 @@
                                 
                                 @foreach($books as $book)
                                     <tr>
-                                        <!-- <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
-                                        </td> -->
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin.view-book-detail',$book->id) }}" class="btn btn-info shadow btn-xs sharp" title="Vide Detail"><i class="fa fa-eye"></i></a>

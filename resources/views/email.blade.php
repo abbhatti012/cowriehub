@@ -85,10 +85,12 @@
                                                 Hi <b>{{ $username }} ,</b> <br><br>
                                                     {{ $body }} <br>
                                                     <b>
-                                                        @if(isset($param) && !empty($param))
-                                                            <a href="{{ route($link) }}?{{ $param }}">{{ $linkText }}</a>
-                                                        @else
-                                                            <a href="{{ route($link) }}">{{ $linkText }}</a>
+                                                        @if(!empty($link))
+                                                            @if(isset($param) && !empty($param))
+                                                                <a href="{{ route($link) }}?{{ $param }}">{{ $linkText }}</a>
+                                                            @else
+                                                                <a href="{{ route($link) }}">{{ $linkText }}</a>
+                                                            @endif
                                                         @endif
                                                     </b>
                                             </div>

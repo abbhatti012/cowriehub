@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Consultant;
 
+use App\Models\Job;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Payment;
@@ -219,8 +220,8 @@ class ConsultantController extends Controller
         $data['title'] = 'Consultant Declined';
         $data['body'] = 'Sorry! you are not compatible with our requirements. We are going to remove you from cowriehub.';
         $data['body'] .= ' Better luck next time or click on below link to add accurate details!';
-        $data['link'] = "user.consultant-account";
-        $data['linkText'] = "View";
+        $data['link'] = "";
+        $data['linkText'] = "";
         $data['to'] = $user_detail->email;
         $data['username'] = $user_detail->name;
         Mail::send('email', $data,function ($m) use ($data) {
@@ -280,9 +281,19 @@ class ConsultantController extends Controller
         return back()->with('message', ['text'=>'Payment detail set successfully!','type'=>'success']);
     }
     public function jobs(){
-        $jobs = Consultant::where('user_id',Auth::id())->where('job_id','!=','')->with('marketing')->get();
+        $jobs = Job::where('assign_to',Auth::id())->where('job_status',0)->with('user')->with('marketing')->get();
         $setting = Setting::first();
         return view('consultant.jobs', compact('jobs','setting'));
+    }
+    public function active_jobs(){
+        $jobs = Job::where('assign_to',Auth::id())->where('job_status','!=',0)->where('is_completed',0)->with('user')->with('marketing')->get();
+        $setting = Setting::first();
+        return view('consultant.active-jobs', compact('jobs','setting'));
+    }
+    public function completed_jobs(){
+        $jobs = Job::where('assign_to',Auth::id())->where('job_status','!=',0)->where('is_completed',1)->with('user')->with('marketing')->get();
+        $setting = Setting::first();
+        return view('consultant.completed-jobs', compact('jobs','setting'));
     }
     public function get_author_detail(Request $request){
         $id = $request->id;
@@ -295,16 +306,29 @@ class ConsultantController extends Controller
         return response()->json($user);
     }
     public function upload_document(Request $request, $id){
-        $validatedData = $request->validate([
+        $request->validate([
             'job_status' => 'required',
             'prove_document' => 'required',
+            'confirmation' => 'required',
         ]);
-        $user = MarketOrders::find($id);
-        $user->job_type = $request->job_status;
+        
+        $user = Job::find($id);
+        $imageArr = $user->document;
+        $user->is_completed = $request->job_status;
+        $user->confirmation = $request->confirmation;
+        $user->document_note = $request->document_note;
+        if($imageArr){
+            $imageArr = unserialize($imageArr);
+        } else {
+            $imageArr = [];
+        }
         if($request->prove_document != null){
-            $UploadImage = time().'.'.$request->prove_document->extension();
-            $request->prove_document->move(public_path('images/consultant'), $UploadImage);
-            $user->prove_document = 'images/consultant/'.$UploadImage;
+            for($i = 0; $i < count($request->prove_document); $i++){
+                $UploadImage = $i.time().'.'.$request->prove_document[$i]->extension();
+                $request->prove_document[$i]->move(public_path('images/consultant'), $UploadImage);
+                array_push($imageArr,'images/consultant/'.$UploadImage);
+            }
+            $user->document = serialize($imageArr);
         } else {
             unset($user->prove_document);
         }
@@ -324,7 +348,7 @@ class ConsultantController extends Controller
         return back()->with('message', ['text'=>'Job status has been uploaded succesfully!','type'=>'success']);
     }
     public function approve_marketing_status(Request $request, $id, $value){
-        $user = MarketOrders::find($id);
+        $user = Job::find($id);
         $user->job_status = $value;
         $user->save();
         if($value == 1){
@@ -353,7 +377,7 @@ class ConsultantController extends Controller
         if($id == 0){
             return back()->with('message', ['text'=>'Proof not sent! Something goes wrong','type'=>'danger']);
         }
-        $user = MarketOrders::find($id);
+        $user = Job::find($id);
         $user->payment_note = $request->payment_note;
         if($request->payment_proof != null){
             $UploadImage = time().'.'.$request->payment_proof->extension();
@@ -364,7 +388,7 @@ class ConsultantController extends Controller
         }
         $user->save();
 
-        $user_detail = User::where('id',$user->user_id)->first();
+        $user_detail = User::where('id',$user->assign_to)->first();
 
         $data['title'] = 'Payment Sent';
         $data['body'] = 'COWRIEHUB just make a payment of you, Please click on below link to view your payment proof!';

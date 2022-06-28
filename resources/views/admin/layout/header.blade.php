@@ -196,6 +196,28 @@
                     </li>
                 </ul>
             </li>
+            <li class="<?php if(request()->segment(2) == 'assign-job' || request()->segment(2) == 'active-jobs' || request()->segment(2) == 'completed-jobs'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
+                    <i class="fa fa-first-order"></i>
+                    <span class="nav-text">Jobs</span>
+                </a>
+                <ul aria-expanded="false">
+                    <li class="<?php if(request()->segment(2) == 'assign-job'){echo 'mm-active';} ?>">
+                        <a href="{{ route('admin.assign-job') }}" class="ai-icon" aria-expanded="false">
+                            Assign Job
+                        </a>
+                    </li>
+                    <li class="<?php if(request()->segment(2) == 'active-jobs'){echo 'mm-active';} ?>">
+                        <a href="{{ route('admin.active-jobs') }}" class="ai-icon" aria-expanded="false">
+                            Active Jobs
+                        </a>
+                    </li>
+                    <li class="<?php if(request()->segment(2) == 'completed-jobs'){echo 'mm-active';} ?>">
+                        <a href="{{ route('admin.completed-jobs') }}" class="ai-icon" aria-expanded="false">
+                            Completed Jobs
+                        </a>
+                    </li>
+                </ul>
+            </li>
             
             <li class="<?php if(request()->segment(2) == 'books' && request()->segment(3) != 'orders'){echo 'mm-active';} ?>"><a href="{{ route('admin.books') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-book"></i>

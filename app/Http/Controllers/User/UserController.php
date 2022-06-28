@@ -26,7 +26,8 @@ class UserController extends Controller
         return view('front.author.author_account');
     }
     public function publisher_account(){
-        return view('front.author.publisher_account');
+        $user = DB::table('publishers')->where('user_id',Auth::id())->first();
+        return view('publisher.publisher_account',compact('user'));
     }
     public function affiliate_account(){
         return view('front.author.affiliate_account');
@@ -167,11 +168,22 @@ class UserController extends Controller
     public function search_author(){
         return view('user.consultant.search-author');
     }
-    public function dashboard(){
-        $books = Book::where('user_id',Auth::id())->where('status',1)->count();
-        $orders = Payment::where('user_id',Auth::id())->count();
-        $earning = Payment::where('user_id',Auth::id())->where('status','successfull')->sum('total_amount');
-        $pending_earning = Payment::where('user_id',Auth::id())->where('status','!=','successfull')->sum('total_amount');
+    public function dashboard(Request $request){
+        if(isset($request->date) && !empty($request->date)){
+            $date = explode(' - ',$request->date);
+            $startDate = date('Y-m-d',strtotime($date[0]));
+            $endDate = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$startDate,1=>$endDate];
+            $books = Book::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status',1)->count();
+            $orders = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->count();
+            $earning = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status','successfull')->sum('total_amount');
+            $pending_earning = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status','!=','successfull')->sum('total_amount');
+        } else {
+            $books = Book::where('user_id',Auth::id())->where('status',1)->count();
+            $orders = Payment::where('user_id',Auth::id())->count();
+            $earning = Payment::where('user_id',Auth::id())->where('status','successfull')->sum('total_amount');
+            $pending_earning = Payment::where('user_id',Auth::id())->where('status','!=','successfull')->sum('total_amount');
+        }
         return view('user.dashboard',compact('books','orders','earning','pending_earning'));
     }
     public function coupons(){

@@ -702,11 +702,43 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
-            <li class="<?php if(request()->segment(2) == ''){echo 'mm-active';} ?>"><a href="{{ route('publisher') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-dashboard"></i>
-                    <span class="nav-text">Dashboard</span>
+            <li class="<?php if(request()->segment(1) == 'publisher'){echo 'mm-active';} ?>"><a href="{{ route('user.publisher-account') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-users"></i>
+                    <span class="nav-text">Register Account</span>
                 </a>
             </li>
+            @if(Auth::user()->role == 'publisher')
+            <li class="<?php if(request()->segment(1) == 'create-author'){echo 'mm-active';} ?>"><a href="{{ route('publisher.create-author') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-users"></i>
+                    <span class="nav-text">Create an author</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'add-book-for-author'){echo 'mm-active';} ?>"><a href="{{ route('publisher.add-book-for-author') }}?type=author" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-plus"></i>
+                    <span class="nav-text">Add book for author</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'all-books'){echo 'mm-active';} ?>"><a href="{{ route('publisher.all-books') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-book"></i>
+                    <span class="nav-text">All books</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'marketing'){echo 'mm-active';} ?>"><a href="{{ route('publisher.marketing') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-bullseye"></i>
+                    <span class="nav-text">My Marketing</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'my-sales'){echo 'mm-active';} ?>"><a href="{{ route('publisher.my-sales') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">My Sales</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'payment-details'){echo 'mm-active';} ?>"><a href="{{ route('publisher.payment-details') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-info-circle"></i>
+                    <span class="nav-text">Payment Details</span>
+                </a>
+            </li>
+            @endif
         </ul>
     </div>
 </div>

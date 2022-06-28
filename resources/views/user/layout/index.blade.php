@@ -129,13 +129,10 @@
         @include('user.layout.footer')
     </div>
 
-<!-- Required vendors -->
 <script src="{{asset('admin_assets/vendor/global/global.min.js')}}"></script>
 <script src="{{asset('admin_assets/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
 
 <script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/moment.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
-<!-- <script src="{{asset('admin_assets/js/dashboard/dashboard-1.js')}}"></script> -->
 <script src="{{asset('admin_assets/js/custom.min.js')}}"></script>
 <script src="{{asset('admin_assets/js/deznav-init.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>

@@ -1,21 +1,56 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Home v1 | Bookworm</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="shortcut icon" href="../../assets/img/favicon.png">
+@extends('app')
+@section('content')
+@endsection
+@section('scripts')
+    <script>
+        // Retrieve Firebase Messaging object.
+        const messaging = firebase.messaging();
+        // Add the public key generated from the console here.
+        messaging.usePublicVapidKey("BFlNei6G_Awoq45GEMPHcmlqGtOlCOFzuyQL8iFL_vUrOCmBCxRI6BugeILB0SvyOxHAQePzJRyhZGTLWyJK29Q");
+        // messaging.usePublicVapidKey("AIzaSyD9XKCkBT-tcSUyooN4ts4zCbC96KH_6qI");
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="../../assets/vendor/font-awesome/css/fontawesome-all.min.css">
-    <link rel="stylesheet" href="../../assets/vendor/flaticon/font/flaticon.css">
-    <link rel="stylesheet" href="../../assets/vendor/animate.css/animate.css">
-    <link rel="stylesheet" href="../../assets/vendor/bootstrap-select/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="../../assets/vendor/slick-carousel/slick/slick.css"/>
-    <link rel="stylesheet" href="../../assets/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+        function sendTokenToServer(fcm_token) {
+            const user_id = 1;
+            axios.post('/api/save-token', {
+                fcm_token, user_id
+            })
+                .then(res => {
+                    console.log(res);
+                })
 
-    <link rel="stylesheet" href="../../assets/css/theme.css">
-</head>
-<body>
+        }
 
+        function retreiveToken(){
+            messaging.getToken().then((currentToken) => {
+                if (currentToken) {
+                    sendTokenToServer(currentToken);
+                    // updateUIForPushEnabled(currentToken);
+                } else {
+                    // Show permission request.
+                    //console.log('No Instance ID token available. Request permission to generate one.');
+                    // Show permission UI.
+                    //updateUIForPushPermissionRequired();
+                    //etTokenSentToServer(false);
+                    alert('You should allow notification!');
+                }
+            }).catch((err) => {
+                console.log(err.message);
+                // showToken('Error retrieving Instance ID token. ', err);
+                // setTokenSentToServer(false);
+            });
+        }
+        retreiveToken();
+        messaging.onTokenRefresh(()=>{
+            retreiveToken();
+        });
+
+        messaging.onMessage((payload)=>{
+            console.log('Message received');
+            console.log(payload);
+
+            location.reload();
+        });
+
+    </script>
+@endsection

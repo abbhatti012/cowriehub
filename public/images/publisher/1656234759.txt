@@ -1,0 +1,15 @@
+Phase --1 Timeline and Budget
+
+2)Form stage:--create 5 static forms with "Esignature" ,forms can be filled by client and property broker online and autosave 
+and Files-----Need to add five forms that can be upload/download /print/view /Edit/genrate link grouping in files section of leads like folder of asset and liability that will display in clients dashboard
+placeholders to upload different files for tracking from dashboard.  when file uploaded it marked as ticked and relvent place should see the form is available and uploaded
+
+3)File management:files can be upload/download /print/view /Edit folders with client and folders created/deleted to upload document,File section ,uploaded document should auto go in created folder of particular client
+
+Uploaded document from both end should have to reflect to both broker and client
+
+4)CRM Dasboard
+
+5)Payment functionality in client admin ( paypal , payment getways already available in super admin)
+
+

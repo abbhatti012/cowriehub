@@ -128,7 +128,8 @@ class HomeController extends Controller
     public function shop(){
         $genres = Genre::with('subgenres')->get();
         $users = User::where('role','author')->get();
-        return view('front.shop', compact('genres', 'users'));
+        $featured = Book::where('is_featured',1)->where('status',1)->limit(3)->get();
+        return view('front.shop', compact('genres', 'users', 'featured'));
     }
     public function product($slug){
         $book = Book::where('slug',$slug)->first();
@@ -192,11 +193,18 @@ class HomeController extends Controller
     public function checkout(){
         $token = $_GET['token'];
         $payment = Payment::where('token', $token)->first();
-        $user = AuthorDetail::where('user_id',Auth::id())->first();
-        $billing = unserialize($user->billing_detail);
-        $shipping = unserialize($user->shipping_detail);
+        if(Auth::id()){
+            $user = AuthorDetail::where('user_id',Auth::id())->first();
+            $billing = unserialize($user->billing_detail);
+            $shipping = unserialize($user->shipping_detail);
+            $is_hide_address = 1; 
+        } else {
+            $billing = [];
+            $shipping = [];
+            $is_hide_address = 0; 
+        }
         $location = Location::where('location',$payment->location)->first();
-        return view('front.checkout', compact('payment','billing','shipping','location'));
+        return view('front.checkout', compact('payment','billing','shipping','location','is_hide_address'));
     }
     public function my_account(){
         $user = AuthorDetail::where('user_id',Auth::id())->first();
@@ -228,7 +236,13 @@ class HomeController extends Controller
         return view('front.authors-list', compact('authors'));
     }
     public function author_detail($id){
-        return view('front.author-detail');
+        $user = User::where('id',$id)->with('author_detail')->first();
+        $query = Book::select('books.*','books.id as book_id','users.*','users.id as author_id','sub_genres.title as genre_title')
+        ->orderBy('books.id','desc')->where('books.status',1)
+        ->join('users','users.id','=','books.user_id')
+        ->join('sub_genres','sub_genres.id','=','books.genre');
+        $books = $query->where('books.user_id',$id)->get();
+        return view('front.author-detail', compact('user','books'));
     }
     public function contact_us(){
         return view('front.contact-us');
