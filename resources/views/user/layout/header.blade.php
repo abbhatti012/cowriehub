@@ -128,17 +128,14 @@
                             </div>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end">
-                            <a href="{{ route('admin.profile') }}" class="dropdown-item ai-icon">
+                            <!-- <a href="{{ route('admin.profile') }}" class="dropdown-item ai-icon">
                                 <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                 <span class="ms-2">Profile </span>
-                            </a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()" {{ __('Logout') }} class="dropdown-item ai-icon">
+                            </a> -->
+                            <a href="{{ route('logout') }}" class="dropdown-item ai-icon">
                                 <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                                 <span class="ms-2">
                                     Logout
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </span>
                             </a>
                         </div>
@@ -156,18 +153,49 @@
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(1) == 'author'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-user"></i>
-                    <span class="nav-text">Author</span>
+            <li class="<?php if(request()->segment(2) == 'edit'){echo 'mm-active';} ?>"><a href="{{ route('author.profile.edit') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-user-circle-o"></i>
+                    <span class="nav-text">My Page</span>
                 </a>
-                <ul aria-expanded="false">
-                    <li><a @if(request()->segment(2) == 'edit')class='mm-active'@endif href="{{ route('author.profile.edit') }}">My Page</a></li>
-                    <li><a @if(request()->segment(2) == 'books')class='mm-active'@endif href="{{ route('author.books') }}">My Books</a></li>
-                    <li><a @if(request()->segment(2) == 'strategies')class='mm-active'@endif href="{{ route('author.marketing') }}">My Marketing</a></li>
-                    <li><a @if(request()->segment(2) == 'sales')class='mm-active'@endif href="{{ route('author.sales') }}">My Sales</a></li>
-                    <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('author.coupons') }}" class="ai-icon" aria-expanded="false">Coupons</a></li>
-                </ul>
             </li>
+            @if(Auth::user()->role == 'author')
+            <li class="<?php if(request()->segment(2) == 'books'){echo 'mm-active';} ?>"><a href="{{ route('author.books') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-book"></i>
+                    <span class="nav-text">My Books</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'strategies'){echo 'mm-active';} ?>"><a href="{{ route('author.marketing') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-bullhorn"></i>
+                    <span class="nav-text">My Marketing</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'sales'){echo 'mm-active';} ?>"><a href="{{ route('author.sales') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">My Sales</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'coupons'){echo 'mm-active';} ?>"><a href="{{ route('author.coupons') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-gift"></i>
+                    <span class="nav-text">Coupons</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'revenue'){echo 'mm-active';} ?>"><a href="{{ route('author.revenue') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">Revenue</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-address-card"></i>
+                    <span class="nav-text">Addresses</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-heart-o"></i>
+                    <span class="nav-text">Wishlist</span>
+                </a>
+            </li>
+            @endif
+           
             <!-- <li class="<?php //if(request()->segment(1) == 'consultant'){echo 'mm-active';} ?>"><a href="" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-handshake-o"></i>
                     <span class="nav-text">Cousultant</span>

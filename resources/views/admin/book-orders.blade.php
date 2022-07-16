@@ -1,5 +1,10 @@
 @extends('admin.layout.index')
 @section('content')
+<style>
+    #payUserCommission .table-responsive{
+        height: 100px !important;
+    }
+</style>
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -64,7 +69,11 @@
                                         </td>
                                         <td>
                                             <div class="d-flex">
-                                                <a href="#" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
+                                                @if($payment->status   == 'pending')
+                                                <a href="{{ route('admin.update-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to approve the payment?')" class="btn btn-info shadow btn-xs sharp" title="Approve Payment"><i class="fa fa-check"></i></a>
+                                                @elseif($payment->status   == 'successfull')
+                                                    <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}"  data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -79,4 +88,81 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="payUserCommission">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Pay Now</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="reveneuModel"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="payNow">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <form id="basic-validation" action="{{ route('admin.submit-author-payment-proof') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Payment Proof</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="basic-form custom_file_input">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Payment Proof Screenshot</span>
+                            <div class="form-file">
+                                <input type="file" name="payment_proof" class="form-file-input form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="basic-form custom_file_input">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Additional Note</span>
+                            <div class="form-file">
+                                <textarea name="payment_note" class="form-file-input form-control"  required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" value="0" name="revenueId" id="revenueId">
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary submitProof">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+@endsection
+@section('scripts')
+<script>
+    $(document).ready(function(){
+        $('.payUserCommission').on('click',function(){
+            var id = $(this).data('id');
+            $.ajax({
+                type : 'GET',
+                url : '{{ route("admin.get-revenue-per-order") }}?id='+id,
+                success : function(data){
+                    $('.reveneuModel').html(data);
+                }
+            });
+        });
+        $(document).on('click','.paymentProof',function(){
+            var id = $(this).data('id');
+            $('#revenueId').val(id);
+        })
+    });
+</script>
 @endsection

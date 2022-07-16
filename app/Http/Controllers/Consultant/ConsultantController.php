@@ -6,6 +6,7 @@ use App\Models\Job;
 use App\Models\User;
 use App\Models\Skill;
 use App\Models\Payment;
+use App\Models\Revenue;
 use App\Models\Setting;
 use App\Mail\NotifyMail;
 use App\Models\Consultant;
@@ -379,6 +380,7 @@ class ConsultantController extends Controller
         }
         $user = Job::find($id);
         $user->payment_note = $request->payment_note;
+        $user->is_payment = 1;
         if($request->payment_proof != null){
             $UploadImage = time().'.'.$request->payment_proof->extension();
             $request->payment_proof->move(public_path('images/consultant'), $UploadImage);
@@ -394,6 +396,36 @@ class ConsultantController extends Controller
         $data['body'] = 'COWRIEHUB just make a payment of you, Please click on below link to view your payment proof!';
         $data['link'] = "consultant.jobs";
         $data['linkText'] = "View";
+        $data['to'] = $user_detail->email;
+        $data['username'] = $user_detail->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('Payment Sent!');
+        });
+        return back()->with('message', ['text'=>'Payment proof sent succesfully!','type'=>'success']);
+    }
+    public function submit_author_payment_proof(Request $request){
+        $id = $request->revenueId;
+        if($id == 0){
+            return back()->with('message', ['text'=>'Proof not sent! Something goes wrong','type'=>'danger']);
+        }
+        $user = Revenue::find($id);
+        $user->payment_note = $request->payment_note;
+        $user->admin_payment_status = 1;
+        if($request->payment_proof != null){
+            $UploadImage = time().'.'.$request->payment_proof->extension();
+            $request->payment_proof->move(public_path('images/proofs'), $UploadImage);
+            $user->payment_proof = 'images/proofs/'.$UploadImage;
+        } else {
+            unset($user->payment_proof);
+        }
+        $user->save();
+
+        $user_detail = User::where('id',$user->user_id)->first();
+
+        $data['title'] = 'Payment Sent';
+        $data['body'] = 'COWRIEHUB just make a payment of you, Please check your account for verification of visit to cowriehub for payment proof!';
+        $data['link'] = "";
+        $data['linkText'] = "";
         $data['to'] = $user_detail->email;
         $data['username'] = $user_detail->name;
         Mail::send('email', $data,function ($m) use ($data) {

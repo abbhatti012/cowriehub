@@ -127,9 +127,12 @@ Route::group(['middleware' => 'admin'], function () {
     
     Route::post('/cms/add-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'store'])->name('admin.add-sub-genre');
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
+    Route::get('/cms/update-payment-status/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_payment_status'])->name('admin.update-payment-status');
+    Route::get('/cms/get-revenue-per-order', [App\Http\Controllers\Admin\AdminController::class, 'get_revenue_per_order'])->name('admin.get-revenue-per-order');
     
     // Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
     Route::post('/cms/submit-payment-proof/', [App\Http\Controllers\Consultant\ConsultantController::class, 'submit_payment_proof'])->name('admin.submit-payment-proof');
+    Route::post('/cms/submit-author-payment-proof/', [App\Http\Controllers\Consultant\ConsultantController::class, 'submit_author_payment_proof'])->name('admin.submit-author-payment-proof');
     Route::get('/cms/update-publisher-status/{any}/{num}', [App\Http\Controllers\PublisherController::class, 'update_publisher_status'])->name('admin.update-publisher-status');
     
     Route::get('/cms/delete-publisher/{any}', [App\Http\Controllers\PublisherController::class, 'delete_publisher'])->name('admin.delete-publisher');
@@ -152,7 +155,10 @@ Route::group(['middleware' => 'author'], function () {
     Route::get('/author/delete-book/{any}', [App\Http\Controllers\BookController::class, 'delete_book'])->name('delete-book');
     Route::get('/author/edit-book/{any}', [App\Http\Controllers\BookController::class, 'edit_book'])->name('edit-book');
     Route::get('/author/coupons', [App\Http\Controllers\User\UserController::class, 'coupons'])->name('author.coupons');
+    Route::get('/author/revenue', [App\Http\Controllers\User\UserController::class, 'revenue'])->name('author.revenue');
 });
+Route::get('/logout', [App\Http\Controllers\User\UserController::class, 'logout'])->name('logout');
+Route::get('/user-wishlist', [App\Http\Controllers\User\UserController::class, 'wishlist'])->name('user.wishlist');
 
 //Publisher Routes
 Route::post('/publisher-register', [App\Http\Controllers\PublisherController::class, 'signup'])->name('publisher-register')->middleware('auth');
@@ -168,6 +174,8 @@ Route::group(['middleware' => 'publisher'], function () {
     Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
     Route::get('/payment-details', [App\Http\Controllers\PublisherController::class, 'payment_details'])->name('publisher.payment-details');
     Route::post('/update-payment-detail', [App\Http\Controllers\PublisherController::class, 'update_payment_detail'])->name('publisher.update-payment-detail');
+    Route::get('/revenue', [App\Http\Controllers\PublisherController::class, 'revenue'])->name('publisher.revenue');
+    Route::get('/publisher-dashboard', [App\Http\Controllers\PublisherController::class, 'dashboard'])->name('publishers.dashboard');
 });
 
 //AFFILIATE Routes
@@ -221,6 +229,7 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::get('/delete-consultant/{num}', [App\Http\Controllers\Consultant\ConsultantController::class, 'delete_consultant'])->name('consultant.delete-consultant')->middleware('auth');
     Route::get('consultant/consultant-register', [App\Http\Controllers\Consultant\ConsultantController::class, 'consultant_account'])->name('user.consultant-account')->middleware('auth');
     Route::post('/consultant/consultant-signup', [App\Http\Controllers\Consultant\ConsultantController::class, 'consultant_signup'])->name('consultant.consultant-signup')->middleware('auth');
+    Route::get('/save-address', [App\Http\Controllers\User\UserController::class, 'save_address'])->name('save-address')->middleware('auth');
 // });
 
 Route::get('/auth/facebook', [SocialiteController::class, 'redirectToFB']);

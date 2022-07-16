@@ -40,7 +40,7 @@
                                         <th>Job Status</th>
                                         <th>All Documents</th>
                                         <th>Payment Status</th>
-                                        <th>Remove Job</th>
+                                        <!-- <th>Remove Job</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -92,13 +92,13 @@
                                         <td>
                                             @php $market = DB::table('marketing')->where('id',$job->marketing_id)->first(); @endphp
                                             GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
-                                            @if($job->payment_proof == '')
+                                            @if($job->is_payment == 0)
                                             <a href="javascript:void(0)" class="text-danger paymentProof" data-id="{{ $job->id }}" data-bs-toggle="modal" data-bs-target="#paymentProof"> PAY</a>
                                             @else
-                                            <a href="javascript:void(0)" class="text-success"> PAID</a>
+                                             <a href="javascript:void(0)" class="text-success"> PAID</a>
                                             @endif
                                         </td>
-                                        <td><a href="{{ route('admin.remove-job', $job->id) }}" class="text-danger" onclick="return confirm('Are you sure you want delete consultant?')" title="Remove Consultant">Remove</a></td>
+                                        <!-- <td><a href="{{ route('admin.remove-job', $job->id) }}" class="text-danger" onclick="return confirm('Are you sure you want remove job?')" title="Remove Job">Remove</a></td> -->
                                     </tr>
                                 @empty
                                 @endforelse

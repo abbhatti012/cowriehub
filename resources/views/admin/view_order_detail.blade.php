@@ -125,10 +125,14 @@
                     <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-user"></i> User Details</h4>
                         <p class="text-muted"></p>
-                        <div class="post">                     
+                        <div class="post">
+                            @if($user)
                             <p><b>User Name:&emsp;</b>{{ $user->name }}</p>
                             <p><b>User Email:&emsp;</b>{{ $user->email }}</p>
                             <p><b>User Role:&emsp;</b>{{ $user->role }}</p>
+                            @else
+                            <p><b>Guest</b></p>
+                            @endif
                         </div>
                     </div> 
                 </div>

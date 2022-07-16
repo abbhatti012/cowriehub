@@ -28,7 +28,8 @@ class CartController extends Controller
                 "bookPrice" => $request->bookPrice,
                 "title" => $request->title,
                 "image" => $request->image,
-                "is_preorder" => $request->is_preorder
+                "is_preorder" => $request->is_preorder,
+                "author_id" => $request->author_id
             ];
         }
         session()->put('cart', $cart);

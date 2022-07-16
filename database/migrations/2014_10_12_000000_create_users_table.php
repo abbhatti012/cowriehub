@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('password');
             $table->longText('fcm_token')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
+            $table->integer('checkout')->default(0);
+            $table->integer('checkin')->default(0);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

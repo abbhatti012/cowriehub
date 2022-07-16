@@ -35,6 +35,19 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6">
+                <div class="card gradient-4 card-bx">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-auto text-white">
+                            <h2 class="text-white">{{ $approved_books }}</h2>
+                            <span class="fs-18">Approved Books</span>
+                        </div>
+                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
                 <div class="card gradient-2 card-bx">
                     <div class="card-body d-flex align-items-center">
                         <div class="me-auto text-white">
@@ -48,10 +61,10 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-2 card-bx">
+                <div class="card gradient-3 card-bx">
                     <div class="card-body d-flex align-items-center">
                         <div class="me-auto text-white">
-                            <h2 class="text-white">{{  $earning }} GHS</h2>
+                            <h2 class="text-white">{{  $approved }} GHS</h2>
                             <span class="fs-18">Total Earning</span>
                         </div>
                         <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -61,15 +74,67 @@
                 </div>
             </div>
             <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-3 card-bx">
+                <div class="card gradient-5 card-bx">
                     <div class="card-body d-flex align-items-center">
                         <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $pending_earning }}</h2>
+                            <h2 class="text-white">{{ $pending }}</h2>
                             <span class="fs-18">Pending Earning</span>
                         </div>
                         <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M9.66671 38.6667V43.5C9.66671 48.8409 13.995 53.1667 19.3334 53.1667H43.5C48.8409 53.1667 53.1667 48.8409 53.1667 43.5C53.1667 35.455 53.1667 22.5475 53.1667 14.5C53.1667 9.16162 48.8409 4.83337 43.5 4.83337C36.5908 4.83337 26.245 4.83337 19.3334 4.83337C13.995 4.83337 9.66671 9.16162 9.66671 14.5V19.3334C9.66671 20.6674 10.7494 21.75 12.0834 21.75C13.4174 21.75 14.5 20.6674 14.5 19.3334C14.5 19.3334 14.5 17.069 14.5 14.5C14.5 11.832 16.6654 9.66671 19.3334 9.66671H43.5C46.1705 9.66671 48.3334 11.832 48.3334 14.5V43.5C48.3334 46.1705 46.1705 48.3334 43.5 48.3334C36.5908 48.3334 26.245 48.3334 19.3334 48.3334C16.6654 48.3334 14.5 46.1705 14.5 43.5C14.5 40.9335 14.5 38.6667 14.5 38.6667C14.5 37.3351 13.4174 36.25 12.0834 36.25C10.7494 36.25 9.66671 37.3351 9.66671 38.6667ZM27.9995 26.5834L24.8748 23.461C23.9323 22.5161 23.9323 20.9864 24.8748 20.0415C25.8197 19.099 27.3495 19.099 28.292 20.0415L35.542 27.2915C36.4869 28.2364 36.4869 29.7661 35.542 30.711L28.292 37.961C27.3495 38.9035 25.8197 38.9035 24.8748 37.961C23.9323 37.0161 23.9323 35.4864 24.8748 34.5415L27.9995 31.4167H7.25004C5.91604 31.4167 4.83337 30.334 4.83337 29C4.83337 27.6685 5.91604 26.5834 7.25004 26.5834H27.9995Z" fill="white"/>
                         </svg>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card gradient-7 card-bx">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-auto text-white">
+                            <h2 class="text-white">@if($check) {{$check->checkin}} @else 0 @endif</h2>
+                            <span class="fs-18">Check In</span>
+                        </div>
+                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.66671 38.6667V43.5C9.66671 48.8409 13.995 53.1667 19.3334 53.1667H43.5C48.8409 53.1667 53.1667 48.8409 53.1667 43.5C53.1667 35.455 53.1667 22.5475 53.1667 14.5C53.1667 9.16162 48.8409 4.83337 43.5 4.83337C36.5908 4.83337 26.245 4.83337 19.3334 4.83337C13.995 4.83337 9.66671 9.16162 9.66671 14.5V19.3334C9.66671 20.6674 10.7494 21.75 12.0834 21.75C13.4174 21.75 14.5 20.6674 14.5 19.3334C14.5 19.3334 14.5 17.069 14.5 14.5C14.5 11.832 16.6654 9.66671 19.3334 9.66671H43.5C46.1705 9.66671 48.3334 11.832 48.3334 14.5V43.5C48.3334 46.1705 46.1705 48.3334 43.5 48.3334C36.5908 48.3334 26.245 48.3334 19.3334 48.3334C16.6654 48.3334 14.5 46.1705 14.5 43.5C14.5 40.9335 14.5 38.6667 14.5 38.6667C14.5 37.3351 13.4174 36.25 12.0834 36.25C10.7494 36.25 9.66671 37.3351 9.66671 38.6667ZM27.9995 26.5834L24.8748 23.461C23.9323 22.5161 23.9323 20.9864 24.8748 20.0415C25.8197 19.099 27.3495 19.099 28.292 20.0415L35.542 27.2915C36.4869 28.2364 36.4869 29.7661 35.542 30.711L28.292 37.961C27.3495 38.9035 25.8197 38.9035 24.8748 37.961C23.9323 37.0161 23.9323 35.4864 24.8748 34.5415L27.9995 31.4167H7.25004C5.91604 31.4167 4.83337 30.334 4.83337 29C4.83337 27.6685 5.91604 26.5834 7.25004 26.5834H27.9995Z" fill="white"/>
+                        </svg>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-sm-6">
+                <div class="card gradient-8 card-bx">
+                    <div class="card-body d-flex align-items-center">
+                        <div class="me-auto text-white">
+                            <h2 class="text-white">@if($check) {{$check->checkout}} @else 0 @endif</h2>
+                            <span class="fs-18">Check Out</span>
+                        </div>
+                        <svg width="57" height="46" viewBox="0 0 57 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.55512 20.7503L11.4641 17.8435C12.3415 16.9638 12.3415 15.5397 11.4641 14.6601C10.5844 13.7827 9.16031 13.7827 8.28289 14.6601L1.53353 21.4094C0.653858 22.2891 0.653858 23.7132 1.53353 24.5929L8.28289 31.3422C9.16031 32.2197 10.5844 32.2197 11.4641 31.3422C12.3415 30.4626 12.3415 29.0385 11.4641 28.1588L8.55512 25.2498H27.8718C29.1137 25.2498 30.1216 24.2419 30.1216 23C30.1216 21.7604 29.1137 20.7503 27.8718 20.7503H8.55512Z" fill="white"/>
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5038 31.9992V36.4987C16.5038 41.4708 20.5332 45.4979 25.5029 45.4979H48.0008C52.9728 45.4979 57 41.4708 57 36.4987C57 29.0092 57 16.9931 57 9.50129C57 4.53151 52.9728 0.502136 48.0008 0.502136C41.5687 0.502136 31.9373 0.502136 25.5029 0.502136C20.5332 0.502136 16.5038 4.53151 16.5038 9.50129V14.0009C16.5038 15.2427 17.5117 16.2507 18.7536 16.2507C19.9955 16.2507 21.0034 15.2427 21.0034 14.0009C21.0034 14.0009 21.0034 11.8928 21.0034 9.50129C21.0034 7.01752 23.0192 5.00171 25.5029 5.00171H48.0008C50.4868 5.00171 52.5004 7.01752 52.5004 9.50129V36.4987C52.5004 38.9848 50.4868 40.9983 48.0008 40.9983C41.5687 40.9983 31.9373 40.9983 25.5029 40.9983C23.0192 40.9983 21.0034 38.9848 21.0034 36.4987C21.0034 34.1095 21.0034 31.9992 21.0034 31.9992C21.0034 30.7595 19.9955 29.7494 18.7536 29.7494C17.5117 29.7494 16.5038 30.7595 16.5038 31.9992Z" fill="white"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card">
+                    <div class="card-header border-0 d-sm-flex d-block">
+                        <div class="me-auto mb-sm-0 mb-3">
+                            <h4 class="card-title mb-2">Oredrs Stat</h4>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex me-5">
+                                <h3 class="mb-0 me-2">@if($check) {{$check->checkin}} @else 0 @endif</h3>
+                                <span>Check In</span>
+                            </div>
+                            <div class="d-flex me-3">
+                                <h3 class="mb-0 me-2">@if($check) {{$check->checkout}} @else 0 @endif</h3>
+                                <span>Check Out</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="reservationChart" class="reservationChart"></div>
                     </div>
                 </div>
             </div>
@@ -86,5 +151,162 @@
             $('.panel').slideToggle('slow');
         });
     })
+</script>
+<script>
+    (function($) {
+    var dzChartlist = function() {
+
+        var screenWidth = $(window).width();
+
+        var radialChart = function() {
+            var options = {
+                series: [70],
+                chart: {
+                    height: 150,
+                    type: 'radialBar',
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '35%',
+                        },
+                        dataLabels: {
+                            show: false,
+                        }
+                    },
+                },
+                labels: [''],
+            };
+
+            var chart = new ApexCharts(document.querySelector("#radialChart"), options);
+            chart.render();
+        }
+
+        var reservationChart = function() {
+            var options = {
+                series: [{
+                    name: 'Total Orders',
+                    data: [
+                        <?php foreach($graph_data['orderCountArr'] as $count): ?>
+                            "<?php echo $count; ?>",
+                        <?php endforeach; ?>
+                    ]
+                }, {
+                    name: 'Earning',
+                    data: [
+                        <?php foreach($graph_data['orderNetArr'] as $net): ?>
+                            "<?php echo $net; ?>",
+                        <?php endforeach; ?>
+                    ]
+                }],
+                chart: {
+                    height: 400,
+                    type: 'area',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                colors: ["#1362FC", "#FF6E5A"],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: 6,
+                    curve: 'smooth',
+                },
+                legend: {
+                    show: false
+                },
+                grid: {
+                    borderColor: '#EBEBEB',
+                    strokeDashArray: 6,
+                },
+                markers: {
+                    strokeWidth: 6,
+                    hover: {
+                        size: 15,
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX: -12,
+                        style: {
+                            colors: '#787878',
+                            fontSize: '13px',
+                            fontFamily: 'Poppins',
+                            fontWeight: 400
+
+                        }
+                    },
+                },
+                xaxis: {
+                    categories: [
+                        <?php foreach($graph_data['label'] as $label): ?>
+                            "<?php echo $label; ?>",
+                        <?php endforeach; ?>
+                    ],
+                    labels: {
+                        style: {
+                            colors: '#787878',
+                            fontSize: '13px',
+                            fontFamily: 'Poppins',
+                            fontWeight: 400
+
+                        },
+                    }
+                },
+                fill: {
+                    type: "solid",
+                    opacity: 0.1
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd/MM/yy HH:mm'
+                    },
+                },
+            };
+
+            var chart = new ApexCharts(document.querySelector("#reservationChart"), options);
+            chart.render();
+        }
+
+        var donutChart = function() {
+                $("span.donut").peity("donut", {
+                    width: 150,
+                    height: 150
+                });
+                if ($(window).width() <= 1600) {
+                    $("span.donut").peity("donut", { width: '110', height: '110' });
+                } else {
+                    $("span.donut").peity("donut", { width: '150', height: '150' });
+                }
+                $(window).resize(function() {
+                    if ($(window).width() <= 1600) {
+                        $("span.donut").peity("donut", { width: '110', height: '110' });
+                    } else {
+                        $("span.donut").peity("donut", { width: '150', height: '150' });
+                    }
+                })
+            }
+            /* Function ============ */
+        return {
+            init: function() {},
+            load: function() {
+                radialChart();
+                reservationChart();
+                donutChart();
+            },
+            resize: function() {}
+        }
+    }();
+    jQuery(window).on('load', function() {
+        setTimeout(function() {
+            dzChartlist.load();
+        }, 1000);
+    });
+})(jQuery);
 </script>
 @endsection

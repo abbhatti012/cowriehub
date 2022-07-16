@@ -683,13 +683,10 @@
                                 <svg id="icon-user1" xmlns="http://www.w3.org/2000/svg" class="text-primary" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
                                 <span class="ms-2">Profile </span>
                             </a>
-                            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit()" {{ __('Logout') }} class="dropdown-item ai-icon">
+                            <a href="{{ route('logout') }}" class="dropdown-item ai-icon">
                                 <svg id="icon-logout" xmlns="http://www.w3.org/2000/svg" class="text-danger" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
                                 <span class="ms-2">
                                     Logout
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
                                 </span>
                             </a>
                         </div>
@@ -702,6 +699,13 @@
 <div class="deznav">
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
+            @if(Auth::user()->role == 'publisher')
+                <li class="<?php if(request()->segment(1) == 'publisher-dashboard'){echo 'mm-active';} ?>"><a href="{{ route('publishers.dashboard') }}" class="ai-icon" aria-expanded="false">
+                        <i class="fa fa-dashboard"></i>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+            @endif
             <li class="<?php if(request()->segment(1) == 'publisher'){echo 'mm-active';} ?>"><a href="{{ route('user.publisher-account') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-users"></i>
                     <span class="nav-text">Register Account</span>
@@ -736,6 +740,21 @@
             <li class="<?php if(request()->segment(1) == 'payment-details'){echo 'mm-active';} ?>"><a href="{{ route('publisher.payment-details') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-info-circle"></i>
                     <span class="nav-text">Payment Details</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'revenue'){echo 'mm-active';} ?>"><a href="{{ route('publisher.revenue') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-money"></i>
+                    <span class="nav-text">Revenue</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-address-card"></i>
+                    <span class="nav-text">Addresses</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-heart-o"></i>
+                    <span class="nav-text">Wishlist</span>
                 </a>
             </li>
             @endif

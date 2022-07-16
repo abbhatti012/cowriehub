@@ -8,7 +8,9 @@ use App\Models\User;
 use App\Models\Genre;
 use App\Models\Coupon;
 use App\Models\Payment;
+use App\Models\Revenue;
 use App\Models\SubGenre;
+use App\Models\Wishlist;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
@@ -42,6 +44,36 @@ class UserController extends Controller
         $user = DB::table('author-detail')->where('user_id',Auth::id())->first();
         return view('user.author.my-profile',compact('user'));
     }
+    public function wishlist(){
+        $wishlist = Wishlist::where('wishlist.user_id',Auth::id())
+        ->select('wishlist.*','books.*','wishlist.id as wish_id')
+        ->join('books','books.id','=','wishlist.book_id')
+        ->get();
+        $role = auth()->user()->role;
+        if($role == 'author'){
+            $role  = 'user';
+        }
+        return view('user.wishlist',compact('wishlist','role'));
+    }
+    public function save_address(){
+        $user = AuthorDetail::where('user_id',Auth::id())->first();
+        if(isset($user->billing_detail)){
+            $billing = unserialize($user->billing_detail);
+        } else {
+            $billing = [];
+        }
+        if(isset($user->shipping_detail)){
+            $shipping = unserialize($user->shipping_detail);
+        } else {
+            $shipping = [];
+        }
+      
+        $role = auth()->user()->role;
+        if($role == 'author'){
+            $role  = 'user';
+        }
+        return view('user.address', compact('user','billing','shipping', 'role'));
+    }
     public function author_books(){
         $books = Book::where('user_id',Auth::id())
         ->select('books.*', 'sub_genres.title as genre_title')
@@ -74,14 +106,11 @@ class UserController extends Controller
             });
             $filter['year'] = date('Y');
         }
-
         $usermcount = [];
         $userArr = [];
-
         foreach ($users as $key => $value) {
             $usermcount[(int)$key] = count($value);
         }
-
         for($i = 1; $i <= 12; $i++){
             if(!empty($usermcount[$i])){
                 $userArr[$i] = $usermcount[$i];    
@@ -169,27 +198,150 @@ class UserController extends Controller
         return view('user.consultant.search-author');
     }
     public function dashboard(Request $request){
+        $id = Auth::id();
         if(isset($request->date) && !empty($request->date)){
             $date = explode(' - ',$request->date);
-            $startDate = date('Y-m-d',strtotime($date[0]));
-            $endDate = date('Y-m-d',strtotime($date[1]));
-            $date = [0=>$startDate,1=>$endDate];
-            $books = Book::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status',1)->count();
-            $orders = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->count();
-            $earning = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status','successfull')->sum('total_amount');
-            $pending_earning = Payment::where('user_id',Auth::id())->whereBetween('created_at',$date)->where('status','!=','successfull')->sum('total_amount');
+            $start_date = date('Y-m-d',strtotime($date[0]));
+            $end_date = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$start_date,1=>$end_date];
+            $books = Book::where('user_id',$id)->whereBetween('created_at',$date)->count();
+            $approved_books = Book::where('user_id',$id)->whereBetween('created_at',$date)->where('status',1)->count();
+            $orders = Revenue::where('user_id',$id)->whereBetween('created_at',$date)->count();
+            $check = User::where('id',$id)->whereBetween('created_at',$date)->first();
+            $graphOrders = Revenue::select('*')
+            ->whereBetween('created_at',$date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
         } else {
-            $books = Book::where('user_id',Auth::id())->where('status',1)->count();
-            $orders = Payment::where('user_id',Auth::id())->count();
-            $earning = Payment::where('user_id',Auth::id())->where('status','successfull')->sum('total_amount');
-            $pending_earning = Payment::where('user_id',Auth::id())->where('status','!=','successfull')->sum('total_amount');
+            $books = Book::where('user_id',$id)->count();
+            $approved_books = Book::where('user_id',$id)->where('status',1)->count();
+            $orders = Payment::where('user_id',$id)->count();
+            $check = User::where('id',$id)->select('checkin','checkout')->first();
+
+            $query_date = date('Y-m-d',strtotime(now()));
+            $start_date = date('Y-m-01', strtotime($query_date));
+            $end_date = date('Y-m-t', strtotime($query_date));
+
+            $graphOrders = Revenue::select('*')
+            ->where('created_at', '>=' ,$start_date)
+            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
         }
-        return view('user.dashboard',compact('books','orders','earning','pending_earning'));
+        $ordermcount = [];
+        $orderArr = [];
+        $ordermnet = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $sum = 0;
+            foreach($order as $value){
+                $sum = $sum + $value->user_amount;
+            }
+            $ordermcount[(int)$key] = count($order);
+            $ordermnet[(int)$key] = $sum;
+        }
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($ordermcount[$i])){
+                $orderCountArr[$i] = $ordermcount[$i]; 
+            }else{
+                $orderCountArr[$i] = 0;
+            }
+            if(!empty($ordermnet[$i])){
+                $orderNetArr[$i] = $ordermnet[$i]; 
+            }else{
+                $orderNetArr[$i] = 0;
+            }
+        }
+        $graph_data['orderCountArr'] = $orderCountArr;
+        $graph_data['orderNetArr'] = $orderNetArr;
+        $graph_data['label'] = $graph['label'];
+        return view('user.dashboard',compact('books','orders','approved','pending','approved_books','check','graph_data'));
+    }
+    public function get_date_series($start_date, $end_date){
+        $dates = array();
+        $current = strtotime($start_date);
+        $date2 = strtotime($end_date);
+        $stepVal = '+1 day';
+        while( $current <= $date2 ) {
+            $dates[] = date('d-M', $current);
+            $current = strtotime($stepVal, $current);
+        }
+        return $dates;
+    }
+    public function get_labels($days, $graphOrders, $get_date_series){
+        if($days >= 0 && $days <= 1){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('h');
+            });
+           
+            $data['label'] = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM','8PM' ,'9PM', '10PM', '11PM', '12AM', '13AM', '14AM', '15AM', '16AM', '17AM', '18AM', '19AM', '20AM', '21AM', '22AM', '23AM', '00PM'];
+            $data['count'] = 24;
+        } else if($days > 1 && $days <= 14){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+           
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 14 && $days < 30){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days >= 29 && $days <= 31){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 31 && $days < 365){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+            
+            $data['label'] = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+            $data['count'] = 12;
+        }
+        return $data;
     }
     public function coupons(){
         $coupons = Coupon::orderBy('coupons.id','desc')->where('coupons.user_id',Auth::id())
         ->select('coupons.*','users.*', 'coupons.id as coupon_id')->join('users','users.id','=','coupons.user_id')->get();
         $books = Book::where('status',1)->where('user_id',Auth::id())->get();
         return view('user.author.coupons',compact('coupons','books'));
+    }
+    public function logout(Request $request) {
+        $data = User::find(Auth::id());
+        $data->checkout = $data->checkout + 1;
+        $data->save();
+        Auth::logout();
+        return redirect('/login');
+    }
+    public function revenue(){
+        $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)->with('user')->get();
+        return view('user.author.revenue', compact('revenues'));
     }
 }

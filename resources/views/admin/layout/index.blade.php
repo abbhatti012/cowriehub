@@ -151,7 +151,6 @@
 
 <script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/moment.js')}}"></script>
 <script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/dashboard/dashboard-1.js')}}"></script>
 <script src="{{asset('admin_assets/js/custom.min.js')}}"></script>
 <script src="{{asset('admin_assets/js/deznav-init.js')}}"></script>
 

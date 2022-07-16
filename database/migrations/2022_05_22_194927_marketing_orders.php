@@ -22,11 +22,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone');
             $table->longText('notes');
-            $table->integer('job_status')->default(0);
-            $table->integer('job_type')->default(0);
-            $table->string('prove_document')->nullable();
-            $table->longText('payment_note')->nullable();
-            $table->string('payment_proof')->nullable();
+            $table->integer('is_completed')->default(0);
             $table->timestamps();
         });
     }

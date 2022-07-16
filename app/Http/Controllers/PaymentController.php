@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Coupon;
 use App\Models\Payment;
+use App\Models\Revenue;
 use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -76,7 +77,8 @@ class PaymentController extends Controller
         $payment->payment_method = $request->payment_method;
         $payment->is_coupon = $request->is_coupon;
         $payment->coupon_code = $request->coupon_code;
-        
+        $setting = Setting::first();
+        $user_commission = 100 - $setting->admin_commission;
         if($payment->is_coupon == 1){
             $check = Coupon::where('code',$payment->coupon_code)->first();
             if($payment->is_preorder == 0){
@@ -92,7 +94,6 @@ class PaymentController extends Controller
                 }
             } else {
                 $book = Book::where('id',$payment->book_id)->first();
-                $setting = Setting::first();
                 if(in_array($payment->book_id, unserialize($check->book_id))) {
                     $book_price = (($book->price) / 100)*$setting->admin_commission;
                     $totalPrice = round(((($book_price)) / 100)*$check->off,2);
@@ -149,6 +150,14 @@ class PaymentController extends Controller
                     $order->remaining_price = 0;
                 }
                 $order->save();
+                $revenue = new Revenue();
+                $revenue->user_id = $cart['author_id'];
+                $revenue->order_id = $order->id;
+                $revenue->admin_amount = round(($order->amount_paid/100)*$setting->admin_commission);
+                $revenue->user_amount = $order->amount_paid - $revenue->admin_amount;
+                $revenue->payment_status = 0;
+                $revenue->admin_payment_status = 0;
+                $revenue->save();
             }
         } else {
             $book = Book::find($payment->book_id);
@@ -164,7 +173,6 @@ class PaymentController extends Controller
             $order->quantity = 1;
             if($payment->is_coupon == 1){
                 $book = Book::where('id',$payment->book_id)->first();
-                $setting = Setting::first();
                 if(in_array($payment->book_id, unserialize($check->book_id))) {
                     $book_price = (($book->price) / 100)*$setting->admin_commission;
                     $totalPrice = round(((($book_price)) / 100)*$check->off,2);
@@ -178,6 +186,16 @@ class PaymentController extends Controller
             }
             $order->remaining_price = $order->total_price - $order->amount_paid;
             $order->save();
+
+            $order->save();
+            $revenue = new Revenue();
+            $revenue->user_id = $book->user_id;
+            $revenue->order_id = $order->id;
+            $revenue->admin_amount = round(($order->amount_paid/100)*$setting->admin_commission);
+            $revenue->user_amount = $order->amount_paid - $revenue->admin_amount;
+            $revenue->payment_status = 0;
+            $revenue->admin_payment_status = 0;
+            $revenue->save();
         }
         if($request->payment_method == 'cod'){
             $payment = Payment::find($payment->id);
@@ -255,13 +273,6 @@ class PaymentController extends Controller
             }
             elseif($request->status == 'successful')
             {
-                $carts = session()->get('cart');
-                foreach($carts as $cart){
-                    $book = Book::find($cart['id']);
-                    $book->book_purchased = $book->book_purchased + $cart['quantity'];
-                    $book->save();
-                }
-                session()->put('cart', []);
                 $txid = $request->transaction_id;
                 $curl = curl_init();
                 curl_setopt_array($curl, array(
@@ -289,6 +300,21 @@ class PaymentController extends Controller
                     $amountToPay = $res->data->meta->price;
                     if($amountPaid >= $amountToPay)
                     {
+                        if($payment->is_preorder == 0){
+                            $carts = session()->get('cart');
+                            foreach($carts as $cart){
+                                $book = Book::find($cart['id']);
+                                $book->book_purchased = $book->book_purchased + $cart['quantity'];
+                                $book->save();
+                            }
+                        } else {
+                            $book = Book::find($payment->book_id);
+                            $book->book_purchased = $book->book_purchased + 1;
+                            $book->save();
+                        }
+                        Revenue::where('payment_id',$payment->id)->update(['payment_status' => 1]);
+                        session()->put('cart', []);
+                        
                         Session::flash('payment_successfull','Payment Successfull!');
                     }
                     else

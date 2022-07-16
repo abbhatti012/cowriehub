@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\c;
+use Carbon\Carbon;
 use App\Models\Job;
 use App\Models\Book;
 use App\Models\User;
@@ -12,6 +12,7 @@ use App\Models\Skill;
 use App\Models\Banner;
 use App\Models\Coupon;
 use App\Models\Payment;
+use App\Models\Revenue;
 use App\Models\Setting;
 use App\Models\Location;
 use App\Models\SubGenre;
@@ -30,20 +31,140 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.index');
+        $id = Auth::id();
+        if(isset($request->date) && !empty($request->date)){
+            $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($date[0]));
+            $end_date = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$start_date,1=>$end_date];
+            $books = Book::whereBetween('created_at',$date)->count();
+            $approved_books = Book::whereBetween('created_at',$date)->where('status',1)->count();
+            $orders = Payment::whereBetween('created_at',$date)->count();
+            $check = User::whereBetween('created_at',$date)->first();
+            $graphOrders = Payment::select('*')
+            ->whereBetween('created_at',$date);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN status = 'successfull' OR status = 'pending' THEN amount_paid ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN status = 'cancelled' THEN amount_paid ELSE 0 END) AS cancelled_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $cancelled = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $cancelled = $cancelled + $earn['cancelled_earning'];
+            }
+        } else {
+            $books = Book::select('id')->count();
+            $approved_books = Book::select('id','status')->where('status',1)->count();
+            $orders = Payment::select('id')->count();
+            $check = User::where('id',$id)->select('checkin','checkout')->first();
+
+            $query_date = date('Y-m-d',strtotime(now()));
+            $start_date = date('Y-m-01', strtotime($query_date));
+            $end_date = date('Y-m-t', strtotime($query_date));
+
+            $graphOrders = Payment::select('*')
+            ->where('created_at', '>=' ,$start_date)
+            ->where('created_at', '<' ,$end_date);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN status = 'successfull' OR status = 'pending' THEN amount_paid ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN status = 'cancelled' THEN amount_paid ELSE 0 END) AS cancelled_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $cancelled = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $cancelled = $cancelled + $earn['cancelled_earning'];
+            }
+        }
+        
+        $ordermcount = [];
+        $orderArr = [];
+        $ordermnet = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $sum = 0;
+            foreach($order as $value){
+                $sum = $sum + $value->amount_paid;
+            }
+            $ordermcount[(int)$key] = count($order);
+            $ordermnet[(int)$key] = $sum;
+        }
+        
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($ordermcount[$i])){
+                $orderCountArr[$i] = $ordermcount[$i]; 
+            }else{
+                $orderCountArr[$i] = 0;
+            }
+            if(!empty($ordermnet[$i])){
+                $orderNetArr[$i] = $ordermnet[$i]; 
+            }else{
+                $orderNetArr[$i] = 0;
+            }
+        }
+        $graph_data['orderCountArr'] = $orderCountArr;
+        $graph_data['orderNetArr'] = $orderNetArr;
+        $graph_data['label'] = $graph['label'];
+        return view('admin.index',compact('books','orders','approved','cancelled','approved_books','check','graph_data'));
+    }
+    public function get_date_series($start_date, $end_date){
+        $dates = array();
+        $current = strtotime($start_date);
+        $date2 = strtotime($end_date);
+        $stepVal = '+1 day';
+        while( $current <= $date2 ) {
+            $dates[] = date('d-M', $current);
+            $current = strtotime($stepVal, $current);
+        }
+        return $dates;
+    }
+    public function get_labels($days, $graphOrders, $get_date_series){
+        if($days >= 0 && $days <= 1){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('h');
+            });
+           
+            $data['label'] = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM','8PM' ,'9PM', '10PM', '11PM', '12AM', '13AM', '14AM', '15AM', '16AM', '17AM', '18AM', '19AM', '20AM', '21AM', '22AM', '23AM', '00PM'];
+            $data['count'] = 24;
+        } else if($days > 1 && $days <= 14){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+           
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 14 && $days < 30){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days >= 29 && $days <= 31){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 31 && $days < 365){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+            
+            $data['label'] = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+            $data['count'] = 12;
+        }
+        return $data;
     }
     public function author(){
-        // $authors = User::where('role','author')
-        // ->join('author-detail','author-detail.user_id','=','users.id')
-        // ->select(
-        //     'users.*',
-        //     'author-detail.email as work_email',
-        //     'author-detail.id as author_id',
-        //     'author-detail.user_id as user_id',
-        //     'author-detail.cover as cover')
-        // ->get();
         $authors = User::where('role','author')->orderBy('id','desc')->with('author_detail')->get();
         return view('admin.author', compact('authors'));
     }
@@ -570,4 +691,16 @@ class AdminController extends Controller
         Job::where('id',$id)->delete();
         return back()->with('message', ['text'=>'Job has been remived successfully!','type'=>'success']);
     }
-} 
+    public function update_payment_status($id){
+        Payment::where('id',$id)->update(['status' => 'successfull']);
+        $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
+        Revenue::whereIn('order_id',$order_id)->update(['payment_status'=>1]);
+        return back()->with('message', ['text'=>'Payment has been approved!','type'=>'success']);
+    }
+    public function get_revenue_per_order(Request $request){
+        $id = $request->id;
+        $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
+        $data['revenues'] = Revenue::whereIn('order_id',$order_id)->with('user')->get();
+        return response()->json(view('admin.revenue_per_order', $data)->render());
+    }
+}

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -39,6 +40,9 @@ class LoginController extends Controller
       }
       
     protected function authenticated(Request $request, $user){
+        $data = User::find($user->id);
+        $data->checkin = $data->checkin + 1;
+        $data->save();
         if($user->role === 'admin') {
             return redirect(route('admin'));
         }

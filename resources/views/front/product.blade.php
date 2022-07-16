@@ -147,7 +147,7 @@
                                 @if($book->hard_allow_preorders == 1 || $book->paper_allow_preorders == 1)
                                     <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt" data-toggle="modal" data-target="#preOrderModalModal" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
                                 @else
-                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}">Add to cart</a>
+                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}"  data-user_id="{{ $book->user_id }}">Add to cart</a>
                                 @endif
                                     <a href="{{ route('cart') }}" class="p-3 min-width-250 ml-md-4 btn btn-outline-dark rounded-0 px-5 mb-3 mb-md-0">View Cart</a>
                                 </form>
@@ -846,6 +846,7 @@
                 var bookPrice = <?php echo $book->price ?>;
                 var title = "<?php echo $book->title ?>";
                 var image = "{{ asset($book->cover) }}";
+                var author_id = $(this).data('user_id');
                 
                 $.ajax({
                     type : 'POST',
@@ -859,7 +860,8 @@
                         bookPrice : bookPrice,
                         title : title,
                         image : image,
-                        is_preorder : is_preorder
+                        is_preorder : is_preorder,
+                        author_id : author_id
                     },
                     success : function(data){
                         $('body .cartItemsLength').html(data.cartLength);
@@ -881,9 +883,6 @@
                 var extraType = $("input[name='extraPrices']:checked").val();
                 if(shippingCharges == ''){
                     $.notify('Please choose location');
-                    return false;
-                } else if(userId == ''){
-                    $.notify('Please login first to continue');
                     return false;
                 } else if(preciseLocation == ''){
                     $.notify('Please choose your precise location');

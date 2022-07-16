@@ -47,7 +47,7 @@
                                         <th>Country</th>
                                         <th>Status</th>
                                         <th>Action</th>
-                                        <th>Is Best Selling?</th>
+                                        <!-- <th>Is Best Selling?</th> -->
                                         <th>Is Featured?</th>
                                         <th>Is On Sale?</th>
                                         <th>Is Most Viewed?</th>
@@ -97,7 +97,7 @@
                                                 <a href="{{ route('delete-book',$book->id) }}" onclick="if (! confirm('Are you sure you want to delete book?')) { return false; }" class="btn btn-danger shadow btn-xs sharp" title="Delete Book"><i class="fa fa-trash"></i></a>
                                             </div>
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             @if($book->is_best)
                                                 <a href="javascript:void(0)" class="btn btn-danger shadow btn-xs sharp takeAction" 
                                                 data-id="{{ $book->id }}"
@@ -115,7 +115,7 @@
                                                 data-value="1"
                                                 title="Not In Best Selling"><i class="fa fa-check"></i></a>
                                             @endif
-                                        </td>
+                                        </td> -->
                                         <td>
                                             @if($book->is_featured)
                                                 <a href="javascript:void(0)" class="btn btn-danger shadow btn-xs sharp takeAction" 
