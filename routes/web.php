@@ -24,12 +24,14 @@ Route::get('/terms-conditions', [App\Http\Controllers\HomeController::class, 'te
 Route::get('/comming-soon', [App\Http\Controllers\HomeController::class, 'comming_soon'])->name('comming-soon');
 Route::get('/404', [App\Http\Controllers\HomeController::class, 'error'])->name('404');
 Route::get('/blog', [App\Http\Controllers\HomeController::class, 'blog'])->name('blog');
-Route::get('/blog-detail', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
+// Route::get('/blog-detail', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
 Route::get('/buy-marketing-package/{any}', [App\Http\Controllers\HomeController::class, 'buy_marketing_package'])->name('buy-marketing-package');
 Route::post('/add-marketing-orders', [App\Http\Controllers\HomeController::class, 'add_marketing_orders'])->name('add-marketing-orders');
 Route::post('/add-review', [App\Http\Controllers\HomeController::class, 'add_review'])->name('add-review');
 Route::get('/front-autocomplete', [App\Http\Controllers\HomeController::class, 'front_autocomplete'])->name('front-autocomplete');
 Route::get('/success-page', [App\Http\Controllers\HomeController::class, 'success_page'])->name('success-page');
+Route::get('/blogs', [App\Http\Controllers\HomeController::class, 'blogs'])->name('blogs');
+Route::get('/blog-detail/{any}', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
 
 Route::post('/before-payment', [App\Http\Controllers\PaymentController::class, 'before_payment'])->name('before-payment');
 Route::post('/preorder-before-payment', [App\Http\Controllers\PaymentController::class, 'preorder_before_payment'])->name('preorder-before-payment');
@@ -147,9 +149,15 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/update-location/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_location'])->name('admin.update-location');
     Route::get('/cms/edit-skill/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_skill'])->name('admin.edit-skill');
     Route::post('/cms/update-skill/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_skill'])->name('admin.update-skill');
-    Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
-    Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
+    Route::get('/cms/edit-marketing/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_marketing'])->name('admin.edit-marketing');
+    Route::post('/cms/update-marketing/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_marketing'])->name('admin.update-marketing');
+    Route::post('/cms/add-blog', [App\Http\Controllers\Admin\AdminController::class, 'add_blog'])->name('admin.add-blog');
+    Route::get('/cms/edit-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_blog'])->name('admin.edit-blog');
+    Route::post('/cms/update-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_blog'])->name('admin.update-blog');
+    Route::get('/cms/delete-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_blog'])->name('admin.delete-blog');
 });
+Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
+Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
 
 Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon')->middleware('auth');
 Route::get('/cms/delete-coupon/{id}', [App\Http\Controllers\Admin\AdminController::class, 'delete_coupon'])->name('admin.delete-coupon')->middleware('auth');
@@ -161,15 +169,13 @@ Route::group(['middleware' => 'author'], function () {
 
     Route::get('/author/books', [App\Http\Controllers\User\UserController::class, 'author_books'])->name('author.books');
     Route::get('/author/strategies', [App\Http\Controllers\User\UserController::class, 'author_marketing'])->name('author.marketing');
-    Route::get('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
-    Route::post('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
     Route::get('/author/add-book', [App\Http\Controllers\BookController::class, 'add_book'])->name('add-book');
     Route::post('/author/insert-book/{any}', [App\Http\Controllers\BookController::class, 'insert_book'])->name('insert-book');
     Route::get('/author/delete-book/{any}', [App\Http\Controllers\BookController::class, 'delete_book'])->name('delete-book');
-    Route::get('/author/edit-book/{any}', [App\Http\Controllers\BookController::class, 'edit_book'])->name('edit-book');
     Route::get('/author/coupons', [App\Http\Controllers\User\UserController::class, 'coupons'])->name('author.coupons');
     Route::get('/author/revenue', [App\Http\Controllers\User\UserController::class, 'revenue'])->name('author.revenue');
 });
+Route::get('/edit-book/{any}', [App\Http\Controllers\BookController::class, 'edit_book'])->name('edit-book');
 Route::get('/logout', [App\Http\Controllers\User\UserController::class, 'logout'])->name('logout');
 Route::get('/user-wishlist', [App\Http\Controllers\User\UserController::class, 'wishlist'])->name('user.wishlist');
 
@@ -183,13 +189,16 @@ Route::group(['middleware' => 'publisher'], function () {
     Route::post('/author/insert-book-for-author/{any}', [App\Http\Controllers\PublisherController::class, 'insert_book'])->name('insert-book-for-author');
     Route::get('/all-books', [App\Http\Controllers\PublisherController::class, 'all_books'])->name('publisher.all-books');
     Route::get('/marketing', [App\Http\Controllers\PublisherController::class, 'marketing'])->name('publisher.marketing');
-    Route::get('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
-    Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
     Route::get('/payment-details', [App\Http\Controllers\PublisherController::class, 'payment_details'])->name('publisher.payment-details');
     Route::post('/update-payment-detail', [App\Http\Controllers\PublisherController::class, 'update_payment_detail'])->name('publisher.update-payment-detail');
     Route::get('/revenue', [App\Http\Controllers\PublisherController::class, 'revenue'])->name('publisher.revenue');
     Route::get('/publisher-dashboard', [App\Http\Controllers\PublisherController::class, 'dashboard'])->name('publishers.dashboard');
 });
+Route::get('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
+Route::post('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
+
+Route::get('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
+Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
 
 //AFFILIATE Routes
 Route::group(['middleware' => 'affiliate'], function () {

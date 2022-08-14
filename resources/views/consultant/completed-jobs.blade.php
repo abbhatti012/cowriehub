@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">All Jobs</h4>
+                        <h4 class="card-title">Completed Jobs</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -72,14 +72,12 @@
                                             <td>
                                                 {{ $job->payment_note }}
                                             </td>
-                                            <td><a href="{{ asset($job->payment_proof) }}" target="_blank" class="text-success">View</a><td>
+                                            <td><a href="{{ asset($job->payment_proof) }}" target="_blank" class="text-success">View</a></td>
                                         @else
                                             <td>---</td>
                                             <td>---</td>
                                         @endif
-                                        <td>
-                                        <a href="javascript:void(0)" class="text-success">COMPLETED</a>
-                                        </td>
+                                        <td><a href="javascript:void(0)" class="text-success">COMPLETED</a></td>
                                     </tr>
                                 @empty
                                 @endforelse
@@ -107,7 +105,7 @@
                             <table class="table table-hover table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>---</th>
+                                        <th>Marketing Packages</th>
                                         <th>Package</th>
                                         <th>Price</th>
                                         <th>Duration</th>

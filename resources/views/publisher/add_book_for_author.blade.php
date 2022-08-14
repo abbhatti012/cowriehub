@@ -10,7 +10,7 @@
       <div class="row page-titles">
          <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Add Book</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Add a Book</a></li>
          </ol>
       </div>
     @if(Session::has('message'))
@@ -19,7 +19,7 @@
         </div>
     @endif
    
-    <form id="basic-validation" action="{{ route(<?= $route ?>, 0) }}" method="POST" enctype="multipart/form-data">
+    <form id="basic-validation" action="<?php echo route($route, 0) ?>" method="POST" enctype="multipart/form-data">
         <div class="row">
             <div class="col-xl-6 col-lg-6">
                 <div class="card">
@@ -32,7 +32,7 @@
                         <div class="basic-form custom_file_input">
                         <h3 for="instagram">Cover Type</h3>
                         <hr>
-                        <div class="basic-form">
+                        <!-- <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" required> Portrait?</label>
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" checked name="cover_type" value="landscape" required> Landscape?</label>
@@ -48,7 +48,7 @@
                             <div class="form-file">
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')" required>
                             </div>
-                        </div>
+                        </div> -->
                        
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage2" alt="">
@@ -73,7 +73,7 @@
             <div class="col-xl-6 col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Bio Data</h4>
+                        <h4 class="card-title">Book Metadata</h4>
                     </div>
                     <div class="card-body">
                         <div class="basic-form">

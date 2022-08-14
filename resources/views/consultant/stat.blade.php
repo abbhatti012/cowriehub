@@ -8,6 +8,7 @@
     }
 </style>
 @section('content')
+<link rel="stylesheet" href="{{ asset('daterange/style.css') }}">
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -16,94 +17,207 @@
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Sales</a></li>
             </ol>
         </div>
-
+        <div style="display: none;" class="panel">
+            <div class="row page-titles">
+                <ol class="breadcrumb">
+                    <form action="{{ route('consultant.stat') }}" method="get">
+                        <div class="input-group mb-3">
+                            <input type="hidden" name="id" value="{{ $graph_data['id'] }}">
+                            <input type="text" id="date-range" name="date" readonly class="form-control">
+                            <button type="submit" class="btn btn-primary">Apply</button>
+                        <div>
+                    </form>
+                </ol>
+            </div>
+        </div>
+        <p class="slide">
+            <div class="pull-me">
+                <p>Apply Filter!</p>
+            </div>
+        </p>
+        
         <div class="row">
-            <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-12 col-xxl-12">
                 <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Average Sales</h4>
+                    <div class="card-header border-0 d-sm-flex d-block">
+                        <div class="me-auto mb-sm-0 mb-3">
+                            <h4 class="card-title mb-2">Average Sales</h4>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div id="morris_chart_height"></div>
+                        <div id="reservationChart" class="reservationChart"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-    <script>
-        var month = [];
-        var count = [];
-    </script>
-    @foreach($userArr as $key => $count)
-        <script>
-            month.push("{{ $key }}");  
-            count.push("{{ $count }}");  
-        </script>
-    @endforeach
 @endsection
 @section('scripts')
-  
-    <script src="{{asset('js/highchart.js')}}"></script>
-    <script>
-        Highcharts.chart('morris_chart_height', {
+<script src="{{ asset('daterange/script.js') }}"></script>
+<script>
+    $(document).ready(function(){
+        $(".daterangepicker.ltr").css('display','none');
+        $('.pull-me').click(function() {
+            $('.panel').slideToggle('slow');
+        });
+    })
+</script>
+<script>
+    (function($) {
+    var dzChartlist = function() {
 
-        xAxis: {
-        type: 'datetime'
-        },
+        var screenWidth = $(window).width();
 
-        series: [{
-        name: 'Transactions',
-        data: [
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 0, 31),
-            y: parseInt(count[1])
-        }, {
-            x: Date.UTC("{{ $filter['year'] }}", 1, 28),
-            y: parseInt(count[2])
-        }, {
-            x: Date.UTC("{{ $filter['year'] }}", 2, 31),
-            y: parseInt(count[3])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 3, 30),
-            y: parseInt(count[4])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 4, 31),
-            y: parseInt(count[5])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 5, 30),
-            y: parseInt(count[6])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 6, 31),
-            y: parseInt(count[7])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 7, 30),
-            y: parseInt(count[8])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 8, 31),
-            y: parseInt(count[9])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 9, 30),
-            y: parseInt(count[10])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}", 10, 31),
-            y: parseInt(count[11])
-        },
-        {
-            x: Date.UTC("{{ $filter['year'] }}",11, 30),
-            y: parseInt(count[0])
-        },
-    ]
-        }]
+        var radialChart = function() {
+            var options = {
+                series: [70],
+                chart: {
+                    height: 150,
+                    type: 'radialBar',
+                    sparkline: {
+                        enabled: true
+                    }
+                },
+                plotOptions: {
+                    radialBar: {
+                        hollow: {
+                            size: '35%',
+                        },
+                        dataLabels: {
+                            show: false,
+                        }
+                    },
+                },
+                labels: [''],
+            };
+
+            var chart = new ApexCharts(document.querySelector("#radialChart"), options);
+            chart.render();
+        }
+
+        var reservationChart = function() {
+            var options = {
+                series: [{
+                    name: 'Total Orders',
+                    data: [
+                        <?php foreach($graph_data['orderCountArr'] as $count): ?>
+                            "<?php echo $count; ?>",
+                        <?php endforeach; ?>
+                    ]
+                }, {
+                    name: 'Earning',
+                    data: [
+                        <?php foreach($graph_data['orderNetArr'] as $net): ?>
+                            "<?php echo $net; ?>",
+                        <?php endforeach; ?>
+                    ]
+                }],
+                chart: {
+                    height: 400,
+                    type: 'area',
+                    toolbar: {
+                        show: false
+                    }
+                },
+                colors: ["#1362FC", "#FF6E5A"],
+                dataLabels: {
+                    enabled: false
+                },
+                stroke: {
+                    width: 6,
+                    curve: 'smooth',
+                },
+                legend: {
+                    show: false
+                },
+                grid: {
+                    borderColor: '#EBEBEB',
+                    strokeDashArray: 6,
+                },
+                markers: {
+                    strokeWidth: 6,
+                    hover: {
+                        size: 15,
+                    }
+                },
+                yaxis: {
+                    labels: {
+                        offsetX: -12,
+                        style: {
+                            colors: '#787878',
+                            fontSize: '13px',
+                            fontFamily: 'Poppins',
+                            fontWeight: 400
+
+                        }
+                    },
+                },
+                xaxis: {
+                    categories: [
+                        <?php foreach($graph_data['label'] as $label): ?>
+                            "<?php echo $label; ?>",
+                        <?php endforeach; ?>
+                    ],
+                    labels: {
+                        style: {
+                            colors: '#787878',
+                            fontSize: '13px',
+                            fontFamily: 'Poppins',
+                            fontWeight: 400
+
+                        },
+                    }
+                },
+                fill: {
+                    type: "solid",
+                    opacity: 0.1
+                },
+                tooltip: {
+                    x: {
+                        format: 'dd/MM/yy HH:mm'
+                    },
+                },
+            };
+
+            var chart = new ApexCharts(document.querySelector("#reservationChart"), options);
+            chart.render();
+        }
+
+        var donutChart = function() {
+                $("span.donut").peity("donut", {
+                    width: 150,
+                    height: 150
+                });
+                if ($(window).width() <= 1600) {
+                    $("span.donut").peity("donut", { width: '110', height: '110' });
+                } else {
+                    $("span.donut").peity("donut", { width: '150', height: '150' });
+                }
+                $(window).resize(function() {
+                    if ($(window).width() <= 1600) {
+                        $("span.donut").peity("donut", { width: '110', height: '110' });
+                    } else {
+                        $("span.donut").peity("donut", { width: '150', height: '150' });
+                    }
+                })
+            }
+            /* Function ============ */
+        return {
+            init: function() {},
+            load: function() {
+                radialChart();
+                reservationChart();
+                donutChart();
+            },
+            resize: function() {}
+        }
+    }();
+    jQuery(window).on('load', function() {
+        setTimeout(function() {
+            dzChartlist.load();
+        }, 1000);
     });
-    </script>
-
+})(jQuery);
+</script>
 @endsection

@@ -5,7 +5,7 @@
             <tr>
                 <th>User Name</th>
                 <th>User Email</th>
-                <th>Amount to be pay</th>
+                <th>Amount to be paid</th>
                 <th>Payment Status</th>
                 <th>Amount Paid</th>
                 <th>Pay</th>

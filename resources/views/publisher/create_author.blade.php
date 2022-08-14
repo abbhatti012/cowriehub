@@ -46,14 +46,13 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
                         <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </form>
-    <div class="row">
+        </form>
+        <div class="row">
             <div class="col-12">
                 <div class="card">
                 @if(Session::has('message'))
@@ -86,9 +85,7 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->role }}</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

@@ -81,10 +81,10 @@
                             <h4 class="font-size-3 font-weight-medium mb-2 mb-xl-5 pb-xl-1">Explore</h4>
                             <ul class="list-unstyled mb-0">
                                 <li class="pb-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('about-us') }}">About as</a>
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('about-us') }}">About us</a>
                                 </li>
                                 <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Sitemap</a>
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('blogs') }}">Blogs</a>
                                 </li>
                                 <li class="py-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Bookmarks</a>

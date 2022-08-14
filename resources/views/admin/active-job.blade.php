@@ -26,26 +26,28 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">All Active Jobs</h4>
+                        <h4 class="card-title">Active Jobs</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table id="example5" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>User Payment Detail</th>
-                                        <th>User Detail</th>
-                                        <th>Marketing Detail</th>
+                                        <th>Job No.</th>
+                                        <th>User Payment Info</th>
+                                        <th>User Info</th>
+                                        <th>Marketing Info</th>
                                         <th>Consultant Note</th>
                                         <th>Job Status</th>
                                         <th>All Documents</th>
-                                        <th>Remove Job</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
                                 @forelse($jobs as $job)
                                     <tr>
+                                        <td>JOB-{{ $job->id }}</td>
                                         <td>
                                             @if($job->consultant->payment)
                                                 <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
@@ -118,10 +120,10 @@
                                     <tr>
                                         <th></th>
                                         <th>Payment Method</th>
-                                        <th>Bank / Account Name</th>
-                                        <th>Bank / Account Number</th>
+                                        <th>Account Name</th>
+                                        <th>Account Number</th>
                                         <th>Branch</th>
-                                        <th>Bank Name / Mobile Money Networks</th>
+                                        <th>Network</th>
                                     </tr>
                                     <tr>
                                         <th>Mobile Money</th>
@@ -132,7 +134,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Settelments</th>
+                                        <th>Bank Info</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>
@@ -208,7 +210,7 @@
                             <table class="table table-hover table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>---</th>
+                                        <th>Marketing Packages</th>
                                         <th>Package</th>
                                         <th>Price</th>
                                         <th>Duration</th>

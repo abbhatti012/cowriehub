@@ -181,10 +181,10 @@
                                     <tr>
                                         <th></th>
                                         <th>Payment Method</th>
-                                        <th>Bank / Account Name</th>
-                                        <th>Bank / Account Number</th>
+                                        <th>Account Name</th>
+                                        <th>Account Number</th>
                                         <th>Branch</th>
-                                        <th>Bank Name / Mobile Money Networks</th>
+                                        <th>Network</th>
                                     </tr>
                                     <tr>
                                         <th>Mobile Money</th>
@@ -195,7 +195,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Settelments</th>
+                                        <th>Bank Info</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

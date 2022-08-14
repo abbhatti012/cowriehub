@@ -1,4 +1,4 @@
-@extends('admin.layout.index')
+@extends($role.'.layout.index')
 @section('content')
 <link rel="stylesheet" href="{{asset('admin_assets/vendor/select2/css/select2.min.css')}}">
 <div class="content-body">

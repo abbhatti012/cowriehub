@@ -44,10 +44,15 @@
                                     <label for="off">Coupon Discount (%)</label>
                                     <input class="form-control form-control-lg" name="off" type="number" min="1" max="100" value="{{ old('off') }}" id="off" required>
                                 </div>
+                                <div class="basic-form">
+                                    <div class="mb-3 mb-0">
+                                        <label class="radio-inline me-3" for="all"><input type="checkbox" id="all">Apply For All Books?</label>
+                                    </div>
+                                </div>
                                 <div class="mb-3 col-md-12">
                                     <label class="select2-label form-label">Select Books</label> <br>
                                     <div class="mt-4">
-                                        <select class="js-example-programmatic-multi" multiple="multiple" name="bookId[]" required>
+                                        <select class="js-example-programmatic-multi" id="select_all" multiple="multiple" name="bookId[]" required>
                                             @foreach($books as $book)
                                                 <option value="{{ $book->id }}">{{ $book->title }}</option>
                                             @endforeach
@@ -132,4 +137,25 @@
     <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
     <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
     <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
+    <script>
+       $(document).ready(function(){
+        var select_ids = [];
+        $('#select_all option').each(function(index, element) {
+            select_ids.push($(this).val());
+        })
+        $('#all').on('change',function(){
+            if($('#all').is(":checked")){
+                    selectAll(select_ids);
+                } else {
+                    deSelectAll();
+                }
+            })
+       })
+       function selectAll(select_ids){
+            $('#select_all').val(select_ids);
+        }
+        function deSelectAll(){
+            $('#select_all').val('');
+        }
+    </script>
 @endsection

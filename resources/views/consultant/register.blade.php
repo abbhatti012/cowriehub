@@ -12,8 +12,8 @@
    <div class="container-fluid">
       <div class="row page-titles">
          <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Add Consultant</a></li>
+            <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">My Consultant Account</a></li>
          </ol>
       </div>
     @if(Session::has('message'))
@@ -343,7 +343,7 @@
         <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
             <div class="row">
                 <div class="table-responsive mb-4">
-                    <h4 class="text-primary"><i class="fas fa-plus"></i> Detail</h4>
+                    <h4 class="text-primary"><i class="fas fa-plus"></i> Edit Profile</h4>
                     <p class="text-muted"></p>
                 
                         <table class="table table-hover table-borderless">

@@ -89,37 +89,85 @@ class UserController extends Controller
         return view('user.marketing', compact('orders'));
     }
     public function author_sales(Request $request){
-        if(isset($request->year)){
-            $users = Payment::select('*')->where('user_id',Auth::id())
-            ->whereYear('created_at', $request->year)
-            ->get()
-            ->groupBy(function($date) {
-                return Carbon::parse($date->created_at)->format('m');
-            });
-            $filter['year'] = $request->year;
+        $id = Auth::id();
+        if(isset($request->date) && !empty($request->date)){
+            $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($date[0]));
+            $end_date = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$start_date,1=>$end_date];
+            $graphOrders = Revenue::select('*')
+            ->whereBetween('created_at',$date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            
+            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            ->whereBetween('created_at',$date)->with('user')->get();
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
         } else {
-            $users = Payment::select('*')->where('user_id',Auth::id())
-            ->whereYear('created_at', date('Y'))
-            ->get()
-            ->groupBy(function($date) {
-                return Carbon::parse($date->created_at)->format('m');
-            });
-            $filter['year'] = date('Y');
-        }
-        $usermcount = [];
-        $userArr = [];
-        foreach ($users as $key => $value) {
-            $usermcount[(int)$key] = count($value);
-        }
-        for($i = 1; $i <= 12; $i++){
-            if(!empty($usermcount[$i])){
-                $userArr[$i] = $usermcount[$i];    
-            }else{
-                $userArr[$i] = 0;    
+            $query_date = date('Y-m-d',strtotime(now()));
+            $start_date = date('Y-m-01', strtotime($query_date));
+            $end_date = date('Y-m-t', strtotime($query_date));
+
+            $graphOrders = Revenue::select('*')
+            ->where('created_at', '>=' ,$start_date)
+            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            ->with('user')->get();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
             }
         }
+        $ordermcount = [];
+        $orderArr = [];
+        $ordermnet = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $sum = 0;
+            foreach($order as $value){
+                $sum = $sum + $value->user_amount;
+            }
+            $ordermcount[(int)$key] = count($order);
+            $ordermnet[(int)$key] = $sum;
+        }
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($ordermcount[$i])){
+                $orderCountArr[$i] = $ordermcount[$i]; 
+            }else{
+                $orderCountArr[$i] = 0;
+            }
+            if(!empty($ordermnet[$i])){
+                $orderNetArr[$i] = $ordermnet[$i]; 
+            }else{
+                $orderNetArr[$i] = 0;
+            }
+        }
+        $graph_data['orderCountArr'] = $orderCountArr;
+        $graph_data['orderNetArr'] = $orderNetArr;
+        $graph_data['label'] = $graph['label'];
+        $role = Auth::user()->role;
+        if($role == 'author'){
+            $role = 'user';
+        }
+        return view('user.author.sales',compact('revenues','graph_data','role'));
         
-        return view('user.author.sales',compact('userArr','filter'));
+        // return view('user.author.sales',compact('userArr','filter','revenues'));
     }
     public function author_profile_update(Request $request){
         unset($request->_token);
@@ -153,6 +201,7 @@ class UserController extends Controller
         $user->user_id = Auth::id();
         $user->name = $request->name;
         $user->email = $request->email;
+        $user->address = $request->address;
         $user->biography = $request->biography;
         $user->achievement = $request->achievement;
         $user->website = $request->website;

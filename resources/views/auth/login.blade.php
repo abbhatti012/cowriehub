@@ -172,7 +172,7 @@
                                             </div>
                                         </div>
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                            <button type="submit" class="btn btn-primary btn-block complete-width">Sign Me In</button>
                                         </div><br>
                                         <div class="text-center">
                                             <div class="social-icons">

@@ -24,29 +24,24 @@
                         <div class=" mt-n10 mt-md-n13 pt-5 pt-lg-7 px-3 px-md-5 pl-xl-10 pr-xl-8">
                             <div class="ml-xl-4">
                                 <div class="mb-5 mb-lg-7">
-                                    <div class="mb-2">
+                                    <!-- <div class="mb-2">
                                         <span class="font-size-2 text-primary">Romance</span>
-                                    </div>
+                                    </div> -->
                                     <h6 class="font-size-10 crop-text-2 font-weight-medium text-lh-1dot4">
-                                        Activities of the Frankfurt Book International
+                                        {{ $blog->title }}
                                     </h6>
                                     <div class="font-size-2 text-secondary-gray-700">
-                                        <span>10 November, 2020</span>
-                                        <span class="ml-3">0 comments</span>
+                                        <span>{{ $blog->created_at }}</span>
                                     </div>
                                 </div>
-                                <p class="font-weight-medium">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, erat in malesuada aliquam, est erat faucibus purus, eget viverra nulla sem vitae neque. Quisque id sodales libero. In nec enim nisi, in ultricies quam. Sed lacinia feugiat velit, cursus molestie lectus mollis et.
+                                <p class="font-weight-medium">{{ $blog->description }}
                                 </p>
 
-                                <p class="font-size-2 text-lh-1dot72 mb-4">Mauris tempus erat laoreet turpis lobortis, eu tincidunt erat fermentum. Aliquam non tincidunt urna. Integer tincidunt nec nisl vitae ullamcorper. Proin sed ultrices erat. Praesent varius ultrices massa at faucibus. Aenean dignissim, orci sed faucibus pharetra, dui mi dignissim tortor, sit amet condimentum mi ligula sit amet augue. Pellentesque vitae eros eget enim mollis placerat. Aliquam non tincidunt urna. Integer tincidunt nec nisl vitae ullamcorper. Proin sed ultrices erat. Praesent varius ultrices massa at faucibus. Aenean dignissim, orci sed faucibus pharetra, dui mi dignissim tortor, sit amet condimentum mi ligula sit amet augue. Pellentesque vitae eros eget enim mollis placerat.</p>
-                                <p class="font-size-2 text-lh-1dot72 mb-3 pb-1">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis diam erat. Duis velit lectus, posuere a blandit sit amet, tempor at lorem. Donec ultricies, lorem sed ultrices interdum, leo metus luctus sem, vel vulputate diam ipsum sed lorem. Donec tempor arcu nisl, et molestie massa scelerisque ut. Nunc at rutrum leo. Mauris metus mauris, tristique quis sapien eu, rutrum vulputate enim.</p>
-
-                                <p class="font-size-2 text-lh-1dot72">Pellentesque sodales augue eget ultricies ultricies. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur sagittis ultrices condimentum.</p>
+                                <p><?php echo $blog->long_description ?></p>
                             </div>
                         </div>
                     </div>
-                    <!-- Images Carousel -->
-                    <div class="js-slick-carousel u-slick u-slick--gutters-3 my-5 my-lg-8"
+                    <!-- <div class="js-slick-carousel u-slick u-slick--gutters-3 my-5 my-lg-8"
                          data-infinite="true"
                          data-slides-show="1"
                          data-slides-scroll="1"
@@ -87,7 +82,6 @@
                         <div class="bg-img-hero min-height-350" style="background-image: url({{ asset('assets/img/books/393x350.jpg') }});">
                         </div>
                     </div>
-                    <!-- End Images Carousel -->
                     <div class="col-lg-9 mx-auto">
                         <div class="px-3 px-md-5 pl-xl-10 pr-xl-4">
                             <div class="ml-xl-4">
@@ -204,16 +198,16 @@
                                     <div class="row row-cols-1 row-cols-lg-2">
                                         <div class="col">
                                             <div class="mb-5 mb-lg-0">
-                                                <a class="d-block mb-2" href="{{ route('blog-detail') }}">
+                                                <a class="d-block mb-2" href="">
                                                     <img class="img-fluid" src="{{ asset('assets/img/books/360x250.jpg') }}" alt="Image-Description">
                                                 </a>
 
                                                 <div>
                                                     <div class="mb-2">
-                                                        <a class="font-size-2" href="{{ route('blog-detail') }}">Romance</a>
+                                                        <a class="font-size-2" href="">Romance</a>
                                                     </div>
                                                      <h6 class="font-weight-medium font-size-3 pr-lg-7 text-lh-md">
-                                                        <a href="{{ route('blog-detail') }}">Signficant reading has a more info number</a>
+                                                        <a href="">Signficant reading has a more info number</a>
                                                     </h6>
                                                     <p class="font-size-2 text-secondary-gray-700">It’s nice to win awards. Last night, the Ueno team in Reykjavík came home from the Icelandic Web Awards.</p>
                                                     <div class="font-size-2 text-secondary-gray-700">
@@ -224,16 +218,16 @@
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <a class="d-block mb-2" href="{{ route('blog-detail') }}">
+                                            <a class="d-block mb-2" href="">
                                                 <img class="img-fluid" src="{{ asset('assets/img/books/360x250.jpg') }}" alt="Image-Description">
                                             </a>
 
                                             <div>
                                                 <div class="mb-2">
-                                                    <a class="font-size-2" href="{{ route('blog-detail') }}">Romance</a>
+                                                    <a class="font-size-2" href="">Romance</a>
                                                 </div>
                                                  <h6 class="font-weight-medium font-size-3 text-lh-md">
-                                                    <a href="{{ route('blog-detail') }}">Activities of the Frankfurt Book International</a>
+                                                    <a href="">Activities of the Frankfurt Book International</a>
                                                 </h6>
                                                 <p class="font-size-2 text-secondary-gray-700">It’s nice to win awards. Last night, the Ueno team in Reykjavík came home from the Icelandic Web Awards.</p>
                                                 <div class="font-size-2 text-secondary-gray-700">
@@ -361,7 +355,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

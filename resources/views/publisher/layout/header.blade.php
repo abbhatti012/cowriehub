@@ -708,7 +708,7 @@
             @endif
             <li class="<?php if(request()->segment(1) == 'publisher'){echo 'mm-active';} ?>"><a href="{{ route('user.publisher-account') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-users"></i>
-                    <span class="nav-text">Register Account</span>
+                    <span class="nav-text">My Account</span>
                 </a>
             </li>
             @if(Auth::user()->role == 'publisher')
@@ -732,9 +732,9 @@
                     <span class="nav-text">My Marketing</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(1) == 'my-sales'){echo 'mm-active';} ?>"><a href="{{ route('publisher.my-sales') }}" class="ai-icon" aria-expanded="false">
+            <li class="<?php if(request()->segment(2) == 'sales'){echo 'mm-active';} ?>"><a href="{{ route('author.sales') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>
-                    <span class="nav-text">My Sales</span>
+                    <span class="nav-text">Sales and Revenue</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(1) == 'payment-details'){echo 'mm-active';} ?>"><a href="{{ route('publisher.payment-details') }}" class="ai-icon" aria-expanded="false">
@@ -742,21 +742,21 @@
                     <span class="nav-text">Payment Details</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(2) == 'revenue'){echo 'mm-active';} ?>"><a href="{{ route('publisher.revenue') }}" class="ai-icon" aria-expanded="false">
+            <!-- <li class="<?php //if(request()->segment(2) == 'revenue'){echo 'mm-active';} ?>"><a href="{{ route('publisher.revenue') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>
                     <span class="nav-text">Revenue</span>
                 </a>
-            </li>
-            <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
+            </li> -->
+            <!-- <li class="<?php //if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-address-card"></i>
                     <span class="nav-text">Addresses</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
+            <li class="<?php //if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-heart-o"></i>
                     <span class="nav-text">Wishlist</span>
                 </a>
-            </li>
+            </li> -->
             @endif
         </ul>
     </div>

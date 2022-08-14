@@ -41,10 +41,15 @@
                                     <label for="off">Coupon Discount (%)</label>
                                     <input class="form-control form-control-lg" name="off" type="number" min="1" max="100" value="{{ old('off') }}" id="off" required>
                                 </div>
+                                <div class="basic-form">
+                                    <div class="mb-3 mb-0">
+                                        <label class="radio-inline me-3" for="all"><input type="checkbox" id="all">Apply For All Books?</label>
+                                    </div>
+                                </div>
                                 <div class="mb-3 col-md-12">
                                     <label class="select2-label form-label">Select Books</label> <br>
                                     <div class="mt-4">
-                                        <select class="js-example-programmatic-multi" multiple="multiple" name="bookId[]" required>
+                                        <select class="js-example-programmatic-multi" id="select_all" multiple="multiple" name="bookId[]" required>
                                             @foreach($books as $book)
                                                 <option value="{{ $book->id }}">{{ $book->title }}</option>
                                             @endforeach
@@ -94,9 +99,8 @@
                                         <td>{{ $coupon->off }}</td>
                                         <td>@if($coupon->is_active == 0) <span class="badge light badge-danger">Pending<span> @else <span class="badge light badge-info">Active</span>@endif</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-coupon', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.delete-coupon', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('admin.edit-coupon', $coupon->coupon_id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Coupon"><i class="fa fa-pencil"></i></a>
                                         </td>												
                                     </tr>
                                 @empty
@@ -113,6 +117,27 @@
 @endsection
 
 @section('scripts')
-<script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
+    <script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
+    <script>
+       $(document).ready(function(){
+        var select_ids = [];
+        $('#select_all option').each(function(index, element) {
+            select_ids.push($(this).val());
+        })
+        $('#all').on('change',function(){
+            if($('#all').is(":checked")){
+                    selectAll(select_ids);
+                } else {
+                    deSelectAll();
+                }
+            })
+       })
+       function selectAll(select_ids){
+            $('#select_all').val(select_ids);
+        }
+        function deSelectAll(){
+            $('#select_all').val('');
+        }
+    </script>
 @endsection

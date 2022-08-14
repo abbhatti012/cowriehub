@@ -5,7 +5,7 @@
         <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Locations</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Shipments</a></li>
             </ol>
         </div>
         @if(Session::has('message'))
@@ -18,7 +18,7 @@
             <div class="col-xl-6 col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Add Location</h4>
+                        <h4 class="card-title">Add Shipment</h4>
                     </div>
                     <form id="basic-validation" action="{{ route('admin.add-location', 'add') }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -39,7 +39,7 @@
                                     <input class="form-control form-control-lg" name="max_weight" type="number" id="weight" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
-                                    <label for="location">Location</label>
+                                    <label for="location">Shipment</label>
                                     <input class="form-control form-control-lg" name="location" type="text" id="location" required>
                                 </div>
                                 <div class="mb-3 col-md-6">
@@ -49,7 +49,7 @@
                             </div>
                             <div class="basic-form">
                                 <div class="mb-3 mb-0">
-                                    <label class="radio-inline me-3" for="is_cod"><input type="radio" id="is_cod" name="is_cod" value=1>  Enable COD for that location?</label>
+                                    <label class="radio-inline me-3" for="is_cod"><input type="checkbox" id="is_cod" name="is_cod" value=1>  Enable COD for that location?</label>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary">Add</button>

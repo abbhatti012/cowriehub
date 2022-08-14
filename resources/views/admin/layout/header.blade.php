@@ -268,7 +268,7 @@
             </li> -->
             <li class="<?php if(request()->segment(2) == 'reports'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-bar-chart"></i>
-                    <span class="nav-text">Report & Payouts</span>
+                    <span class="nav-text">Reports</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.order-reports') }}">Order reports</a></li>
@@ -285,12 +285,12 @@
                     <li><a href="{{ route('admin.author-settelments') }}">Author's Settelments</a></li>
                 </ul>
             </li> -->
-            <!-- <li class="<?php //if(request()->segment(2) == 'blog'){echo 'mm-active';} ?>">
+            <li class="<?php if(request()->segment(2) == 'blog'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.blog') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-blogger-b"></i>
                     <span class="nav-text"> Blog</span>
                 </a>
-            </li> -->
+            </li>
             <li class="<?php if(request()->segment(2) == 'page'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-globe"></i>
                     <span class="nav-text">Website</span>

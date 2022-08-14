@@ -26,7 +26,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">All Jobs</h4>
+                        <h4 class="card-title">Pending Jobs</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -91,7 +91,7 @@
                             <table class="table table-hover table-borderless">
                                 <tbody>
                                     <tr>
-                                        <th>---</th>
+                                        <th>Marketing Packages</th>
                                         <th>Package</th>
                                         <th>Price</th>
                                         <th>Duration</th>

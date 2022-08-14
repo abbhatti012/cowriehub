@@ -1,7 +1,7 @@
 @extends('consultant.layout.index')
 @section('content')
 <style>
-    <?php if($user->payment): ?>
+    <?php if($user): ?>
     <?php if($user->payment == 'mobile_money'): ?>
         .bank_fields{
             display: none;
@@ -46,7 +46,7 @@
     <form id="basic-validation" action="{{ route('consultant.update-payment-detail') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-6 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <h3 for="instagram">Payment Details</h3>
@@ -54,7 +54,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Settelments</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Info</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -68,7 +68,7 @@
                                     <input class="form-control form-control-lg" name="account_number" type="text" id="account_number" value="{{ $user->account_number }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="networks">Mobile Money Networks</label>
+                                    <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option <?php if($user->networks == 'mtn'){echo 'selected';} ?> value="mtn">MTN</option>
                                         <option <?php if($user->networks == 'at'){echo 'selected';} ?> value="at">AIrtelTigo</option>
@@ -98,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>
@@ -108,7 +108,7 @@
     <form id="basic-validation" action="{{ route('consultant.update-payment-detail') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
-            <div class="col-xl-12 col-lg-12">
+            <div class="col-xl-6 col-lg-6">
                 <div class="card">
                     <div class="card-body">
                         <h3 for="instagram">Payment Details</h3>
@@ -116,7 +116,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Settelments</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Info</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -130,7 +130,7 @@
                                     <input class="form-control form-control-lg" name="account_number" type="text" id="account_number" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="networks">Mobile Money Networks</label>
+                                    <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option value="mtn">MTN</option>
                                         <option value="at">AIrtelTigo</option>
@@ -160,8 +160,8 @@
                             </div>
                         </div>
                     </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
-                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>

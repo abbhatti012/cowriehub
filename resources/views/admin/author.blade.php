@@ -120,7 +120,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Settelments</th>
+                                        <th>Bank Info</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

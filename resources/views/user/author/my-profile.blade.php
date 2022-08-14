@@ -41,7 +41,7 @@
                     @csrf
                     <div class="card-body">
                         <div class="basic-form custom_file_input">
-                        <h3 for="instagram">Cover Type</h3>
+                        <h3 for="instagram">Banner</h3>
                         <hr>
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
@@ -61,7 +61,7 @@
                         </div>
                         @endif
                         <div class="input-group mb-3">
-                            <span class="input-group-text">Cover Photo</span>
+                            <span class="input-group-text">Banner</span>
                             <div class="form-file">
                                 <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')">
                             </div>
@@ -117,6 +117,12 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
+                                <label for="address">Address</label>
+                                <input class="form-control form-control-lg" name="address" type="text" id="address" value="{{ $user->address }}">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
                                 <label for="website">Website</label>
                                 <input class="form-control form-control-lg" name="website" type="text" id="website" value="{{ $user->website }}">
                             </div>
@@ -144,7 +150,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Settelments</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Info</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -158,7 +164,7 @@
                                     <input class="form-control form-control-lg" name="account_number" type="text" id="account_number" value="{{ $user->account_number }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="networks">Mobile Money Networks</label>
+                                    <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option <?php if($user->networks == 'mtn'){echo 'selected';} ?> value="mtn">MTN</option>
                                         <option <?php if($user->networks == 'at'){echo 'selected';} ?> value="at">AIrtelTigo</option>
@@ -170,11 +176,11 @@
                         <div class="bank_fields">
                             <div class="basic-form">
                                 <div class="mb-3">
-                                    <label for="bank_account_name">Bank Account Name</label>
+                                    <label for="bank_account_name">Account Name</label>
                                     <input class="form-control form-control-lg" name="bank_account_name" type="text" id="bank_account_name" value="{{ $user->bank_account_name }}" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="bank_account_number">Bank Account Number</label>
+                                    <label for="bank_account_number">Account Number</label>
                                     <input class="form-control form-control-lg" name="bank_account_number" type="text" id="bank_account_number	" value="{{ $user->bank_account_number	 }}" required>
                                 </div>
                                 <div class="mb-3">
@@ -271,6 +277,12 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
+                                <label for="address">Address</label>
+                                <input class="form-control form-control-lg" name="address" type="text" id="address">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
                                 <label for="website">Website</label>
                                 <input class="form-control form-control-lg" name="website" type="text" id="website">
                             </div>
@@ -298,7 +310,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Settelments</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Info</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -312,7 +324,7 @@
                                     <input class="form-control form-control-lg" name="bank_account_number" type="text" id="bank_account_number" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="networks">Mobile Money Networks</label>
+                                    <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option value="mtn">MTN</option>
                                         <option value="at">AIrtelTigo</option>

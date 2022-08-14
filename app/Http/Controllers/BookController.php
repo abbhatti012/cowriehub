@@ -23,20 +23,24 @@ class BookController extends Controller
         $book = Book::where('id',$id)->first(); 
         $sub_authors_list = explode(',',$book->sub_author);
         $sub_authors = User::whereIn('id',$sub_authors_list)->get();
-        return view('user.edit-book', compact('genres', 'authors', 'book', 'sub_authors'));
+        $role = Auth::user()->role;
+        if($role == 'author'){
+            $role = 'user';
+        }
+        return view('user.edit-book', compact('genres', 'authors', 'book', 'sub_authors','role'));
     }
     public function insert_book(Request $request, $id){
         $user = Book::firstOrNew(array('id' => $id));
         if($request->post_type == 'add'){
             $user->user_id = Auth::id();
         }
-        if($request->hero_image != null){
-            $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
-            $request->hero_image->move(public_path('images/books'), $UploadImage);
-            $user->hero_image = 'images/books/'.$UploadImage;
-        } else {
-            unset($user->hero_image);
-        }
+        // if($request->hero_image != null){
+        //     $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
+        //     $request->hero_image->move(public_path('images/books'), $UploadImage);
+        //     $user->hero_image = 'images/books/'.$UploadImage;
+        // } else {
+        //     unset($user->hero_image);
+        // }
         if($request->cover != null){
             $UploadImage = 'b'.time().'.'.$request->cover->extension();
             $request->cover->move(public_path('images/books'), $UploadImage);

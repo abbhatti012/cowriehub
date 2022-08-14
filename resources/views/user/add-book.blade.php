@@ -36,7 +36,7 @@
                         <div class="basic-form custom_file_input">
                         <h3 for="instagram">Cover Type</h3>
                         <hr>
-                        <div class="basic-form">
+                        <!-- <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="500x500" name="cover_type" value="portrait" required> Portrait?</label>
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" checked name="cover_type" value="landscape" required> Landscape?</label>
@@ -52,7 +52,7 @@
                             <div class="form-file">
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')" required>
                             </div>
-                        </div>
+                        </div> -->
                        
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage2" alt="">
@@ -70,11 +70,11 @@
                                 <input type="file" name="sample" class="form-file-input form-control" required>
                             </div>
                         </div>
-                        <h4>Select Extra Fields</h4><hr>
+                        <h4>Optional Fields</h4><hr>
                         <div class="mb-3 col-md-12">
                             <div class="mt-4">
-                                <!-- <select class="js-example-programmatic-multi selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]" required></select> -->
-                                <select class="selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]" required></select>
+                                <select class="js-example-programmatic-multi selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]"></select>
+                                <!-- <select class="selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]" required></select> -->
                             </div>
                         </div>
                         <div class="extraFieldsHere"></div>
@@ -85,7 +85,7 @@
             <div class="col-xl-6 col-lg-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Bio Data</h4>
+                        <h4 class="card-title">Book Metadata</h4>
                     </div>
                     <div class="card-body">
                         <div class="basic-form">
@@ -654,7 +654,7 @@
             })
         });
         $('.selectExtraField').on('change',function(){
-            var html;
+            var html = '';
             $('.selectExtraField option:selected').each(function(){
                 html += '<div class="basic-form">'+
                             '<div class="mb-3">'+

@@ -13,6 +13,7 @@ use App\Models\Consultant;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -434,28 +435,129 @@ class ConsultantController extends Controller
         return back()->with('message', ['text'=>'Payment proof sent succesfully!','type'=>'success']);
     }
     public function stat(Request $request){
-        $users = Payment::select('*')->where('user_id',$request->id)
-        ->whereYear('created_at', date('Y'))
-        ->get()
-        ->groupBy(function($date) {
-            return Carbon::parse($date->created_at)->format('m');
-        });
-        $filter['year'] = date('Y');
+        $id = $request->id;
+        if(isset($request->date) && !empty($request->date)){
+            $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($date[0]));
+            $end_date = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$start_date,1=>$end_date];
+            $graphOrders = Revenue::select('*')
+            ->whereBetween('created_at',$date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            
+            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            ->whereBetween('created_at',$date)->with('user')->get();
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
+        } else {
+            $query_date = date('Y-m-d',strtotime(now()));
+            $start_date = date('Y-m-01', strtotime($query_date));
+            $end_date = date('Y-m-t', strtotime($query_date));
 
-        $usermcount = [];
-        $userArr = [];
-
-        foreach ($users as $key => $value) {
-            $usermcount[(int)$key] = count($value);
-        }
-
-        for($i = 1; $i <= 12; $i++){
-            if(!empty($usermcount[$i])){
-                $userArr[$i] = $usermcount[$i];    
-            }else{
-                $userArr[$i] = 0;    
+            $graphOrders = Revenue::select('*')
+            ->where('created_at', '>=' ,$start_date)
+            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            ->with('user')->get();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
             }
         }
-        return view('consultant.stat',compact('userArr','filter'));
+        $ordermcount = [];
+        $orderArr = [];
+        $ordermnet = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $sum = 0;
+            foreach($order as $value){
+                $sum = $sum + $value->user_amount;
+            }
+            $ordermcount[(int)$key] = count($order);
+            $ordermnet[(int)$key] = $sum;
+        }
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($ordermcount[$i])){
+                $orderCountArr[$i] = $ordermcount[$i]; 
+            }else{
+                $orderCountArr[$i] = 0;
+            }
+            if(!empty($ordermnet[$i])){
+                $orderNetArr[$i] = $ordermnet[$i]; 
+            }else{
+                $orderNetArr[$i] = 0;
+            }
+        }
+        $graph_data['orderCountArr'] = $orderCountArr;
+        $graph_data['orderNetArr'] = $orderNetArr;
+        $graph_data['label'] = $graph['label'];
+        $graph_data['id'] = $id;
+        return view('consultant.stat',compact('graph_data'));
+    }
+    public function get_date_series($start_date, $end_date){
+        $dates = array();
+        $current = strtotime($start_date);
+        $date2 = strtotime($end_date);
+        $stepVal = '+1 day';
+        while( $current <= $date2 ) {
+            $dates[] = date('d-M', $current);
+            $current = strtotime($stepVal, $current);
+        }
+        return $dates;
+    }
+    public function get_labels($days, $graphOrders, $get_date_series){
+        if($days >= 0 && $days <= 1){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('h');
+            });
+           
+            $data['label'] = ['1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM','8PM' ,'9PM', '10PM', '11PM', '12AM', '13AM', '14AM', '15AM', '16AM', '17AM', '18AM', '19AM', '20AM', '21AM', '22AM', '23AM', '00PM'];
+            $data['count'] = 24;
+        } else if($days > 1 && $days <= 14){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+           
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 14 && $days < 30){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days >= 29 && $days <= 31){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('d');
+            });
+            
+            $data['label'] = $get_date_series;
+            $data['count'] = $days;
+        } else if($days > 31 && $days < 365){
+            $data['orders'] = $graphOrders->groupBy(function($date) {
+                return Carbon::parse($date->created_at)->format('m');
+            });
+            
+            $data['label'] = ['JAN', 'FEB', 'MARCH', 'APRIL', 'MAY', 'JUN', 'JUL', 'AUG', 'SEPT', 'OCT', 'NOV', 'DEC'];
+            $data['count'] = 12;
+        }
+        return $data;
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use View;
 use Carbon\Carbon;
 use App\Models\Job;
+use App\Models\Blog;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
@@ -198,7 +199,7 @@ class AdminController extends Controller
         return view('admin.affiliates');
     }
     public function books(){
-        $books = Book::orderBy('id','desc')->get();
+        $books = Book::orderBy('id','desc')->with('sub_genre')->get();
         return view('admin.books',compact('books'));
     }
     public function book_orders(){
@@ -304,7 +305,8 @@ class AdminController extends Controller
         return view('admin.author-settelments');
     }
     public function blog(){
-        return view('admin.blog');
+        $blogs = Blog::get();
+        return view('admin.blog',compact('blogs'));
     }
     public function faq(){
         return view('admin.faq');
@@ -535,7 +537,7 @@ class AdminController extends Controller
     }
     public function delete_user(Request $request, $id){
         User::where('id',$id)->delete();
-        return back()->with('message', ['text'=>'User data has been updated','type'=>'danger']);
+        return back()->with('message', ['text'=>'User has been deleted','type'=>'danger']);
     }
     public function delete_marketing(Request $request, $id){
         Marketing::where('id',$id)->delete();
@@ -550,7 +552,24 @@ class AdminController extends Controller
         unset($data['_token']);
         $trainee = Setting::findOrFail(1);
         $trainee->fill($data)->save();
-        return back()->with('message', ['text'=>'User data has been updated','type'=>'success']);
+        return back()->with('message', ['text'=>'Setting been updated','type'=>'success']);
+    }
+    public function edit_marketing($id){
+        $marketing = Marketing::find($id);
+        return view('admin.update.edit-marketing', compact('marketing'));
+    }
+    public function update_marketing(Request $request, $id){
+        $data = $request->all();
+        unset($data['_token']);
+        $point = serialize($data['point']);
+        unset($data['point']);
+        $market = Marketing::find($id);
+        $market->package = $data['package'];
+        $market->price = $data['price'];
+        $market->duration = $data['duration'];
+        $market->point = $point;
+        $market->save();
+        return back()->with('message', ['text'=>'Marketing data has been saved','type'=>'success']);
     }
     public function add_marketing(Request $request){
         $data = $request->all();
@@ -560,7 +579,7 @@ class AdminController extends Controller
         $market = new Marketing;
         $market->package = $data['package'];
         $market->price = $data['price'];
-        $market->duration = $data['duration'];
+        // $market->duration = $data['duration'];
         $market->point = $point;
         $market->save();
         return back()->with('message', ['text'=>'Marketing data has been saved','type'=>'success']);
@@ -626,7 +645,7 @@ class AdminController extends Controller
             $coupon->is_active = 0;
         }
         $coupon->save();
-        return back()->with('message', ['text'=>'Coupon added successfully!','type'=>'success']);
+        return back()->with('message', ['text'=>'Coupon added successful!','type'=>'success']);
     }
     public function delete_coupon($id){
         Coupon::where('id',$id)->delete();
@@ -634,7 +653,7 @@ class AdminController extends Controller
     }
     public function update_coupon_status($id){
         Coupon::where('id',$id)->update(['is_active'=>1]);
-        return back()->with('message', ['text'=>'Coupon has been activated','type'=>'success']);
+        return back()->with('message', ['text'=>'Update Successsful','type'=>'success']);
     }
     public function skills(){
         $skills = Skill::orderBy('id','desc')->with('users')->get();
@@ -661,7 +680,11 @@ class AdminController extends Controller
     public function edit_coupon($id){
         $coupon = Coupon::orderBy('id','desc')->where('id',$id)->first();
         $books = Book::where('status',1)->get();
-        return view('admin.update.edit-coupon',compact('books','coupon'));
+        $role = Auth::user()->role;
+        if($role == 'author'){
+            $role = 'user';
+        }
+        return view('admin.update.edit-coupon',compact('books','coupon','role'));
     }
     public function update_coupon(Request $request, $id){
         $validation = [
@@ -804,6 +827,44 @@ class AdminController extends Controller
     public function edit_location(Request $request, $id){
         $location = Location::where('id',$id)->first();
         return view('admin.update.update-location',compact('location'));
+    }
+    public function add_blog(Request $request){
+        $blog = New Blog;
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->long_description = $request->long_description;
+        if($request->image != null){
+            $image = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/blogs'), $image);
+            $blog->image = 'images/blogs/'.$image;
+        } else {
+            unset($blog->image);
+        }
+        $blog->save();
+        return back()->with('message', ['text'=>'Blog added successfully!','type'=>'success']);
+    }
+    public function edit_blog(Request $request, $id){
+        $blog = Blog::find($id);
+        return view('admin.update.edit-blog',compact('blog'));
+    }
+    public function delete_blog($id){
+        Blog::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Blog has been deleted','type'=>'success']);
+    }
+    public function update_blog(Request $request, $id){
+        $blog = Blog::find($id);
+        $blog->title = $request->title;
+        $blog->description = $request->description;
+        $blog->long_description = $request->long_description;
+        if(isset($request->image) && $request->image != null){
+            $image = time().'.'.$request->image->extension();
+            $request->image->move(public_path('images/blogs'), $image);
+            $blog->image = 'images/blogs/'.$image;
+        } else {
+            unset($blog->image);
+        }
+        $blog->save();
+        return back()->with('message', ['text'=>'Blog added successfully!','type'=>'success']);
     }
     public function update_location(Request $request, $id){
         $location = Location::find($id);

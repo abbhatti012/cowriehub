@@ -20,7 +20,7 @@
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Marketing Packages</h4>
+                            <h4 class="card-title">Add Marketing Package</h4>
                         </div>
                         <div class="card-body row">
                             <div class="basic-form col-lg-4">
@@ -35,12 +35,12 @@
                                     <input class="form-control form-control-lg" name="price" type="number" id="price" required>
                                 </div>
                             </div>
-                            <div class="basic-form col-lg-4">
+                            <!-- <div class="basic-form col-lg-4">
                                 <div class="mb-3">
                                     <label for="">Duration</label>
                                     <input class="form-control form-control-lg" name="duration" type="text" id="duration" required>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="basic-form col-lg-11">
                                 <div class="mb-3">
                                     <label for="email">Additional Point</label>
@@ -71,7 +71,7 @@
                     </div>
                 @endif
                     <div class="card-header">
-                        <h4 class="card-title">Author</h4>
+                        <h4 class="card-title">Marketing Packages</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -81,9 +81,9 @@
                                         <th>No</th>
                                         <th>Package</th>
                                         <th>Price</th>
-                                        <th>Duration</th>
+                                        <!-- <th>Duration</th> -->
                                         <th>Points</th>
-                                        <th>Delete</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -93,16 +93,17 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $point->package }}</td>
                                         <td>{{ $point->price }}</td>
-                                        <td>{{ $point->duration }}</td>
+                                        <!-- <td>{{ $point->duration }}</td> -->
                                         <td>
                                             @foreach(unserialize($point->point) as $sub)
                                             <li>{{ $sub }}</li>
                                             @endforeach
                                         </td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-marketing', $point->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Marketign"><i class="fa fa-trash"></i></a>
-                                            </div>
+                                            <!-- <div class="d-flex"> -->
+                                                <a href="{{ route('admin.delete-marketing', $point->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Package"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.edit-marketing', $point->id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Package"><i class="fa fa-pencil"></i></a>
+                                            <!-- </div> -->
                                         </td>
                                     </tr>
                                     @empty

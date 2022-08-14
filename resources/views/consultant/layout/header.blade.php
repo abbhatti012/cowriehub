@@ -38,7 +38,7 @@
                             <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
                         </div>
                     </li>
-                    <li class="nav-item dropdown notification_dropdown">
+                    <!-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link bell-link ai-icon" href="javascript:void(0);">
                             <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M23.6667 5.16666C23.6667 2.5895 21.5772 0.5 19 0.5C15.1162 0.5 8.88387 0.5 5.00004 0.5C2.42287 0.5 0.333374 2.5895 0.333374 5.16666V20.3333C0.333374 20.8058 0.618046 21.2305 1.05321 21.4113C1.48955 21.5922 1.99121 21.4918 2.32487 21.1582C2.32487 21.1582 4.59287 18.8902 5.9672 17.517C6.4047 17.0795 6.99739 16.8333 7.61689 16.8333H19C21.5772 16.8333 23.6667 14.7438 23.6667 12.1667V5.16666ZM21.3334 5.16666C21.3334 3.87866 20.2892 2.83333 19 2.83333C15.1162 2.83333 8.88387 2.83333 5.00004 2.83333C3.71204 2.83333 2.66671 3.87866 2.66671 5.16666V17.517L4.31638 15.8673C5.19138 14.9923 6.37905 14.5 7.61689 14.5H19C20.2892 14.5 21.3334 13.4558 21.3334 12.1667V5.16666ZM6.16671 12.1667H15.5C16.144 12.1667 16.6667 11.644 16.6667 11C16.6667 10.356 16.144 9.83333 15.5 9.83333H6.16671C5.52271 9.83333 5.00004 10.356 5.00004 11C5.00004 11.644 5.52271 12.1667 6.16671 12.1667ZM6.16671 7.5H17.8334C18.4774 7.5 19 6.97733 19 6.33333C19 5.68933 18.4774 5.16666 17.8334 5.16666H6.16671C5.52271 5.16666 5.00004 5.68933 5.00004 6.33333C5.00004 6.97733 5.52271 7.5 6.16671 7.5Z" fill="#1362FC"/>
@@ -115,7 +115,7 @@
                             </ul>
                         </div>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
                             <img src="{{asset('admin_assets/images/profile/pic1.jpg')}}" alt="">
@@ -147,51 +147,46 @@
         <ul class="metismenu" id="menu">
             <li class="<?php if(request()->segment(2) == 'consultant-register'){echo 'mm-active';} ?>"><a href="{{ route('user.consultant-account') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-users"></i>
-                    <span class="nav-text">Register as consultant</span>
+                    <span class="nav-text">My Account</span>
                 </a>
             </li>
             @if(Auth::user()->role == 'consultant')
-            <li class="<?php if(request()->segment(2) == 'payment-detail'){echo 'mm-active';} ?>"><a href="{{ route('consultant.payment-detail') }}" class="ai-icon" aria-expanded="false">
+            <li class="<?php if(request()->segment(2) == 'payment-detail'){echo 'mm-active';} ?>">
+                <a href="{{ route('consultant.payment-detail') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>
                     <span class="nav-text">Payment Detail</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(2) == 'jobs'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-bar-chart"></i>
-                    <span class="nav-text">Jobs</span>
+           
+            <li class="<?php if(request()->segment(2) == 'jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                <a href="{{ route('consultant.jobs') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-tasks"></i>
+                    <span class="nav-text">Pending Jobs</span>
                 </a>
-                <ul aria-expanded="false">
-                    <li class="<?php if(request()->segment(2) == 'jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
-                        <a href="{{ route('consultant.jobs') }}" class="ai-icon" aria-expanded="false">
-                            <span class="nav-text">Pending Jobs</span>
-                        </a>
-                    </li>
-                </ul>
-                <ul aria-expanded="false">
-                    <li class="<?php if(request()->segment(2) == 'active-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
-                        <a href="{{ route('consultant.active-jobs') }}" class="ai-icon" aria-expanded="false">
-                            <span class="nav-text">Active Jobs</span>
-                        </a>
-                    </li>
-                </ul>
-                <ul aria-expanded="false">
-                    <li class="<?php if(request()->segment(2) == 'completed-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
-                        <a href="{{ route('consultant.completed-jobs') }}" class="ai-icon" aria-expanded="false">
-                            <span class="nav-text">Completed Jobs</span>
-                        </a>
-                    </li>
-                </ul>
             </li>
-            <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
+            <li class="<?php if(request()->segment(2) == 'active-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                <a href="{{ route('consultant.active-jobs') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-tasks"></i>
+                    <span class="nav-text">Active Jobs</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'completed-jobs' || request()->segment(2) == 'sales'){echo 'mm-active';} ?>">
+                <a href="{{ route('consultant.completed-jobs') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-tasks"></i>
+                    <span class="nav-text">Completed Jobs</span>
+                </a>
+            </li>
+
+            <!-- <li class="<?php //if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-address-card"></i>
                     <span class="nav-text">Addresses</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
+            <li class="<?php //if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-heart-o"></i>
                     <span class="nav-text">Wishlist</span>
                 </a>
-            </li>
+            </li> -->
             @endif
         </ul>
     </div>

@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AuthorDetail;
+use App\Models\Blog;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Genre;
 use App\Models\Banner;
-use App\Models\Location;
 use App\Models\Review;
-use App\Models\Setting;
-use App\Models\Marketing;
-use App\Models\Wishlist;
-use App\Models\MarketOrders;
 use App\Models\Payment;
+use App\Models\Setting;
+use App\Models\Location;
+use App\Models\Wishlist;
+use App\Models\Marketing;
+use App\Models\AuthorDetail;
+use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -130,6 +131,14 @@ class HomeController extends Controller
         $users = User::where('role','author')->get();
         $featured = Book::where('is_featured',1)->where('status',1)->limit(3)->get();
         return view('front.shop', compact('genres', 'users', 'featured'));
+    }
+    public function blogs(){
+        $blogs = Blog::get();
+        return view('front.blogs', compact('blogs'));
+    }
+    public function blog_detail($id){
+        $blog = Blog::find($id);
+        return view('front.blog-detail', compact('blog'));
     }
     public function product($slug){
         $book = Book::where('slug',$slug)->first();
@@ -265,9 +274,6 @@ class HomeController extends Controller
     }
     public function blog(){
         return view('front.blog');
-    }
-    public function blog_detail(){
-        return view('front.blog-detail');
     }
     public function order_received(){
         return view('front.order-received');

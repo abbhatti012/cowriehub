@@ -36779,5 +36779,46 @@ table.dataTable.display tbody td {
     margin-left: -2rem !important;
 }
 
+tr {
+    text-align: center !important;
+}
+
+td {
+    text-align: center !important;
+}
+
+.btn-primary {
+    width: auto !important;
+}
+
+.complete-width {
+    width: 100% !important;
+}
+
+.pull-me {
+    margin: 0 auto;
+    width: 20em;
+    height: 2em;
+    font-family: arial, sans-serif;
+    font-size: 1.2em;
+    color: #ffffff;
+    background: #55cdc8;
+    text-decoration: none;
+}
+
+.pull-me p {
+    text-align: center;
+}
+
+.slide {
+    margin: 0;
+    padding: 0;
+    border-top: solid 2px #55cdc8;
+}
+
+.dt-buttons {
+    display: none !important;
+}
+
 
 /*# sourceMappingURL=style.css.map */

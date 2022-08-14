@@ -33,7 +33,7 @@
     <div class="col-xl-6 col-lg-6">
         <div class="card">
         <div class="card-header">
-            <h4 class="card-title">Updatte Location</h4>
+            <h4 class="card-title">Update Location</h4>
         </div>
         <form id="basic-validation" action="{{ route('admin.update-location', $location->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
@@ -67,7 +67,7 @@
                 </div>
                 <div class="basic-form">
                     <div class="mb-3 mb-0">
-                        <label class="radio-inline me-3" for="is_cod"><input type="radio" id="is_cod" name="is_cod" <?php if($location->is_cod){echo 'checked';} ?> value=1>  Enable COD for that location?</label>
+                        <label class="radio-inline me-3" for="is_cod"><input type="checkbox" id="is_cod" name="is_cod" <?php if($location->is_cod){echo 'checked';} ?> value=1>  Enable COD for that location?</label>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Add</button>

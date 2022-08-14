@@ -20,4 +20,7 @@ class Book extends Model
     protected $fillable = [
         'id'
     ];
+    public function sub_genre(){
+        return $this->hasOne(SubGenre::class, 'id', 'genre');
+    }
 }

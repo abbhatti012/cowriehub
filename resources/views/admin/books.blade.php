@@ -28,7 +28,7 @@
                     <div class="card-header">
                         <h4 class="card-title">All Books</h4>
                         <div class="d-flex">
-                            <a href="{{ route('admin.add-book') }}" class="btn btn-primary shadow btn-lg sharp" title="Add Book">Add Book</a>
+                            <a href="{{ route('admin.add-book') }}" class="btn btn-primary shadow btn-lg sharp" title="Add a Book">Add a Book</a>
                         </div>
                     </div>
                     <div class="card-body">
@@ -52,11 +52,11 @@
                                         <th>Action</th>
                                         <!-- <th>Is Best Selling?</th> -->
                                         <th>Is Featured?</th>
-                                        <th>Is On Sale?</th>
+                                        <th>Is OnSale?</th>
                                         <th>Is Most Viewed?</th>
                                         <th>Is New Release?</th>
                                         <th>Is Biographies?</th>
-                                        <th>Is Campaign?</th>
+                                        <th>Promo Deals?</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,7 +70,7 @@
                                         </td>
                                         <td><a href="{{ route('product', $book->id) }}" target="_blank">{{ $book->title }}</a></td>
                                         <td>{{ $book->subtitle }}</td>
-                                        <td>{{ $book->genre_title }}</td>
+                                        <td>{{ $book->sub_genre->title }}</td>
                                         <td>{{ $book->publisher }}</td>
                                         <td>{{ $book->publication_date }}</td>
                                         <td>{{ $book->country }}</td>
