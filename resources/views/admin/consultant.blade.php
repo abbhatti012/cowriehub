@@ -21,7 +21,11 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
+                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
+                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
+                            <a href="#!" class="btn btn-primary btn-print">Print</a>
+                            <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
                                         <th>Payment Detail</th>
@@ -54,6 +58,8 @@
                                                 data-branch = "{{ $consultant->branch }}"
                                                 data-bank_name = "{{ $consultant->bank_name }}"
                                                 title="View Payment Detail">View</a>
+                                            @else
+                                            ---
                                             @endif
                                         </td>
                                         <td>
@@ -77,8 +83,9 @@
                                         <td><a class="btn btn-success shadow btn-xs sharp me-1 viewDocument" data-bs-toggle="modal" data-bs-target="#viewDocument" href="" data-url="{{ asset($consultant->identity_card) }}"><span class="fa fa-download"></span></a></td>
                                         <td><a class="btn btn-success shadow btn-xs sharp me-1 viewDocument" data-bs-toggle="modal" data-bs-target="#viewDocument" href="" data-url="{{ asset($consultant->intro_viedo) }}"><span class="fa fa-download"></span></a></td>
                                         <td><a class="btn btn-success shadow btn-xs sharp me-1 viewDocument" data-bs-toggle="modal" data-bs-target="#viewDocument" href="" data-url="{{ asset($consultant->portfolio) }}"><span class="fa fa-download"></span></a></td>
-                                        <td id="viewMore{{ $consultant->id }}">{{ substr($consultant->description,0,60) }}... <span><a href="javascript:void(0)" class="text-primary  viewMore" data-id="{{ $consultant->id }}">More</a></span></td>
-                                        <td style="display:none;" id="viewLess{{ $consultant->id }}">{{ $consultant->description }}...<span><a href="javascript:void(0)" class="text-primary viewLess" data-id="{{ $consultant->id }}">Less</a></span></td>
+                                        <td><p id="viewMore{{ $consultant->id }}">{{ substr($consultant->description,0,60) }}... <span><a href="javascript:void(0)" class="text-primary  viewMore" data-id="{{ $consultant->id }}">More</a></span>
+                                            <p style="display:none;" id="viewLess{{ $consultant->id }}">{{ $consultant->description }}...<span><a href="javascript:void(0)" class="text-primary viewLess" data-id="{{ $consultant->id }}">Less</a></span></p>
+                                        </td>
                                         <td>
                                             <div class="d-flex">
                                                 @if($consultant->status == 0)
@@ -87,6 +94,7 @@
                                                     <a href="{{ route('consultant.update-consultant-status', [$consultant->id, 0]) }}" onclick="return confirm('Are you sure you want the disapprove as consultant?')" class="btn btn-danger shadow btn-xs sharp me-1" title="Disapprove Consultant"><i class="fa fa-times"></i></a>
                                                 @endif
                                                 <a href="{{ route('consultant.delete-consultant', $consultant->id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete consultant?')" title="Delete Consultant"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.update-consultant', $consultant->id) }}" class="btn btn-info shadow btn-xs sharp" title="Update Consultant"><i class="fa fa-pencil"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -376,4 +384,11 @@
         });
     });
 </script>
+    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

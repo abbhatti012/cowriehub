@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-3 col-sm-6">
+            <!-- <div class="col-xl-3 col-sm-6">
                 <div class="card gradient-7 card-bx">
                     <div class="card-body d-flex align-items-center">
                         <div class="me-auto text-white">
@@ -113,7 +113,7 @@
                         </svg>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
         <div class="row">
             <div class="col-xl-12 col-xxl-12">
@@ -122,7 +122,7 @@
                         <div class="me-auto mb-sm-0 mb-3">
                             <h4 class="card-title mb-2">Oredrs Stat</h4>
                         </div>
-                        <div class="d-flex justify-content-between">
+                        <!-- <div class="d-flex justify-content-between">
                             <div class="d-flex me-5">
                                 <h3 class="mb-0 me-2">@if($check) {{$check->checkin}} @else 0 @endif</h3>
                                 <span>Check In</span>
@@ -131,7 +131,7 @@
                                 <h3 class="mb-0 me-2">@if($check) {{$check->checkout}} @else 0 @endif</h3>
                                 <span>Check Out</span>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="card-body">
                         <div id="reservationChart" class="reservationChart"></div>

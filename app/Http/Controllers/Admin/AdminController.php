@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use View;
 use Carbon\Carbon;
 use App\Models\Job;
 use App\Models\Book;
@@ -19,15 +20,20 @@ use App\Models\SubGenre;
 use App\Models\Marketing;
 use App\Models\Publisher;
 use App\Models\Consultant;
+use App\Models\ExtraField;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+
 
 class AdminController extends Controller
 {
@@ -172,7 +178,7 @@ class AdminController extends Controller
         $consultants = Consultant::orderBy('id','desc')->with('marketing')->get();
         $jobs = MarketOrders::orderBy('marketing_orders.id','desc')
         ->select('marketing.*','marketing_orders.*','marketing_orders.id as market_id')
-        ->where('marketing_orders.job_type','!=',1)
+        // ->where('marketing_orders.job_type','!=',1)
         ->join('marketing','marketing.id','=','marketing_orders.marketing_id')->get();
         $setting = Setting::first();
         return view('admin.consultant',compact('consultants','jobs','setting'));
@@ -378,7 +384,18 @@ class AdminController extends Controller
     public function view_book_detail($id){
         $book = Book::where('id',$id)->first();
         $genre = SubGenre::where('id', $book->genre)->first();
-        return view('admin.view_book_detail', compact('book', 'genre'));
+        $extras = ExtraField::where('book_id',$id)->get();
+        return view('admin.view_book_detail', compact('book', 'genre', 'extras'));
+    }
+    public function book_field_detail($id){
+        $extras = ExtraField::where('book_id',$id)->get();
+        return view('admin.book_field_detail', compact('extras'));
+    }
+    public function export_detail(Request $request){
+        $fields = implode("','",explode(',',$request->fields));
+        dd($fields);
+        $extras = DB::table($request->table)->select($fields)->get();
+        // return view('admin.book_field_detail', compact('extras'));
     }
     public function view_order_detail($id){
         $payment = Payment::where('id',$id)->first();
@@ -473,12 +490,18 @@ class AdminController extends Controller
         return back()->with('success','You have successfully upload image.');
     }
     public function edit_book($id){
+        // $data = json_encode(['Text One', 'Text Two', 'Text Three']);
+        // $jsongFile = time() . '_file.json';
+        // Storage::disk('public')->put($jsongFile, json_encode($data));
+        // return Storage::disk('public')->download($jsongFile);
+
         $genres = Genre::with('subgenres')->get(); 
         $authors = User::where('id','!=',Auth::id())->where('role','author')->get();
         $book = Book::where('id',$id)->first();
         $sub_authors_list = explode(',',$book->sub_author);
         $sub_authors = User::whereIn('id',$sub_authors_list)->get();
-        return view('admin.edit-book', compact('genres', 'authors', 'book', 'sub_authors'));
+        $extras = ExtraField::where('book_id',$id)->get();
+        return view('admin.edit-book', compact('genres', 'authors', 'book', 'sub_authors', 'extras'));
     }
     public function add_book(Request $request){
         $genres = Genre::with('subgenres')->get(); 
@@ -617,6 +640,54 @@ class AdminController extends Controller
         $skills = Skill::orderBy('id','desc')->with('users')->get();
         return view('admin.skills',compact('skills'));
     }
+    public function edit_skill($id){
+        $skill = Skill::orderBy('id','desc')->where('id',$id)->first();
+        return view('admin.update.edit-skill',compact('skill'));
+    }
+    public function update_skill(Request $request, $id){
+        $validation = [
+            'skill' => 'required|unique:skills'
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
+        $skill = Skill::find($id);
+        $skill->skill = $request->skill;
+        $skill->user_id = Auth::id();
+        $skill->save();
+        return back()->with('message', ['text'=>'Skill updated successfully!','type'=>'success']);
+    }
+    public function edit_coupon($id){
+        $coupon = Coupon::orderBy('id','desc')->where('id',$id)->first();
+        $books = Book::where('status',1)->get();
+        return view('admin.update.edit-coupon',compact('books','coupon'));
+    }
+    public function update_coupon(Request $request, $id){
+        $validation = [
+            'code' => 'required',
+            'start_date' => 'required|date',
+            'end_date' => 'date|after:start_date',
+            'off' => 'required',
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
+        $coupon = Coupon::find($id);
+        $coupon->start_date = $request->start_date;
+        $coupon->end_date = $request->end_date;
+        $coupon->code = $request->code;
+        $coupon->off = $request->off;
+        $coupon->book_id = serialize($request->bookId);
+        if(Auth::user()->role == 'admin'){
+            $coupon->is_active = 1;
+        } else {
+            $coupon->is_active = 0;
+        }
+        $coupon->save();
+        return back()->with('message', ['text'=>'Coupon updated successfully!','type'=>'success']);
+    }
     public function add_skills(Request $request){
         $validation = [
             'skill' => 'required|unique:skills'
@@ -702,5 +773,46 @@ class AdminController extends Controller
         $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
         $data['revenues'] = Revenue::whereIn('order_id',$order_id)->with('user')->get();
         return response()->json(view('admin.revenue_per_order', $data)->render());
+    }
+    public function update_consultant(Request $request, $id){
+        $user = Consultant::where('id',$id)->first();
+        $skills = Skill::orderBy('id','desc')->get();
+        return view('admin.edit_consultant',compact('skills','user'));
+    }
+    public function update_general_user(Request $request, $id){
+        $user = User::where('id',$id)->first();
+        return view('admin.update.update-general-user',compact('user'));
+    }
+    public function update_general_users(Request $request, $id){
+        $validation = [
+            'email' => 'required|unique:users'
+        ];
+        $validator = Validator::make($request->all(), $validation);
+        if($validator->fails()) {
+            return back()->with('message', ['text'=>$validator->errors(),'type'=>'danger']);
+        }
+        $user = User::where('id',$id)->update([
+            'name' => $request->name,
+            'email' => $request->email
+        ]);
+        return back()->with('message', ['text'=>'User data has been updated!','type'=>'success']);
+    }
+    public function edit_publisher(Request $request, $id){
+        $user = DB::table('publishers')->where('id',$id)->first();
+        return view('admin.update.update-publisher',compact('user'));
+    }
+    public function edit_location(Request $request, $id){
+        $location = Location::where('id',$id)->first();
+        return view('admin.update.update-location',compact('location'));
+    }
+    public function update_location(Request $request, $id){
+        $location = Location::find($id);
+        $location->weight = $request->min_weight.'-'.$request->max_weight;
+        $location->location = $request->location;
+        $location->price = $request->price;
+        $location->type = $request->type;
+        $location->is_cod = $request->is_cod;
+        $location->save();
+        return back()->with('message', ['text'=>'Location added successfully!','type'=>'success']);
     }
 }

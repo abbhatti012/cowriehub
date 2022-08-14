@@ -1,5 +1,8 @@
 @extends('admin.layout.index')
 @section('content')
+<style>
+    
+</style>
 <link rel="stylesheet" href="{{asset('admin_assets/vendor/select2/css/select2.min.css')}}">
 <div class="content-body">
     <div class="container-fluid">
@@ -66,8 +69,12 @@
                         <h4 class="card-title">All Coupons</h4>
                     </div>
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                        <div class="table-responsive">  
+                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
+                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
+                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
+                            <a href="#!" class="btn btn-primary btn-print">Print</a>
+                            <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -94,6 +101,7 @@
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin.delete-coupon', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to delete this item?');" class="btn btn-danger shadow btn-xs sharp" title="Delete Coupon"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.edit-coupon', $coupon->coupon_id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Coupon"><i class="fa fa-pencil"></i></a>
                                                 @if($coupon->is_active == 0)
                                                     <a href="{{ route('admin.update-coupon-status', $coupon->coupon_id) }}" onclick="return confirm('Are you sure you want to mark it as active?');" class="btn btn-success shadow btn-xs sharp" title="Approve Coupon"><i class="fa fa-times"></i></a>
                                                 @endif
@@ -114,6 +122,14 @@
 @endsection
 
 @section('scripts')
-<script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
+    <script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
+    <script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
+
+    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

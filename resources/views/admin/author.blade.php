@@ -5,7 +5,7 @@
         <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Author</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Authors</a></li>
             </ol>
         </div>
         <div class="row">
@@ -17,11 +17,15 @@
                     </div>
                 @endif
                     <div class="card-header">
-                        <h4 class="card-title">Author</h4>
+                        <h4 class="card-title">Authors</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
+                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
+                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
+                            <a href="#!" class="btn btn-primary btn-print">Print</a>
+                            <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -102,10 +106,10 @@
                                     <tr>
                                         <th></th>
                                         <th>Payment Method</th>
-                                        <th>Bank / Account Name</th>
-                                        <th>Bank / Account Number</th>
+                                        <th>Account Name</th>
+                                        <th>Account Number</th>
                                         <th>Branch</th>
-                                        <th>Bank Name / Mobile Money Networks</th>
+                                        <th>Network</th>
                                     </tr>
                                     <tr>
                                         <th>Mobile Money</th>
@@ -157,4 +161,11 @@
             });
         });
     </script>
+    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

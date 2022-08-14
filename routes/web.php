@@ -52,6 +52,8 @@ Route::group(['domain' => '{account}.dev.cimchealth.org/'], function () {
 
 
 //Admin Routes
+Route::get('/cms/book-field-detail/{any}', [App\Http\Controllers\Admin\AdminController::class, 'book_field_detail'])->name('book-field-detail')->middleware('auth');
+Route::get('/cms/export-detail', [App\Http\Controllers\Admin\AdminController::class, 'export_detail'])->name('export-detail')->middleware('auth');
 Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/dashboard', [App\Http\Controllers\Admin\AdminController::class, 'index'])->name('admin');
     Route::get('/cms/authors', [App\Http\Controllers\Admin\AdminController::class, 'author'])->name('admin.author');
@@ -136,6 +138,17 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/update-publisher-status/{any}/{num}', [App\Http\Controllers\PublisherController::class, 'update_publisher_status'])->name('admin.update-publisher-status');
     
     Route::get('/cms/delete-publisher/{any}', [App\Http\Controllers\PublisherController::class, 'delete_publisher'])->name('admin.delete-publisher');
+    Route::get('/cms/update-consultant/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_consultant'])->name('admin.update-consultant');
+    Route::get('/cms/update-general-user/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_general_user'])->name('admin.update-general-user');
+    Route::post('/cms/update-general-users/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_general_users'])->name('admin.update-general-users');
+    Route::get('/cms/edit-publisher/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_publisher'])->name('admin.edit-publisher');
+    Route::post('/cms/update-publisher/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_publisher'])->name('admin.update-publisher');
+    Route::get('/cms/edit-location/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_location'])->name('admin.edit-location');
+    Route::post('/cms/update-location/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_location'])->name('admin.update-location');
+    Route::get('/cms/edit-skill/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_skill'])->name('admin.edit-skill');
+    Route::post('/cms/update-skill/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_skill'])->name('admin.update-skill');
+    Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
+    Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
 });
 
 Route::post('/cms/add-coupon', [App\Http\Controllers\Admin\AdminController::class, 'add_coupon'])->name('admin.add-coupon')->middleware('auth');

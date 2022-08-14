@@ -36,13 +36,7 @@
                         <table id="example5" class="display" style="min-width: 845px">
                             <thead>
                                 <tr>
-                                    <!-- <th>
-                                        <div class="form-check custom-checkbox ms-2">
-                                            <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                            <label class="form-check-label" for="checkAll"></label>
-                                        </div> -->
-                                    </th>
-                                    <th>#</th>
+                                    <th>View Detail</th>
                                     <th>Title</th>
                                     <th>Sub-Title</th>
                                     <th>Genre</th>
@@ -57,12 +51,11 @@
                             
                             @foreach($books as $book)
                                 <tr>
-                                    <!-- <td>
-                                        <div class="form-check custom-checkbox ms-2">
-                                            <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                            <label class="form-check-label" for="customCheckBox2"></label>
+                                    <td>
+                                        <div class="d-flex">
+                                            <a href="javascript:void(0)" class="btn btn-info shadow btn-xs sharp viewDetail" data-id="{{ $book->id }}" data-bs-toggle="modal" data-bs-target="#viewDetail" title="Vide Detail"><i class="fa fa-eye"></i></a>
                                         </div>
-                                    </td> -->
+                                    </td>
                                     <td>{{ $loop->index + 1 }}</td>
                                     <td><a href="{{ route('product', $book->id) }}" target="_blank">{{ $book->title }}</a></td>
                                     <td>{{ $book->subtitle }}</td>
@@ -91,4 +84,41 @@
     </div>
    </div>
 </div>
+<div class="modal fade" id="viewDetail">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Book Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body bookDetailHere">
+                    
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+           $('.viewDetail').on('click',function(){
+                var id = $(this).data('id');
+                $.ajax({
+                    type : 'GET',
+                    url : '{{ route("view-book-detail") }}?id='+id,
+                    async : true,
+                    dataType : 'JSON',
+                    success : function(data){
+                        $('.bookDetailHere').html(data);
+                    }
+                })
+           }) 
+        });
+    </script>
 @endsection

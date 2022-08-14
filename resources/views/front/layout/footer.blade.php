@@ -151,7 +151,7 @@
                 <div class="container">
                     <div class="d-lg-flex text-center text-lg-left justify-content-between align-items-center">
                         <!-- Copyright -->
-                        <p class="mb-3 mb-lg-0 font-size-2">©2022 Cowriehub. All rights reserved</p>
+                        <p class="mb-3 mb-lg-0 font-size-2">©2022 Cowrie Hub. Designed & Developed By: <a href="https://www.indigoadmarket.com" target="_blank"> Indigo</a></p>
                         <!-- End Copyright -->
 
                         <div class="ml-auto d-lg-flex align-items-center">

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\extraField;
 use App\Models\User;
 use App\Models\Genre;
 use Illuminate\Http\Request;
@@ -22,7 +23,6 @@ class BookController extends Controller
         $book = Book::where('id',$id)->first(); 
         $sub_authors_list = explode(',',$book->sub_author);
         $sub_authors = User::whereIn('id',$sub_authors_list)->get();
-
         return view('user.edit-book', compact('genres', 'authors', 'book', 'sub_authors'));
     }
     public function insert_book(Request $request, $id){
@@ -116,6 +116,18 @@ class BookController extends Controller
             }
         }
         if($user->save()){
+            if(isset($request->extraFieldValue)){
+                for($i = 0; $i < count($request->extraFieldValue); $i++){
+                    if(!empty($request->extraFieldValue[$i])){
+                        $field = new ExtraField;
+                        $field->user_id = Auth::id();
+                        $field->book_id = $user->id;
+                        $field->label = $request->extraFieldLabel[$i];
+                        $field->value = $request->extraFieldValue[$i];
+                        $field->save();
+                    }
+                }
+            }
             return back()->with('message', ['text'=>'Congratulations! Your book has be added. It will be published once approved by COWRIEHUB','type'=>'success']);
         } else {
             return back()->with('message', ['text'=>'Oops! There is something wring. Your book cannot be added','type'=>'danger']);

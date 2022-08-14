@@ -178,9 +178,33 @@
                 </div>   
                 @endif   
             </div>
-          </div>
-        </div>
-      </div>
+
+            <div class="col-12">
+                <div class="table-responsive mb-4">
+                    <h4 class="text-primary"><i class="fas fa-plus"></i>Additional Form Fields</h4>
+                    <p class="text-muted"></p>
+                        <a href="{{ route('book-field-detail',$book->id) }}?param=xmlExport" target="_blank" class="btn btn-primary">Export to XML</a>
+                        <a href="{{ route('book-field-detail',$book->id) }}?param=csvExport" target="_blank" class="btn btn-primary">Export to CSV</a>
+                        <a href="{{ route('book-field-detail',$book->id) }}?param=jsonExport" target="_blank" class="btn btn-primary">Export to JSON</a>
+                        <table class="table table-hover table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Value</th>
+                                </tr>
+                                @foreach($extras as $extra)
+                                    <tr>
+                                        <th>{{ $extra->label }}</th>
+                                        <td>{{ $extra->value }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                </div>
+                </div>
             </div>
         </div>
     </div>

@@ -86,7 +86,7 @@
                                 @forelse($jobs as $job)
                                     <tr>
                                         <td>
-                                            @if($job->consultant->payment)
+                                            @if($job->consultant)
                                                 <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
                                                 data-payment = "{{ $job->consultant->payment }}"
                                                 data-account_name = "{{ $job->consultant->account_name }}"
@@ -100,6 +100,7 @@
                                             @endif
                                         </td>
                                         <td>
+                                        @if($job->consultant)
                                         <a href="javascript:void(0)" class="text-primary viewUserDetail" data-bs-toggle="modal" data-bs-target="#viewUserDetail"
                                             data-name = "{{ $job->user->name }}"
                                             data-email = "{{ $job->user->email }}"
@@ -107,6 +108,7 @@
                                             data-country = "{{ $job->consultant->country }}"
                                             data-address = "{{ $job->consultant->address }}"
                                             title="View User Detail">View</a>
+                                            @endif
                                         </td>
                                         <td>
                                         <a href="javascript:void(0)" class="text-primary viewMarketingDetail" data-bs-toggle="modal" data-bs-target="#viewMarketingDetail"

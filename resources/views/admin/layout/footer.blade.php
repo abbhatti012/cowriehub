@@ -1,5 +1,5 @@
 <div class="footer">
     <div class="copyright">
-        <p>Copyright © Designed &amp; Developed by <a href="" target="_blank">COWRIEHUB</a> 2022</p>
+        <p>Copyright: Cowrie Hub <br> Designed & Developed By: <a href="https://www.indigoadmarket.com" target="_blank">Indigo</a></p>
     </div>
 </div>

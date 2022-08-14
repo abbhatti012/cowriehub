@@ -4,7 +4,12 @@
     .hard_cover, .digital_epub, .paper_back{
         display: none;
     }
+    .selectExtraField{
+        width: 400px;
+        height: 200px;
+    }
 </style>
+<link rel="stylesheet" href="{{asset('admin_assets/vendor/select2/css/select2.min.css')}}">
 <div class="content-body">
    <div class="container-fluid">
       <div class="row page-titles">
@@ -66,6 +71,14 @@
                                 <input type="file" name="sample" class="form-file-input form-control" required>
                             </div>
                         </div>
+                        <h4>Select Extra Fields</h4><hr>
+                        <div class="mb-3 col-md-12">
+                            <div class="mt-4">
+                                <!-- <select class="js-example-programmatic-multi selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]" required></select> -->
+                                <select class="selectExtraField" id="selectExtraField" multiple="multiple" name="fields[]" required></select>
+                            </div>
+                        </div>
+                        <div class="extraFieldsHere"></div>
                         </div>
                     </div>
                 </div>
@@ -125,7 +138,7 @@
                         </div>
                         <br>
                         <br>
-                        <h4>Publication</h4><hr>                 
+                        <h4>Publication</h4><hr>
                         <div class="basic-form">
                             <div class="mb-3">
                                 <label for="publisher">Publisher</label>
@@ -601,11 +614,39 @@
     </form>
    </div>
 </div>
+
 @endsection
 @section('scripts')
+<script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
+<script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 <script>
     $(document).ready(function(){
+
+        let dropdown = $('#selectExtraField');
+        dropdown.empty();
+        dropdown.prop('selectedIndex', 0);
+
+        const url = "<?php echo asset('data.json') ?>";
+        $.getJSON(url, function (data) {
+            $.each(data, function (key, entry) {
+                dropdown.append($('<option></option>').attr('value', entry).text(entry));
+            })
+        });
+        $('.selectExtraField').on('change',function(){
+            var html;
+            $('.selectExtraField option:selected').each(function(){
+                html += '<div class="basic-form">'+
+                            '<div class="mb-3">'+
+                                '<label for="title">'+$(this).val()+'</label>'+
+                                '<input class="form-control form-control-lg" name="extraFieldValue[]" type="text">'+
+                                '<input class="form-control form-control-lg" name="extraFieldLabel[]" value="'+$(this).val()+'" type="hidden">'+
+                            '</div>'+
+                        '</div>';
+            });
+            $('.extraFieldsHere').html(html);
+        })
+
         $('#sub_author').val('');
         $('.bookFormat').on('click',function(){
             var id = $(this).attr('id');

@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\SubGenre;
 use App\Models\Publisher;
+use App\Models\ExtraField;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -354,7 +355,8 @@ class PublisherController extends Controller
     public function view_book_detail(Request $request){
         $book = Book::where('id',$request->id)->first();
         $genre = SubGenre::where('id', $book->genre)->first();
-        $data = view('publisher.book_detail', compact('book', 'genre'))->render();
+        $extras = ExtraField::where('book_id',$request->id)->get();
+        $data = view('publisher.book_detail', compact('book', 'genre', 'extras'))->render();
         return response()->json($data);
     }
     public function revenue(){

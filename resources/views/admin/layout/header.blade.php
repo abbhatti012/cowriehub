@@ -43,7 +43,7 @@
                             <span class="input-group-text"><a href="javascript:void(0)"><i class="flaticon-381-search-2"></i></a></span>
                         </div>
                     </li>
-                    <li class="nav-item dropdown notification_dropdown">
+                    <!-- <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link bell-link ai-icon" href="javascript:void(0);">
                             <svg width="24" height="22" viewBox="0 0 24 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd" d="M23.6667 5.16666C23.6667 2.5895 21.5772 0.5 19 0.5C15.1162 0.5 8.88387 0.5 5.00004 0.5C2.42287 0.5 0.333374 2.5895 0.333374 5.16666V20.3333C0.333374 20.8058 0.618046 21.2305 1.05321 21.4113C1.48955 21.5922 1.99121 21.4918 2.32487 21.1582C2.32487 21.1582 4.59287 18.8902 5.9672 17.517C6.4047 17.0795 6.99739 16.8333 7.61689 16.8333H19C21.5772 16.8333 23.6667 14.7438 23.6667 12.1667V5.16666ZM21.3334 5.16666C21.3334 3.87866 20.2892 2.83333 19 2.83333C15.1162 2.83333 8.88387 2.83333 5.00004 2.83333C3.71204 2.83333 2.66671 3.87866 2.66671 5.16666V17.517L4.31638 15.8673C5.19138 14.9923 6.37905 14.5 7.61689 14.5H19C20.2892 14.5 21.3334 13.4558 21.3334 12.1667V5.16666ZM6.16671 12.1667H15.5C16.144 12.1667 16.6667 11.644 16.6667 11C16.6667 10.356 16.144 9.83333 15.5 9.83333H6.16671C5.52271 9.83333 5.00004 10.356 5.00004 11C5.00004 11.644 5.52271 12.1667 6.16671 12.1667ZM6.16671 7.5H17.8334C18.4774 7.5 19 6.97733 19 6.33333C19 5.68933 18.4774 5.16666 17.8334 5.16666H6.16671C5.52271 5.16666 5.00004 5.68933 5.00004 6.33333C5.00004 6.97733 5.52271 7.5 6.16671 7.5Z" fill="#1362FC"/>
@@ -121,7 +121,7 @@
                             </ul>
                         </div>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="nav-item dropdown header-profile">
                         <a class="nav-link" href="javascript:void(0);" role="button" data-bs-toggle="dropdown">
                             <img src="{{asset('admin_assets/images/profile/pic1.jpg')}}" alt="">
@@ -239,7 +239,7 @@
             
             <li class="<?php if(request()->segment(2) == 'genre' || request()->segment(2) == 'sub-genre'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-first-order"></i>
-                    <span class="nav-text">Geners</span>
+                    <span class="nav-text">Genres</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.genre') }}">Main Genre</a></li>
@@ -257,7 +257,7 @@
                 </ul>
             </li>
 
-            <li class="<?php if(request()->segment(2) == 'promotions'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
+            <!-- <li class="<?php //if(request()->segment(2) == 'promotions'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-bullhorn"></i>
                     <span class="nav-text">Promotions</span>
                 </a>
@@ -265,7 +265,7 @@
                     <li><a href="{{ route('admin.offers') }}">Offers</a></li>
                     <li><a href="{{ route('admin.subscribed-users') }}">Subscribed Users</a></li>
                 </ul>
-            </li>
+            </li> -->
             <li class="<?php if(request()->segment(2) == 'reports'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-bar-chart"></i>
                     <span class="nav-text">Report & Payouts</span>
@@ -277,14 +277,14 @@
                     <li><a href="{{ route('admin.book-reports') }}">Book reports</a></li>
                 </ul>
             </li>
-            <li class="<?php if(request()->segment(2) == 'accounts'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
+            <!-- <li class="<?php //if(request()->segment(2) == 'accounts'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-user-circle-o"></i>
                     <span class="nav-text">Accounts</span>
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.author-settelments') }}">Author's Settelments</a></li>
                 </ul>
-            </li>
+            </li> -->
             <!-- <li class="<?php //if(request()->segment(2) == 'blog'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.blog') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-blogger-b"></i>
@@ -312,24 +312,24 @@
                     <li><a href="{{ route('admin.sellers-Contract-For-Publishers') }}">Sellers Contract For Publishers</a></li>
                 </ul>
             </li>
-            <li class="<?php if(request()->segment(2) == 'banks'){echo 'mm-active';} ?>">
+            <!-- <li class="<?php //if(request()->segment(2) == 'banks'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.banks') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-bank"></i>
                     <span class="nav-text">Banks</span>
                 </a>
-            </li>
+            </li> -->
             <li class="<?php if(request()->segment(2) == 'packages'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.packages') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-gift"></i>
                     <span class="nav-text">Packages</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(2) == 'users' && request()->segment(3) == 'admin'){echo 'mm-active';} ?>">
+            <!-- <li class="<?php //if(request()->segment(2) == 'users' && request()->segment(3) == 'admin'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.system-users') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-cog"></i>
                     <span class="nav-text">System Users</span>
                 </a>
-            </li>
+            </li> -->
             <li class="<?php if(request()->segment(2) == 'settings'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.settings') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-cog"></i>

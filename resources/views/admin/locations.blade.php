@@ -65,7 +65,11 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
+                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
+                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
+                            <a href="#!" class="btn btn-primary btn-print">Print</a>
+                            <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -96,6 +100,7 @@
                                         <td>
                                             <div class="d-flex">
                                                 <a href="{{ route('admin.delete-location', $location->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Location"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.edit-location', $location->id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Location"><i class="fa fa-pencil"></i></a>
                                             </div>
                                         </td>												
                                     </tr>
@@ -110,4 +115,13 @@
         </div>
     </div>
 </div>
+@endsection
+@section('scripts')
+    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection
