@@ -111,6 +111,9 @@
                                         <div class="text-center">
                                             <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
                                         </div>
+                                        @if(isset($_REQUEST['ref']))
+                                        <input type="hidden" name="code" value="{{ $_REQUEST['ref'] }}">
+                                        @endif
                                     </form>
                                     <div class="new-account mt-3">
                                         <p>Already have an account? <a class="text-primary" href="{{ route('login') }}">Login</a></p>

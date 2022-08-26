@@ -45,10 +45,8 @@
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->role }}</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
-                                                <a href="{{ route('admin.update-general-user', $user->id) }}" class="btn btn-info shadow btn-xs sharp me-1" title=""><i class="fa fa-pencil"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('admin.update-general-user', $user->id) }}" class="btn btn-info shadow btn-xs sharp me-1" title=""><i class="fa fa-pencil"></i></a>
                                         </td>
                                     </tr>
                                 @endforeach

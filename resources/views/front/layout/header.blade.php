@@ -99,7 +99,7 @@
                         <ul class="nav">
                         <li class="nav-item"><a href="{{ url('/') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == ''){echo 'active border-bottom border-primary border-width-2';} ?>">Home</a></li>
                         <li class="nav-item"><a href="{{ route('shop') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == 'shop'){echo 'active border-bottom border-primary border-width-2';} ?>">Book Store</a></li>
-                        @if(Auth::id())
+                        @if(isset(Auth::user()->role))
                         @if(Auth::user()->role == 'author')
                         <li class="nav-item"><a href="{{ route('pricing-table') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == 'pricing-table'){echo 'active border-bottom border-primary border-width-2';} ?>">Marketing Store</a></li>
                         @endif
@@ -401,37 +401,17 @@
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('contact-us') }}" class="h-primary">Help</a></li>
                                 </ul>
                             </div>
-                            @if(Auth::id())
                             <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                                 <ul class="list-group list-group-flush list-group-borderless">
-                                @if(Auth::user()->role == 'author')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('author.profile.edit') }}" class="h-primary">Author Account</a></li>
-                                @endif
-                                @if(Auth::user()->role == 'publisher')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}" class="h-primary">Publisher Account</a></li>
-                                @endif
-                                @if(Auth::user()->role == 'affiliate')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.affiliate-account') }}" class="h-primary">Affiliate Account</a></li>
-                                @endif
-                                @if(Auth::user()->role == 'consultant')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}" class="h-primary">Consultant Account</a></li>
-                                @endif
-                                @if(Auth::user()->role == 'pos')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.pos-account') }}" class="h-primary">POS Account</a></li>
-                                @endif
-                                
-                                @if(Auth::user()->role == 'user')
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('author.profile.edit') }}" class="h-primary">Author Account</a></li>
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}" class="h-primary">Publisher Account</a></li>
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.affiliate-account') }}" class="h-primary">Affiliate Account</a></li>
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}" class="h-primary">Consultant Account</a></li>
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.pos-account') }}" class="h-primary">POS Account</a></li>
-                                @endif
-                            </ul>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('author.profile.edit') }}?role=author" class="h-primary">Author Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}?role=publisher" class="h-primary">Publisher Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('affiliate') }}?role=affiliate" class="h-primary">Affiliate Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}?role=consultant" class="h-primary">Consultant Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('pos') }}?role=pos" class="h-primary">POS Account</a></li>
+                                </ul>
                             </div>
-                            @endif
                             <div class="px-4 px-md-5 py-5">
-                                <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
+                                <!-- <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
                                     <option selected>English (United States)</option>
                                     <option value="1">English (UK)</option>
                                     <option value="2">Arabic (Saudi Arabia)</option>
@@ -442,7 +422,7 @@
                                     <option value="1">د.إ AED</option>
                                     <option value="2">¥ CNY</option>
                                     <option value="3">€ EUR</option>
-                                </select>
+                                </select> -->
                                 <!-- Social Networks -->
                                 <ul class="list-inline mb-0">
                                     <li class="list-inline-item">

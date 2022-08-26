@@ -23,7 +23,10 @@ class ConsultantController extends Controller
     public function index(){
         return view('consultant.index');
     }
-    public function consultant_account(){
+    public function consultant_account(Request $request){
+        if(isset($request->role)){
+            User::updateROle($request->role);
+        }
         if(isset($_GET['id']) && !empty($_GET['id'])){
             $user = Consultant::where('user_id',$_GET['id'])->first();
         } else {

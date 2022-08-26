@@ -158,7 +158,7 @@
                     <span class="nav-text">Edit Author Profile</span>
                 </a>
             </li>
-            @if(Auth::user()->role == 'author')
+            @if(\App\Models\User::IsUserExists('author-detail'))
             <li class="<?php if(request()->segment(2) == 'books'){echo 'mm-active';} ?>"><a href="{{ route('author.books') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-book"></i>
                     <span class="nav-text">My Books</span>

@@ -5,54 +5,76 @@
         <div class="row page-titles">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">POS</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Pos</a></li>
             </ol>
         </div>
         <div class="row">
             <div class="col-12">
                 <div class="card">
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                     <div class="card-header">
-                        <h4 class="card-title">POS</h4>
+                        <h4 class="card-title">Pos</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
+                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
+                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
+                            <a href="#!" class="btn btn-primary btn-print">Print</a>
+                            <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="checkAll" required="">
-                                                <label class="form-check-label" for="checkAll"></label>
-                                            </div>
-                                        </th>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
+                                        <th>No.</th>
                                         <th>Phone</th>
-                                        <th>Address</th>
+                                        <th>Payment Detail</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 
-                                <?php for($i = 1; $i <= 30; $i++): ?>
+                                @forelse($users as $user)
                                     <tr>
+                                        <td>{{ $loop->index + 1 }}</td>
+                                        @if($user->pos)
+                                        <td>{{ $user->pos->company_phone }}</td>
                                         <td>
-                                            <div class="form-check custom-checkbox ms-2">
-                                                <input type="checkbox" class="form-check-input" id="customCheckBox2" required="">
-                                                <label class="form-check-label" for="customCheckBox2"></label>
-                                            </div>
+                                            @if($user->pos->payment)
+                                                <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
+                                                data-payment = "{{ $user->pos->payment }}"
+                                                data-account_name = "{{ $user->pos->account_name }}"
+                                                data-account_number = "{{ $user->pos->account_number }}"
+                                                data-networks = "{{ $user->pos->networks }}"
+                                                data-bank_account_name = "{{ $user->pos->bank_account_name }}"
+                                                data-bank_account_number = "{{ $user->pos->bank_account_number }}"
+                                                data-branch = "{{ $user->pos->branch }}"
+                                                data-bank_name = "{{ $user->pos->bank_name }}"
+                                                title="View Payment Detail">View</a>
+                                            @endif
                                         </td>
-                                        <td>{{ $i }}</td>
-                                        <td>Test Name</td>
-                                        <td>example@gmail.com</td>
-                                        <td>1234567890</td>
-                                        <td>Address Here</td>
+                                        @else
+                                        <td>N/A</td>
+                                        <td>N/A</td>
+                                        @endif
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->email }}</td>
                                         <td>
-
+                                            @if($user->pos)
+                                                    <a href="{{ route('admin.delete-pos', $user->pos->user_id) }}" onclick="return confirm('Are you sure you want delete POS?')" class="btn btn-danger shadow btn-xs sharp" title="Delete POS"><i class="fa fa-trash"></i></a>
+                                                @if($user->pos->status == 0)
+                                                    <a href="{{ route('admin.approve-pos', $user->pos->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve POS"><i class="fa fa-check"></i></a>
+                                                @endif
+                                                <a href="{{ route('admin.edit-pos', $user->pos->id) }}" class="btn btn-success shadow btn-xs sharp" title="Update POS Account"><i class="fa fa-pencil"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
-                                <?php endfor; ?> 
+                                    @empty
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -62,4 +84,83 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="viewPaymentDetail">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Payment Detail</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="card-body">
+                    <div class="basic-form">
+                        <div class="mb-3">
+                            <table class="table table-hover table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th></th>
+                                        <th>Payment Method</th>
+                                        <th>Account Name</th>
+                                        <th>Account Number</th>
+                                        <th>Branch</th>
+                                        <th>Network</th>
+                                    </tr>
+                                    <tr>
+                                        <th>Mobile Money</th>
+                                        <td class="payment"></td>
+                                        <td class="account_name"></td>
+                                        <td class="account_number"></td>
+                                        <td class="networks"></td>
+                                        <td>---</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Bank Info</th>
+                                        <td class="payment"></td>
+                                        <td class="bank_account_name"></td>
+                                        <td class="bank_account_number"></td>
+                                        <td class="branch"></td>
+                                        <td class="bank_name"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+@section('scripts')
+    <script>
+        $(document).ready(function(){
+            $('.viewPaymentDetail').on('click',function(){
+                var payment = $(this).data('payment');
+                var account_name = $(this).data('account_name');
+                var account_number = $(this).data('account_number');
+                var bank_account_number = $(this).data('bank_account_number');
+                var bank_account_name = $(this).data('bank_account_name');
+                var branch = $(this).data('branch');
+                var bank_name = $(this).data('bank_name');
+                $('.payment').html(payment);
+                $('.account_name').html(account_name);
+                $('.account_number').html(account_number);
+                $('.bank_account_number').html(bank_account_number);
+                $('.bank_account_name').html(bank_account_name);
+                $('.branch').html(branch);
+                $('.bank_name').html(bank_name);
+            });
+        });
+    </script>
+    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
+    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
+    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

@@ -13,7 +13,8 @@ class Setting extends Model
         'id',
         'start_date',
         'end_date',
-        'admin_commission',
+        'affiliate_commission',
         'consultant_commission',
+        'user_commission',
     ];
 }

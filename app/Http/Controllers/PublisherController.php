@@ -170,6 +170,9 @@ class PublisherController extends Controller
         $user = Book::firstOrNew(array('id' => $id));
         if($request->post_type == 'add'){
             $user->user_id = $request->author;
+            $user->role = 'author';
+        } else {
+            $user->role = Auth::user()->role;
         }
         if($request->hero_image != null){
             $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
@@ -206,7 +209,7 @@ class PublisherController extends Controller
         if(Auth::user()->role == 'admin'){
             $user->status = 1;
         }
-        
+
         if(isset($request->hardcover) && !empty($request->hardcover)){
             $user->hard_price = $request->hard_price;
             $user->hard_page = $request->hard_page;
@@ -370,12 +373,12 @@ class PublisherController extends Controller
             $start_date = date('Y-m-d',strtotime($date[0]));
             $end_date = date('Y-m-d',strtotime($date[1]));
             $date = [0=>$start_date,1=>$end_date];
-            $books = Book::where('user_id',$id)->whereBetween('created_at',$date)->count();
-            $approved_books = Book::where('user_id',$id)->whereBetween('created_at',$date)->where('status',1)->count();
-            $orders = Revenue::where('user_id',$id)->whereBetween('created_at',$date)->count();
+            $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
+            $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->where('status',1)->count();
+            $orders = Revenue::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
             $check = User::where('id',$id)->whereBetween('created_at',$date)->first();
             $graphOrders = Revenue::select('*')
-            ->whereBetween('created_at',$date)->where('user_id',$id);
+            ->whereBetween('created_at',$date)->where('user_id',$id)->where('role',Auth::user()->role);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
@@ -390,9 +393,9 @@ class PublisherController extends Controller
                 $pending = $pending + $earn['pending_earning'];
             }
         } else {
-            $books = Book::where('user_id',$id)->count();
-            $approved_books = Book::where('user_id',$id)->where('status',1)->count();
-            $orders = Payment::where('user_id',$id)->count();
+            $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->count();
+            $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->where('status',1)->count();
+            $orders = Revenue::where('user_id',$id)->where('role',Auth::user()->role)->count();
             $check = User::where('id',$id)->select('checkin','checkout')->first();
 
             $query_date = date('Y-m-d',strtotime(now()));
@@ -401,7 +404,7 @@ class PublisherController extends Controller
 
             $graphOrders = Revenue::select('*')
             ->where('created_at', '>=' ,$start_date)
-            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            ->where('created_at', '<' ,$end_date)->where('role',Auth::user()->role)->where('user_id',$id);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);

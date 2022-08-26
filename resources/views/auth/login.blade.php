@@ -98,19 +98,19 @@
     <div class="authincation h-100">
         <div class="container h-100">
             <div class="row justify-content-center h-100 align-items-center">
-                @if (\Session::has('registrationSuccessfull'))
-                    <div class="alert alert-success">
-                        <ul>
-                            <li>{!! \Session::get('registrationSuccessfull') !!}</li>
-                        </ul>
-                    </div>
-                @endif
-                @if(Session::has('message'))
-                    <div class="alert alert-{{session('message')['type']}}">
-                        {{session('message')['text']}}
-                    </div>
-                @endif
                 <div class="col-md-6">
+                    @if (\Session::has('registrationSuccessfull'))
+                        <div class="alert alert-success">
+                            <ul>
+                                <li>{!! \Session::get('registrationSuccessfull') !!}</li>
+                            </ul>
+                        </div>
+                    @endif
+                    @if(Session::has('message'))
+                        <div class="alert alert-{{session('message')['type']}}">
+                            {{session('message')['text']}}
+                        </div>
+                    @endif
                     <div class="authincation-content">
                         <div class="row no-gutters">
                             <div class="col-xl-12">

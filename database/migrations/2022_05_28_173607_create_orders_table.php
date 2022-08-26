@@ -17,6 +17,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('payment_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('book_owner_id')->nullable();
+            $table->text('role')->nullable();
             $table->unsignedBigInteger('book_id');
             $table->integer('is_preorder');
             $table->string('extra_type');

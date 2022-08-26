@@ -51,15 +51,38 @@
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Admin Comission</h4>
+                            <h4 class="card-title">User <small>(Book Owner)</small> Comission</h4>
                         </div>
                         @csrf
                         <div class="card-body row">
                             <div class="basic-form custom_file_input col-xl-5">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Admin Comission</span>
+                                    <span class="input-group-text">User <small>(Book Owner)</small> Comission</span>
                                     <div class="form-file">
-                                        <input type="number" min="1" max="100" name="admin_commission" value="{{ $setting->admin_commission }}" class="form-file-input form-control">
+                                        <input type="number" min="1" max="100" name="user_commission" value="{{ $setting->user_commission }}" class="form-file-input form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form id="basic-validation" action="{{ route('admin.update-setting') }}" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Affiliate Comission</h4>
+                        </div>
+                        @csrf
+                        <div class="card-body row">
+                            <div class="basic-form custom_file_input col-xl-5">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Affiliate Comission</span>
+                                    <div class="form-file">
+                                        <input type="number" min="1" max="100" name="affiliate_commission" value="{{ $setting->affiliate_commission }}" class="form-file-input form-control">
                                     </div>
                                 </div>
                             </div>

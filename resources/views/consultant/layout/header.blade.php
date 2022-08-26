@@ -150,7 +150,7 @@
                     <span class="nav-text">My Account</span>
                 </a>
             </li>
-            @if(Auth::user()->role == 'consultant')
+            @if(\App\Models\User::IsUserExists('consultant'))
             <li class="<?php if(request()->segment(2) == 'payment-detail'){echo 'mm-active';} ?>">
                 <a href="{{ route('consultant.payment-detail') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>

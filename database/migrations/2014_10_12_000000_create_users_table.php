@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->integer('referrer_id')->nullable()->default(0);
             $table->string('name');
             $table->string('email')->unique();
             $table->string('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->longText('code')->nullable();
             $table->longText('fcm_token')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->integer('checkout')->default(0);

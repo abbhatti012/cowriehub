@@ -10,6 +10,10 @@
         .mobile_money_fields{
             display: none;
         }
+    <?php else: ?>
+        .bank_fields{
+            display: none;
+        }
     <?php endif; ?>
     <?php else: ?>
         .mobile_money_fields{
@@ -97,8 +101,8 @@
                                 </div>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
-                    <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>
@@ -160,8 +164,8 @@
                             </div>
                         </div>
                     </div>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </div>
-                <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </div>
         </div>

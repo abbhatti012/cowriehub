@@ -68,8 +68,8 @@
                             </div>
                         </div>
                         <input type="hidden" name="id" value="0">
-                    </div>
                         <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -122,8 +122,8 @@
                             </div>
                         </div>
                         <input type="hidden" name="id" value="{{ $user->id }}">
-                    </div>
                         <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
                     </div>
                 </div>
             </div>

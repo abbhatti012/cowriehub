@@ -61,6 +61,13 @@ class RegisterController extends Controller
     }
     protected function create(array $data)
     {
+        if(isset($data['code'])){
+            $code = $data['code'];
+            $userData = User::where('code', $code)->first();
+            $referrer_id = $userData->id;
+        } else {
+            $referrer_id = 0;
+        }
         if(isset($data['subscribe'])){
             $subsrcibe = 1;
         } else {
@@ -72,11 +79,13 @@ class RegisterController extends Controller
             // 'role' => $data['role'],
             'role' => 'user',
             'is_subscribe' => $subsrcibe,
+            'code' => md5(time() . rand()),
             'password' => Hash::make($data['password']),
+            'referrer_id' => $referrer_id
         ]);
         if($subsrcibe == 1){
             event(new UserRegistered($user));
-    }
+        }
         return $user;
     }
 }

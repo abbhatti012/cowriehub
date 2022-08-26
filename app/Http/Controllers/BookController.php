@@ -69,7 +69,9 @@ class BookController extends Controller
         if(Auth::user()->role == 'admin'){
             $user->status = 1;
         }
-        
+        if($id == 0){
+            $user->role = Auth::user()->role;
+        }
         if(isset($request->hardcover) && !empty($request->hardcover)){
             $user->hard_price = $request->hard_price;
             $user->hard_page = $request->hard_page;

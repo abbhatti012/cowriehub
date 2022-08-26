@@ -27,7 +27,7 @@ class SocialiteController extends Controller
             $finduser = User::where('social_id', $user->id)->where('email', $user->email)->first();
             if($finduser){
                 Auth::login($finduser);
-                return redirect('/home');
+                return redirect('/');
             }else{
                 $newUser = User::create([
                     'name' => $user->name,
@@ -53,7 +53,7 @@ class SocialiteController extends Controller
             $finduser = User::where('social_id', $user->id)->where('email', $user->email)->first();
             if($finduser){
                 Auth::login($finduser);
-                return redirect('/home');
+                return redirect('/');
             }else{
                 $newUser = User::create([
                     'name' => $user->name,

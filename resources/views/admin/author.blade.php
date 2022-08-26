@@ -69,13 +69,14 @@
                                         <td>{{ $author->name }}</td>
                                         <td>{{ $author->email }}</td>
                                         <td>
-                                            <div class="d-flex">
                                                 @if($author->author_detail)
-                                                    <a href="{{ route('admin.edit.author', $author->author_detail->id) }}" class="btn btn-primary shadow btn-xs sharp me-1" title="Update Author"><i class="fa fa-pencil"></i></a>
-                                                    <a href="{{ route('admin.delete-author', $author->author_detail->user_id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Author"><i class="fa fa-trash"></i></a>
+                                                <a href="{{ route('admin.edit.author', $author->author_detail->id) }}" class="btn btn-primary shadow btn-xs sharp me-1" title="Update Author"><i class="fa fa-pencil"></i></a>
+                                                <a href="{{ route('admin.delete-author', $author->author_detail->user_id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete author permanently?')" title="Delete Author"><i class="fa fa-trash"></i></a>
+                                                @if($author->author_detail->status == 0)
+                                                    <a href="{{ route('admin.approve-author', $author->author_detail->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve Author"><i class="fa fa-check"></i></a>
+                                                @endif
                                                 @endif
                                                 <a href="{{ route('author-detail', $author->id) }}" target="_blank" class="btn btn-warning shadow btn-xs sharp me-1" title="View Author"><i class="fa fa-eye"></i></a>
-                                            </div>
                                         </td>
                                     </tr>
                                     @empty

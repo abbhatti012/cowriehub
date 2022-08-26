@@ -13,8 +13,10 @@ class Revenue extends Model
         'id',
         'user_id',
         'payment_id',
-        'admin_amount',
+        'total_amount',
         'user_amount',
+        'affiliate_amount',
+        'consultant_amount',
         'payment_status',
         'admin_payment_status',
     ];

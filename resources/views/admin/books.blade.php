@@ -64,11 +64,9 @@
                                 @foreach($books as $book)
                                     <tr>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.view-book-detail',$book->id) }}" class="btn btn-info shadow btn-xs sharp" title="Vide Detail"><i class="fa fa-eye"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.view-book-detail',$book->id) }}" class="btn btn-info shadow btn-xs sharp" title="Vide Detail"><i class="fa fa-eye"></i></a>
                                         </td>
-                                        <td><a href="{{ route('product', $book->id) }}" target="_blank">{{ $book->title }}</a></td>
+                                        <td><a href="{{ route('product', $book->slug) }}" target="_blank">{{ $book->title }}</a></td>
                                         <td>{{ $book->subtitle }}</td>
                                         <td>{{ $book->sub_genre->title }}</td>
                                         <td>{{ $book->publisher }}</td>

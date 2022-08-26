@@ -122,10 +122,13 @@ class PaymentController extends Controller
             $check = Coupon::where('code',$payment->coupon_code)->first();
             $totalPrice = 0;
             foreach($carts as $cart){
+                $book = Book::find($cart['id']);
                 $order = new Order();
                 $order->payment_id = $payment->id;
                 $order->user_id = $userId;
                 $order->book_id = $cart['id'];
+                $order->book_owner_id = $book->user_id;
+                $order->role = $book->role;
                 $order->is_preorder = $cart['is_preorder'];
                 $order->extra_type = $cart['extraType'];
                 $order->book_price = $cart['bookPrice'];
@@ -152,12 +155,25 @@ class PaymentController extends Controller
                 $order->save();
                 $revenue = new Revenue();
                 $revenue->user_id = $cart['author_id'];
+                $revenue->role = $book->role;
                 $revenue->order_id = $order->id;
-                $revenue->admin_amount = round(($order->amount_paid/100)*$setting->admin_commission);
-                $revenue->user_amount = $order->amount_paid - $revenue->admin_amount;
+                $revenue->total_amount = $order->amount_paid;
+                $revenue->user_amount = round(($order->amount_paid/100)*$setting->user_commission);
                 $revenue->payment_status = 0;
                 $revenue->admin_payment_status = 0;
                 $revenue->save();
+                if(Auth::user()->referrer_id != 0){
+                    $revenue = new Revenue();
+                    $revenue->user_id = Auth::user()->referrer_id;
+                    $revenue->role = 'affiliate';
+                    $revenue->order_id = $order->id;
+                    $revenue->user_amount = 0;
+                    $revenue->affiliate_amount = round(($order->amount_paid/100)*$setting->affiliate_commission);
+                    $revenue->payment_status = 0;
+                    $revenue->admin_payment_status = 0;
+                    $revenue->is_referrer = 1;
+                    $revenue->save();
+                }
             }
         } else {
             $book = Book::find($payment->book_id);
@@ -165,6 +181,8 @@ class PaymentController extends Controller
             $order->payment_id = $payment->id;
             $order->user_id = $userId;
             $order->book_id = $payment->book_id;
+            $order->book_owner_id = $book->user_id;
+            $order->role = $book->role;
             $order->is_preorder = 1;
             $order->extra_type = $payment->extraType;
             $order->book_price = $book->price;
@@ -190,12 +208,25 @@ class PaymentController extends Controller
             $order->save();
             $revenue = new Revenue();
             $revenue->user_id = $book->user_id;
+            $revenue->role = $book->role;
             $revenue->order_id = $order->id;
-            $revenue->admin_amount = round(($order->amount_paid/100)*$setting->admin_commission);
-            $revenue->user_amount = $order->amount_paid - $revenue->admin_amount;
+            $revenue->total_amount = $order->amount_paid;
+            $revenue->user_amount = round(($order->amount_paid/100)*$setting->user_commission);
             $revenue->payment_status = 0;
             $revenue->admin_payment_status = 0;
             $revenue->save();
+            if(Auth::user()->referrer_id != 0){
+                $revenue = new Revenue();
+                $revenue->user_id = Auth::user()->referrer_id;
+                $revenue->role = 'affiliate';
+                $revenue->order_id = $order->id;
+                $revenue->user_amount = 0;
+                $revenue->affiliate_amount = round(($order->amount_paid/100)*$setting->affiliate_commission);
+                $revenue->payment_status = 0;
+                $revenue->admin_payment_status = 0;
+                $revenue->is_referrer = 1;
+                $revenue->save();
+            }
         }
         if($request->payment_method == 'cod'){
             $payment = Payment::find($payment->id);

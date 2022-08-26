@@ -61,6 +61,8 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/authors', [App\Http\Controllers\Admin\AdminController::class, 'author'])->name('admin.author');
     Route::get('/cms/author/{id}', [App\Http\Controllers\Admin\AdminController::class, 'edit_author'])->name('admin.edit.author');
     Route::get('/cms/delete-author/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_author'])->name('admin.delete-author');
+    Route::get('/cms/delete-affiliate/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_affiliate'])->name('admin.delete-affiliate');
+    Route::get('/cms/delete-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_pos'])->name('admin.delete-pos');
     Route::post('/cms/author_profile_update/{any}', [App\Http\Controllers\Admin\AdminController::class, 'author_profile_update'])->name('admin.author_profile_update');
     Route::get('/cms/consultants', [App\Http\Controllers\Admin\AdminController::class, 'consultant'])->name('admin.consultant');
     Route::get('/cms/consultant/{id}', [App\Http\Controllers\Admin\AdminController::class, 'consultant'])->name('admin.edit.consultant');
@@ -155,6 +157,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/edit-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_blog'])->name('admin.edit-blog');
     Route::post('/cms/update-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_blog'])->name('admin.update-blog');
     Route::get('/cms/delete-blog/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_blog'])->name('admin.delete-blog');
+    Route::get('/cms/approve-author/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_author'])->name('admin.approve-author');
+    Route::get('/cms/approve-affiliate/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_affiliate'])->name('admin.approve-affiliate');
+    Route::get('/cms/approve-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_pos'])->name('admin.approve-pos');
+    Route::get('/cms/edit-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_pos'])->name('admin.edit-pos');
 });
 Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
 Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
@@ -164,13 +170,13 @@ Route::get('/cms/delete-coupon/{id}', [App\Http\Controllers\Admin\AdminControlle
 Route::get('/cms/update-coupon-status/{id}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon_status'])->name('admin.update-coupon-status')->middleware('auth');
 Route::get('/cms/check-coupon', [App\Http\Controllers\CouponController::class, 'check_coupon'])->name('admin.check-coupon');
 //Author Routes
+Route::post('/author/insert-book/{any}', [App\Http\Controllers\BookController::class, 'insert_book'])->name('insert-book');
 Route::group(['middleware' => 'author'], function () {
     // Route::get('/author', [App\Http\Controllers\Author\AuthorController::class, 'index'])->name('author');
 
     Route::get('/author/books', [App\Http\Controllers\User\UserController::class, 'author_books'])->name('author.books');
     Route::get('/author/strategies', [App\Http\Controllers\User\UserController::class, 'author_marketing'])->name('author.marketing');
     Route::get('/author/add-book', [App\Http\Controllers\BookController::class, 'add_book'])->name('add-book');
-    Route::post('/author/insert-book/{any}', [App\Http\Controllers\BookController::class, 'insert_book'])->name('insert-book');
     Route::get('/author/delete-book/{any}', [App\Http\Controllers\BookController::class, 'delete_book'])->name('delete-book');
     Route::get('/author/coupons', [App\Http\Controllers\User\UserController::class, 'coupons'])->name('author.coupons');
     Route::get('/author/revenue', [App\Http\Controllers\User\UserController::class, 'revenue'])->name('author.revenue');
@@ -201,13 +207,24 @@ Route::get('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sa
 Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
 
 //AFFILIATE Routes
+// Route::get('/affiliate', [App\Http\Controllers\Affiliate\AffiliateController::class, 'index'])->name('user.affiliate-account');
+Route::get('/affiliate', [App\Http\Controllers\Affiliate\AffiliateController::class, 'index'])->name('affiliate')->middleware('auth');
+Route::post('/affiliate-signup/{any}', [App\Http\Controllers\Affiliate\AffiliateController::class, 'affiliate_signup'])->name('affiliate.affiliate-signup');
 Route::group(['middleware' => 'affiliate'], function () {
-    Route::get('/affiliate', [App\Http\Controllers\Affiliate\AffiliateController::class, 'index'])->name('affiliate');
+    Route::get('/affiliate-payment-detail', [App\Http\Controllers\Affiliate\AffiliateController::class, 'payment_detail'])->name('affiliate.payment-details');
+    Route::post('/update-affiliate-payment-detail', [App\Http\Controllers\Affiliate\AffiliateController::class, 'update_payment_detail'])->name('affiliate.update-payment-detail');
+    Route::get('/affiliate-commissions', [App\Http\Controllers\Affiliate\AffiliateController::class, 'affiliate_commissions'])->name('affiliate.commissions');
+    Route::get('/pos-referred', [App\Http\Controllers\Affiliate\AffiliateController::class, 'pos_referred'])->name('affiliate.pos-referred');
+    Route::get('/user-referred', [App\Http\Controllers\Affiliate\AffiliateController::class, 'user_referred'])->name('affiliate.user-referred');
+    Route::post('/send-link', [App\Http\Controllers\Affiliate\AffiliateController::class, 'send_link'])->name('affiliate.send-link');
 });
 
 //POS Routes
+Route::get('/pos', [App\Http\Controllers\Pos\PosController::class, 'index'])->name('pos')->middleware('auth');
+Route::post('/pos-signup/{any}', [App\Http\Controllers\Pos\PosController::class, 'pos_signup'])->name('pos.pos-signup');
 Route::group(['middleware' => 'pos'], function () {
-    Route::get('/pos', [App\Http\Controllers\Pos\PosController::class, 'index'])->name('pos');
+    Route::get('/payment-detail', [App\Http\Controllers\Pos\PosController::class, 'payment_detail'])->name('pos.payment-detail');
+    Route::post('/update-pos-payment-detail', [App\Http\Controllers\Pos\PosController::class, 'update_payment_detail'])->name('pos.update-payment-detail');
 });
 
 //Consultant Routes
@@ -239,9 +256,8 @@ Route::group(['middleware' => 'consultant'], function () {
     Route::post('/author/update', [App\Http\Controllers\User\UserController::class, 'author_profile_update'])->name('update-author-profile')->middleware('auth');
     Route::get('/author/autocomplete', [App\Http\Controllers\User\UserController::class, 'autocomplete'])->name('autocomplete')->middleware('auth');
     Route::get('/author', [App\Http\Controllers\User\UserController::class, 'author_account'])->name('user.author-account');
-    Route::get('/publisher', [App\Http\Controllers\User\UserController::class, 'publisher_account'])->name('user.publisher-account');
-    Route::get('/affiliate', [App\Http\Controllers\User\UserController::class, 'affiliate_account'])->name('user.affiliate-account');
-    Route::get('/pos', [App\Http\Controllers\User\UserController::class, 'pos'])->name('user.pos-account');
+    Route::get('/publisher', [App\Http\Controllers\User\UserController::class, 'publisher_account'])->name('user.publisher-account')->middleware('auth');
+    // Route::get('/pos', [App\Http\Controllers\User\UserController::class, 'pos'])->name('user.pos-account');
     Route::get('/consultant/search-author', [App\Http\Controllers\User\UserController::class, 'search_author'])->name('consultant.search-author');
     Route::get('/dashboard', [App\Http\Controllers\User\UserController::class, 'dashboard'])->name('dashboard');
     

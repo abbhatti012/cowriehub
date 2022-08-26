@@ -11,6 +11,7 @@ use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\SubGenre;
 use App\Models\Wishlist;
+use App\Models\Addresses;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
@@ -27,7 +28,10 @@ class UserController extends Controller
     public function author_account(){
         return view('front.author.author_account');
     }
-    public function publisher_account(){
+    public function publisher_account(Request $request){
+        if(isset($request->role)){
+            User::updateROle($request->role);
+        }
         $user = DB::table('publishers')->where('user_id',Auth::id())->first();
         return view('publisher.publisher_account',compact('user'));
     }
@@ -40,7 +44,10 @@ class UserController extends Controller
     public function pos(){
         return view('front.author.pos');
     }
-    public function author_profile_edit(){
+    public function author_profile_edit(Request $request){
+        if(isset($request->role)){
+            User::updateROle($request->role);
+        }
         $user = DB::table('author-detail')->where('user_id',Auth::id())->first();
         return view('user.author.my-profile',compact('user'));
     }
@@ -56,7 +63,7 @@ class UserController extends Controller
         return view('user.wishlist',compact('wishlist','role'));
     }
     public function save_address(){
-        $user = AuthorDetail::where('user_id',Auth::id())->first();
+        $user = Addresses::where('user_id',Auth::id())->first();
         if(isset($user->billing_detail)){
             $billing = unserialize($user->billing_detail);
         } else {
@@ -75,7 +82,7 @@ class UserController extends Controller
         return view('user.address', compact('user','billing','shipping', 'role'));
     }
     public function author_books(){
-        $books = Book::where('user_id',Auth::id())
+        $books = Book::where('user_id',Auth::id())->where('role',Auth::user()->role)
         ->select('books.*', 'sub_genres.title as genre_title')
         ->join('sub_genres','sub_genres.id','=','books.genre')->get();
         return view('user.books', compact('books'));
@@ -96,12 +103,12 @@ class UserController extends Controller
             $end_date = date('Y-m-d',strtotime($date[1]));
             $date = [0=>$start_date,1=>$end_date];
             $graphOrders = Revenue::select('*')
-            ->whereBetween('created_at',$date)->where('user_id',$id);
+            ->whereBetween('created_at',$date)->where('user_id',$id)->where('role',Auth::user()->role);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
             
-            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            $revenues = Revenue::where('user_id',Auth::id())->where('role',Auth::user()->role)->where('payment_status',1)
             ->whereBetween('created_at',$date)->with('user')->get();
             $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
                         "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
@@ -119,14 +126,15 @@ class UserController extends Controller
 
             $graphOrders = Revenue::select('*')
             ->where('created_at', '>=' ,$start_date)
-            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            ->where('created_at', '<' ,$end_date)
+            ->where('user_id',$id)->where('role',Auth::user()->role);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
             $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 1 THEN user_amount ELSE 0 END) AS earning, ".
                         "SUM(CASE WHEN payment_status = 1 AND admin_payment_status = 0 THEN user_amount ELSE 0 END) AS pending_earning"))
             ->groupBy('id')->get()->toArray();
-            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)
+            $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)->where('role',Auth::user()->role)
             ->with('user')->get();
             $approved = 0;
             $pending = 0;
@@ -232,8 +240,8 @@ class UserController extends Controller
         $user->save();
 
         User::where('id',Auth::id())->update(array('role'=>'author'));
-        Session::flash('message', ['text'=>'Congratulations! You are an author now','type'=>'success']);
-        return back()->with('success','You have successfully upload image.');
+        return back()->with('message', ['text'=>'Thank you for your application! Cowriehub will review your application in the next 24-48 hours.
+        You will be notified in your email on the status of your application after this review','type'=>'success']);
     }
     public function autocomplete(Request $request){
         $data = User::select("id", "name")
@@ -253,12 +261,12 @@ class UserController extends Controller
             $start_date = date('Y-m-d',strtotime($date[0]));
             $end_date = date('Y-m-d',strtotime($date[1]));
             $date = [0=>$start_date,1=>$end_date];
-            $books = Book::where('user_id',$id)->whereBetween('created_at',$date)->count();
-            $approved_books = Book::where('user_id',$id)->whereBetween('created_at',$date)->where('status',1)->count();
-            $orders = Revenue::where('user_id',$id)->whereBetween('created_at',$date)->count();
+            $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
+            $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->where('status',1)->count();
+            $orders = Revenue::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
             $check = User::where('id',$id)->whereBetween('created_at',$date)->first();
             $graphOrders = Revenue::select('*')
-            ->whereBetween('created_at',$date)->where('user_id',$id);
+            ->whereBetween('created_at',$date)->where('user_id',$id)->where('role',Auth::user()->role);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
@@ -273,9 +281,9 @@ class UserController extends Controller
                 $pending = $pending + $earn['pending_earning'];
             }
         } else {
-            $books = Book::where('user_id',$id)->count();
-            $approved_books = Book::where('user_id',$id)->where('status',1)->count();
-            $orders = Payment::where('user_id',$id)->count();
+            $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->count();
+            $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->where('status',1)->count();
+            $orders = Revenue::where('user_id',$id)->where('role',Auth::user()->role)->count();
             $check = User::where('id',$id)->select('checkin','checkout')->first();
 
             $query_date = date('Y-m-d',strtotime(now()));
@@ -284,7 +292,7 @@ class UserController extends Controller
 
             $graphOrders = Revenue::select('*')
             ->where('created_at', '>=' ,$start_date)
-            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            ->where('created_at', '<' ,$end_date)->where('user_id',$id)->where('role',Auth::user()->role);
             $get_date_series = $this->get_date_series($start_date, $end_date);
             $days = count($get_date_series);
             $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
@@ -385,12 +393,13 @@ class UserController extends Controller
     public function logout(Request $request) {
         $data = User::find(Auth::id());
         $data->checkout = $data->checkout + 1;
+        $data->role = 'user';
         $data->save();
         Auth::logout();
         return redirect('/login');
     }
     public function revenue(){
-        $revenues = Revenue::where('user_id',Auth::id())->where('payment_status',1)->with('user')->get();
+        $revenues = Revenue::where('user_id',Auth::id())->where('role',Auth::user()->role)->where('payment_status',1)->with('user')->get();
         return view('user.author.revenue', compact('revenues'));
     }
 }

@@ -12,6 +12,7 @@ use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Location;
 use App\Models\Wishlist;
+use App\Models\Addresses;
 use App\Models\Marketing;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
@@ -140,7 +141,7 @@ class HomeController extends Controller
         $blog = Blog::find($id);
         return view('front.blog-detail', compact('blog'));
     }
-    public function product($slug){
+    public function product($slug){        
         $book = Book::where('slug',$slug)->first();
         $author = User::where('id',$book->user_id)->first();
         $reviews = Review::where('book_id',$book->id)
@@ -203,9 +204,17 @@ class HomeController extends Controller
         $token = $_GET['token'];
         $payment = Payment::where('token', $token)->first();
         if(Auth::id()){
-            $user = AuthorDetail::where('user_id',Auth::id())->first();
-            $billing = unserialize($user->billing_detail);
-            $shipping = unserialize($user->shipping_detail);
+            $user = Addresses::where('user_id',Auth::id())->first();
+            if(!empty($user->billing_detail)){
+                $billing = unserialize($user->billing_detail);
+            } else {
+                $billing = [];
+            }
+            if(!empty($user->shipping_detail)){
+                $shipping = unserialize($user->shipping_detail);
+            } else {
+                $shipping = [];
+            }
             $is_hide_address = 1; 
         } else {
             $billing = [];
@@ -216,7 +225,7 @@ class HomeController extends Controller
         return view('front.checkout', compact('payment','billing','shipping','location','is_hide_address'));
     }
     public function my_account(){
-        $user = AuthorDetail::where('user_id',Auth::id())->first();
+        $user = Addresses::where('user_id',Auth::id())->first();
         $billing = unserialize($user->billing_detail);
         $shipping = unserialize($user->shipping_detail);
         if(!$billing){
@@ -352,25 +361,19 @@ class HomeController extends Controller
         return view('front.success-page',compact('payment'));
     }
     public function billing_detail(request $request){
-        $detail = AuthorDetail::where('user_id',Auth::id())->first();
-        if($detail){
-            AuthorDetail::where('user_id',Auth::id())->update(['billing_detail' => serialize($request->all())]);
-        } else {
-            $data['billing_detail'] = serialize($request->all());
-            $data['user_id'] = Auth::id();
-            AuthorDetail::insert($data);
-        }
+        $detail = Addresses::firstOrNew(array('user_id' => Auth::id()));
+        $detail->user_id = Auth::id();
+        $detail->billing_detail = serialize($request->all());
+        $detail->save();
+        
         return back()->with('message', ['text'=>'Data has been updated','type'=>'success']);
     }
     public function shipping_detail(request $request){
-        $detail = AuthorDetail::where('user_id',Auth::id())->first();
-        if($detail){
-            AuthorDetail::where('user_id',Auth::id())->update(['shipping_detail' => serialize($request->all())]);
-        } else {
-            $data['shipping_detail'] = serialize($request->all());
-            $data['user_id'] = Auth::id();
-            AuthorDetail::insert($data);
-        }
+        $detail = Addresses::firstOrNew(array('user_id' => Auth::id()));
+        $detail->user_id = Auth::id();
+        $detail->shipping_detail = serialize($request->all());
+        $detail->save();
+        
         return back()->with('message', ['text'=>'Data has been updated','type'=>'success']);
     }
     // public function front_autocomplete(Request $request){

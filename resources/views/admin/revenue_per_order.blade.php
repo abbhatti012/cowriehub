@@ -1,12 +1,42 @@
+<style>
+#customers {
+  font-family: Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
 
-<div class="table-responsive">
-    <table id="example5" class="display" style="min-width: 845px">
+#customers td, #customers th {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+#customers tr:nth-child(even){background-color: #f2f2f2;}
+
+#customers tr:hover {background-color: #ddd;}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+.user-table{
+    overflow-x: initial !important;
+}
+.modal-content{
+    height: 400px !important;
+}
+</style>
+<div class="table-responsive user-table">
+    <table id="customers" class="display" style="min-width: 845px">
         <thead>
             <tr>
                 <th>User Name</th>
                 <th>User Email</th>
                 <th>Amount to be paid</th>
                 <th>Payment Status</th>
+                <th>Is Referrer?</th>
                 <th>Amount Paid</th>
                 <th>Pay</th>
             </tr>
@@ -17,12 +47,25 @@
             <tr>
                 <td>{{ $revenue->user->name }}</td>
                 <td>{{ $revenue->user->email }}</td>
-                <td>{{ $revenue->user_amount }}</td>
+                <td>
+                    @if($revenue->is_referrer)
+                        {{ $revenue->affiliate_amount }}
+                    @else
+                        {{ $revenue->user_amount }}
+                    @endif
+                </td>
                 <td>
                     @if($revenue->admin_payment_status == 0)
                     <span class="badge light badge-warning">PENDING</span>
                     @else
                     <span class="badge light badge-success">PAID</span>
+                    @endif
+                </td>
+                <td>
+                    @if($revenue->is_referrer)
+                    <span class="badge light badge-success">YES</span>
+                    @else
+                    <span class="badge light badge-warning">NO</span>
                     @endif
                 </td>
                 <td>

@@ -15,9 +15,11 @@ return new class extends Migration
     {
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
-            $table->string('start_date');
-            $table->string('end_date');
-            $table->string('admin_commission');
+            $table->string('start_date')->nullable();
+            $table->string('end_date')->nullable();
+            $table->string('affiliate_commission')->nullable();
+            $table->string('consultant_commission')->nullable();
+            $table->string('user_commission')->nullable();
             $table->timestamps();
         });
     }

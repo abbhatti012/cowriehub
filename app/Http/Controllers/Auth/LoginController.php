@@ -40,9 +40,13 @@ class LoginController extends Controller
       }
       
     protected function authenticated(Request $request, $user){
-        $data = User::find($user->id);
-        $data->checkin = $data->checkin + 1;
-        $data->save();
+        $user = User::find($user->id);
+        $user->checkin = $user->checkin + 1;
+        if($user->role != 'admin'){
+            $user->role = 'user';
+        }
+        $user->save();
+        
         if($user->role === 'admin') {
             return redirect(route('admin'));
         }

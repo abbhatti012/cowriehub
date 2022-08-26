@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use View;
 use Carbon\Carbon;
 use App\Models\Job;
+use App\Models\Pos;
 use App\Models\Blog;
 use App\Models\Book;
 use App\Models\User;
@@ -18,6 +19,7 @@ use App\Models\Revenue;
 use App\Models\Setting;
 use App\Models\Location;
 use App\Models\SubGenre;
+use App\Models\Affiliate;
 use App\Models\Marketing;
 use App\Models\Publisher;
 use App\Models\Consultant;
@@ -193,10 +195,12 @@ class AdminController extends Controller
         return view('admin.publisher',compact('publishers'));
     }
     public function pos(){
-        return view('admin.pos');
+        $users = User::where('role','pos')->orderBy('id','desc')->with('pos')->get();
+        return view('admin.pos',compact('users'));
     }
     public function affiliates(){
-        return view('admin.affiliates');
+        $affiliates = User::where('role','affiliate')->orderBy('id','desc')->with('affiliates')->get();
+        return view('admin.affiliates',compact('affiliates'));
     }
     public function books(){
         $books = Book::orderBy('id','desc')->with('sub_genre')->get();
@@ -436,7 +440,17 @@ class AdminController extends Controller
     public function delete_author($id){
         AuthorDetail::where('user_id',$id)->delete();
         User::where('id',$id)->delete();
-        return back()->with('message', ['text'=>'Author data has been updated','type'=>'success']);
+        return back()->with('message', ['text'=>'User has been deleted permanently','type'=>'success']);
+    }
+    public function delete_affiliate($id){
+        Affiliate::where('user_id',$id)->delete();
+        User::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'User has been deleted permanently','type'=>'success']);
+    }
+    public function delete_pos($id){
+        Pos::where('user_id',$id)->delete();
+        User::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'User has been deleted permanently','type'=>'success']);
     }
     
     public function author_profile_update(Request $request, $id){
@@ -875,5 +889,57 @@ class AdminController extends Controller
         $location->is_cod = $request->is_cod;
         $location->save();
         return back()->with('message', ['text'=>'Location added successfully!','type'=>'success']);
+    }
+    public function approve_author($id){
+        $user_detail = AuthorDetail::find($id);
+        $user_detail->status = 1;
+        $user_detail->save();
+        $data['title'] = 'Job Assigned';
+        $data['body'] = 'Congratulations!. Cowriehub has approved you as an author';
+        $data['body'] .= ' Click on below link to explore more as an author!';
+        $data['link'] = "author.profile.edit";
+        $data['linkText'] = "View";
+        $data['to'] = auth()->user()->email;
+        $data['username'] = auth()->user()->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('New role assigned!');
+        });
+        return back()->with('message', ['text'=>'Author role has been updated','type'=>'success']);
+    }
+    public function approve_affiliate($id){
+        $user_detail = Affiliate::find($id);
+        $user_detail->status = 1;
+        $user_detail->save();
+        $data['title'] = 'Job Assigned';
+        $data['body'] = 'Congratulations!. Cowriehub has approved you as an affiliate';
+        $data['body'] .= ' Click on below link to explore more as an affiliate!';
+        $data['link'] = "affiliate";
+        $data['linkText'] = "View";
+        $data['to'] = auth()->user()->email;
+        $data['username'] = auth()->user()->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('New role assigned!');
+        });
+        return back()->with('message', ['text'=>'Affiliate role has been updated','type'=>'success']);
+    }
+    public function approve_pos($id){
+        $user_detail = Pos::find($id);
+        $user_detail->status = 1;
+        $user_detail->save();
+        $data['title'] = 'Job Assigned';
+        $data['body'] = 'Congratulations!. Cowriehub has approved you as an POS';
+        $data['body'] .= ' Click on below link to explore more as an POS!';
+        $data['link'] = "pos";
+        $data['linkText'] = "View";
+        $data['to'] = auth()->user()->email;
+        $data['username'] = auth()->user()->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('New role assigned!');
+        });
+        return back()->with('message', ['text'=>'POS role has been updated','type'=>'success']);
+    }
+    public function edit_pos($id){
+        $user = Pos::where('id',$id)->first();
+        return view('admin.update.edit_pos',compact('user'));
     }
 }

@@ -35,10 +35,10 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <div class="border-bottom mb-6 pb-6 mb-lg-8 pb-lg-9">
+                                        <div class="border-bottom">
                                             <form action="{{ route('billing-detail') }}" method="post" id="basic-validations">
                                                 @csrf
-                                                <div class="pt-5 pl-md-5 pt-lg-8 pl-lg-9">
+                                                <div class="pt-lg-3">
                                                     <div class="row">
                                                         <div class="col-md-6 mb-4">
                                                             <div class="js-form-message">
@@ -662,7 +662,7 @@
                                             <div class="woocommerce-billing-fields">
 
                                                 <h3 class="mb-4 font-size-3">Shipping details</h3>
-                                                @if($is_hide_address)
+                                                @if($is_hide_address && !empty($shipping))
                                                 <div id="payment" class="woocommerce-checkout-payment">
                                                     <ul class="wc_payment_methods payment_methods methods">
                                                         <li class="wc_payment_method use_shipping_address">
