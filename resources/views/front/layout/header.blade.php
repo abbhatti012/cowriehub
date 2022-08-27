@@ -408,21 +408,71 @@
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}?role=publisher" class="h-primary">Publisher Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('affiliate') }}?role=affiliate" class="h-primary">Affiliate Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}?role=consultant" class="h-primary">Consultant Account</a></li>
+                                    @if(Auth::check() && \App\Models\User::IsUserExists('pos'))
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('pos') }}?role=pos" class="h-primary">POS Account</a></li>
-                                    @if(\App\Models\User::IsUserExists('pos'))
                                     @elseif(!Auth::check())
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('register') }}?role=pos" class="h-primary">POS Account</a></li>
+                                    @else
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('pos') }}?role=pos" class="h-primary">POS Account</a></li>
                                     @endif
                                 </ul>
                             </div>
                             <div class="px-4 px-md-5 py-5">
-                                <!-- <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
+                                <div id="google_translate_element"></div><br><br>
+                                <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
                                     <option selected>English (United States)</option>
                                     <option value="1">English (UK)</option>
                                     <option value="2">Arabic (Saudi Arabia)</option>
                                     <option value="3">Deutsch</option>
                                 </select>
-                                <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
+                                <style>
+                                    body{
+                                        top: 0px !important;
+                                        left: 0px !important;
+                                    }
+                                    iframe.goog-te-banner-frame {
+                                        display: none !important;
+                                    }
+
+                                    .goog-logo-link {
+                                        display: none !important;
+                                    }
+                                    .goog-te-gadget {
+                                        height: 30px !important;
+                                        overflow: hidden !important;
+                                    }
+
+                                    .goog-te-gadget .goog-te-combo {
+                                        background: white !important;
+                                        padding: 2px 4px !important;
+                                        font-weight: 300 !important;
+                                        outline: none !important;
+                                        color: #161619 !important;
+                                        width: 100% !important;
+                                        border: 1px solid #dfdcd7 !important;
+                                        height: 38px !important;
+                                    }
+
+                                    .goog-te-gadget .goog-te-combo {
+                                        bottom: 9px;
+                                        /* background: white; */
+                                        margin-top: 0px;
+                                    }
+
+                                    #google_translate_element {
+                                        position: relative !important;
+                                        top: 5px !important;
+                                    }
+
+                                    .our-fleet .our-fleet-slider .fleet-item .fleet-item-footer .price h3 {
+                                        font-size: 13px !important;
+                                    }
+
+                                    .goog-te-gadget .goog-te-combo option {
+                                        color: black !important;
+                                    }
+                                </style>
+                                <!-- <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
                                     <option selected>$ USD</option>
                                     <option value="1">د.إ AED</option>
                                     <option value="2">¥ CNY</option>
@@ -458,3 +508,12 @@
             </div>
         </div>
     </aside>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'en',
+                includedLanguages: 'fr,en',
+            }, 'google_translate_element');
+        }
+    </script>
+    <script src="http://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
