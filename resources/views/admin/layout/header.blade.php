@@ -309,6 +309,7 @@
                     <li><a href="{{ route('admin.referred-Customers-Agreement') }}">Referred Customers Agreement</a></li>
                     <li><a href="{{ route('admin.sellers-Contract-For-Authors') }}">Sellers Contract For Authors</a></li>
                     <li><a href="{{ route('admin.sellers-Contract-For-Publishers') }}">Sellers Contract For Publishers</a></li>
+                    <li><a href="{{ route('admin.support') }}">Suppport</a></li>
                 </ul>
             </li>
             <!-- <li class="<?php //if(request()->segment(2) == 'banks'){echo 'mm-active';} ?>">
@@ -337,13 +338,13 @@
             </li>
             <li class="<?php if(request()->segment(2) == 'all-contacts'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.contacts') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-cog"></i>
+                    <i class="fa fa-phone"></i>
                     <span class="nav-text">All Contacts</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(2) == 'all-subscribers'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.subscribers') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-cog"></i>
+                    <i class="fa fa-envelope"></i>
                     <span class="nav-text">All Subscribers</span>
                 </a>
             </li>

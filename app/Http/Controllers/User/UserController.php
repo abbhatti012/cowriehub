@@ -41,6 +41,28 @@ class UserController extends Controller
     public function consultant_account(){
         return view('front.author.consultant_account');
     }
+    public function recommended_books(){
+        $books = Book::where('searches','>',0)->orWhere('book_purchased','>',0)->get();
+        $role = auth()->user()->role;
+        if($role == 'author'){
+            $role  = 'user';
+        } else if($role == 'user'){
+            $role  = 'author';
+        }
+        return view('author.recommended-books',compact('books','role'));
+    }
+    public function pending_reviews(){
+        $books = Book::where('searches','>',0)
+        ->orWhere('book_purchased','>',0)
+        ->where('total_reviews',0)->get();
+        $role = auth()->user()->role;
+        if($role == 'author'){
+            $role  = 'user';
+        } else if($role == 'user'){
+            $role  = 'author';
+        }
+        return view('author.pending-reviews',compact('books','role'));
+    }
     public function pos(){
         return view('front.author.pos');
     }
@@ -59,6 +81,8 @@ class UserController extends Controller
         $role = auth()->user()->role;
         if($role == 'author'){
             $role  = 'user';
+        } else if($role == 'user'){
+            $role  = 'author';
         }
         return view('user.wishlist',compact('wishlist','role'));
     }
@@ -78,6 +102,8 @@ class UserController extends Controller
         $role = auth()->user()->role;
         if($role == 'author'){
             $role  = 'user';
+        } else if($role == 'user'){
+            $role  = 'author';
         }
         return view('user.address', compact('user','billing','shipping', 'role'));
     }

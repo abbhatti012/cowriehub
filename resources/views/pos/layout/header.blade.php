@@ -99,6 +99,16 @@
                         <span class="nav-text">Paid Invoices</span>
                     </a>
                 </li>
+                <li class="<?php if(request()->segment(1) == 'recommended-books'){echo 'mm-active';} ?>"><a href="{{ route('user.recommended-books') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-book"></i>
+                    <span class="nav-text">Recommended Books</span>
+                    </a>
+                </li>
+                <li class="<?php if(request()->segment(1) == 'pending-reviews'){echo 'mm-active';} ?>"><a href="{{ route('user.pending-reviews') }}" class="ai-icon" aria-expanded="false">
+                        <i class="fa fa-star"></i>
+                        <span class="nav-text">Pending Reviews</span>
+                    </a>
+                </li>
             @endif
         </ul>
     </div>

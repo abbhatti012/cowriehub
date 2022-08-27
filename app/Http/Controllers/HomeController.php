@@ -15,6 +15,7 @@ use App\Models\Location;
 use App\Models\Wishlist;
 use App\Models\Addresses;
 use App\Models\Marketing;
+use App\Models\SearchBook;
 use App\Models\Subscriber;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
@@ -229,14 +230,17 @@ class HomeController extends Controller
     }
     public function my_account(){
         $user = Addresses::where('user_id',Auth::id())->first();
-        $billing = unserialize($user->billing_detail);
-        $shipping = unserialize($user->shipping_detail);
-        if(!$billing){
+        if(!empty($user->billing_detail)){
+            $billing = unserialize($user->billing_detail);
+        } else {
             $billing = [];
         }
-        if(!$shipping){
+        if(!empty($user->shipping_detail)){
+            $shipping = unserialize($user->shipping_detail);
+        } else {
             $shipping = [];
         }
+       
         return view('front.my-account', compact('user','billing','shipping'));
     }
     public function about_us(){
@@ -267,7 +271,8 @@ class HomeController extends Controller
         return view('front.author-detail', compact('user','books'));
     }
     public function contact_us(){
-        return view('front.contact-us');
+        $setting = Setting::first();
+        return view('front.contact-us',compact('setting'));
     }
     public function comming_soon(){
         return view('front.comming-soon');
@@ -380,12 +385,12 @@ class HomeController extends Controller
         
         return back()->with('message', ['text'=>'Data has been updated','type'=>'success']);
     }
-    // public function front_autocomplete(Request $request){
-    //     $data = Book::select("title")
-    //             ->where("title","LIKE","%{$request->input('query')}%")
-    //             ->get();
-    //     return response()->json($data);
-    // }
+    public function front_autocomplete(Request $request){
+        $data = Book::select("title","id","slug")
+                ->where("title","LIKE","%{$request->input('query')}%")
+                ->pluck('slug');
+        return response()->json($data);
+    }
     public function content_policy(Request $request){
         $setting = Setting::first();
         return view('front.static.content-policy',compact('setting'));
@@ -453,6 +458,17 @@ class HomeController extends Controller
             return response()->json(['text'=>'Thanks for subscribing.','type'=>'success']);
         } else  {
             return response()->json(['text'=>'It looks like you have already subscribe with this email.','type'=>'danger']);
+        }
+    }
+    public function insert_search_result(Request $request){
+        $slug = $request->value;
+        $isExists = Book::where('slug',$slug)->first();
+        if($isExists){
+            $isExists->searches = $isExists->searches + 1;
+            $isExists->save();
+            return response()->json(['text'=>'','status'=>true]);
+        } else {
+            return response()->json(['text'=>'That product does not exists.','status'=>false]);
         }
     }
 }

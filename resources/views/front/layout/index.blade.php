@@ -36,6 +36,12 @@
             font-weight: 300;
             color: red;
         }
+        .typeahead{
+            left: 0 !important;
+            max-width: 100% !important;
+            overflow: hidden !important;
+            overflow-x: scroll !important;
+        }
     </style>
 <body>
 @include('front.layout.header')
@@ -65,7 +71,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script> -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
 
 <!-- JS Bookworm -->
 <!-- <script src="../../assets/js/bookworm.js"></script> -->
@@ -114,6 +120,26 @@
                     }
                 });
             });
+            $(document).on('click','.searchIcon',function(){
+                var value = $('.typeahead').val();
+                if(value != ''){
+                    $.ajax({
+                        type : 'POST',
+                        url : '{{ route("insert-search-result") }}',
+                        data : {
+                            "_token": "{{ csrf_token() }}",
+                            value : value
+                        },
+                        success : function(data){
+                            if(data.status){
+                                window.location.href='<?= asset("product/") ?>/'+value
+                            } else {
+                                $.notify(data.message, data.type);
+                            }
+                        }
+                    })
+                }
+            });
             $(document).on('click','.subscribeNow',function(){
                 var email = $('#signupSrName').val();
                 if(email == ''){
@@ -136,14 +162,14 @@
             });
         });
 
-        // var searchPath = "{{ route('front-autocomplete') }}";
-        // $('input.typeahead').typeahead({
-        //     source:  function (query, process) {
-        //     return $.get(searchPath, { query: query }, function (data) {
-        //             return process(data);
-        //         });
-        //     }
-        // });
+        var searchPath = "{{ route('front-autocomplete') }}";
+        $('input.typeahead').typeahead({
+            source:  function (query, process) {
+                return $.get(searchPath, { query: query }, function (data) {
+                    return process(data);
+                });
+            },
+        });
     </script>
 @yield('scripts')
 <script src="//code.tidio.co/wa0smygsidvita41rbcfrurkda8guxqc.js" async></script>

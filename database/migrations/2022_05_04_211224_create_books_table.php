@@ -67,6 +67,7 @@ return new class extends Migration
             $table->integer('total_reviews')->nullable();
             $table->integer('book_purchased')->default(0);
             $table->integer('total_ratings')->nullable();
+            $table->integer('searches')->nullable()->default(0);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

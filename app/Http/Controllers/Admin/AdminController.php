@@ -961,4 +961,8 @@ class AdminController extends Controller
         $users = Contact::orderby('id','desc')->get();
         return view('admin.contacts',compact('users'));
     }
+    public function support(){
+        $setting = Setting::first();
+        return view('admin.support',compact('setting'));
+    }
 }

@@ -1,4 +1,4 @@
-@extends('publisher.layout.index')
+@extends($role.'.layout.index')
 @section('content')
 <style>
     .hard_cover, .digital_epub, .paper_back{
@@ -27,9 +27,6 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">All Books</h4>
-                        <div class="d-flex">
-                            <a href="{{ route('publisher.add-book-for-author') }}?type=publisher" class="btn btn-primary shadow btn-lg sharp" title="Add a Book">Add a Book</a>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -41,7 +38,6 @@
                             <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        </th>
                                         <th>View Detail</th>
                                         <th>Title</th>
                                         <th>Sub-Title</th>
@@ -49,8 +45,6 @@
                                         <th>Publisher</th>
                                         <th>Publication Date</th>
                                         <th>Country</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -66,13 +60,6 @@
                                         <td>{{ $book->publisher }}</td>
                                         <td>{{ $book->publication_date }}</td>
                                         <td>{{ $book->country }}</td>
-                                        <td>@if($book->status == 1) <span class="badge light badge-info">Approved</span> @else 
-                                            <span class="badge light badge-danger">your book is being reviewed. <br>you will be notified when it goes live</span> 
-                                        @endif</td>
-                                        <td>
-                                            <a href="{{ route('delete-book',$book->id) }}" onclick="if (! confirm('Are you sure you want to delete book?')) { return false; }" class="btn btn-danger shadow btn-xs sharp" title="Delete Book"><i class="fa fa-trash"></i></a>
-                                            <a href="{{ route('edit-book',$book->id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Book"><i class="fa fa-pencil"></i></a>
-                                        </td>
                                     </tr>
                                 @endforeach
                                 </tbody>

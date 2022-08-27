@@ -32,6 +32,7 @@ Route::get('/front-autocomplete', [App\Http\Controllers\HomeController::class, '
 Route::get('/success-page', [App\Http\Controllers\HomeController::class, 'success_page'])->name('success-page');
 Route::get('/blogs', [App\Http\Controllers\HomeController::class, 'blogs'])->name('blogs');
 Route::get('/blog-detail/{any}', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
+Route::post('/insert-search-result', [App\Http\Controllers\HomeController::class, 'insert_search_result'])->name('insert-search-result');
 
 //Static Pages
 Route::get('/privacy-policy', [App\Http\Controllers\HomeController::class, 'privacy_policy'])->name('front.privacy-policy');
@@ -176,6 +177,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/update-about-banner', [App\Http\Controllers\Admin\AdminController::class, 'update_about_banner'])->name('admin.update-about-banner');
     Route::get('/cms/all-subscribers', [App\Http\Controllers\Admin\AdminController::class, 'all_subscribers'])->name('admin.subscribers');
     Route::get('/cms/all-contacts', [App\Http\Controllers\Admin\AdminController::class, 'all_contacts'])->name('admin.contacts');
+    Route::get('/cms/support', [App\Http\Controllers\Admin\AdminController::class, 'support'])->name('admin.support');
 });
 Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
 Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
@@ -199,6 +201,8 @@ Route::group(['middleware' => 'author'], function () {
 Route::get('/edit-book/{any}', [App\Http\Controllers\BookController::class, 'edit_book'])->name('edit-book');
 Route::get('/logout', [App\Http\Controllers\User\UserController::class, 'logout'])->name('logout');
 Route::get('/user-wishlist', [App\Http\Controllers\User\UserController::class, 'wishlist'])->name('user.wishlist');
+Route::get('/recommended-books', [App\Http\Controllers\User\UserController::class, 'recommended_books'])->name('user.recommended-books');
+Route::get('/pending-reviews', [App\Http\Controllers\User\UserController::class, 'pending_reviews'])->name('user.pending-reviews');
 
 //Publisher Routes
 Route::post('/publisher-register', [App\Http\Controllers\PublisherController::class, 'signup'])->name('publisher-register')->middleware('auth');

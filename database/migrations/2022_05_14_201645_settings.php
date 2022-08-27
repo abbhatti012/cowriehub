@@ -39,6 +39,14 @@ return new class extends Migration
             $table->longText('secure_payment')->nullable();
             $table->longText('money_back')->nullable();
             $table->longText('support')->nullable();
+            $table->text('support_phone')->nullable();
+            $table->text('support_email')->nullable();
+            $table->text('support_address')->nullable();
+            $table->text('pinterest_link')->nullable();
+            $table->text('twitter_link')->nullable();
+            $table->text('youtube_link')->nullable();
+            $table->text('facebook_link')->nullable();
+            $table->text('instagram_link')->nullable();
             $table->timestamps();
         });
     }

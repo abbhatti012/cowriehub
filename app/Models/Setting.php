@@ -35,5 +35,13 @@ class Setting extends Model
         'money_back',
         'support',
         'about_banner',
+        'instagram_link',
+        'facebook_link',
+        'youtube_link',
+        'twitter_link',
+        'pinterest_link',
+        'support_address',
+        'support_email',
+        'support_phone',
     ];
 }

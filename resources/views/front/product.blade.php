@@ -503,7 +503,7 @@
                             <!-- Tab Content -->
                             <div class="tab-content font-size-2 container">
                                 <div class="row">
-                                    <div class="col-xl-8 offset-xl-2">
+                                    <div class="col-xl-8 offset-xl-2" id="customers-review">
                                         <div class="woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content wc-tab pt-9 reviews">
                                             <!-- Mockup Block -->
                                             <h4 class="font-size-3">Customer Reviews </h4>

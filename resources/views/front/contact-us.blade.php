@@ -24,27 +24,15 @@
                                 <div class="mb-4 mb-lg-8">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <h6 class="font-weight-medium font-size-4 mb-4">New York Office</h6>
+                                            <h6 class="font-weight-medium font-size-4 mb-4">Office Address</h6>
                                             <address class="font-size-2 mb-5">
                                                 <span class="mb-2 font-weight-normal text-dark">
-                                                    1418 River Drive, Suite 35 Cottonhall, CA 9622 <br> United States
+                                                    {{ $setting->support_address }}
                                                 </span>
                                             </address>
                                             <div>
-                                                <a href="mailto:sale@bookworm.com" class="font-size-2 d-block link-black-100 mb-1">sale@bookworm.com</a>
-                                                <a href="tel:+1246-345-0695" class="font-size-2 d-block link-black-100">+1 246-345-0695</a>
-                                            </div>
-                                        </div>
-                                         <div class="col-md-6">
-                                            <h6 class="font-weight-medium font-size-4 mb-4">London Office</h6>
-                                            <address class="font-size-2 mb-5">
-                                                <span class="mb-2 font-weight-normal text-dark">
-                                                    1418 River Drive, Suite 35 Cottonhall, CA 9622 <br> United States
-                                                </span>
-                                            </address>
-                                            <div>
-                                                <a href="mailto:sale@bookworm.com" class="font-size-2 d-block link-black-100 mb-1">sale@bookworm.com</a>
-                                                <a href="tel:+1246-345-0695" class="font-size-2 d-block link-black-100">+1 246-345-0695</a>
+                                                <a href="mailto:{{ $setting->support_email }}" class="font-size-2 d-block link-black-100 mb-1">{{ $setting->support_email }}</a>
+                                                <a href="tel:{{ $setting->support_phone }}" class="font-size-2 d-block link-black-100">{{ $setting->support_phone }}</a>
                                             </div>
                                         </div>
                                     </div>
@@ -52,31 +40,41 @@
                                 <div class="mb-5 mb-xl-9 pb-xl-1">
                                     <h6 class="font-size-4 font-weight-medium">Social Media</h6>
                                     <ul class="list-unstyled mb-0 d-flex">
+                                        @if(!empty($setting->instagram_link))
                                         <li class="btn pl-0">
-                                            <a class="link-black-100" href="#">
+                                            <a class="link-black-100" href="{{ $setting->instagram_link }}" target="_blank">
                                                 <span class="fab fa-instagram"></span>
                                             </a>
                                         </li>
+                                        @endif
+                                        @if(!empty($setting->facebook_link))
                                         <li class="btn">
-                                            <a class="link-black-100" href="#">
+                                            <a class="link-black-100" href="{{ $setting->facebook_link }}" target="_blank">
                                                 <span class="fab fa-facebook-f"></span>
                                             </a>
                                         </li>
+                                        @endif
+                                        @if(!empty($setting->youtube_link))
                                         <li class="btn">
-                                            <a class="link-black-100" href="#">
+                                            <a class="link-black-100" href="{{ $setting->youtube_link }}" target="_blank">
                                                 <span class="fab fa-youtube"></span>
                                             </a>
                                         </li>
+                                        @endif
+                                        @if(!empty($setting->twitter_link))
                                         <li class="btn">
-                                            <a class="link-black-100" href="#">
+                                            <a class="link-black-100" href="{{ $setting->twitter_link }}" target="_blank">
                                                 <span class="fab fa-twitter"></span>
                                             </a>
                                         </li>
+                                        @endif
+                                        @if(!empty($setting->pinterest_link))
                                         <li class="btn">
-                                            <a class="link-black-100" href="#">
+                                            <a class="link-black-100" href="{{ $setting->pinterest_link }}" target="_blank">
                                                 <span class="fab fa-pinterest"></span>
                                             </a>
                                         </li>
+                                        @endif
                                     </ul>
                                 </div>
                                 <div>
