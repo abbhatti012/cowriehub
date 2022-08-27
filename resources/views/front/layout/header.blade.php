@@ -407,7 +407,11 @@
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.publisher-account') }}?role=publisher" class="h-primary">Publisher Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('affiliate') }}?role=affiliate" class="h-primary">Affiliate Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('user.consultant-account') }}?role=consultant" class="h-primary">Consultant Account</a></li>
+                                    @if(\App\Models\User::IsUserExists('pos'))
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('pos') }}?role=pos" class="h-primary">POS Account</a></li>
+                                    @else
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('register') }}?role=pos" class="h-primary">POS Account</a></li>
+                                    @endif
                                 </ul>
                             </div>
                             <div class="px-4 px-md-5 py-5">

@@ -67,4 +67,7 @@ class User extends Authenticatable
     public static function IsUserExists($table){
         return DB::table($table)->where(['user_id' => Auth::id(), 'status' => 1])->count();
     }
+    public static function IsPending($table){
+        return DB::table($table)->where(['user_id' => Auth::id(), 'status' => 0])->count();
+    }
 }

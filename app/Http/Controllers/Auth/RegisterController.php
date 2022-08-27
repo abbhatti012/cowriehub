@@ -8,6 +8,7 @@ use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\pos\PosController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -53,15 +54,26 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        event(new Registered($user = $this->create($request->all())));
+        $isRegister = event(new Registered($user = $this->create($request->all())));
         // $this->guard()->login($user);
         //this commented to avoid register user being auto logged in
-        return $this->registered($request, $user)
+        if(empty($user)){
+            return back()->with('message', ['text'=>'Failed! Referral code does not exists','type'=>'danger']);
+        } else {
+            return $this->registered($request, $user)
             ?: redirect(route('login'))->with('registrationSuccessfull', 'Your account has been created. Please login to continue');
+        }
     }
     protected function create(array $data)
     {
-        if(isset($data['code'])){
+        if(isset($data['referrel_code'])){
+            $userExists = User::where('code', $data['referrel_code'])->first();
+            if(!$userExists){
+                return $user = [];
+            } else {
+                $referrer_id = $userExists->id;
+            }
+        } else if(isset($data['code'])){
             $code = $data['code'];
             $userData = User::where('code', $code)->first();
             $referrer_id = $userData->id;
@@ -83,6 +95,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'referrer_id' => $referrer_id
         ]);
+        if(isset($data['referrel_code'])){
+            PosController::pos_register($data,$user->id);
+        }
         if($subsrcibe == 1){
             event(new UserRegistered($user));
         }

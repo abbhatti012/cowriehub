@@ -33,6 +33,18 @@ Route::get('/success-page', [App\Http\Controllers\HomeController::class, 'succes
 Route::get('/blogs', [App\Http\Controllers\HomeController::class, 'blogs'])->name('blogs');
 Route::get('/blog-detail/{any}', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
 
+//Static Pages
+Route::get('/privacy-policy', [App\Http\Controllers\HomeController::class, 'privacy_policy'])->name('front.privacy-policy');
+Route::get('/content-policy', [App\Http\Controllers\HomeController::class, 'content_policy'])->name('front.content-policy');
+Route::get('/affiliate-network-agreement', [App\Http\Controllers\HomeController::class, 'affiliate_network_agreement'])->name('front.affiliate-network-agreement');
+Route::get('/authors-contract', [App\Http\Controllers\HomeController::class, 'authors_contract'])->name('front.authors-contract');
+Route::get('/marketers-network-agreement', [App\Http\Controllers\HomeController::class, 'network_agreement'])->name('front.marketers-network-agreement');
+Route::get('/customer-agreement', [App\Http\Controllers\HomeController::class, 'customer_agreement'])->name('front.customer-agreement');
+Route::get('/contract-for-authors', [App\Http\Controllers\HomeController::class, 'contract_for_authors'])->name('front.contract-for-authors');
+Route::get('/contract-for-publishers', [App\Http\Controllers\HomeController::class, 'contract_for_publishers'])->name('front.contract-for-publishers');
+Route::post('/insert-contacts', [App\Http\Controllers\HomeController::class, 'insert_contacts'])->name('front.insert-contacts');
+Route::post('/subscribe', [App\Http\Controllers\HomeController::class, 'subscribe'])->name('front.subscribe');
+
 Route::post('/before-payment', [App\Http\Controllers\PaymentController::class, 'before_payment'])->name('before-payment');
 Route::post('/preorder-before-payment', [App\Http\Controllers\PaymentController::class, 'preorder_before_payment'])->name('preorder-before-payment');
 
@@ -161,6 +173,9 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/approve-affiliate/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_affiliate'])->name('admin.approve-affiliate');
     Route::get('/cms/approve-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_pos'])->name('admin.approve-pos');
     Route::get('/cms/edit-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_pos'])->name('admin.edit-pos');
+    Route::post('/cms/update-about-banner', [App\Http\Controllers\Admin\AdminController::class, 'update_about_banner'])->name('admin.update-about-banner');
+    Route::get('/cms/all-subscribers', [App\Http\Controllers\Admin\AdminController::class, 'all_subscribers'])->name('admin.subscribers');
+    Route::get('/cms/all-contacts', [App\Http\Controllers\Admin\AdminController::class, 'all_contacts'])->name('admin.contacts');
 });
 Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
 Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');
@@ -225,6 +240,8 @@ Route::post('/pos-signup/{any}', [App\Http\Controllers\Pos\PosController::class,
 Route::group(['middleware' => 'pos'], function () {
     Route::get('/payment-detail', [App\Http\Controllers\Pos\PosController::class, 'payment_detail'])->name('pos.payment-detail');
     Route::post('/update-pos-payment-detail', [App\Http\Controllers\Pos\PosController::class, 'update_payment_detail'])->name('pos.update-payment-detail');
+    Route::get('/pending-invoices', [App\Http\Controllers\Pos\PosController::class, 'pending_invoices'])->name('pos.pending-invoices');
+    Route::get('/paid-invoices', [App\Http\Controllers\Pos\PosController::class, 'paid_invoices'])->name('pos.paid-invoices');
 });
 
 //Consultant Routes
@@ -280,7 +297,10 @@ Route::get('pay', function () {
     return view('pay');
 });
 Route::post('/pay-now/{any}', [PaymentController::class, 'initialize'])->name('pay-now');
+Route::get('/pos-pay-now/{any}', [PaymentController::class, 'pos_payment'])->name('pos.pay-now');
 Route::get('/rave/callback/{any}', [PaymentController::class, 'callback'])->name('flutterwave-callback');
+Route::get('/pos/callback/{any}', [PaymentController::class, 'pos_callback'])->name('pos-callback');
+Route::get('/pos/close-window/', [PaymentController::class, 'close_window'])->name('pos.close-window');
 
 Route::get('/home', function(){
     return view('home');

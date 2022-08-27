@@ -247,6 +247,10 @@ class PaymentController extends Controller
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
+        if(Auth::user()->role == 'pos'){
+            session()->put('cart', []);
+            return redirect('success-page?token='.$payment->token);
+        }
         $request = [
             'tx_ref' => time(),
             'amount' => $total_amount,
@@ -292,6 +296,127 @@ class PaymentController extends Controller
     } else {
             echo 'We can not process your payment';
         }
+    }
+    public function pos_payment($id){
+        $payment = Payment::find($id);
+        $request = [
+            'tx_ref' => time(),
+            'amount' => $payment->total_amount,
+            'currency' => 'GHS',
+            'payment_options' => 'card',
+            'redirect_url' => route('pos-callback', $id),
+            'customer' => [
+                'email' => Auth::user()->email,
+                'name' => Auth::user()->name
+            ],
+            'meta' => [
+                'price' => $payment->total_amount
+            ],
+            'customizations' => [
+                'title' => 'Paying for a sample product',
+                'description' => 'sample'
+            ]
+        ];
+
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://api.flutterwave.com/v3/payments',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'POST',
+        CURLOPT_POSTFIELDS => json_encode($request),
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Bearer FLWSECK-e11860845478e5583ba7b5b507a0d4b1-X',
+            'Content-Type: application/json'
+        ),
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $res = json_decode($response);
+    if($res->status == 'success') {
+        $link = $res->data->link;
+        return redirect($link);
+    } else {
+            echo 'We can not process your payment';
+        }
+    }
+    public function pos_callback(Request $request, $id){
+        if(isset($request->status)) {
+            $payment = Payment::find($id);
+            $payment->status = $request->status;
+            $payment->transaction_id = $request->transaction_id;
+            if($request->status == 'cancelled')
+            {
+                $message = Session::flash('payment_cancelled','Your payment has been cancelled');
+            }
+            elseif($request->status == 'successful')
+            {
+                $txid = $request->transaction_id;
+                $curl = curl_init();
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => "https://api.flutterwave.com/v3/transactions/{$txid}/verify",
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => "",
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => "GET",
+                    CURLOPT_HTTPHEADER => array(
+                    "Content-Type: application/json",
+                    "Authorization: Bearer FLWSECK_TEST-eee25be1b44ef9a132a872075b3a0910-X"
+                    ),
+                ));
+                
+                $response = curl_exec($curl);
+                curl_close($curl);
+                $res = json_decode($response);
+                
+                if($res->status)
+                {
+                    $amountPaid = $res->data->charged_amount;
+                    $amountToPay = $res->data->meta->price;
+                    if($amountPaid >= $amountToPay)
+                    {
+                        if($payment->is_preorder == 0){
+                            $carts = session()->get('cart');
+                            foreach($carts as $cart){
+                                $book = Book::find($cart['id']);
+                                $book->book_purchased = $book->book_purchased + $cart['quantity'];
+                                $book->save();
+                            }
+                        } else {
+                            $book = Book::find($payment->book_id);
+                            $book->book_purchased = $book->book_purchased + 1;
+                            $book->save();
+                        }
+                        Revenue::where('payment_id',$payment->id)->update(['payment_status' => 1]);
+                        session()->put('cart', []);
+                        
+                        $message = Session::flash('payment_successfull','Payment Successfull!');
+                    }
+                    else
+                    {
+                        $payment->is_fraud = 1;
+                        $message = Session::flash('fraud_payment','Fraud transaction detected!');
+                    }
+                }
+                else
+                {
+                    $message = Session::flash('payment_cannot_process','Payment cannot process!');
+                }
+            }
+        }
+        $payment->save();
+        return redirect(route('pos.close-window'))->with('message', ['text'=>$message,'type'=>'success']);
+    }
+    public function close_window(){
+        return view('pos.close_window');
     }
     public function callback(Request $request, $id){
         if(isset($request->status)) {

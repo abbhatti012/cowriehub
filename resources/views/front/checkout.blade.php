@@ -3,12 +3,12 @@
 <div class="page-header border-bottom">
         <div class="container">
             <div class="d-md-flex justify-content-between align-items-center py-4">
-                <h1 class="page-title font-size-3 font-weight-medium m-0 text-lh-lg">Shop Single</h1>
+                <h1 class="page-title font-size-3 font-weight-medium m-0 text-lh-lg">Checkout</h1>
                 <nav class="woocommerce-breadcrumb font-size-2">
                     <a href="{{ url('/') }}" class="h-primary">Home</a>
                     <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>
-                    <a href="{{ route('shop') }}" class="h-primary">Shop</a>
-                    <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>Shop Single
+                    <a href="{{ route('cart') }}" class="h-primary">Cart</a>
+                    <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>Checkout
                 </nav>
             </div>
         </div>
@@ -1141,7 +1141,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-
+                                        @if(Auth::user()->role != 'pos')
                                             <div class="p-4d875 border">
                                                 <div id="checkoutHeadingThreee" class="checkout-head">
                                                     <a href="#" class="text-dark d-flex align-items-center justify-content-between"
@@ -1161,7 +1161,7 @@
                                                         </svg>
                                                     </a>
                                                 </div>
-
+                                                
                                                 <div id="checkoutCollapseThreee" class="mt-4 checkout-content collapse show"
                                                     aria-labelledby="checkoutHeadingThreee"
                                                     data-parent="#checkoutAccordion">
@@ -1190,6 +1190,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            @endif
                                         </div>
                                         <input type="hidden" id="is_coupon" name="is_coupon" value="0">
                                         <input type="hidden" id="coupon_value" name="coupon_code" value="">

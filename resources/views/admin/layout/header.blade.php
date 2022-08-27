@@ -287,7 +287,7 @@
             </li> -->
             <li class="<?php if(request()->segment(2) == 'blog'){echo 'mm-active';} ?>">
                 <a href="{{ route('admin.blog') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-blogger-b"></i>
+                    <i class="fab fa-blogger-b"></i>
                     <span class="nav-text"> Blog</span>
                 </a>
             </li>
@@ -297,10 +297,9 @@
                 </a>
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.slider') }}">Slider</a></li>
-                    <li><a href="{{ route('admin.ads') }}">Ads</a></li>
-                    <!-- <li><a href="{{ route('admin.faq') }}">FAQ</a></li> -->
+                    <!-- <li><a href="{{ route('admin.ads') }}">Ads</a></li> -->
                     <li><a href="{{ route('admin.about') }}">About Us</a></li>
-                    <li><a href="{{ route('admin.default-policy') }}">Default Policy</a></li>
+                    <!-- <li><a href="{{ route('admin.default-policy') }}">Default Policy</a></li> -->
                     <li><a href="{{ route('admin.privacy') }}">Privacy Policy</a></li>
                     <li><a href="{{ route('admin.content-policy') }}">Content Policy</a></li>
                     <li><a href="{{ route('admin.terms') }}">Terms</a></li>
@@ -334,6 +333,18 @@
                 <a href="{{ route('admin.settings') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-cog"></i>
                     <span class="nav-text">Settings</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'all-contacts'){echo 'mm-active';} ?>">
+                <a href="{{ route('admin.contacts') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-cog"></i>
+                    <span class="nav-text">All Contacts</span>
+                </a>
+            </li>
+            <li class="<?php if(request()->segment(2) == 'all-subscribers'){echo 'mm-active';} ?>">
+                <a href="{{ route('admin.subscribers') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-cog"></i>
+                    <span class="nav-text">All Subscribers</span>
                 </a>
             </li>
         </ul>

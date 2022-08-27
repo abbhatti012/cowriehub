@@ -16,6 +16,11 @@
             <li class="breadcrumb-item"><a href="javascript:void(0)">My Pos Account</a></li>
          </ol>
       </div>
+      @if(\App\Models\User::IsPending('pos'))
+        <div class="alert alert-danger">
+            <p>Cowriehub reviewing your application. You will be notified in your email on the status of your application after this review</p>
+        </div>
+      @endif
     @if(Session::has('message'))
         <div class="alert alert-{{session('message')['type']}}">
             {{session('message')['text']}}
@@ -112,12 +117,6 @@
                                 <div class="mb-3">
                                     <label for="company_phone">Company Phone</label>
                                     <input type="text" name="company_phone" value="{{ $user->company_phone }}" class="form-control form-control-lg"  required>
-                                </div>
-                            </div>
-                            <div class="basic-form">
-                                <div class="mb-3">
-                                    <label for="referrel_code">Referrel Code</label>
-                                    <input class="form-control form-control-lg" value="{{ $user->referrel_code }}" name="referrel_code"  value="{{ old('referrel_code') }}" type="text" id="referrel_code">
                                 </div>
                             </div>
                             <div class="basic-form">

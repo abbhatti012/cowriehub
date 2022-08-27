@@ -22,7 +22,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-2 ml-md-2">
-                                <button type="submit" class="btn btn-dark rounded-0 btn-wide py-3 font-weight-medium">Subscribe
+                                <button type="button" class="subscribeNow btn btn-dark rounded-0 btn-wide py-3 font-weight-medium">Subscribe
                                 </button>
                             </div>
                         </div>
@@ -86,51 +86,53 @@
                                 <li class="py-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('blogs') }}">Blogs</a>
                                 </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Bookmarks</a>
-                                </li>
+                                @if(Auth::check())
                                 <li class="pt-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Sign in/Join</a>
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('login') }}">Sign in/Join</a>
                                 </li>
+                                @endif
                             </ul>
                         </div>
                         <div class="col-lg-2 mb-6 mb-lg-0">
                             <h4 class="font-size-3 font-weight-medium mb-2 mb-xl-5 pb-xl-1">Customer Service</h4>
                             <ul class="list-unstyled mb-0">
-                                <li class="pb-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Help Center</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Returns</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Product Recalls</a>
-                                </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Accessibility</a>
-                                </li>
                                 <li class="py-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('contact-us') }}">Contact Us</a>
                                 </li>
                                 <li class="pt-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('contact-us') }}">Store Pickup</a>
                                 </li>
-                            </ul>
-                        </div>
-                        <div class="col-lg-2 mb-6 mb-lg-0">
-                            <h4 class="font-size-3 font-weight-medium mb-2 mb-xl-5 pb-xl-1">Policy</h4>
-                            <ul class="list-unstyled mb-0">
-                                <li class="pb-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Return Policy</a>
-                                </li>
                                 <li class="py-2">
                                     <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('terms-conditions') }}">Terms Of Use</a>
                                 </li>
-                                <li class="py-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Security</a>
+                            </ul>
+                        </div>
+                        <div class="col-lg-2 mb-6 mb-lg-0">
+                            <h4 class="font-size-3 font-weight-medium mb-2 mb-xl-5 pb-xl-1">Policy  & Agreements</h4>
+                            <ul class="list-unstyled mb-0">
+                                <li class="pb-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.privacy-policy') }}">Privacy Policy</a>
                                 </li>
                                 <li class="pt-2">
-                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="javascript:void(0)">Privacy</a>
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.content-policy') }}">Content Privacy</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.affiliate-network-agreement') }}">Affiliate Network Agreement</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.authors-contract') }}">Authors Contract</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.marketers-network-agreement') }}">Marketers Network Agreement</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.customer-agreement') }}">Referred Customer Agreement</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.contract-for-authors') }}">Sellers Contract For Authors</a>
+                                </li>
+                                <li class="pt-2">
+                                    <a class="widgets-hover transition-3d-hover font-size-2 link-black-100" href="{{ route('front.contract-for-publishers') }}">Sellers Contract For Publishers</a>
                                 </li>
                             </ul>
                         </div>

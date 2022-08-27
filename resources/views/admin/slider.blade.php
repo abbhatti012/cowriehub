@@ -81,9 +81,7 @@
                                         <td>{{ $banner->title }}</td>
                                         <td>{{ $banner->category }}</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-banner', $banner->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Consultant"><i class="fa fa-trash"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.delete-banner', $banner->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Banner"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                     @empty

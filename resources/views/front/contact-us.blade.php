@@ -9,6 +9,11 @@
             <div class="space-bottom-1 space-bottom-lg-2">
                 <div class="pb-4">
                     <div class="col-lg-8 mx-auto">
+                    @if(Session::has('message'))
+                        <div class="alert alert-{{session('message')['type']}}">
+                            {{session('message')['text']}}
+                        </div>
+                    @endif
                         <div class="bg-white mt-n10 mt-md-n13 pt-5 pt-lg-7 px-3 px-md-5 pl-xl-10 pr-xl-3">
                             <div class="ml-xl-4">
                                 <div class="mb-4 mb-lg-7">
@@ -76,40 +81,35 @@
                                 </div>
                                 <div>
                                     <h6 class="font-weight-medium font-size-10 mb-3 pb-xl-1">Get In Touch</h6>
-                                     <form class="js-validate" novalidate="novalidate">
+                                     <form class="js-validate" id="basic-validation" action="{{ route('front.insert-contacts') }}" method="post" novalidate="novalidate">
+                                        @csrf
                                         <div class="row">
-                                            <!-- Input -->
                                             <div class="col-sm-6 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="exampleFormControlInput1">Name</label>
                                                     <input id="exampleFormControlInput1" type="text" class="form-control rounded-0" name="name" aria-label="Jack Wayley" required="" data-error-class="u-has-error" data-msg="Please enter your name." data-success-class="u-has-success">
                                                 </div>
                                             </div>
-                                            <!-- End Input -->
-
-                                            <!-- Input -->
                                             <div class="col-sm-6 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="exampleFormControlInput2">Email</label>
                                                     <input id="exampleFormControlInput2" type="email" class="form-control rounded-0" name="email" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
                                                 </div>
                                             </div>
-                                            <!-- End Input -->
                                             <div class="col-sm-12 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="exampleFormControlInput3">Subject</label>
-                                                    <input id="exampleFormControlInput3" type="email" class="form-control rounded-0" name="email" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                                    <input id="exampleFormControlInput3" type="text" class="form-control rounded-0" name="subject" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 mb-5">
                                                 <div class="js-form-message">
                                                     <div class="input-group flex-column">
                                                         <label for="exampleFormControlInput4">Details please! Your review helps other shoppers.</label>
-                                                        <textarea id="exampleFormControlInput4" class="form-control rounded-0 pl-3 font-size-2 placeholder-color-3" rows="6" cols="77" name="text" placeholder="What did you like or dislike? What should other shoppers know before buying?" aria-label="Hi there, I would like to ..." required="" data-msg="Please enter a reason." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
+                                                        <textarea id="exampleFormControlInput4" class="form-control rounded-0 pl-3 font-size-2 placeholder-color-3" rows="6" cols="77" name="detail" placeholder="What did you like or dislike? What should other shoppers know before buying?" aria-label="Hi there, I would like to ..." required="" data-msg="Please enter a reason." data-error-class="u-has-error" data-success-class="u-has-success"></textarea>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <!-- End Input -->
                                             <div class="col d-flex justify-content-lg-start">
                                                 <button type="submit" class="btn btn-wide btn-dark text-white rounded-0 transition-3d-hover height-60">Sumbit Message</button>
                                             </div>

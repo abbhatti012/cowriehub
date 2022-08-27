@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pos;
 
 use App\Models\Pos;
 use App\Models\User;
+use App\Models\Payment;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -33,6 +34,18 @@ class PosController extends Controller
             You will be notified in your email on the status of your application after this review','type'=>'success']);
         }
     }
+    public static function pos_register($data, $id){
+        $pos = Pos::firstOrNew(array('user_id' => $id));
+        $pos->company_name = $data['company_name'];
+        $pos->company_email = $data['company_email'];
+        $pos->company_phone = $data['company_phone'];
+        $pos->landmark_area = $data['landmark_area'];
+        $pos->referrel_code = $data['referrel_code'];
+        $pos->is_agree_policy = $data['is_agree_policy'];
+        $pos->user_id = $id;
+        $pos->save();
+        return true;
+    }
     public function payment_detail(){
         $user = Pos::where('user_id',Auth::id())->first();
         return view('pos.payment-detail',compact('user'));
@@ -61,5 +74,13 @@ class PosController extends Controller
         }
         $user->save();
         return back()->with('message', ['text'=>'Payment detail set successfully!','type'=>'success']);
+    }
+    public function pending_invoices(){
+        $payments = Payment::orderBy('id','desc')->where('status','!=','successfull')->get();
+        return view('pos.pending-invoices',compact('payments'));
+    }
+    public function paid_invoices(){
+        $payments = Payment::orderBy('id','desc')->where('status','successfull')->get();
+        return view('pos.paid-invoices',compact('payments'));
     }
 }

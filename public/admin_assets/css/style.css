@@ -2195,6 +2195,7 @@ progress {
     line-height: 1.5;
     color: #969ba0;
     background-color: #fff;
+    /* border: 0.0625rem solid #555555 !important; */
     background-clip: padding-box;
     border: 1px solid #F2F2F2;
     appearance: none;
@@ -34466,7 +34467,7 @@ table.dataTable.display tbody td {
 }
 
 .auth-form {
-    padding: 3.125rem 3.125rem
+    padding: 1.125rem 3.125rem
 }
 
 @media only screen and (max-width: 35.9375rem) {

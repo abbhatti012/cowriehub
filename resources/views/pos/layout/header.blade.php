@@ -73,12 +73,12 @@
                 </a>
             </li>
             @if(\App\Models\User::IsUserExists('pos'))
-                <li class="<?php if(request()->segment(1) == 'payment-detail'){echo 'mm-active';} ?>">
+                <!-- <li class="<?php //if(request()->segment(1) == 'payment-detail'){echo 'mm-active';} ?>">
                     <a href="{{ route('pos.payment-detail') }}" class="ai-icon" aria-expanded="false">
                         <i class="fa fa-money"></i>
                         <span class="nav-text">Payment Detail</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
                         <i class="fa fa-address-card"></i>
                         <span class="nav-text">Addresses</span>
@@ -87,6 +87,16 @@
                 <li class="<?php if(request()->segment(1) == 'user-wishlist'){echo 'mm-active';} ?>"><a href="{{ route('user.wishlist') }}" class="ai-icon" aria-expanded="false">
                         <i class="fa fa-heart-o"></i>
                         <span class="nav-text">Wishlist</span>
+                    </a>
+                </li>
+                <li class="<?php if(request()->segment(1) == 'pending-invoices'){echo 'mm-active';} ?>"><a href="{{ route('pos.pending-invoices') }}" class="ai-icon" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">Pending Invoices</span>
+                    </a>
+                </li>
+                <li class="<?php if(request()->segment(1) == 'paid-invoices'){echo 'mm-active';} ?>"><a href="{{ route('pos.paid-invoices') }}" class="ai-icon" aria-expanded="false">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span class="nav-text">Paid Invoices</span>
                     </a>
                 </li>
             @endif

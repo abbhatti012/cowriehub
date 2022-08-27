@@ -14,6 +14,7 @@ use App\Models\Order;
 use App\Models\Skill;
 use App\Models\Banner;
 use App\Models\Coupon;
+use App\Models\Contact;
 use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\Setting;
@@ -24,6 +25,7 @@ use App\Models\Marketing;
 use App\Models\Publisher;
 use App\Models\Consultant;
 use App\Models\ExtraField;
+use App\Models\Subscriber;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
@@ -941,5 +943,22 @@ class AdminController extends Controller
     public function edit_pos($id){
         $user = Pos::where('id',$id)->first();
         return view('admin.update.edit_pos',compact('user'));
+    }
+    public function update_about_banner(Request $request){
+        if($request->about_banner != null){
+            $profileImage = time().'.'.$request->about_banner->extension();
+            $request->about_banner->move(public_path('images/authors'), $profileImage);
+            $about_banner = 'images/authors/'.$profileImage;
+            Setting::where('id',1)->update(['about_banner' => $about_banner]);
+        }
+        return back()->with('message', ['text'=>'POS role has been updated','type'=>'success']);
+    }
+    public function all_subscribers(){
+        $users = Subscriber::orderby('id','desc')->get();
+        return view('admin.subscribers',compact('users'));
+    }
+    public function all_contacts(){
+        $users = Contact::orderby('id','desc')->get();
+        return view('admin.contacts',compact('users'));
     }
 }

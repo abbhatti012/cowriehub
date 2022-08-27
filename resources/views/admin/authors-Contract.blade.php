@@ -1,5 +1,8 @@
 @extends('admin.layout.index')
 @section('content')
+@php
+    $setting = DB::table('settings')->first();
+@endphp
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
@@ -8,18 +11,28 @@
                 <li class="breadcrumb-item"><a href="javascript:void(0)">Authors Contract</a></li>
             </ol>
         </div>
-        <div class="row">
-            <div class="col-xl-12 col-xxl-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Authors Contract</h4>
-                    </div>
-                    <div class="card-body custom-ekeditor">
-                        <div id="ckeditor"></div>
+        <form id="basic-validation" action="{{ route('admin.update-setting') }}" method="POST" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4 class="card-title">Authors Contract</h4>
+                        </div>
+                        @csrf
+                        <div class="card-body row">
+                            <div class="basic-form custom_file_input col-xl-12">
+                                <div class="input-group mb-3">
+                                    <div class="card-body custom-ekeditor">
+                                        <textarea name="authors_contract" id="ckeditor">{{ $setting->authors_contract }}</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>   
     </div>
 </div>
 @endsection

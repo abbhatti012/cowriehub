@@ -114,6 +114,26 @@
                     }
                 });
             });
+            $(document).on('click','.subscribeNow',function(){
+                var email = $('#signupSrName').val();
+                if(email == ''){
+                    return $.notify('Please enter email first to subscribe!');
+                }
+                $(this).attr('disabled',true);
+                $.ajax({
+                    type : 'POST',
+                    url : '{{ route("front.subscribe") }}',
+                    data : {
+                        "_token": "{{ csrf_token() }}",
+                        email : email,
+                    },
+                    success : function(data){
+                        $('#signupSrName').val('');
+                        $('.subscribeNow').attr('disabled',false);
+                        $.notify(data.text, data.type);
+                    }
+                });
+            });
         });
 
         // var searchPath = "{{ route('front-autocomplete') }}";

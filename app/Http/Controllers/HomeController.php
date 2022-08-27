@@ -8,17 +8,20 @@ use App\Models\User;
 use App\Models\Genre;
 use App\Models\Banner;
 use App\Models\Review;
+use App\Models\Contact;
 use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Location;
 use App\Models\Wishlist;
 use App\Models\Addresses;
 use App\Models\Marketing;
+use App\Models\Subscriber;
 use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -237,7 +240,8 @@ class HomeController extends Controller
         return view('front.my-account', compact('user','billing','shipping'));
     }
     public function about_us(){
-        return view('front.about-us');
+        $setting = Setting::first();
+        return view('front.about-us',compact('setting'));
     }
     public function authors_list(){
         if(isset($_GET['param'])){
@@ -382,4 +386,73 @@ class HomeController extends Controller
     //             ->get();
     //     return response()->json($data);
     // }
+    public function content_policy(Request $request){
+        $setting = Setting::first();
+        return view('front.static.content-policy',compact('setting'));
+    }
+    public function privacy_policy(Request $request){
+        $setting = Setting::first();
+        return view('front.static.privacy-policy',compact('setting'));
+    }
+    public function affiliate_network_agreement(Request $request){
+        $setting = Setting::first();
+        return view('front.static.affiliate-network-agreement',compact('setting'));
+    }
+    public function authors_contract(Request $request){
+        $setting = Setting::first();
+        return view('front.static.authors-contract',compact('setting'));
+    }
+    public function network_agreement(Request $request){
+        $setting = Setting::first();
+        return view('front.static.marketers-network-agreement',compact('setting'));
+    }
+    public function customer_agreement(Request $request){
+        $setting = Setting::first();
+        return view('front.static.customer-agreement',compact('setting'));
+    }
+    public function contract_for_authors(Request $request){
+        $setting = Setting::first();
+        return view('front.static.contract-for-authors',compact('setting'));
+    }
+    public function contract_for_publishers(Request $request){
+        $setting = Setting::first();
+        return view('front.static.contract-for-publishers',compact('setting'));
+    }
+    public function insert_contacts(Request $request){
+        $data = $request->all();
+        unset($data['_token']);
+        $contact = new Contact;
+        $contact->fill($data)->save();
+        $data['title'] = 'New Contacts';
+        $data['body'] = 'Thanks for contacting us. Cowriehub team will get back to you soon.';
+        $data['link'] = "";
+        $data['linkText'] = "";
+        $data['to'] = $request->email;
+        $data['username'] = $request->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('New Contacts!');
+        });
+        return back()->with('message', ['text'=>'Thanks for contacting us. Cowriehub team will get back to you soon.','type'=>'success']);
+    }
+    public function subscribe(Request $request){
+        $email = $request->email;
+        $is_subscriber = Subscriber::where('email',$email)->first();
+        if(!$is_subscriber){
+            $contact = new Subscriber;
+            $contact->email = $request->email;
+            $contact->save();
+            $data['title'] = 'New Subscriber';
+            $data['body'] = 'Thanks for subscribing us. you will recieve recent updates from COWRIEHUB team.';
+            $data['link'] = "";
+            $data['linkText'] = "";
+            $data['to'] = $request->email;
+            $data['username'] = '';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Subscriber!');
+            });
+            return response()->json(['text'=>'Thanks for subscribing.','type'=>'success']);
+        } else  {
+            return response()->json(['text'=>'It looks like you have already subscribe with this email.','type'=>'danger']);
+        }
+    }
 }
