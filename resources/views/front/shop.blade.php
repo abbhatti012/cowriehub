@@ -417,7 +417,7 @@
                                             <h6 class="font-size-2 text-lh-md font-weight-normal">
                                                 <a href="{{ route('product', $book->slug) }}">{{ $book->title }}</a>
                                             </h6>
-                                            <span class="font-weight-medium">GHS {{ $book->price }}</span>
+                                            <span class="font-weight-medium">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span></span>
                                         </div>
                                     </div>
                                 </div>

@@ -51,7 +51,7 @@
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">User <small>(Book Owner)</small> Comission</h4>
+                            <h4 class="card-title">Author's/Publishers Royalties</h4>
                         </div>
                         @csrf
                         <div class="card-body row">
@@ -74,13 +74,13 @@
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Affiliate Comission</h4>
+                            <h4 class="card-title">Affiliates Commissions</h4>
                         </div>
                         @csrf
                         <div class="card-body row">
                             <div class="basic-form custom_file_input col-xl-5">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Affiliate Comission</span>
+                                    <span class="input-group-text">Affiliates Commissions</span>
                                     <div class="form-file">
                                         <input type="number" min="1" max="100" name="affiliate_commission" value="{{ $setting->affiliate_commission }}" class="form-file-input form-control">
                                     </div>
@@ -97,13 +97,13 @@
                 <div class="col-xl-12 col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4 class="card-title">Consultant Comission</h4>
+                            <h4 class="card-title">Consultants Commissions</h4>
                         </div>
                         @csrf
                         <div class="card-body row">
                             <div class="basic-form custom_file_input col-xl-5">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Consultant Comission</span>
+                                    <span class="input-group-text">Consultants Commissions</span>
                                     <div class="form-file">
                                         <input type="number" min="1" max="100" name="consultant_commission" value="{{ $setting->consultant_commission }}" class="form-file-input form-control">
                                     </div>

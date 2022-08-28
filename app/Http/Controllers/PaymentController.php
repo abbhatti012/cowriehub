@@ -11,11 +11,13 @@ use App\Models\Revenue;
 use App\Models\Setting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Traits\CurrencySession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
 {
+    use CurrencySession;
     public function before_payment(Request $request){
         $userId = Auth::id();
         if(!$userId){
@@ -57,6 +59,7 @@ class PaymentController extends Controller
 
     public function initialize(Request $request, $id){
         // $user = User::where('id',Auth::id())->first();
+        $currency = $this->getCurrencyRate();
         $payment = Payment::find($id);
         $billing['first_name'] = $request->billing_first_name;
         $billing['last_name'] = $request->billing_last_name;
@@ -95,7 +98,7 @@ class PaymentController extends Controller
             } else {
                 $book = Book::where('id',$payment->book_id)->first();
                 if(in_array($payment->book_id, unserialize($check->book_id))) {
-                    $book_price = (($book->price) / 100)*$setting->admin_commission;
+                    $book_price = $book->price * $currency->exchange_rate;
                     $totalPrice = round(((($book_price)) / 100)*$check->off,2);
                 } else {
                     $totalPrice = 0;
@@ -135,6 +138,8 @@ class PaymentController extends Controller
                 $order->extra_price = $cart['extraPrice'];
                 $order->total_price = $cart['bookPrice'] + $cart['extraPrice'] + $payment->shipping_price;
                 $order->quantity = $cart['quantity'];
+                $order->currency = $cart['currency'];
+                $order->exchange_rate = $cart['exchange_rate'];
                 if($cart['is_preorder'] == 1){
                     $order->amount_paid = round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2);
                     $order->remaining_price = $order->total_price - $order->amount_paid;
@@ -161,8 +166,11 @@ class PaymentController extends Controller
                 $revenue->user_amount = round(($order->amount_paid/100)*$setting->user_commission);
                 $revenue->payment_status = 0;
                 $revenue->admin_payment_status = 0;
+                $revenue->currency = $cart['currency'];
+                $revenue->exchange_rate = $cart['exchange_rate'];
                 $revenue->save();
-                if(Auth::user()->referrer_id != 0){
+
+                if(Auth::check() && Auth::user()->referrer_id != 0){
                     $revenue = new Revenue();
                     $revenue->user_id = Auth::user()->referrer_id;
                     $revenue->role = 'affiliate';
@@ -172,6 +180,8 @@ class PaymentController extends Controller
                     $revenue->payment_status = 0;
                     $revenue->admin_payment_status = 0;
                     $revenue->is_referrer = 1;
+                    $revenue->currency = $cart['currency'];
+                    $revenue->exchange_rate = $cart['exchange_rate'];
                     $revenue->save();
                 }
             }
@@ -185,21 +195,23 @@ class PaymentController extends Controller
             $order->role = $book->role;
             $order->is_preorder = 1;
             $order->extra_type = $payment->extraType;
-            $order->book_price = $book->price;
+            $order->book_price = $book->price * $currency->exchange_rate;
             $order->extra_price = $payment->extraPrice;
-            $order->total_price = $book->price + $payment->extraPrice + $payment->shipping_price;
+            $order->total_price = ($book->price * $currency->exchange_rate) + $payment->extraPrice + $payment->shipping_price;
             $order->quantity = 1;
+            $order->currency = $currency->currency_code;
+            $order->exchange_rate = $currency->exchange_rate;
             if($payment->is_coupon == 1){
                 $book = Book::where('id',$payment->book_id)->first();
                 if(in_array($payment->book_id, unserialize($check->book_id))) {
-                    $book_price = (($book->price) / 100)*$setting->admin_commission;
+                    $book_price = $book->price * $currency->exchange_rate;
                     $totalPrice = round(((($book_price)) / 100)*$check->off,2);
                 } else {
                     $totalPrice = 0;
                 }
-                $order->amount_paid = round(((($payment->extraPrice + $book->price)/100 )* 10), 2) - $totalPrice;
+                $order->amount_paid = round(((($payment->extraPrice + ($book->price * $currency->exchange_rate))/100 )* 10), 2) - $totalPrice;
             } else {
-                $order->amount_paid = round(((($payment->extraPrice + $book->price)/100 )* 10), 2);
+                $order->amount_paid = round(((($payment->extraPrice + ($book->price * $currency->exchange_rate))/100 )* 10), 2);
                 $totalPrice = $book->price;
             }
             $order->remaining_price = $order->total_price - $order->amount_paid;
@@ -214,8 +226,10 @@ class PaymentController extends Controller
             $revenue->user_amount = round(($order->amount_paid/100)*$setting->user_commission);
             $revenue->payment_status = 0;
             $revenue->admin_payment_status = 0;
+            $revenue->currency = $currency->currency_code;
+            $revenue->exchange_rate = $currency->exchange_rate;
             $revenue->save();
-            if(Auth::user()->referrer_id != 0){
+            if(Auth::check() && Auth::user()->referrer_id != 0){
                 $revenue = new Revenue();
                 $revenue->user_id = Auth::user()->referrer_id;
                 $revenue->role = 'affiliate';
@@ -225,6 +239,8 @@ class PaymentController extends Controller
                 $revenue->payment_status = 0;
                 $revenue->admin_payment_status = 0;
                 $revenue->is_referrer = 1;
+                $revenue->currency = $currency->currency_code;
+                $revenue->exchange_rate = $currency->exchange_rate;
                 $revenue->save();
             }
         }
@@ -247,14 +263,14 @@ class PaymentController extends Controller
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
-        if(Auth::user()->role == 'pos'){
+        if(Auth::check() && Auth::user()->role == 'pos'){
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
         $request = [
             'tx_ref' => time(),
             'amount' => $total_amount,
-            'currency' => 'GHS',
+            'currency' => $currency->currency_code,
             'payment_options' => 'card',
             'redirect_url' => route('flutterwave-callback', $payment->id),
             'customer' => [
@@ -298,11 +314,12 @@ class PaymentController extends Controller
         }
     }
     public function pos_payment($id){
+        $currency = $this->getCurrencyRate();
         $payment = Payment::find($id);
         $request = [
             'tx_ref' => time(),
             'amount' => $payment->total_amount,
-            'currency' => 'GHS',
+            'currency' => $currency->currency_code,
             'payment_options' => 'card',
             'redirect_url' => route('pos-callback', $id),
             'customer' => [

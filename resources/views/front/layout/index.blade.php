@@ -134,11 +134,26 @@
                             if(data.status){
                                 window.location.href='<?= asset("product/") ?>/'+value
                             } else {
-                                $.notify(data.message, data.type);
+                                $.notify(data.text, data.type);
                             }
                         }
                     })
                 }
+            });
+            $(document).on('change','.change-currency',function() {
+                var id = $(this).val();
+                $.ajax({
+                    type : 'get',
+                    url : '{{ route("update_currency_flag") }}',
+                    data : {
+                        id : id
+                    },
+                    success : function(data){
+                        if(data){
+                            location.reload();
+                        }
+                    }
+                });
             });
             $(document).on('click','.subscribeNow',function(){
                 var email = $('#signupSrName').val();

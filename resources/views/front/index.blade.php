@@ -36,6 +36,7 @@
 </style>
 @extends('front.layout.index')
 @section('content')
+
     <section class="space-bottom-3">
         <div class="bg-gray-200 space-2 space-lg-0 bg-img-hero" style="background-image: url(../../assets/img/1920x588/img1.jpg);">
             <div class="container">
@@ -164,7 +165,7 @@
                                     </span>
                                 </div>
                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                 </div>
                             </div>
                             <div class="product__hover d-flex align-items-center">
@@ -267,7 +268,7 @@
                                     </span>
                                 </div>
                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                 </div>
                             </div>
                             <div class="product__hover d-flex align-items-center">
@@ -370,7 +371,7 @@
                                     </span>
                                 </div>
                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                 </div>
                             </div>
                             <div class="product__hover d-flex align-items-center">
@@ -459,7 +460,7 @@
 
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
@@ -530,7 +531,7 @@
 
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
@@ -601,7 +602,7 @@
 
                                         </div>
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                            <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                         </div>
                                     </div>
                                     <div class="product__hover d-flex align-items-center">
@@ -688,7 +689,7 @@
 
                                     </div>
                                     <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span></ins>
+                                        <ins class="text-decoration-none mr-2"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span></ins>
                                         <del class="font-size-1 font-weight-regular text-gray-700"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->old_price }}</span></del>
                                     </div>
                                 </div>
@@ -835,7 +836,7 @@
 
                                                 </div>
                                                 <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                                                 </div>
                                             </div>
                                             <div class="product__hover d-flex align-items-center">
@@ -920,7 +921,7 @@
 
                             </div>
                             <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $book->price }}</span>
+                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                             </div>
                         </div>
                     </div>

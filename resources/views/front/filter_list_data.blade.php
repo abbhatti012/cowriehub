@@ -54,7 +54,7 @@
                     </div>
                     <p class="font-size-2 mb-2 crop-text-2">{{ $book->synopsis }}</p>
                     <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                        <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS </span>{{ $book->price }}</span>
+                        <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span>{{ $book->price * $currency->exchange_rate }}</span>
                     </div>
                 </div>
             </div>

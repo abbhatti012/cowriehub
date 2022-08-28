@@ -57,10 +57,10 @@
                                                 </td>
 
                                                 <td class="product-price" data-title="Price">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $cart['bookPrice'] }}</span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span>{{ $cart['bookPrice'] }}</span>
                                                 </td>
                                                 <td class="product-price" data-title="Price">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span>{{ $cart['extraPrice'] }} ({{ $cart['extraType'] }})</span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span>{{ $cart['extraPrice'] }} ({{ $cart['extraType'] }})</span>
                                                 </td>
 
                                                 <td class="product-quantity" data-title="Quantity">
@@ -88,9 +88,9 @@
 
                                                 <td class="product-subtotal" data-title="Total">
                                                     @if($cart['is_preorder'] == 1)
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS <sup>{{ round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2)  }}</sup>  <del>{{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</del></span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} <sup>{{ round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2)  }}</sup>  <del>{{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</del></span>
                                                     @else
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS {{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</span>
+                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} {{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</span>
                                                     @endif
                                                 </td>
                                                 <td class="product-remove">
@@ -156,12 +156,12 @@
                             <tbody>
                                 <tr class="cart-subtotal">
                                     <th>Subtotal</th>
-                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS</span><span class="subtotalValue">{{ $subtotal }}</span></span></td>
+                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span><span class="subtotalValue">{{ $subtotal }}</span></span></td>
                                 </tr>
 
                                 <tr class="order-shipping">
                                     <th>Shipping</th>
-                                    <td data-title="Shipping">GHS <span class="shippingFee">0</span></td>
+                                    <td data-title="Shipping">{{ $cart['currency'] }} <span class="shippingFee">0</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -204,7 +204,7 @@
                                <option value="" selected disabled data-price="0">---Choose Location</option>
                                @foreach($locations as $location)
                                @if($location->type == 'standard')
-                               <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                               <option value="{{ $location->location }}" required data-price = "{{ $location->price * $currency->exchange_rate }}">{{ $location->location }} <small>({{ $cart['currency'] }} {{ $location->price * $currency->exchange_rate }})</small></option>
                                @endif
                                @endforeach
                             </select>
@@ -214,7 +214,7 @@
                                <option value="" selected disabled data-price="0">---Choose Location</option>
                                @foreach($locations as $location)
                                @if($location->type == 'express')
-                               <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                               <option value="{{ $location->location }}" required data-price = "{{ $location->price * $currency->exchange_rate }}">{{ $location->location }} <small>({{ $cart['currency'] }} {{ $location->price * $currency->exchange_rate }})</small></option>
                                @endif
                                @endforeach
                             </select>
@@ -258,7 +258,7 @@
                                 @forelse($locations as $location)
                                 <tr class="cart-subtotal">
                                     <th>{{ $location->weight }} KG</th>
-                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS </span>{{ $location->price }}</span></td>
+                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} </span>{{ $location->price * $currency->exchange_rate }}</span></td>
                                 </tr>
                                 @empty
                                 @endforelse
@@ -302,7 +302,7 @@
                         <tbody>
                             <tr class="order-total">
                                 <th>Total Price</th>
-                                <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">GHS </span><span class="totalPrice">{{ $subtotal }}</span></span></strong> </td>
+                                <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} </span><span class="totalPrice">{{ $subtotal }}</span></span></strong> </td>
                             </tr>
                         </tbody>
                     </table>
@@ -310,11 +310,11 @@
             </div>
            
             <div class="wc-proceed-to-checkout">
-                <a href="{{ url('shop') }}" class="checkout-button button alt wc-forward btn btn-light btn-block rounded-0 py-4">Keep Shopping</a>
-            </div><br>
-            <div class="wc-proceed-to-checkout">
                 <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedToCheckout">Proceed to checkout</a>
             </div>
+            <div class="wc-proceed-to-checkout">
+                <a href="{{ url('shop') }}" class="checkout-button button alt wc-forward btn btn-light btn-block rounded-0 py-4">Keep Shopping</a>
+            </div><br>
         </div>
     </div>
 </div>

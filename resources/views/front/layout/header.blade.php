@@ -1,11 +1,15 @@
-    <!--===== HEADER CONTENT =====-->
+@php
+    $currencies = DB::table('currencies')->orderBy('id','desc')->get();
+@endphp
+<!--===== HEADER CONTENT =====-->
     <header id="site-header" class="site-header__v1">
         <div class="topbar border-bottom d-none d-md-block">
             <div class="container-fluid px-2 px-md-5 px-xl-8d75">
                 <div class="topbar__nav d-md-flex justify-content-between align-items-center">
                     <ul class="topbar__nav--left nav ml-md-n3">
                         <li class="nav-item"><a href="#" class="nav-link link-black-100"><i class="glph-icon flaticon-question mr-2"></i>Can we help you?</a></li>
-                        <li class="nav-item"><a href="tel:+1246-345-0695" class="nav-link link-black-100"><i class="glph-icon flaticon-phone mr-2"></i>+1 246-345-0695</a></li>
+                        <?php $setting = DB::table('settings')->first(); ?>
+                        <li class="nav-item"><a href="tel:{{ $setting->support_phone }}" class="nav-link link-black-100"><i class="glph-icon flaticon-phone mr-2"></i>{{ $setting->support_phone }}</a></li>
                     </ul>
                     <ul class="topbar__nav--right nav mr-md-n3">
                         <li class="nav-item"><a href="{{ route('contact-us') }}" class="nav-link link-black-100"><i class="glph-icon flaticon-pin"></i></a></li>
@@ -107,133 +111,11 @@
                         <li class="nav-item"><a href="{{ route('authors-list') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == 'authors-list'){echo 'active border-bottom border-primary border-width-2';} ?>">Authors</a></li>
                         <li class="nav-item"><a href="{{ route('faq') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == 'faq'){echo 'active border-bottom border-primary border-width-2';} ?>">FAQ's</a></li>
                         <li class="nav-item"><a href="{{ route('contact-us') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium <?php if(request()->segment(1) == 'contact-us'){echo 'active border-bottom border-primary border-width-2';} ?>">Help?</a></li>
-                        <!-- <li class="nav-item"><a href="{{ route('contact-us') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium">Click</a></li> -->
-                            <!-- <li class="nav-item dropdown <?php if(request()->segment(1) == 'shop'){echo 'active border-bottom border-primary border-width-2';} ?>">
-                                <a id="homeDropdownInvoker" href="#" class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-unfold-event="hover"
-                                    data-unfold-target="#homeDropdownMenu"
-                                    data-unfold-type="css-animation"
-                                    data-unfold-duration="200"
-                                    data-unfold-delay="50"
-                                    data-unfold-hide-on-scroll="true"
-                                    data-unfold-animation-in="slideInUp"
-                                    data-unfold-animation-out="fadeOut">
-                                    Categories
-                                </a>
-                                <ul id="homeDropdownMenu" class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900" aria-labelledby="homeDropdownInvoker">
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 1</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 2</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 3</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 4</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 5</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 6</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 7</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 8</a>
-                                    </li>
-
-                                    <li>
-                                        <a href="{{ route('shop') }}" class="dropdown-item link-black-100">Category 9</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown <?php if(request()->segment(1) == 'cart' || request()->segment(1) == 'checkout' || request()->segment(1) == 'my-account'){echo 'active border-bottom border-primary border-width-2';} ?>">
-                                <a id="shopDropdownInvoker" href="#" class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-unfold-event="hover"
-                                    data-unfold-target="#shopDropdownMenu"
-                                    data-unfold-type="css-animation"
-                                    data-unfold-duration="200"
-                                    data-unfold-delay="50"
-                                    data-unfold-hide-on-scroll="true"
-                                    data-unfold-animation-in="slideInUp"
-                                    data-unfold-animation-out="fadeOut">
-                                    Shop
-                                </a>
-                                <ul id="shopDropdownMenu" class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900" aria-labelledby="shopDropdownInvoker">
-                                    <li><a href="{{asset('shop')}}" class="dropdown-item link-black-100">Shop Now</a></li>
-                                    <li><a href="{{asset('cart')}}" class="dropdown-item link-black-100">Shop cart</a></li>
-                                    <li><a href="{{asset('checkout')}}" class="dropdown-item link-black-100">Shop checkout</a></li>
-                                    <li><a href="{{asset('my-account')}}" class="dropdown-item link-black-100">Shop My Account</a></li>
-                                    <li><a href="{{asset('order-received')}}" class="dropdown-item link-black-100">Shop Order Received</a></li>
-                                    <li><a href="{{asset('order-tracking')}}" class="dropdown-item link-black-100">Shop Order Tracking</a></li>
-                                    <li><a href="{{asset('contact-us')}}" class="dropdown-item link-black-100">Shop Store Location</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item dropdown <?php if(request()->segment(1) == '404' || request()->segment(1) == 'about-us' || request()->segment(1) == 'authors-list'){echo 'active border-bottom border-primary border-width-2';} ?>">
-                                <a id="pageDropdownInvoker" href="#" class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-unfold-event="hover"
-                                    data-unfold-target="#pageDropdownMenu"
-                                    data-unfold-type="css-animation"
-                                    data-unfold-duration="200"
-                                    data-unfold-delay="50"
-                                    data-unfold-hide-on-scroll="true"
-                                    data-unfold-animation-in="slideInUp"
-                                    data-unfold-animation-out="fadeOut">
-                                    Pages
-                                </a>
-                                <ul id="pageDropdownMenu" class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900" aria-labelledby="pageDropdownInvoker">
-                                    <li><a href="{{asset('about-us')}}" class="dropdown-item link-black-100">About Us</a></li>
-                                    <li><a href="{{ route('authors-list') }}" class="dropdown-item link-black-100">Authors List</a></li>
-                                    <li><a href="{{ route('authors-list') }}" class="dropdown-item link-black-100">Publisher List</a></li>
-                                    <li><a href="{{ route('comming-soon') }}" class="dropdown-item link-black-100">Coming Soon</a></li>
-                                    <li><a href="{{ route('contact-us') }}" class="dropdown-item link-black-100">Contact Us</a></li>
-                                    <li><a href="{{ route('faq') }}" class="dropdown-item link-black-100">FAQ</a></li>
-                                    <li><a href="{{ route('pricing-table') }}" class="dropdown-item link-black-100">Pricing Table</a></li>
-                                    <li><a href="{{ route('terms-conditions') }}" class="dropdown-item link-black-100">Terms Conditions</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a href="{{ route('blog') }}" class="nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium  <?php if(request()->segment(1) == 'blog'){echo 'active border-bottom border-primary border-width-2';} ?>">Blog</a></li>
-                            <li class="nav-item dropdown">
-                                <a id="pagesDropdownInvoker" href="#" class="dropdown-toggle nav-link link-black-100 mx-4 px-0 py-5 font-weight-medium d-flex align-items-center"
-                                    aria-haspopup="true"
-                                    aria-expanded="false"
-                                    data-unfold-event="hover"
-                                    data-unfold-target="#pagesDropdownMenu"
-                                    data-unfold-type="css-animation"
-                                    data-unfold-duration="200"
-                                    data-unfold-delay="50"
-                                    data-unfold-hide-on-scroll="true"
-                                    data-unfold-animation-in="slideInUp"
-                                    data-unfold-animation-out="fadeOut">
-                                    Others
-                                </a>
-                                <ul id="pagesDropdownMenu" class="dropdown-unfold dropdown-menu font-size-2 rounded-0 border-gray-900" aria-labelledby="pagesDropdownInvoker">
-                                    <li><a href="{{ route('404') }}" class="dropdown-item link-black-100">404</a></li>
-                                </ul>
-                            </li> -->
                         </ul>
                     </div>
 
                     <ul class="d-md-none nav mr-md-n3 ml-auto">
                         <li class="nav-item">
-                            <!-- Account Sidebar Toggle Button - Mobile -->
                             <a id="sidebarNavToggler9" href="javascript:;" role="button" class="px-2 nav-link link-black-100"
                                 aria-controls="sidebarContent9"
                                 aria-haspopup="true"
@@ -335,7 +217,7 @@
                                             @endphp
                                         @endif
                                         <div class="price d-flex align-items-center font-weight-medium font-size-3">
-                                        <span class="woocommerce-Price-amount amount">{{ $cart['quantity'] }} x <span class="woocommerce-Price-currencySymbol">GHS</span>
+                                        <span class="woocommerce-Price-amount amount">{{ $cart['quantity'] }} x <span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span>
                                             {{ $singlePrice }}
                                         </span>
                                         </div>
@@ -350,7 +232,7 @@
                             @endif
                             <div class="px-4 py-5 px-md-6 d-flex justify-content-between align-items-center font-size-3">
                                 <h4 class="mb-0 font-size-3">Subtotal:</h4>
-                                <div class="font-weight-medium">GHS {{ $subtotal }}</div>
+                                <div class="font-weight-medium">{{ $currency->currency_symbol }} {{ $subtotal }}</div>
                             </div>
 
                             <div class="px-4 mb-8 px-md-6">
@@ -373,27 +255,7 @@
                     <!-- Content -->
                     <div class="u-sidebar__body">
                         <div class="u-sidebar__content u-header-sidebar__content">
-                            <!-- Title -->
-                            <!-- <header class="border-bottom px-4 px-md-5 py-4 d-flex align-items-center justify-content-between">
-                                <h2 class="font-size-3 mb-0">SHOP BY CATEGORY</h2>
-                                <div class="d-flex align-items-center">
-                                    <button type="button" class="close ml-auto"
-                                        aria-controls="sidebarContent2"
-                                        aria-haspopup="true"
-                                        aria-expanded="false"
-                                        data-unfold-event="click"
-                                        data-unfold-hide-on-scroll="false"
-                                        data-unfold-target="#sidebarContent2"
-                                        data-unfold-type="css-animation"
-                                        data-unfold-animation-in="fadeInLeft"
-                                        data-unfold-animation-out="fadeOutLeft"
-                                        data-unfold-duration="500">
-                                        <span aria-hidden="true"><i class="fas fa-times ml-2"></i></span>
-                                    </button>
-                                </div>
-                            </header> -->
-                            <!-- End Title -->
-
+                        
                             <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                                 <h2 class="font-size-3 mb-3">HELP & SETTINGS </h2>
                                 <ul class="list-group list-group-flush list-group-borderless">
@@ -419,11 +281,20 @@
                             </div>
                             <div class="px-4 px-md-5 py-5">
                                 <div id="google_translate_element"></div><br><br>
-                                <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark">
-                                    <option selected>English (United States)</option>
-                                    <option value="1">English (UK)</option>
-                                    <option value="2">Arabic (Saudi Arabia)</option>
-                                    <option value="3">Deutsch</option>
+                                @if(!empty(Session::get('currenct_currency')))
+                                    @php 
+                                        $currency = DB::table('currencies')->where('id',Session::get('currenct_currency'))->first();
+                                        $rate_id = $currency->id;
+                                    @endphp
+                                @else
+                                    @php 
+                                        $rate_id = 1;
+                                    @endphp
+                                @endif
+                                <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark change-currency">
+                                    @foreach($currencies as $currency)
+                                        <option value="{{ $currency->id }}" <?php if($rate_id == $currency->id){echo 'selected';} ?>>{{ $currency->currency_code }}</option>
+                                    @endforeach
                                 </select>
                                 <style>
                                     body{
@@ -479,7 +350,7 @@
                                     <option value="3">€ EUR</option>
                                 </select> -->
                                 <!-- Social Networks -->
-                                <ul class="list-inline mb-0">
+                                <!-- <ul class="list-inline mb-0">
                                     <li class="list-inline-item">
                                         <a class="h-primary pr-2 font-size-2" href="#">
                                             <span class="fab fa-facebook-f btn-icon__inner"></span>
@@ -500,7 +371,7 @@
                                             <span class="fab fa-github btn-icon__inner"></span>
                                         </a>
                                     </li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                     </div>

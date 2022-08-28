@@ -8,7 +8,7 @@ use App\Http\Controllers\SocialiteController;
 
 Auth::routes();
 
-//Fron Routes
+//Front Routes
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/shop', [App\Http\Controllers\HomeController::class, 'shop'])->name('shop');
 Route::get('/product/{any}', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
@@ -33,6 +33,7 @@ Route::get('/success-page', [App\Http\Controllers\HomeController::class, 'succes
 Route::get('/blogs', [App\Http\Controllers\HomeController::class, 'blogs'])->name('blogs');
 Route::get('/blog-detail/{any}', [App\Http\Controllers\HomeController::class, 'blog_detail'])->name('blog-detail');
 Route::post('/insert-search-result', [App\Http\Controllers\HomeController::class, 'insert_search_result'])->name('insert-search-result');
+Route::get('/update_currency_flag', [App\Http\Controllers\HomeController::class, 'update_currency_flag'])->name('update_currency_flag');
 
 //Static Pages
 Route::get('/privacy-policy', [App\Http\Controllers\HomeController::class, 'privacy_policy'])->name('front.privacy-policy');
@@ -178,6 +179,10 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/all-subscribers', [App\Http\Controllers\Admin\AdminController::class, 'all_subscribers'])->name('admin.subscribers');
     Route::get('/cms/all-contacts', [App\Http\Controllers\Admin\AdminController::class, 'all_contacts'])->name('admin.contacts');
     Route::get('/cms/support', [App\Http\Controllers\Admin\AdminController::class, 'support'])->name('admin.support');
+    Route::get('/cms/currency', [App\Http\Controllers\Admin\AdminController::class, 'currency'])->name('admin.currency');
+
+    Route::post('/cms/add-currency/{any}', [App\Http\Controllers\Admin\AdminController::class, 'add_currency'])->name('admin.add-currency');
+    Route::get('/cms/delete-currency/{any}', [App\Http\Controllers\Admin\AdminController::class, 'delete_currency'])->name('admin.delete-currency');
 });
 Route::get('/cms/edit-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_coupon'])->name('admin.edit-coupon');
 Route::post('/cms/update-coupon/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_coupon'])->name('admin.update-coupon');

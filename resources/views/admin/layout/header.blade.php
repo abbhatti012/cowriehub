@@ -236,9 +236,14 @@
                     <span class="nav-text">Coupons</span>
                 </a>
             </li>
+            <li class="<?php if(request()->segment(2) == 'currency'){echo 'mm-active';} ?>"><a href="{{ route('admin.currency') }}" class="ai-icon" aria-expanded="false">
+                    <i class="fa fa-dollar"></i>
+                    <span class="nav-text">Currency</span>
+                </a>
+            </li>
             
             <li class="<?php if(request()->segment(2) == 'genre' || request()->segment(2) == 'sub-genre'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-first-order"></i>
+                    <i class="fa fa-film"></i>
                     <span class="nav-text">Genres</span>
                 </a>
                 <ul aria-expanded="false">
@@ -250,7 +255,7 @@
             <li class="<?php if(request()->segment(3) == 'orders'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
                     <i class="fa fa-first-order"></i>
                     <span class="nav-text">Orders</span>
-                </a>
+                </a>    
                 <ul aria-expanded="false">
                     <li><a href="{{ route('admin.book-orders') }}">Book Orders</a></li>
                     <li><a href="{{ route('admin.marketing-orders') }}">Marketing Orders</a></li>

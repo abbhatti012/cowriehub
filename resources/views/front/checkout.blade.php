@@ -1141,7 +1141,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        @if(Auth::user()->role != 'pos')
+                                        @if($role != 'pos')
                                             <div class="p-4d875 border">
                                                 <div id="checkoutHeadingThreee" class="checkout-head">
                                                     <a href="#" class="text-dark d-flex align-items-center justify-content-between"

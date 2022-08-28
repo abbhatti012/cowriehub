@@ -36,7 +36,7 @@
         </div><br />
     @endif
    @if(!$user)
-    <form id="basic-validation" action="{{ route('pos.pos-signup', 0) }}" method="POST" enctype="multipart/form-data">
+    <form id="basic-validation" action="{{ route('pos.pos-signup', Auth::id()) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-xl-12 col-lg-12">
@@ -117,6 +117,12 @@
                                 <div class="mb-3">
                                     <label for="company_phone">Company Phone</label>
                                     <input type="text" name="company_phone" value="{{ $user->company_phone }}" class="form-control form-control-lg"  required>
+                                </div>
+                            </div>
+                            <div class="basic-form">
+                                <div class="mb-3">
+                                    <label for="referrel_code">Referrel Code</label>
+                                    <input class="form-control form-control-lg" value="{{ $user->referrel_code }}" name="referrel_code" type="text" disabled id="referrel_code">
                                 </div>
                             </div>
                             <div class="basic-form">

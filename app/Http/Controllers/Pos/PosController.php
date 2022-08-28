@@ -23,6 +23,18 @@ class PosController extends Controller
         return view('pos.index',compact('user'));
     }
     public function pos_signup(Request $request, $id){
+        $code = $request->referrel_code;
+        $isExists = User::where('code',$code)->first();
+        if($isExists){
+            $user = User::find(Auth::id());
+            if($user->code == $code){
+                return back()->with('message', ['text'=>'Failed! You cannot use your own referrer code!','type'=>'danger']);
+            }
+            $user->referrer_id = $isExists->id;
+            $user->save();
+        } else {
+            return back()->with('message', ['text'=>'Failed! Referrer code does not exists!','type'=>'danger']);
+        }
         $pos = Pos::firstOrNew(array('user_id' => $id));
         $pos->fill($request->all());
         $pos->user_id = $id;

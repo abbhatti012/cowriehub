@@ -28,6 +28,8 @@ return new class extends Migration
             $table->string('payment_note')->nullable();
             $table->string('payment_proof')->nullable();
             $table->longText('payment_note')->nullable();
+            $table->text('currency')->nullable();
+            $table->text('exchange_rate')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

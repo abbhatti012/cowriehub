@@ -28,6 +28,8 @@ return new class extends Migration
             $table->integer('quantity');
             $table->float('remaining_price')->nullable();
             $table->float('amount_paid')->nullable();
+            $table->text('currency')->nullable();
+            $table->text('exchange_rate')->nullable();
             $table->softDeletes();
             $table->timestamps();
             // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

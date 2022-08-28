@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\CurrencySession;
 use App\Models\Blog;
 use App\Models\Book;
 use App\Models\User;
@@ -23,9 +24,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
+    use CurrencySession;
     public function __construct()
     {
         
@@ -114,7 +117,8 @@ class HomeController extends Controller
         $data['campaign'] = $query->where('books.is_campaign',1)->get();
         $data['genres'] = Genre::get();
         $data['banners'] = Banner::get();
-        return view('front.index',compact('data'));
+        $currency = $this->getCurrencyRate();
+        return view('front.index',compact('data','currency'));
     }
     public function add_marketing_orders(Request $request){
         if(!Auth::check()){
@@ -135,7 +139,8 @@ class HomeController extends Controller
         $genres = Genre::with('subgenres')->get();
         $users = User::where('role','author')->get();
         $featured = Book::where('is_featured',1)->where('status',1)->limit(3)->get();
-        return view('front.shop', compact('genres', 'users', 'featured'));
+        $currency = $this->getCurrencyRate();
+        return view('front.shop', compact('genres', 'users', 'featured','currency'));
     }
     public function blogs(){
         $blogs = Blog::get();
@@ -189,12 +194,14 @@ class HomeController extends Controller
             $wishlist = 0;
         }
         $locations = Location::orderBy('id','desc')->get();
-        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations'));
+        $currency = $this->getCurrencyRate();
+        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations','currency'));
     }
     public function cart(){
         $data['locations'] = Location::orderBy('id','desc')->get();
-        $cart_page = view('front.cart_item', $data)->render(); 
-        return view('front.cart', compact('cart_page'));
+        $currency = $this->getCurrencyRate();
+        $cart_page = view('front.cart_item', $data, compact('currency'))->render(); 
+        return view('front.cart', compact('cart_page','currency'));
     }
     public function wishlist(){
         $wishlist = Wishlist::where('wishlist.user_id',Auth::id())
@@ -220,13 +227,17 @@ class HomeController extends Controller
                 $shipping = [];
             }
             $is_hide_address = 1; 
+            $role = Auth::user()->role;
         } else {
             $billing = [];
             $shipping = [];
-            $is_hide_address = 0; 
+            $is_hide_address = 0;
+            $role = 'guest';
         }
         $location = Location::where('location',$payment->location)->first();
-        return view('front.checkout', compact('payment','billing','shipping','location','is_hide_address'));
+        $currency = $this->getCurrencyRate();
+        
+        return view('front.checkout', compact('payment','billing','shipping','location','is_hide_address','currency','role'));
     }
     public function my_account(){
         $user = Addresses::where('user_id',Auth::id())->first();
@@ -360,8 +371,9 @@ class HomeController extends Controller
         $books = $products->paginate($page);
         // $data['count'] = $books->count();
         $data['links'] = $books->links('vendor.pagination.default')->render();
-        $data['filter_grid_data'] = view('front.filter_grid_data', compact('books'))->render();
-        $data['filter_list_data'] = view('front.filter_list_data', compact('books'))->render();
+        $currency = $this->getCurrencyRate();
+        $data['filter_grid_data'] = view('front.filter_grid_data', compact('books','currency'))->render();
+        $data['filter_list_data'] = view('front.filter_list_data', compact('books','currency'))->render();
         return response()->json($data);
     }
     public function success_page(Request $request){
@@ -470,5 +482,11 @@ class HomeController extends Controller
         } else {
             return response()->json(['text'=>'That product does not exists.','status'=>false]);
         }
+    }
+    public function update_currency_flag(Request $request){
+        $id = $request->id;
+        Session::put('cart', []);
+        Session::put('currenct_currency', $id);
+        return response()->json(true);
     }
 }

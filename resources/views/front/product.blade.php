@@ -78,7 +78,7 @@
                                 @if($book->is_digital) @php $digitalPrice = $book->digital_price @endphp @else @php $digitalPrice = 0 @endphp @endif
                                 <p class="price font-size-22 font-weight-medium mb-3">
                                     <span class="woocommerce-Price-amount amount">
-                                        <span class="woocommerce-Price-currencySymbol">GHS</span><span class="totalPrice">{{ $book->price + $paperPrice}}</span>
+                                        <span class="woocommerce-Price-currencySymbol">{{ $currency->currency_symbol }}</span><span class="totalPrice">{{ ($book->price * $currency->exchange_rate) + ($paperPrice * $currency->exchange_rate)}}</span>
                                     </span>
                                 </p>  
 
@@ -90,28 +90,28 @@
                                 <div class="row mx-gutters-2 mb-4">
                                     <div class="col-6 col-md-3 mb-3 mb-md-0">
                                         <div class="">
-                                            <input type="radio" id="typeOfListingRadio1" name="extraPrices" value="{{ $hardPrice }}" data-type="hardcover" class="custom-control-input checkbox-outline__input">
-                                            <label onclick="updatePrice(@if($book->is_hardcover) {{ $book->hard_price }} @else 0 @endif, {{ $book->price }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio1">
+                                            <input type="radio" id="typeOfListingRadio1" name="extraPrices" value="{{ $hardPrice * $currency->exchange_rate }}" data-type="hardcover" class="custom-control-input checkbox-outline__input">
+                                            <label onclick="updatePrice(@if($book->is_hardcover) {{ $book->hard_price * $currency->exchange_rate }} @else 0 @endif, {{ $book->price * $currency->exchange_rate }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio1">
                                                 <span class="d-block">Hardcover</span>
-                                                <span class="">GHS {{ $hardPrice }}</span>
+                                                <span class="">{{ $currency->currency_symbol }} {{ $hardPrice * $currency->exchange_rate }}</span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3 mb-3 mb-md-0">
                                         <div class="">
-                                            <input type="radio" id="typeOfListingRadio2" name="extraPrices" value="{{ $paperPrice }}" data-type="paperback" class="custom-control-input checkbox-outline__input" checked>
-                                            <label onclick="updatePrice(@if($book->is_paperback) {{ $book->paper_price }} @else 0 @endif, {{ $book->price }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio2">
+                                            <input type="radio" id="typeOfListingRadio2" name="extraPrices" value="{{ $paperPrice * $currency->exchange_rate }}" data-type="paperback" class="custom-control-input checkbox-outline__input" checked>
+                                            <label onclick="updatePrice(@if($book->is_paperback) {{ $book->paper_price * $currency->exchange_rate }} @else 0 @endif, {{ $book->price * $currency->exchange_rate }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio2">
                                                 <span class="d-block">Paperback</span>
-                                                <span class="">GHS {{ $paperPrice }}</span>
+                                                <span class="">{{ $currency->currency_symbol }} {{ $paperPrice * $currency->exchange_rate }}</span>
                                             </label>
                                         </div>
                                     </div>
                                     <div class="col-6 col-md-3">
                                         <div class="">
-                                            <input type="radio" id="typeOfListingRadio3" name="extraPrices" value="{{ $digitalPrice }}" data-type="digital" class="custom-control-input checkbox-outline__input">
-                                            <label onclick="updatePrice(@if($book->is_digital) {{ $book->digital_price }} @else 0 @endif, {{ $book->price }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio3">
+                                            <input type="radio" id="typeOfListingRadio3" name="extraPrices" value="{{ $digitalPrice * $currency->exchange_rate }}" data-type="digital" class="custom-control-input checkbox-outline__input">
+                                            <label onclick="updatePrice(@if($book->is_digital) {{ $book->digital_price * $currency->exchange_rate }} @else 0 @endif, {{ $book->price * $currency->exchange_rate }})" class="border-bottom d-block checkbox-outline__label py-3 px-1 mb-0 cursor-pointer" for="typeOfListingRadio3">
                                                 <span class="d-block">Digital</span>
-                                                <span class="">GHS {{ $digitalPrice }}</span>
+                                                <span class="">{{ $currency->currency_symbol }} {{ $digitalPrice * $currency->exchange_rate }}</span>
                                             </label>
                                         </div>
                                     </div>
@@ -198,7 +198,7 @@
                                                     <option value="" selected disabled data-price="0">---Choose Location</option>
                                                     @foreach($locations as $location)
                                                     @if($location->type == 'standard')
-                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>({{ $currency->currency_symbol }} {{ $location->price * $currency->exchange_rate }})</small></option>
                                                     @endif
                                                     @endforeach
                                                     </select>
@@ -208,7 +208,7 @@
                                                     <option value="" selected disabled data-price="0">---Choose Location</option>
                                                     @foreach($locations as $location)
                                                     @if($location->type == 'express')
-                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>(GHS {{ $location->price }})</small></option>
+                                                    <option value="{{ $location->location }}" required data-price = "{{ $location->price }}">{{ $location->location }} <small>({{ $currency->currency_symbol }} {{ $location->price * $currency->exchange_rate }})</small></option>
                                                     @endif
                                                     @endforeach
                                                     </select>
@@ -227,7 +227,7 @@
                                     </div>
                                     <div class="modal-footer border-top-0 d-flex text-right">
                                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
-                                        <a href="javascript:void(0)" data-id="{{ $book->id }}" data-total="{{ $book->price }}" class="btn btn-dark proceedToCheckout">Proceed to checkout</a>
+                                        <a href="javascript:void(0)" data-id="{{ $book->id }}" data-total="{{ $book->price * $currency->exchange_rate }}" class="btn btn-dark proceedToCheckout">Proceed to checkout</a>
                                     </div>
                                     </div>
                                 </div>
@@ -843,10 +843,12 @@
                 var qty = $('#prod_qty').val();
                 var extraPrice = $("input[name='extraPrices']:checked").val();
                 var extraType = $("input[name='extraPrices']:checked").data('type');
-                var bookPrice = <?php echo $book->price ?>;
+                var bookPrice = <?php echo $book->price * $currency->exchange_rate ?>;
                 var title = "<?php echo $book->title ?>";
                 var image = "{{ asset($book->cover) }}";
                 var author_id = $(this).data('user_id');
+                var currency = "<?= $currency->currency_code ?>";
+                var exchange_rate = "<?= $currency->exchange_rate ?>";
                 
                 $.ajax({
                     type : 'POST',
@@ -861,7 +863,9 @@
                         title : title,
                         image : image,
                         is_preorder : is_preorder,
-                        author_id : author_id
+                        author_id : author_id,
+                        exchange_rate : exchange_rate,
+                        currency : currency
                     },
                     success : function(data){
                         $('body .cartItemsLength').html(data.cartLength);

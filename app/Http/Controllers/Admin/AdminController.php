@@ -18,6 +18,7 @@ use App\Models\Contact;
 use App\Models\Payment;
 use App\Models\Revenue;
 use App\Models\Setting;
+use App\Models\Currency;
 use App\Models\Location;
 use App\Models\SubGenre;
 use App\Models\Affiliate;
@@ -896,7 +897,7 @@ class AdminController extends Controller
         $user_detail = AuthorDetail::find($id);
         $user_detail->status = 1;
         $user_detail->save();
-        $data['title'] = 'Job Assigned';
+        $data['title'] = 'Application is approved';
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an author';
         $data['body'] .= ' Click on below link to explore more as an author!';
         $data['link'] = "author.profile.edit";
@@ -904,7 +905,7 @@ class AdminController extends Controller
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {
-            $m->to($data['to'])->subject('New role assigned!');
+            $m->to($data['to'])->subject('Application is approved!');
         });
         return back()->with('message', ['text'=>'Author role has been updated','type'=>'success']);
     }
@@ -912,7 +913,7 @@ class AdminController extends Controller
         $user_detail = Affiliate::find($id);
         $user_detail->status = 1;
         $user_detail->save();
-        $data['title'] = 'Job Assigned';
+        $data['title'] = 'Application is approved';
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an affiliate';
         $data['body'] .= ' Click on below link to explore more as an affiliate!';
         $data['link'] = "affiliate";
@@ -920,7 +921,7 @@ class AdminController extends Controller
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {
-            $m->to($data['to'])->subject('New role assigned!');
+            $m->to($data['to'])->subject('Application is approved!');
         });
         return back()->with('message', ['text'=>'Affiliate role has been updated','type'=>'success']);
     }
@@ -928,7 +929,7 @@ class AdminController extends Controller
         $user_detail = Pos::find($id);
         $user_detail->status = 1;
         $user_detail->save();
-        $data['title'] = 'Job Assigned';
+        $data['title'] = 'Application is approved';
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an POS';
         $data['body'] .= ' Click on below link to explore more as an POS!';
         $data['link'] = "pos";
@@ -936,7 +937,7 @@ class AdminController extends Controller
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {
-            $m->to($data['to'])->subject('New role assigned!');
+            $m->to($data['to'])->subject('Application is approved!');
         });
         return back()->with('message', ['text'=>'POS role has been updated','type'=>'success']);
     }
@@ -964,5 +965,28 @@ class AdminController extends Controller
     public function support(){
         $setting = Setting::first();
         return view('admin.support',compact('setting'));
+    }
+    public function currency(Request $request){
+        if(isset($request->id)){
+            $currency = Currency::find($request->id);
+        } else {
+            $currency = [];
+        }
+        $currencies = Currency::orderBy('id','desc')->get();
+        return view('admin.currency',compact('currencies','currency'));
+    }
+    public function add_currency(Request $request, $id){
+        $currency = Currency::firstOrNew(array('id' => $id));
+        unset($request->_token);
+        $currency->fill($request->all())->save();
+        if($id === 0){
+            return back()->with('message', ['text'=>'Currency updated successfully!','type'=>'success']);
+        } else {
+            return redirect(route('admin.currency'))->with('message', ['text'=>'Currency updated successfully!','type'=>'success']);
+        }
+    }
+    public function delete_currency($id){
+        Currency::where('id',$id)->delete();
+        return back()->with('message', ['text'=>'Currency has been deleted permanently','type'=>'success']);
     }
 }

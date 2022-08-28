@@ -29,7 +29,9 @@ class CartController extends Controller
                 "title" => $request->title,
                 "image" => $request->image,
                 "is_preorder" => $request->is_preorder,
-                "author_id" => $request->author_id
+                "author_id" => $request->author_id,
+                "currency" => $request->currency,
+                "exchange_rate" => $request->exchange_rate,
             ];
         }
         session()->put('cart', $cart);
@@ -44,7 +46,8 @@ class CartController extends Controller
             $cart[$request->id]["quantity"] = $request->quantity;
             session()->put('cart', $cart);
             $data['locations'] = Location::orderBy('id','desc')->get();
-            return response()->json(view('front.cart_item', $data)->render());
+            $currency = $this->getCurrencyRate();
+            return response()->json(view('front.cart_item', $data, compact('currency'))->render());
         }
     }
 
@@ -57,7 +60,8 @@ class CartController extends Controller
                 session()->put('cart', $cart);
             }
             $data['locations'] = Location::orderBy('id','desc')->get();
-            return response()->json(view('front.cart_item', $data)->render());
+            $currency = $this->getCurrencyRate();
+            return response()->json(view('front.cart_item', $data, compact('currency'))->render());
         }
     }
     public function add_to_wishlist(Request $request){
