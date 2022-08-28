@@ -59,10 +59,8 @@
                                         </td>
                                         <td>{{ $job->admin_note }}</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a class="text-primary" href="{{ route('consultant.approve-marketing-status', [$job->id, 1]) }}" onclick="return confirm('Are you sre you want to approve the job?')">Approve </a>&nbsp;|&nbsp;
-                                                <a class="text-danger" href="{{ route('consultant.approve-marketing-status', [$job->id, 2]) }}" onclick="return confirm('Are you sre you want to reject the job?')"> Reject</a>
-                                            </div>
+                                            <a class="text-primary" href="{{ route('consultant.approve-marketing-status', [$job->id, 1]) }}" onclick="return confirm('Are you sre you want to approve the job?')">Approve </a>&nbsp;|&nbsp;
+                                            <a class="text-danger" href="{{ route('consultant.approve-marketing-status', [$job->id, 2]) }}" onclick="return confirm('Are you sre you want to reject the job?')"> Reject</a>
                                         </td>
                                     </tr>
                                 @empty

@@ -88,11 +88,11 @@ class PosController extends Controller
         return back()->with('message', ['text'=>'Payment detail set successfully!','type'=>'success']);
     }
     public function pending_invoices(){
-        $payments = Payment::orderBy('id','desc')->where('status','!=','successfull')->get();
+        $payments = Payment::orderBy('id','desc')->where('user_id',Auth::id())->where('is_pos',1)->where('is_pos_payment','!=',1)->get();
         return view('pos.pending-invoices',compact('payments'));
     }
     public function paid_invoices(){
-        $payments = Payment::orderBy('id','desc')->where('status','successfull')->get();
+        $payments = Payment::orderBy('id','desc')->where('user_id',Auth::id())->where('is_pos',1)->where('is_pos_payment',1)->get();
         return view('pos.paid-invoices',compact('payments'));
     }
 }

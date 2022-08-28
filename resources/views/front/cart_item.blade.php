@@ -69,17 +69,17 @@
                                                             <div class="js-quantity">
                                                                 <div class="d-flex align-items-center">
                                                                     <label class="screen-reader-text sr-only">Quantity</label>
-                                                                    <a class="js-minus text-dark" href="javascript:;">
+                                                                    <!-- <a class="js-minus text-dark" href="javascript:;">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="1px">
                                                                             <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M-0.000,-0.000 L10.000,-0.000 L10.000,1.000 L-0.000,1.000 L-0.000,-0.000 Z" />
                                                                         </svg>
-                                                                    </a>
+                                                                    </a> -->
                                                                     <input type="number" value="{{ $cart['quantity'] }}" class="input-text qty text js-result form-control text-center border-0 update-cart" data-id="{{ $cart['id'] }}" step="1" min="1" max="100" name="quantity" value="1" title="Qty">
-                                                                    <a class="js-plus text-dark" href="javascript:;">
+                                                                    <!-- <a class="js-plus text-dark" href="javascript:;">
                                                                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="10px">
                                                                             <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M10.000,5.000 L6.000,5.000 L6.000,10.000 L5.000,10.000 L5.000,5.000 L-0.000,5.000 L-0.000,4.000 L5.000,4.000 L5.000,-0.000 L6.000,-0.000 L6.000,4.000 L10.000,4.000 L10.000,5.000 Z" />
                                                                         </svg>
-                                                                    </a>
+                                                                    </a> -->
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -200,7 +200,7 @@
                             </label>
                        </div>
                         <div class="standardDelivery">
-                           <select name="shipping" id="shippingCharges" class="form-control">
+                           <select name="shipping" class="shippingChargesStandard form-control">
                                <option value="" selected disabled data-price="0">---Choose Location</option>
                                @foreach($locations as $location)
                                @if($location->type == 'standard')
@@ -210,7 +210,7 @@
                             </select>
                         </div>
                         <div style="display: none;" class="expressDelivery">
-                           <select name="shipping" id="shippingCharges" class="form-control">
+                           <select name="shipping" class="shippingChargesExpress form-control">
                                <option value="" selected disabled data-price="0">---Choose Location</option>
                                @foreach($locations as $location)
                                @if($location->type == 'express')
@@ -312,9 +312,10 @@
             <div class="wc-proceed-to-checkout">
                 <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedToCheckout">Proceed to checkout</a>
             </div>
+            <br>
             <div class="wc-proceed-to-checkout">
                 <a href="{{ url('shop') }}" class="checkout-button button alt wc-forward btn btn-light btn-block rounded-0 py-4">Keep Shopping</a>
-            </div><br>
+            </div>
         </div>
     </div>
 </div>

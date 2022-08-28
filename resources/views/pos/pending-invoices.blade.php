@@ -73,15 +73,15 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="d-flex">
-                                                @if($payment->status   == 'pending' || $payment->status == '')
-                                                    <a href="javascript:void(0)" 
-                                                    onclick="window.open('<?= route('pos.pay-now', $payment->id) ?>','popUpWindow','position=absolute,height=600,width=600,left=50%,top=50%,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');"
-                                                    class="text-info" title="Pay Now">PAY NOW</a>
-                                                @else
-                                                <span class="badge light badge-danger">{{ $payment->status }}</span>
-                                                @endif
-                                            </div>
+                                            @if($payment->is_pos_payment == 0)
+                                                <a href="javascript:void(0)" 
+                                                onclick="window.open('<?= route('pos.pay-now', $payment->id) ?>','popUpWindow','position=absolute,height=600,width=600,left=50%,top=50%,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no, status=yes');"
+                                                class="text-info" title="Pay Now">PAY NOW</a>
+                                            @elseif($payment->is_pos_payment === 1)
+                                            <span class="badge light badge-success">Payment Made</span>
+                                            @elseif($payment->is_pos_payment === 2)
+                                            <span class="badge light badge-danger">Cancelled</span>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty

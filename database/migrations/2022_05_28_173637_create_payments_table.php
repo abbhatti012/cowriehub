@@ -21,10 +21,10 @@ return new class extends Migration
             $table->string('precise_location');
             $table->string('post_code')->nullable();
             $table->longText('notes')->nullable();
-            $table->string('subtotal');
-            $table->string('total_amount');
-            $table->string('shipping_price');
-            $table->string('amount_paid')->nullable();
+            $table->float('subtotal')->default(0)->nullable();
+            $table->float('total_amount')->default(0)->nullable();
+            $table->integer('shipping_price')->default(0)->nullable();
+            $table->float('amount_paid')->default(0)->nullable();
             $table->string('extraType')->nullable();
             $table->float('extraPrice')->nullable();
             $table->float('book_id')->nullable();
@@ -35,6 +35,8 @@ return new class extends Migration
             $table->longText('payment_method')->nullable();
             $table->integer('is_coupon')->default(0);
             $table->string('coupon_code')->nullable();
+            $table->integer('is_pos')->default(0)->nullable();
+            $table->integer('is_pos_payment')->default(0)->nullable();
             $table->longText('billing_detail')->nullable();
             $table->longText('shipping_detail')->nullable();
             $table->softDeletes();

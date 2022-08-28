@@ -36,6 +36,7 @@
                                         <th>Subtotal</th>
                                         <th>Shipping Price</th>
                                         <th>Total Amount</th>
+                                        <th>Is POS Order?</th>
                                         <th>Status</th>
                                         <th>Is Fraud?</th>
                                         <th>Action</th>
@@ -56,6 +57,13 @@
                                         <td>{{ $payment->shipping_price }}</td>
                                         <td>{{ $payment->total_amount }}</td>
                                         <td>
+                                            @if($payment->is_pos)
+                                            <span class="badge light badge-success">Yes</span>
+                                            @else
+                                            <span class="badge light badge-info">No</span>
+                                            @endif
+                                        </td>
+                                        <td>
                                             @if($payment->status == 'cancelled')
                                                 <span class="badge light badge-danger">{{ $payment->status }}</span>
                                             @elseif($payment->status == '')
@@ -72,13 +80,19 @@
                                             @endif
                                         </td>
                                         <td>
-                                            <div class="d-flex">
-                                                @if($payment->status   == 'pending')
-                                                <a href="{{ route('admin.update-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to approve the payment?')" class="btn btn-info shadow btn-xs sharp" title="Approve Payment"><i class="fa fa-check"></i></a>
-                                                @elseif($payment->status   == 'successfull')
-                                                    <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}"  data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
+                                            @if($payment->is_pos == 1 && $payment->is_pos_payment == 0)
+                                                <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="1"  data-bs-toggle="modal" data-bs-target="#payUserCommission">View Order Detail</a>
+                                            @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 2)
+                                                <span class="badge light badge-danger">Cancelled</span>
+                                            @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 1)
+                                                <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
+                                            @else
+                                                @if($payment->status == 'pending' || $payment->status == '')
+                                                    <a href="{{ route('admin.update-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to approve the payment?')" class="btn btn-info shadow btn-xs sharp" title="Approve Payment"><i class="fa fa-check"></i></a>
+                                                @elseif($payment->status == 'successfull')
+                                                    <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
                                                 @endif
-                                            </div>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
@@ -155,9 +169,10 @@
     $(document).ready(function(){
         $('.payUserCommission').on('click',function(){
             var id = $(this).data('id');
+            var is_pos = $(this).data('is_pos');
             $.ajax({
                 type : 'GET',
-                url : '{{ route("admin.get-revenue-per-order") }}?id='+id,
+                url : '{{ route("admin.get-revenue-per-order") }}?id='+id+'&is_pos='+is_pos,
                 success : function(data){
                     $('.reveneuModel').html(data);
                 }

@@ -22,13 +22,21 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-            var shippingPrice = $('#shippingCharges :selected').data('price');
+            var shippingPriceStandard = $('.subtotalValue').text();
             var totalPrice = $('.totalPrice').text();
-            $('#shippingCharges').change(function(){
-                $('#shippingCharges option:selected').each(function(){
+            $(document).on('change','.shippingChargesStandard',function(){
+                $('.shippingChargesStandard option:selected').each(function(){
+                    var price = $(this).data('price');
+                    $('.shippingFee').html(price);
+                    $('.totalPrice').html(+shippingPriceStandard + +price);
+                });
+            });
+            var shippingPriceExpress = $('.subtotalValue').text();
+            $(document).on('change','.shippingChargesExpress',function(){
+                $('.shippingChargesExpress option:selected').each(function(){
                     var price = $(this).data('price')
                     $('.shippingFee').html(price);
-                    $('.totalPrice').html(+totalPrice + +price);
+                    $('.totalPrice').html(+shippingPriceExpress + +price);
                 });
             });
            $('input[name="delivery"]').on('change',function(){
@@ -55,7 +63,7 @@
                     }
                 })
             });
-            $(document).on('click','.update-cart',function(){
+            $(document).on('change','.update-cart',function(){
                 var id = $(this).data('id');
                 var quantity = $(this).val();
                 $.ajax({

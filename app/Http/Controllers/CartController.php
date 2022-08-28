@@ -6,10 +6,12 @@ use App\Models\Book;
 use App\Models\Location;
 use App\Models\Wishlist;
 use Illuminate\Http\Request;
+use App\Http\Traits\CurrencySession;
 use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+    use CurrencySession;
     public function addToCart(Request $request)
     {
         $id = $request->id;

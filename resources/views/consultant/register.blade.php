@@ -173,8 +173,8 @@
                                     </label>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>
@@ -331,8 +331,8 @@
                                     </label>
                                 </div>
                             </div>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
-                        <button type="submit" class="btn btn-primary">Update</button>
                     </div>
                 </div>
             </div>

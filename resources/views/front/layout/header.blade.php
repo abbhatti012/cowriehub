@@ -1,6 +1,18 @@
 @php
     $currencies = DB::table('currencies')->orderBy('id','desc')->get();
 @endphp
+@if(!empty(Session::get('currenct_currency')))
+    @php 
+        $rate_id = Session::get('currenct_currency');
+    @endphp
+@else
+    @php 
+        $rate_id = 1;
+    @endphp
+@endif
+@php
+    $currency = DB::table('currencies')->where('id',$rate_id)->first();
+@endphp
 <!--===== HEADER CONTENT =====-->
     <header id="site-header" class="site-header__v1">
         <div class="topbar border-bottom d-none d-md-block">
@@ -281,16 +293,6 @@
                             </div>
                             <div class="px-4 px-md-5 py-5">
                                 <div id="google_translate_element"></div><br><br>
-                                @if(!empty(Session::get('currenct_currency')))
-                                    @php 
-                                        $currency = DB::table('currencies')->where('id',Session::get('currenct_currency'))->first();
-                                        $rate_id = $currency->id;
-                                    @endphp
-                                @else
-                                    @php 
-                                        $rate_id = 1;
-                                    @endphp
-                                @endif
                                 <select class="custom-select mb-4 rounded-0 pl-4 height-4 shadow-none text-dark change-currency">
                                     @foreach($currencies as $currency)
                                         <option value="{{ $currency->id }}" <?php if($rate_id == $currency->id){echo 'selected';} ?>>{{ $currency->currency_code }}</option>

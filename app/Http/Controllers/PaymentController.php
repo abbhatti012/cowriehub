@@ -32,6 +32,9 @@ class PaymentController extends Controller
         $payment->subtotal = $request->subTotal;
         $payment->total_amount = $request->totalPrice;
         $payment->shipping_price = $request->shippingPrice;
+        if(Auth::check() && Auth::user()->role == 'pos'){
+            $payment->is_pos = 1;
+        }
         $payment->save();
         return response()->json($payment->token);
     }
@@ -53,6 +56,9 @@ class PaymentController extends Controller
         $payment->extraPrice = $request->extraPrice;
         $payment->book_id = $request->bookId;
         $payment->location = $request->shippingCharges;
+        if(Auth::check() && Auth::user()->role == 'pos'){
+            $payment->is_pos = 1;
+        }
         $payment->save();
         return response()->json($payment->token);
     }
@@ -369,6 +375,7 @@ class PaymentController extends Controller
             $payment->transaction_id = $request->transaction_id;
             if($request->status == 'cancelled')
             {
+                $payment->is_pos_payment = 2;
                 $message = Session::flash('payment_cancelled','Your payment has been cancelled');
             }
             elseif($request->status == 'successful')
@@ -414,7 +421,7 @@ class PaymentController extends Controller
                         }
                         Revenue::where('payment_id',$payment->id)->update(['payment_status' => 1]);
                         session()->put('cart', []);
-                        
+                        $payment->is_pos_payment = 1;
                         $message = Session::flash('payment_successfull','Payment Successfull!');
                     }
                     else

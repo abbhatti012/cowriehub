@@ -76,8 +76,12 @@
                     @endif
                 </td>
                 <td>
-                    @if($revenue->admin_payment_status == 0)
-                        <a href="javascript:void(0)" class="text-info sharp paymentProof" data-bs-toggle="modal" data-bs-target="#payNow" data-id="{{ $revenue->id }}">Pay Now</a>
+                    @if($is_pos == 0)
+                        @if($revenue->admin_payment_status == 0)
+                            <a href="javascript:void(0)" class="text-info sharp paymentProof" data-bs-toggle="modal" data-bs-target="#payNow" data-id="{{ $revenue->id }}">Pay Now</a>
+                        @else
+                            ---
+                        @endif
                     @else
                         ---
                     @endif

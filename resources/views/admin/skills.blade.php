@@ -65,10 +65,8 @@
                                         <td>{{ $skill->users->role }}</td>
                                         <td>{{ $skill->skill }}</td>
                                         <td>
-                                            <div class="d-flex">
-                                                <a href="{{ route('admin.delete-skill', $skill->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Skill"><i class="fa fa-trash"></i></a>
-                                                <a href="{{ route('admin.edit-skill', $skill->id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Skill"><i class="fa fa-pencil"></i></a>
-                                            </div>
+                                            <a href="{{ route('admin.delete-skill', $skill->id) }}" class="btn btn-danger shadow btn-xs sharp" title="Delete Skill"><i class="fa fa-trash"></i></a>
+                                            <a href="{{ route('admin.edit-skill', $skill->id) }}" class="btn btn-info shadow btn-xs sharp" title="Edit Skill"><i class="fa fa-pencil"></i></a>
                                         </td>												
                                     </tr>
                                 @empty

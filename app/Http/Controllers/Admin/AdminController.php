@@ -747,7 +747,9 @@ class AdminController extends Controller
         return back()->with('message', ['text'=>'Skill has been deleted','type'=>'success']);
     }
     public function assign_job(){
-        $users = User::where('role','consultant')->get();
+        $users = Consultant::join('users','users.id','=','consultant.user_id')
+        ->select('consultant.user_id','users.*')
+        ->get();
         $marketings = MarketOrders::orderBy('id','desc')->with('marketing_detail')->get();
         $jobs = Job::where('job_status',0)->orderBy('id','desc')
         ->with('marketing')->with('user')->with('consultant')->get();
@@ -812,6 +814,7 @@ class AdminController extends Controller
         $id = $request->id;
         $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
         $data['revenues'] = Revenue::whereIn('order_id',$order_id)->with('user')->get();
+        $data['is_pos'] = $request->is_pos;
         return response()->json(view('admin.revenue_per_order', $data)->render());
     }
     public function update_consultant(Request $request, $id){

@@ -293,7 +293,8 @@ class HomeController extends Controller
     }
     public function pricing_table(){
         $marketing = Marketing::get();
-        return view('front.pricing-table',compact('marketing'));
+        $currency = $this->getCurrencyRate();
+        return view('front.pricing-table',compact('marketing','currency'));
     }
     public function faq(){
         return view('front.faq');

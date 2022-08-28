@@ -164,10 +164,8 @@
 	<script>
 		$(document).ready(function(){
 			$("#basic-validation").validate();
-			setTimeout(function(){
-				$('#site_preloader').hide();
-				$('.content-body').show();
-			},1000);
+			$('#site_preloader').hide();
+			$('.content-body').show();
 		})
 		var loadFile = function(event, id) {
 			var output = document.getElementById(id);

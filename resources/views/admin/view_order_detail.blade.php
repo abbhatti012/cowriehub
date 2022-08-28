@@ -57,8 +57,10 @@
                                     <th>Shipping Price</th>
                                     <th>Amount Paid</th>
                                     <th>Remaining Price</th>
+                                    <th>Currency</th>
+                                    <th>Exchange Rate</th>
                                     <th>Quantity</th>
-                                    <th>Action</th>
+                                    <!-- <th>Action</th> -->
                                 </tr>
                                 @foreach($orders as $order)
                                 <tr>
@@ -74,8 +76,10 @@
                                     <td>{{ $payment->shipping_price }}</td>
                                     <td>{{ $order->amount_paid }}</td>
                                     <td>{{ $order->remaining_price }}</td>
+                                    <td>{{ $order->currency }}</td>
+                                    <td>{{ $order->exchange_rate }}</td>
                                     <td>{{ $order->quantity }}</td>
-                                    <td>
+                                    <!-- <td>
                                         @if($order->remaining_price > 0)
                                         <div class="d-flex">
                                             <a href="javascript:void(0)" class="btn btn-info shadow sharp" title="Ask to pay">Ask to pay</a>
@@ -83,7 +87,7 @@
                                         @else
                                             ---
                                         @endif
-                                    </td>
+                                    </td> -->
                                 </tr>
                                 @endforeach
                             </tbody>

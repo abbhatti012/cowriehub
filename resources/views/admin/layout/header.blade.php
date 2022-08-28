@@ -152,12 +152,12 @@
     <div class="deznav-scroll">
         <ul class="metismenu" id="menu">
             <li class="<?php if(request()->segment(2) == 'dashboard'){echo 'mm-active';} ?>"><a href="{{ route('admin') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-dashboard"></i>
+                    <i class="fa fa-home"></i>
                     <span class="nav-text">Dashboard</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(2) == 'authors' || request()->segment(2) == 'consultants' || request()->segment(2) == 'users' || request()->segment(2) == 'publisher' || request()->segment(2) == 'pos' || request()->segment(2) == 'affiliate'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-first-order"></i>
+                    <i class="fa fa-users"></i>
                     <span class="nav-text">User Roles</span>
                 </a>
                 <ul aria-expanded="false">
@@ -194,7 +194,7 @@
                 </ul>
             </li>
             <li class="<?php if(request()->segment(2) == 'assign-job' || request()->segment(2) == 'active-jobs' || request()->segment(2) == 'completed-jobs'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-first-order"></i>
+                    <i class="fa fa-tasks"></i>
                     <span class="nav-text">Jobs</span>
                 </a>
                 <ul aria-expanded="false">
@@ -222,12 +222,12 @@
                 </a>
             </li>
             <li class="<?php if(request()->segment(2) == 'locations'){echo 'mm-active';} ?>"><a href="{{ route('admin.locations') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-book"></i>
+                    <i class="fa fa-map-marker"></i>
                     <span class="nav-text">Locations</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(2) == 'skills'){echo 'mm-active';} ?>"><a href="{{ route('admin.skills') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-tasks"></i>
+                    <i class="fa fa-cogs"></i>
                     <span class="nav-text">Skills</span>
                 </a>
             </li>
@@ -253,7 +253,7 @@
             </li>
             
             <li class="<?php if(request()->segment(3) == 'orders'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">
-                    <i class="fa fa-first-order"></i>
+                    <i class="fa fa-shopping-cart"></i>
                     <span class="nav-text">Orders</span>
                 </a>    
                 <ul aria-expanded="false">

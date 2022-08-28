@@ -167,7 +167,7 @@
                                     <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option <?php if($user->networks == 'mtn'){echo 'selected';} ?> value="mtn">MTN</option>
-                                        <option <?php if($user->networks == 'at'){echo 'selected';} ?> value="at">AIrtelTigo</option>
+                                        <option <?php if($user->networks == 'at'){echo 'selected';} ?> value="at">AirtelTigo</option>
                                         <option <?php if($user->networks == 'vc'){echo 'selected';} ?> value="vc">Vodafone Cash</option>
                                     </select>
                                 </div>
@@ -327,7 +327,7 @@
                                     <label for="networks">Mobile Money Network</label>
                                     <select class="form-control form-control-lg" name="networks" required>
                                         <option value="mtn">MTN</option>
-                                        <option value="at">AIrtelTigo</option>
+                                        <option value="at">AirtelTigo</option>
                                         <option value="vc">Vodafone Cash</option>
                                     </select>
                                 </div>
