@@ -42,7 +42,7 @@
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" checked name="cover_type" value="landscape" required> Landscape?</label>
                             </div>
                         </div>
-                        <b>Size (<small id="size">1350x500</small>)</b>
+                        <b>Size (<small id="size">1350x500</small>)</b> -->
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage1" alt="">
                         </div>
@@ -52,9 +52,9 @@
                             <div class="form-file">
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')" required>
                             </div>
-                        </div> -->
+                        </div>
                        
-                        <div class="input-group mb-3">
+                        <!-- <div class="input-group mb-3">
                             <img width="50%" src="{{ asset('no-image.jpg') }}" id="commonImage2" alt="">
                         </div>
 
@@ -63,7 +63,7 @@
                             <div class="form-file">
                                 <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')" required>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="input-group mb-3">
                             <span class="input-group-text">Sample PDF</span>
                             <div class="form-file">

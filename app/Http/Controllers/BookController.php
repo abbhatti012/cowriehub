@@ -34,20 +34,20 @@ class BookController extends Controller
         if($request->post_type == 'add'){
             $user->user_id = Auth::id();
         }
-        // if($request->hero_image != null){
-        //     $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
-        //     $request->hero_image->move(public_path('images/books'), $UploadImage);
-        //     $user->hero_image = 'images/books/'.$UploadImage;
-        // } else {
-        //     unset($user->hero_image);
-        // }
-        if($request->cover != null){
-            $UploadImage = 'b'.time().'.'.$request->cover->extension();
-            $request->cover->move(public_path('images/books'), $UploadImage);
-            $user->cover = 'images/books/'.$UploadImage;
+        if($request->hero_image != null){
+            $UploadImage = 'a'.time().'.'.$request->hero_image->extension();
+            $request->hero_image->move(public_path('images/books'), $UploadImage);
+            $user->hero_image = 'images/books/'.$UploadImage;
         } else {
-            unset($user->cover);
+            unset($user->hero_image);
         }
+        // if($request->cover != null){
+        //     $UploadImage = 'b'.time().'.'.$request->cover->extension();
+        //     $request->cover->move(public_path('images/books'), $UploadImage);
+        //     $user->cover = 'images/books/'.$UploadImage;
+        // } else {
+        //     unset($user->cover);
+        // }
         if($request->sample != null){
             $UploadImage = 'c'.time().'.'.$request->sample->extension();
             $request->sample->move(public_path('images/books'), $UploadImage);

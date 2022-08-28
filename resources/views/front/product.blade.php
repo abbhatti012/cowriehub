@@ -40,7 +40,7 @@
                                 <div class="js-slick-carousel u-slick"
                                 data-pagi-classes="text-center u-slick__pagination my-4">
                                     <div class="js-slide">
-                                        <img src="{{ asset($book->cover) }}" alt="Image Description" class="mx-auto img-fluid">
+                                        <img src="{{ asset($book->hero_image) }}" alt="Image Description" class="mx-auto img-fluid">
                                     </div>
                                     <!-- <div class="js-slide">
                                         <img src="{{ asset('assets/img/books/product-detail.jpg') }}" alt="Image Description" class="mx-auto img-fluid">

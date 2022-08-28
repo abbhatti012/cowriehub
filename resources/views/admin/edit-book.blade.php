@@ -42,7 +42,7 @@
                                 <label class="radio-inline me-3"><input type="radio" class="cover_type" data-size="1350x500" name="cover_type" value="landscape" checked <?php if($book->cover_type == 'landscape'){ echo 'checked'; } ?> required> Landscape?</label>
                             </div>
                         </div>
-                        <b>Size (<small id="size">1350x500</small>)</b>
+                        <b>Size (<small id="size">1350x500</small>)</b> -->
                        @if($book->hero_image)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($book->hero_image) }}" id="commonImage1" alt="">
@@ -57,8 +57,8 @@
                             <div class="form-file">
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')">
                             </div>
-                        </div> -->
-                        @if($book->cover)
+                        </div>
+                        <!-- @if($book->cover)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($book->cover) }}" id="commonImage2" alt="">
                         </div>
@@ -72,7 +72,7 @@
                             <div class="form-file">
                                 <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')">
                             </div>
-                        </div>
+                        </div> -->
                         @if($book->sample)
                         <div class="input-group mb-3">
                             <iframe width="50%" src="{{ asset($book->sample) }}" alt=""></iframe>
