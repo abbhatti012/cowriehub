@@ -17,6 +17,18 @@ class Affiliate extends Model
         'referrel_code',
         'landmark_area',
         'is_agree_policy',
+        // 'payment',
+        // 'account_name',
+        // 'account_number',
+        // 'networks',
+        // 'bank_account_name',
+        // 'bank_account_number',
+        // 'branch',
+        // 'bank_name',
+        // 'primary',
         'status',
     ];
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

@@ -73,20 +73,24 @@ class UserController extends Controller
         $user = DB::table('author-detail')->where('user_id',Auth::id())->first();
         return view('user.author.my-profile',compact('user'));
     }
-    public function wishlist(){
+    public function wishlist(Request $request){
         $wishlist = Wishlist::where('wishlist.user_id',Auth::id())
         ->select('wishlist.*','books.*','wishlist.id as wish_id')
         ->join('books','books.id','=','wishlist.book_id')
         ->get();
-        $role = auth()->user()->role;
-        if($role == 'author'){
-            $role  = 'user';
-        } else if($role == 'user'){
-            $role  = 'author';
+        if(isset($request->role)){
+            $role = $request->role;
+        } else {
+            $role = auth()->user()->role;
+            if($role == 'author'){
+                $role  = 'user';
+            } else if($role == 'user'){
+                $role  = 'author';
+            }
         }
         return view('user.wishlist',compact('wishlist','role'));
     }
-    public function save_address(){
+    public function save_address(Request $request){
         $user = Addresses::where('user_id',Auth::id())->first();
         if(isset($user->billing_detail)){
             $billing = unserialize($user->billing_detail);
@@ -98,12 +102,15 @@ class UserController extends Controller
         } else {
             $shipping = [];
         }
-      
-        $role = auth()->user()->role;
-        if($role == 'author'){
-            $role  = 'user';
-        } else if($role == 'user'){
-            $role  = 'author';
+        if(isset($request->role)){
+            $role = $request->role;
+        } else {
+            $role = auth()->user()->role;
+            if($role == 'author'){
+                $role  = 'user';
+            } else if($role == 'user'){
+                $role  = 'author';
+            }
         }
         return view('user.address', compact('user','billing','shipping', 'role'));
     }
@@ -246,21 +253,13 @@ class UserController extends Controller
             $user->account_name = $request->account_name;
             $user->account_number = $request->account_number;
             $user->networks = $request->networks;
-
-            $user->bank_account_name = '';
-            $user->bank_account_number = '';
-            $user->branch = '';
-            $user->bank_name = '';
         } elseif($request->payment == 'bank_settelments'){
             $user->bank_account_name = $request->bank_account_name;
             $user->bank_account_number = $request->bank_account_number;
             $user->branch = $request->branch;
             $user->bank_name = $request->bank_name;
-
-            $user->account_name = '';
-            $user->account_number = '';
-            $user->networks = '';
         }
+        $user->primary_account = $request->primary;
         $user->cover_type = $request->cover_type;
         $user->twitter = $request->twitter;
         $user->save();
@@ -419,7 +418,9 @@ class UserController extends Controller
     public function logout(Request $request) {
         $data = User::find(Auth::id());
         $data->checkout = $data->checkout + 1;
-        $data->role = 'user';
+        if($data->role != 'admin'){
+            $data->role = 'user';
+        }
         $data->save();
         Auth::logout();
         return redirect('/login');
@@ -427,5 +428,80 @@ class UserController extends Controller
     public function revenue(){
         $revenues = Revenue::where('user_id',Auth::id())->where('role',Auth::user()->role)->where('payment_status',1)->with('user')->get();
         return view('user.author.revenue', compact('revenues'));
+    }
+    public function get_purchases(Request $request){
+        $id = $request->id;
+        if(isset($request->date) && !empty($request->date)){
+            $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($date[0]));
+            $end_date = date('Y-m-d',strtotime($date[1]));
+            $date = [0=>$start_date,1=>$end_date];
+            $orders = Payment::where('user_id',$id)->whereBetween('created_at',$date)->count();
+            $graphOrders = Payment::select('*')
+            ->whereBetween('created_at',$date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN status = 'successfull' THEN amount_paid ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN status = 'pending' THEN amount_paid ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
+        } else {
+            $orders = Payment::where('user_id',$id)->count();
+
+            $query_date = date('Y-m-d',strtotime(now()));
+            $start_date = date('Y-m-01', strtotime($query_date));
+            $end_date = date('Y-m-t', strtotime($query_date));
+
+            $graphOrders = Payment::select('*')
+            ->where('created_at', '>=' ,$start_date)
+            ->where('created_at', '<' ,$end_date)->where('user_id',$id);
+            $get_date_series = $this->get_date_series($start_date, $end_date);
+            $days = count($get_date_series);
+            $graph = $this->get_labels($days, $graphOrders->get(), $get_date_series);
+            $earning = $graphOrders->select(DB::raw("SUM(CASE WHEN status = 'successfull' THEN amount_paid ELSE 0 END) AS earning, ".
+                        "SUM(CASE WHEN status = 'pending' THEN amount_paid ELSE 0 END) AS pending_earning"))
+            ->groupBy('id')->get()->toArray();
+            $approved = 0;
+            $pending = 0;
+            foreach($earning as $earn){
+                $approved = $approved + $earn['earning'];
+                $pending = $pending + $earn['pending_earning'];
+            }
+        }
+        $ordermcount = [];
+        $orderArr = [];
+        $ordermnet = [];
+        foreach ($graph['orders'] as $key => $order) {
+            $sum = 0;
+            foreach($order as $value){
+                $sum = $sum + $value->amount_paid;
+            }
+            $ordermcount[(int)$key] = count($order);
+            $ordermnet[(int)$key] = $sum;
+        }
+        for($i = 0; $i < $graph['count']; $i++){
+            if(!empty($ordermcount[$i])){
+                $orderCountArr[$i] = $ordermcount[$i]; 
+            }else{
+                $orderCountArr[$i] = 0;
+            }
+            if(!empty($ordermnet[$i])){
+                $orderNetArr[$i] = $ordermnet[$i]; 
+            }else{
+                $orderNetArr[$i] = 0;
+            }
+        }
+        $graph_data['orderCountArr'] = $orderCountArr;
+        $graph_data['orderNetArr'] = $orderNetArr;
+        $graph_data['label'] = $graph['label'];
+        // return response()->json(view('front.user_purchase', compact('books','orders','approved','pending','approved_books','check','graph_data'))->render());
+        return view('front.user_purchase', compact('orders','approved','pending','graph_data','id'))->render();
     }
 }

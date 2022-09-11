@@ -150,7 +150,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Info</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Details</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -171,6 +171,9 @@
                                         <option <?php if($user->networks == 'vc'){echo 'selected';} ?> value="vc">Vodafone Cash</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="radio-inline me-3"><input type="radio" name="primary" value="mobile_money" <?php if($user->primary_account == 'mobile_money'){ echo 'checked'; } ?>> Set as primary</label>
+                                </div>
                             </div>
                         </div>
                         <div class="bank_fields">
@@ -190,6 +193,9 @@
                                 <div class="mb-3">
                                     <label for="bank_name">Bank Name</label>
                                     <input class="form-control form-control-lg" name="bank_name" type="text" id="bank_name" value="{{ $user->bank_name }}" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="radio-inline me-3"><input type="radio" name="primary" value="bank" <?php if($user->primary_account == 'bank'){ echo 'checked'; } ?>> Set as primary</label>
                                 </div>
                             </div>
                         </div>
@@ -310,7 +316,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Info</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" required> Bank Details</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">
@@ -331,6 +337,9 @@
                                         <option value="vc">Vodafone Cash</option>
                                     </select>
                                 </div>
+                                <div class="mb-3">
+                                    <label class="radio-inline me-3"><input type="radio" name="primary" value="mobile_money"> Set as primary</label>
+                                </div>
                             </div>
                         </div>
                         <div class="bank_fields">
@@ -350,6 +359,9 @@
                                 <div class="mb-3">
                                     <label for="bank_name">Bank Name</label>
                                     <input class="form-control form-control-lg" name="bank_name" type="text" id="bank_name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="radio-inline me-3"><input type="radio" name="primary" value="bank"> Set as primary</label>
                                 </div>
                             </div>
                         </div>

@@ -19,4 +19,7 @@ class Pos extends Model
         'is_agree_policy',
         'status',
     ];
+    public function user(){
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
 }

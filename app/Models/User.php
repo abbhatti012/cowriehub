@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Book;
 use App\Models\AuthorDetail;
 use Laravel\Sanctum\HasApiTokens;
+use App\Notifications\VerifyEmail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
@@ -13,7 +14,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
@@ -29,6 +30,7 @@ class User extends Authenticatable
         'fcm_token',
         'code',
         'referrer_id',
+        'phone',
     ];
 
     /**
@@ -58,6 +60,9 @@ class User extends Authenticatable
     public function affiliates(){
         return $this->hasOne(Affiliate::class, 'user_id', 'id');
     }
+    public function affiliate_user(){
+        return $this->hasOne(User::class, 'referrer_id', 'id');
+    }
     public function pos(){
         return $this->hasOne(Pos::class, 'user_id', 'id');
     }
@@ -69,5 +74,8 @@ class User extends Authenticatable
     }
     public static function IsPending($table){
         return DB::table($table)->where(['user_id' => Auth::id(), 'status' => 0])->count();
+    }
+    public function sendEmailVerificationNotification(){
+        $this->notify(new VerifyEmail);
     }
 }

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->float('price');
+            $table->float('quantity');
             $table->string('subtitle');
             $table->string('synopsis');
             $table->string('genre');

@@ -1,42 +1,23 @@
-@extends('affiliate.layout.index')
+@extends('admin.layout.index')
 @section('content')
 <div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">USER REFERRED</a></li>
+                <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
+                <li class="breadcrumb-item"><a href="javascript:void(0)">All Referred Users</a></li>
             </ol>
         </div>
         <div class="row">
-            @if(Session::has('message'))
-                <div class="alert alert-{{session('message')['type']}}">
-                    {{session('message')['text']}}
-                </div>
-            @endif
-            <div class="col-xl-12 col-lg-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Send Link</h4>
-                    </div>
-                    <form id="basic-validation" action="{{ route('affiliate.send-link') }}" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="card-body">
-                            <div class="basic-form row col-md-12">
-                                <div class="mb-3 col-md-6">
-                                    <label for="email">Email</label>
-                                    <input class="form-control form-control-lg" name="email" type="email" id="email" required>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Send Link</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
             <div class="col-12">
                 <div class="card">
+                @if(Session::has('message'))
+                    <div class="alert alert-{{session('message')['type']}}">
+                        {{session('message')['text']}}
+                    </div>
+                @endif
                     <div class="card-header">
-                        <h4 class="card-title">USER REFERRED</h4>
+                        <h4 class="card-title">All Referred Users</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -168,17 +149,17 @@
 @section('scripts')
     <script>
         $(document).ready(function(){
-                $('.viewPaymentDetail').on('click',function(){
-                    var name = $(this).data('name');
-                    var email = $(this).data('email');
-                    var phone = $(this).data('phone');
-                    var code = $(this).data('code');
-                    $('.name').html(name);
-                    $('.email').html(email);
-                    $('.phone').html(phone);
-                    $('.code').html(code);
-                });
+            $('.viewPaymentDetail').on('click',function(){
+                var name = $(this).data('name');
+                var email = $(this).data('email');
+                var phone = $(this).data('phone');
+                var code = $(this).data('code');
+                $('.name').html(name);
+                $('.email').html(email);
+                $('.phone').html(phone);
+                $('.code').html(code);
             });
+        });
     </script>
     <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
     <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>

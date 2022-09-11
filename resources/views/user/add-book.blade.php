@@ -102,6 +102,12 @@
                         </div>
                         <div class="basic-form">
                             <div class="mb-3">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" min="1" class="form-control" name="quantity" id="quantity" required>
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="mb-3">
                                 <label for="subtitle">Subtitle</label>
                                 <input type="text" class="form-control" name="subtitle" id="subtitle" required>
                             </div>

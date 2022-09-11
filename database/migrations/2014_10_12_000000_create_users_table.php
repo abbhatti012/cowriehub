@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('referrer_id')->nullable()->default(0);
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('phone');
             $table->string('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

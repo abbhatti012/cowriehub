@@ -159,14 +159,15 @@
             <div class="col-xl-6">
                 <div class="card">
                     <div class="card-header d-block">
-                        <h4 class="card-title">Access Code</h4>
+                        <h4 class="card-title">Affiliate Links</h4>
                     </div>
                     <div class="card-body">
                         <div class="accordion accordion-primary code-copied">
                             <div class="accordion-item">
                                 <div class="accordion-header rounded-lg collapsed" onclick="copyToClipboard('#referrelCode')" aria-expanded="false" role="button">
                                     <span class="accordion-header-icon"></span>
-                                    <input type="text" class="accordion-header-text codeInput" value="<?= $userData->code ?>" id="referrelCode" readonly>
+                                    <input type="text" value="<?= $userData->code ?>" id="referrelCode" style="position:absolute;left:-1000px;top:-1000px;">
+                                    <input type="text" class="accordion-header-text codeInput" value="Referral Code" readonly>
                                     <i style="font-size:24px" class="fa copy-icon">&#xf0c5;</i>
                                 </div>
                             </div>
@@ -175,7 +176,8 @@
                             <div class="accordion-item">
                                 <div class="accordion-header rounded-lg collapsed copyCode" id="code-copied" onclick="copyToClipboard('#HomeCode')" aria-expanded="false" role="button">
                                     <span class="accordion-header-icon"></span>
-                                    <input type="text" class="accordion-header-text codeInput" value="<?= asset('/') ?>?ref=<?=$userData->code?>" id="HomeCode" readonly>
+                                    <input type="text" value="<?= asset('/') ?>?ref=<?=$userData->code?>" id="HomeCode" style="position:absolute;left:-1000px;top:-1000px;">
+                                    <input type="text" class="accordion-header-text codeInput" value="Home Page">
                                     <i style="font-size:24px" class="fa copy-icon">&#xf0c5;</i>
                                 </div>
                             </div>
@@ -184,7 +186,8 @@
                             <div class="accordion-item">
                                 <div class="accordion-header rounded-lg collapsed copyCode" id="code-copied" onclick="copyToClipboard('#signupCode')" aria-expanded="false" role="button">
                                     <span class="accordion-header-icon"></span>
-                                    <input type="text" class="accordion-header-text codeInput" value="<?= route('register') ?>?ref=<?=$userData->code?>" id="signupCode" readonly>
+                                    <input type="text" value="<?= route('register') ?>?ref=<?=$userData->code?>" id="signupCode" style="position:absolute;left:-1000px;top:-1000px;">
+                                    <input type="text" class="accordion-header-text codeInput" value="Signup Page">
                                     <i style="font-size:24px" class="fa copy-icon">&#xf0c5;</i>
                                 </div>
                             </div>

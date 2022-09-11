@@ -31,7 +31,7 @@
                                         <th>No</th>
                                         <th>Profile</th>
                                         <th>Phone</th>
-                                        <th>Bank Details</th>
+                                        <th>Payment Details</th>
                                         <th>Full Name</th>
                                         <th>Email</th>
                                         <th>Action</th>
@@ -42,23 +42,23 @@
                                 @forelse($authors as $author)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        @if($author->author_detail)
+                                        @if($author)
                                         <td>
-                                            <a href="{{ asset($author->author_detail->cover) }}" target="_blank"><img width="100" src="{{ asset($author->author_detail->cover) }}" alt=""></a>
+                                            <a href="{{ asset($author->cover) }}" target="_blank"><img width="100" src="{{ asset($author->cover) }}" alt=""></a>
                                         </td>
-                                        <td>{{ $author->author_detail->phone }}</td>
+                                        <td>{{ $author->user->phone }}</td>
                                         <td>
-                                            @if($author->author_detail->payment)
+                                            @if($author->payment)
                                                 <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
-                                                data-payment = "{{ $author->author_detail->payment }}"
-                                                data-account_name = "{{ $author->author_detail->account_name }}"
-                                                data-account_number = "{{ $author->author_detail->account_number }}"
-                                                data-networks = "{{ $author->author_detail->networks }}"
-                                                data-bank_account_name = "{{ $author->author_detail->bank_account_name }}"
-                                                data-bank_account_number = "{{ $author->author_detail->bank_account_number }}"
-                                                data-branch = "{{ $author->author_detail->branch }}"
-                                                data-bank_name = "{{ $author->author_detail->bank_name }}"
-                                                title="View Payment Detail">View</a>
+                                                data-payment = "{{ $author->payment }}"
+                                                data-account_name = "{{ $author->account_name }}"
+                                                data-account_number = "{{ $author->account_number }}"
+                                                data-networks = "{{ $author->networks }}"
+                                                data-bank_account_name = "{{ $author->bank_account_name }}"
+                                                data-bank_account_number = "{{ $author->bank_account_number }}"
+                                                data-branch = "{{ $author->branch }}"
+                                                data-bank_name = "{{ $author->bank_name }}"
+                                                title="View Payment Details">View</a>
                                             @endif
                                         </td>
                                         @else
@@ -69,14 +69,14 @@
                                         <td>{{ $author->name }}</td>
                                         <td>{{ $author->email }}</td>
                                         <td>
-                                                @if($author->author_detail)
-                                                <a href="{{ route('admin.edit.author', $author->author_detail->id) }}" class="btn btn-primary shadow btn-xs sharp me-1" title="Update Author"><i class="fa fa-pencil"></i></a>
-                                                <a href="{{ route('admin.delete-author', $author->author_detail->user_id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete author permanently?')" title="Delete Author"><i class="fa fa-trash"></i></a>
-                                                @if($author->author_detail->status == 0)
-                                                    <a href="{{ route('admin.approve-author', $author->author_detail->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve Author"><i class="fa fa-check"></i></a>
-                                                @endif
-                                                @endif
-                                                <a href="{{ route('author-detail', $author->id) }}" target="_blank" class="btn btn-warning shadow btn-xs sharp me-1" title="View Author"><i class="fa fa-eye"></i></a>
+                                            @if($author)
+                                            <a href="{{ route('admin.edit.author', $author->id) }}" class="btn btn-primary shadow btn-xs sharp me-1" title="Update Author"><i class="fa fa-pencil"></i></a>
+                                            <a href="{{ route('admin.delete-author', $author->user_id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete author permanently?')" title="Delete Author"><i class="fa fa-trash"></i></a>
+                                            @if($author->status == 0)
+                                                <a href="{{ route('admin.approve-author', $author->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve Author"><i class="fa fa-check"></i></a>
+                                            @endif
+                                            @endif
+                                            <a href="{{ route('author-detail', $author->user_id) }}" target="_blank" class="btn btn-warning shadow btn-xs sharp me-1" title="View Author"><i class="fa fa-eye"></i></a>
                                         </td>
                                     </tr>
                                     @empty
@@ -94,7 +94,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Payment Detail</h5>
+                <h5 class="modal-title">Payment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
@@ -121,7 +121,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Info</th>
+                                        <th>Bank Details</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

@@ -453,11 +453,18 @@ class HomeController extends Controller
         return back()->with('message', ['text'=>'Thanks for contacting us. Cowriehub team will get back to you soon.','type'=>'success']);
     }
     public function subscribe(Request $request){
+        $res = file_get_contents('https://www.iplocate.io/api/lookup/'.$_SERVER['REMOTE_ADDR']);
+        $res = json_decode($res);
+
         $email = $request->email;
         $is_subscriber = Subscriber::where('email',$email)->first();
         if(!$is_subscriber){
             $contact = new Subscriber;
             $contact->email = $request->email;
+            $contact->country = $res->country;
+            $contact->city = $res->city;
+            $contact->ip = $res->ip;
+            $contact->postal_code = $res->postal_code;
             $contact->save();
             $data['title'] = 'New Subscriber';
             $data['body'] = 'Thanks for subscribing us. you will recieve recent updates from COWRIEHUB team.';

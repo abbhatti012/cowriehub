@@ -144,10 +144,14 @@
                                         </div>
                                     </div>
                                 @endif
-                                @if($book->hard_allow_preorders == 1 || $book->paper_allow_preorders == 1)
-                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt" data-toggle="modal" data-target="#preOrderModalModal" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
+                                @if($book->book_purchased <= $book->quantity)
+                                    @if($book->hard_allow_preorders == 1 || $book->paper_allow_preorders == 1)
+                                        <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt" data-toggle="modal" data-target="#preOrderModalModal" data-is_preorder = "1" data-id="{{ $book->id }}">Pre Order <small>(Pay 10% Upfront)</small></a>
+                                    @else
+                                        <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}"  data-user_id="{{ $book->user_id }}">Add to cart</a>
+                                    @endif
                                 @else
-                                    <a href="javascript:void(0)" name="add-to-cart" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 single_add_to_cart_button button alt addToCart" data-is_preorder = "0" data-id="{{ $book->id }}"  data-user_id="{{ $book->user_id }}">Add to cart</a>
+                                    <button type="button" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 button alt" disabled>Out Of Stock</button>
                                 @endif
                                     <a href="{{ route('cart') }}" class="p-3 min-width-250 ml-md-4 btn btn-outline-dark rounded-0 px-5 mb-3 mb-md-0">View Cart</a>
                                 </form>
@@ -228,6 +232,26 @@
                                     <div class="modal-footer border-top-0 d-flex text-right">
                                         <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button> -->
                                         <a href="javascript:void(0)" data-id="{{ $book->id }}" data-total="{{ $book->price * $currency->exchange_rate }}" class="btn btn-dark proceedToCheckout">Proceed to checkout</a>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal fade" id="sampleModalModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    <div class="modal-header border-bottom-0">
+                                        <h5 class="modal-title" id="exampleModalLabel1">
+                                        Sample PDF
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="sampleIframeHere"></div>
+                                    </div>
+                                    <div class="modal-footer border-top-0 d-flex text-right">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                     </div>
                                     </div>
                                 </div>
@@ -314,20 +338,29 @@
                             @endif
                             <div class="px-4 px-xl-7 py-5 d-flex align-items-center">
                                 <ul class="list-unstyled nav">
-                                    <li class="mr-6 mb-4 mb-md-0">
+                                    <li class="mr-3 mb-4 mb-md-0">
                                         @if($wishlist == 0)
                                             <a href="javascript:void(0)" class="h-primary addToWishlist" data-id="{{ $book->id }}"><i class="flaticon-heart mr-2"></i> Add to Wishlist</a>
                                         @else
                                             <a href="{{ route('wishlist') }}" class="h-primary"><i class="flaticon-heart mr-2"></i> View Wishlist</a>
                                         @endif
                                     </li>
-                                    <li class="mr-6">
+                                    @if($author->role != 'admin')
+                                    <li class="mr-3">
+                                        <a href="javascript:void(0)" class="h-primary" onclick="copyToClipboard('#referrelCode')"><i class="fa fa-copy mr-2"></i> Copy Referral Link</a>
+                                        <input type="text" value="<?= $author->code ?>" id="referrelCode" style="position:absolute;left:-1000px;top:-1000px;">
+                                    </li>
+                                    @endif
+                                    <li class="mr-3">
                                         <div class="addthis_toolbox addthis_default_style addthis_32x32_style">
                                             <a class="addthis_button_facebook"></a>
                                             <a class="addthis_button_twitter"></a>
                                             <a class="addthis_button_pinterest_share"></a>
                                             <a class="addthis_button_more"><i class="fa fa-share-alt fa-2x"></i></a>
                                         </div>
+                                    </li>
+                                    <li class="mr-3">
+                                        <a href="javascript:void(0)" class="h-primary sampleModalModal" data-toggle="modal" data-target="#sampleModalModal"><i class="fa fa-copy mr-2"></i> View Sample</a>
                                     </li>
                                 </ul>
                             </div>
@@ -782,6 +815,11 @@
 @endsection
 @section('scripts')
     <script>
+        function copyToClipboard(element) {
+            $(element).select();
+            document.execCommand("copy");
+            $.notify('Referral code copied','success');
+        }
         $(document).ready(function(){
             // $('#cartModal').modal('show');
             $('input[name="delivery"]').on('change',function(){
@@ -818,6 +856,9 @@
                 $('html, body').animate({
                     scrollTop: $("#customer_reviews").offset().top
                 }, 1000);
+            });
+            $('.sampleModalModal').on('click',function(){
+                $('.sampleIframeHere').html('<iframe width="100%" height="400px" src="<?= asset($book->sample) ?>"></iframe>');
             });
             $('.addToWishlist').on('click',function(){
                 var user_id = "{{ Auth::id() }}";

@@ -28,7 +28,7 @@
                             <table id="datatables" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
-                                        <th>Payment Detail</th>
+                                        <th>Payment Details</th>
                                         <th>User Detail</th>
                                         <th>Skill</th>
                                         <th>Skill Certificate</th>
@@ -57,7 +57,7 @@
                                                 data-bank_account_number = "{{ $consultant->bank_account_number }}"
                                                 data-branch = "{{ $consultant->branch }}"
                                                 data-bank_name = "{{ $consultant->bank_name }}"
-                                                title="View Payment Detail">View</a>
+                                                title="View Payment Details">View</a>
                                             @else
                                             ---
                                             @endif
@@ -168,7 +168,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Payment Detail</h5>
+                <h5 class="modal-title">Payment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
@@ -195,7 +195,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Info</th>
+                                        <th>Bank Details</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

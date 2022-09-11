@@ -154,7 +154,7 @@
             <li class="<?php if(request()->segment(2) == 'payment-detail'){echo 'mm-active';} ?>">
                 <a href="{{ route('consultant.payment-detail') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>
-                    <span class="nav-text">Payment Detail</span>
+                    <span class="nav-text">Payment Details</span>
                 </a>
             </li>
            

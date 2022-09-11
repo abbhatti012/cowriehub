@@ -23,8 +23,8 @@
             <div class="col-12 col-md-12 col-lg-12 order-2 order-md-1">
              
               <div class="row">
-                <div class="col-12">
-                <h4 class="text-primary"><i class="fas fa-book"></i> Payment Details</h4>
+                <div class="col-6">
+                    <h4 class="text-primary"><i class="fas fa-book"></i> Payment Details</h4>
                     <p class="text-muted"></p>
                     <div class="post">                     
                         <p><b>Transactio ID:&emsp;</b>{{ $payment->transaction_id }}</p>
@@ -39,7 +39,14 @@
                         <p><b>Fraud?:&emsp;</b>@if($payment->fraud == 0) No Fraud @else Fraud Detected @endif</p>
                         <p><b>Payment Method:&emsp;</b>{{ $payment->payment_method }}</p>
                     </div>
-                </div> 
+                </div>
+                <div class="col-6">
+                    <h4 class="text-primary"><i class="fas fa-book"></i> Shipping Label</h4>
+                    <p class="text-muted"></p>
+                    @if(!empty($payment->transaction_id))
+                        <div class="mb-3">{!! DNS2D::getBarcodeHTML($payment->transaction_id, 'QRCODE') !!}</div>
+                    @endif
+                </div>
                 <div class="col-12"><hr>
                 <div class="table-responsive mb-4">
                     <h4 class="text-primary"><i class="fas fa-plus"></i> Book Order Detail</h4>

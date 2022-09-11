@@ -5,7 +5,7 @@
       <div class="row page-titles">
          <ol class="breadcrumb">
             <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">Continue to pblisher</a></li>
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Register as a Publisher</a></li>
          </ol>
       </div>
     @if(Session::has('message'))

@@ -191,6 +191,11 @@
                             Affiliates
                         </a>
                     </li>
+                    <li class="<?php if(request()->segment(2) == 'admin.referred-users'){echo 'mm-active';} ?>">
+                        <a href="{{ route('admin.referred-users') }}" class="ai-icon" aria-expanded="false">
+                            Referred Users
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li class="<?php if(request()->segment(2) == 'assign-job' || request()->segment(2) == 'active-jobs' || request()->segment(2) == 'completed-jobs'){echo 'mm-active';} ?>"><a class="has-arrow ai-icon" href="" aria-expanded="false">

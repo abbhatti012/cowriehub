@@ -26,6 +26,7 @@
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Email</th>
+                                        <th>Phone</th>
                                         <th>Subject</th>
                                         <th>Detail</th>
                                     </tr>
@@ -38,6 +39,7 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->phone }}</td>
                                         <td>{{ $user->subject }}</td>
                                         <td>{{ $user->detail }}</td>
                                     </tr>

@@ -60,7 +60,7 @@
                                                 data-bank_account_number = "{{ $job->consultant->bank_account_number }}"
                                                 data-branch = "{{ $job->consultant->branch }}"
                                                 data-bank_name = "{{ $job->consultant->bank_name }}"
-                                                title="View Payment Detail">View</a>
+                                                title="View Payment Details">View</a>
                                             @endif
                                         </td>
                                         <td>
@@ -119,7 +119,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Payment Detail</h5>
+                <h5 class="modal-title">Payment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
@@ -146,7 +146,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Info</th>
+                                        <th>Bank Details</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

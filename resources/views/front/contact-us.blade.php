@@ -4,7 +4,8 @@
         <div class="py-3 py-lg-7">
             <h6 class="font-weight-medium font-size-7 text-center my-1">Contact Us</h6>
         </div>
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835253576489!2d144.95372995111143!3d-37.817327679652266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1581584770980!5m2!1sen!2sin" height="500" style="border:0; width:100%;" allowfullscreen=""></iframe>
+        <!-- <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835253576489!2d144.95372995111143!3d-37.817327679652266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d4c2b349649%3A0xb6899234e561db11!2sEnvato!5e0!3m2!1sen!2sin!4v1581584770980!5m2!1sen!2sin" height="500" style="border:0; width:100%;" allowfullscreen=""></iframe> -->
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.6724728896297!2d-0.092434!3d5.615289999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf856c7d794c65%3A0x3960a61f2e1c4d6e!2sCowrie%20Hub!5e0!3m2!1sen!2s!4v1661889459045!5m2!1sen!2s" width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         <div class="container">
             <div class="space-bottom-1 space-bottom-lg-2">
                 <div class="pb-4">
@@ -91,13 +92,19 @@
                                             <div class="col-sm-6 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="exampleFormControlInput2">Email</label>
-                                                    <input id="exampleFormControlInput2" type="email" class="form-control rounded-0" name="email" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                                    <input id="exampleFormControlInput2" type="email" class="form-control rounded-0" name="email" aria-label="john@gmail.com" required="">
                                                 </div>
                                             </div>
-                                            <div class="col-sm-12 mb-5">
+                                            <div class="col-sm-6 mb-5">
                                                 <div class="js-form-message">
                                                     <label for="exampleFormControlInput3">Subject</label>
-                                                    <input id="exampleFormControlInput3" type="text" class="form-control rounded-0" name="subject" aria-label="jackwayley@gmail.com" required="" data-msg="Please enter a valid email address." data-error-class="u-has-error" data-success-class="u-has-success">
+                                                    <input id="exampleFormControlInput3" type="text" class="form-control rounded-0" name="subject" required="" >
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6 mb-5">
+                                                <div class="js-form-message">
+                                                    <label for="phone">Phone Number</label>
+                                                    <input id="phone" type="text" class="form-control rounded-0" name="phone" required>
                                                 </div>
                                             </div>
                                             <div class="col-sm-12 mb-5">

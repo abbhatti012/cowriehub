@@ -30,9 +30,10 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Phone</th>
-                                        <th>Payment Detail</th>
+                                        <th>Payment Details</th>
                                         <th>Full Name</th>
                                         <th>Email</th>
+                                        <th>Referred Code</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -41,35 +42,41 @@
                                 @forelse($users as $user)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        @if($user->pos)
-                                        <td>{{ $user->pos->company_phone }}</td>
+                                        @if($user->user)
+                                        <td>{{ $user->company_phone }}</td>
                                         <td>
-                                            @if($user->pos->payment)
+                                            @if($user->payment)
                                                 <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
-                                                data-payment = "{{ $user->pos->payment }}"
-                                                data-account_name = "{{ $user->pos->account_name }}"
-                                                data-account_number = "{{ $user->pos->account_number }}"
-                                                data-networks = "{{ $user->pos->networks }}"
-                                                data-bank_account_name = "{{ $user->pos->bank_account_name }}"
-                                                data-bank_account_number = "{{ $user->pos->bank_account_number }}"
-                                                data-branch = "{{ $user->pos->branch }}"
-                                                data-bank_name = "{{ $user->pos->bank_name }}"
-                                                title="View Payment Detail">View</a>
+                                                data-payment = "{{ $user->payment }}"
+                                                data-account_name = "{{ $user->account_name }}"
+                                                data-account_number = "{{ $user->account_number }}"
+                                                data-networks = "{{ $user->networks }}"
+                                                data-bank_account_name = "{{ $user->bank_account_name }}"
+                                                data-bank_account_number = "{{ $user->bank_account_number }}"
+                                                data-branch = "{{ $user->branch }}"
+                                                data-bank_name = "{{ $user->bank_name }}"
+                                                title="View Payment Details">View</a>
                                             @endif
                                         </td>
                                         @else
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         @endif
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->user->name }}</td>
+                                        <td>{{ $user->user->email }}</td>
                                         <td>
-                                            @if($user->pos)
-                                                    <a href="{{ route('admin.delete-pos', $user->pos->user_id) }}" onclick="return confirm('Are you sure you want delete POS?')" class="btn btn-danger shadow btn-xs sharp" title="Delete POS"><i class="fa fa-trash"></i></a>
-                                                @if($user->pos->status == 0)
-                                                    <a href="{{ route('admin.approve-pos', $user->pos->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve POS"><i class="fa fa-check"></i></a>
+                                            {{ $user->referrel_code }}
+                                        </td>
+                                        <td>
+                                            @if($user)
+                                                    <a href="{{ route('admin.delete-pos', $user->user_id) }}" onclick="return confirm('Are you sure you want delete POS?')" class="btn btn-danger shadow btn-xs sharp" title="Delete POS"><i class="fa fa-trash"></i></a>
+                                                @if($user->status == 0)
+                                                    <a href="{{ route('admin.approve-pos', $user->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve POS"><i class="fa fa-check"></i></a>
                                                 @endif
-                                                <a href="{{ route('admin.edit-pos', $user->pos->id) }}" class="btn btn-success shadow btn-xs sharp" title="Update POS Account"><i class="fa fa-pencil"></i></a>
+                                                @if($user->status == 1)
+                                                    <a href="{{ route('admin.disapprove-pos', $user->id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want disable POS?')" title="Disapprove POS"><i class="fa fa-times"></i></a>
+                                                @endif
+                                                <a href="{{ route('admin.edit-pos', $user->id) }}" class="btn btn-success shadow btn-xs sharp" title="Update POS Account"><i class="fa fa-pencil"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -88,7 +95,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Payment Detail</h5>
+                <h5 class="modal-title">Payment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
@@ -115,7 +122,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Info</th>
+                                        <th>Bank Details</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>

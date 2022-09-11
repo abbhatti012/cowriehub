@@ -31,7 +31,8 @@
                                         <th>No</th>
                                         <th>Name</th>
                                         <th>Email</th>
-                                        <th>Role</th>
+                                        <th>Phone</th>
+                                        <th>Referral Code</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -43,7 +44,12 @@
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ $user->role }}</td>
+                                        <td>{{ $user->phone }}</td>
+                                        <td>
+                                            @if($user->affiliates)
+                                                {{ $user->code }}
+                                            @endif
+                                        </td>
                                         <td>
                                             <a href="{{ route('admin.delete-user', $user->id) }}" class="btn btn-danger shadow btn-xs sharp me-1" title=""><i class="fa fa-trash"></i></a>
                                             <a href="{{ route('admin.update-general-user', $user->id) }}" class="btn btn-info shadow btn-xs sharp me-1" title=""><i class="fa fa-pencil"></i></a>

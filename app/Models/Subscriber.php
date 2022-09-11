@@ -11,5 +11,9 @@ class Subscriber extends Model
     protected $fillable = [
         'id',
         'email',
+        'country',
+        'city',
+        'ip',
+        'postal_code',
     ];
 }

@@ -147,7 +147,7 @@
                         <div class="basic-form">
                             <div class="mb-3 mb-0">
                                 <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('mobile_money_fields', 'bank_fields')" value="mobile_money" <?php if($user->payment == 'mobile_money'){ echo 'checked'; } ?> required> Mobile Money</label>
-                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Info</label>
+                                <label class="radio-inline me-3"><input type="radio" name="payment" onclick="paymentFields('bank_fields', 'mobile_money_fields')" value="bank_settelments" <?php if($user->payment == 'bank_settelments'){ echo 'checked'; } ?> required> Bank Details</label>
                             </div>
                         </div>
                         <div class="mobile_money_fields">

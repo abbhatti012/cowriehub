@@ -159,7 +159,7 @@
                             </div>
                             <div class="basic-form custom_file_input">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Portfolio upload</span>
+                                    <span class="input-group-text">Upload Portfolio</span>
                                     <div class="form-file" for="portfolio">
                                         <input type="file" name="portfolio" id="portfolio" class="form-file-input form-control" required>
                                     </div>
@@ -301,7 +301,7 @@
                             <h4>National Identity</h4><hr>
                             <div class="basic-form custom_file_input">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Upload Slef Video</span>
+                                    <span class="input-group-text">Upload Self Video</span>
                                     <div class="form-file">
                                         <input type="file" name="intro_viedo" class="form-file-input form-control" accept="file_extension|audio/*|video/*|image/*|media_type">
                                     </div>
@@ -316,7 +316,7 @@
                             </div>
                             <div class="basic-form custom_file_input">
                                 <div class="input-group mb-3">
-                                    <span class="input-group-text">Portfolio upload</span>
+                                    <span class="input-group-text">Upload Portfolio</span>
                                     <div class="form-file" for="portfolio">
                                         <input type="file" name="portfolio" id="portfolio" class="form-file-input form-control">
                                     </div>

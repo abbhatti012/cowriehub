@@ -60,6 +60,7 @@ class BookController extends Controller
         $user->price = $request->price;
         $user->subtitle = $request->subtitle;
         $user->synopsis = $request->synopsis;
+        $user->quantity = $request->quantity;
         $user->genre = $request->genre;
         $user->sub_author = $request->sub_author;
         $user->publisher = $request->publisher;
@@ -134,7 +135,11 @@ class BookController extends Controller
                     }
                 }
             }
-            return back()->with('message', ['text'=>'Congratulations! Your book has be added. It will be published once approved by COWRIEHUB','type'=>'success']);
+            if(Auth::user()->role == 'admin'){
+                return back()->with('message', ['text'=>'Congratulations! Your book has be added.','type'=>'success']);
+            } else {
+                return back()->with('message', ['text'=>'Congratulations! Your book has be added. It will be published once approved by COWRIEHUB','type'=>'success']);
+            }
         } else {
             return back()->with('message', ['text'=>'Oops! There is something wring. Your book cannot be added','type'=>'danger']);
         }

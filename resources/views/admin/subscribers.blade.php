@@ -25,6 +25,10 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Email</th>
+                                        <th>IP Address</th>
+                                        <th>Country</th>
+                                        <th>City</th>
+                                        <th>Postal code</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -34,6 +38,10 @@
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>{{ $user->ip }}</td>
+                                        <td>{{ $user->country }}</td>
+                                        <td>{{ $user->city }}</td>
+                                        <td>{{ $user->postal_code }}</td>
                                     </tr>
                                 @endforeach
                                 @endif

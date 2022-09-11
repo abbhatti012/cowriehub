@@ -26,11 +26,11 @@
                     <ul class="topbar__nav--right nav mr-md-n3">
                         <li class="nav-item"><a href="{{ route('contact-us') }}" class="nav-link link-black-100"><i class="glph-icon flaticon-pin"></i></a></li>
                         <!-- <li class="nav-item"><a  class="nav-link link-black-100"><i class="glph-icon flaticon-switch"></i></a></li> -->
-                        <li class="nav-item"><a href="{{ route('user.wishlist') }}" class="nav-link link-black-100"><i class="glph-icon flaticon-heart"></i></a></li>
+                        <li class="nav-item"><a href="{{ route('user.wishlist') }}?role=author" class="nav-link link-black-100"><i class="glph-icon flaticon-heart"></i></a></li>
                         <li class="nav-item">
                             <!-- Account Sidebar Toggle Button -->
                             @auth
-                            <a id="sidebarNavToggler" href="{{ route('save-address') }}" role="button" class="nav-link link-black-100">
+                            <a id="sidebarNavToggler" href="{{ route('save-address') }}?role=author" role="button" class="nav-link link-black-100">
                                 <i class="glph-icon flaticon-user"></i>
                             </a>
                             @else
@@ -271,7 +271,7 @@
                             <div class="px-4 px-md-5 pt-5 pb-4 border-bottom">
                                 <h2 class="font-size-3 mb-3">HELP & SETTINGS </h2>
                                 <ul class="list-group list-group-flush list-group-borderless">
-                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('save-address') }}" class="h-primary">Your Account</a></li>
+                                    <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('save-address') }}?role=author" class="h-primary">Your Account</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('contact-us') }}" class="h-primary">Help</a></li>
                                     <li class="list-group-item px-0 py-2 border-0"><a href="{{ route('logout') }}" class="h-primary">Logout</a></li>
                                 </ul>

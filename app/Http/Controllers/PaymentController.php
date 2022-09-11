@@ -32,6 +32,7 @@ class PaymentController extends Controller
         $payment->subtotal = $request->subTotal;
         $payment->total_amount = $request->totalPrice;
         $payment->shipping_price = $request->shippingPrice;
+        $payment->status = 'pending';
         if(Auth::check() && Auth::user()->role == 'pos'){
             $payment->is_pos = 1;
         }
@@ -56,6 +57,7 @@ class PaymentController extends Controller
         $payment->extraPrice = $request->extraPrice;
         $payment->book_id = $request->bookId;
         $payment->location = $request->shippingCharges;
+        $payment->status = 'pending';
         if(Auth::check() && Auth::user()->role == 'pos'){
             $payment->is_pos = 1;
         }
@@ -87,7 +89,7 @@ class PaymentController extends Controller
         $payment->is_coupon = $request->is_coupon;
         $payment->coupon_code = $request->coupon_code;
         $setting = Setting::first();
-        $user_commission = 100 - $setting->admin_commission;
+        // $user_commission = 100 - $setting->admin_commission;
         if($payment->is_coupon == 1){
             $check = Coupon::where('code',$payment->coupon_code)->first();
             if($payment->is_preorder == 0){

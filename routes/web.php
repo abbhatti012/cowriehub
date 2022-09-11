@@ -1,15 +1,25 @@
 <?php
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\SocialiteController;
 
 
-Auth::routes();
 
 //Front Routes
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Auth::routes(['verify' => true]);
+Route::get('/email/verif/{id}/{hash}', function (Request $request, $id) {
+    $user = User::find($id);
+    $user->markEmailAsVerified();
+    $user->save();
+    return redirect(route('login'))->with('registrationSuccessfull', 'Please login to continue!');
+})->name('email.verification');
+
 Route::get('/shop', [App\Http\Controllers\HomeController::class, 'shop'])->name('shop');
 Route::get('/product/{any}', [App\Http\Controllers\HomeController::class, 'product'])->name('product');
 Route::get('/cart', [App\Http\Controllers\HomeController::class, 'cart'])->name('cart');
@@ -85,6 +95,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/publisher', [App\Http\Controllers\Admin\AdminController::class, 'publisher'])->name('admin.publisher');
     Route::get('/cms/pos', [App\Http\Controllers\Admin\AdminController::class, 'pos'])->name('admin.pos');
     Route::get('/cms/affiliate', [App\Http\Controllers\Admin\AdminController::class, 'affiliates'])->name('admin.affiliates');
+    Route::get('/cms/referred-users', [App\Http\Controllers\Admin\AdminController::class, 'referred_users'])->name('admin.referred-users');
     Route::get('/cms/genre', [App\Http\Controllers\Admin\AdminController::class, 'genre'])->name('admin.genre');
     Route::get('/cms/sub-genre', [App\Http\Controllers\Admin\AdminController::class, 'sub_genre'])->name('admin.sub-genre');
     Route::get('/cms/books', [App\Http\Controllers\Admin\AdminController::class, 'books'])->name('admin.books');
@@ -148,6 +159,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::post('/cms/add-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'store'])->name('admin.add-sub-genre');
     Route::get('/cms/delete-sub-genre/{any}', [App\Http\Controllers\Admin\SubGenreController::class, 'delete'])->name('admin.delete-sub-genre');
     Route::get('/cms/update-payment-status/{any}', [App\Http\Controllers\Admin\AdminController::class, 'update_payment_status'])->name('admin.update-payment-status');
+    Route::get('/cms/disapprove-payment-status/{any}', [App\Http\Controllers\Admin\AdminController::class, 'disapprove_payment_status'])->name('admin.disapprove-payment-status');
     Route::get('/cms/get-revenue-per-order', [App\Http\Controllers\Admin\AdminController::class, 'get_revenue_per_order'])->name('admin.get-revenue-per-order');
     
     // Route::post('/cms/assign-jobs/', [App\Http\Controllers\Consultant\ConsultantController::class, 'assign_job'])->name('admin.assign-job');
@@ -174,6 +186,7 @@ Route::group(['middleware' => 'admin'], function () {
     Route::get('/cms/approve-author/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_author'])->name('admin.approve-author');
     Route::get('/cms/approve-affiliate/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_affiliate'])->name('admin.approve-affiliate');
     Route::get('/cms/approve-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'approve_pos'])->name('admin.approve-pos');
+    Route::get('/cms/disapprove-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'disapprove_pos'])->name('admin.disapprove-pos');
     Route::get('/cms/edit-pos/{any}', [App\Http\Controllers\Admin\AdminController::class, 'edit_pos'])->name('admin.edit-pos');
     Route::post('/cms/update-about-banner', [App\Http\Controllers\Admin\AdminController::class, 'update_about_banner'])->name('admin.update-about-banner');
     Route::get('/cms/all-subscribers', [App\Http\Controllers\Admin\AdminController::class, 'all_subscribers'])->name('admin.subscribers');
@@ -224,6 +237,7 @@ Route::group(['middleware' => 'publisher'], function () {
     Route::get('/revenue', [App\Http\Controllers\PublisherController::class, 'revenue'])->name('publisher.revenue');
     Route::get('/publisher-dashboard', [App\Http\Controllers\PublisherController::class, 'dashboard'])->name('publishers.dashboard');
 });
+Route::get('/get-purchases', [App\Http\Controllers\User\UserController::class, 'get_purchases'])->name('get-purchases');
 Route::get('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
 Route::post('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
 

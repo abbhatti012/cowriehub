@@ -76,7 +76,7 @@
                 <!-- <li class="<?php //if(request()->segment(1) == 'payment-detail'){echo 'mm-active';} ?>">
                     <a href="{{ route('pos.payment-detail') }}" class="ai-icon" aria-expanded="false">
                         <i class="fa fa-money"></i>
-                        <span class="nav-text">Payment Detail</span>
+                        <span class="nav-text">Payment Details</span>
                     </a>
                 </li> -->
                 <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">

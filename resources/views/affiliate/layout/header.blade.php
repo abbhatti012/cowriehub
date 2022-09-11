@@ -93,10 +93,10 @@
             <li class="<?php if(request()->segment(1) == 'affiliate-payment-detail'){echo 'mm-active';} ?>">
                 <a href="{{ route('affiliate.payment-details') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-money"></i>
-                    <span class="nav-text">Payment Detail</span>
+                    <span class="nav-text">Payment Details</span>
                 </a>
             </li>
-            <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
+            <!-- <li class="<?php if(request()->segment(1) == 'save-address'){echo 'mm-active';} ?>"><a href="{{ route('save-address') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-address-card"></i>
                     <span class="nav-text">Addresses</span>
                 </a>
@@ -105,7 +105,7 @@
                     <i class="fa fa-heart-o"></i>
                     <span class="nav-text">Wishlist</span>
                 </a>
-            </li>
+            </li> -->
         </ul>
     </div>
 </div>

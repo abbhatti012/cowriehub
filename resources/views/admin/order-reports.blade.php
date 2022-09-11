@@ -119,10 +119,9 @@
                                         <th>Subtotal</th>
                                         <th>Shipping Price</th>
                                         <th>Amount Paid</th>
-                                        <th>Amount to be pay</th>
                                         <th>Status</th>
                                         <th>Is Fraud?</th>
-                                        <th>Pay Now</th>
+                                        <!-- <th>Pay Now</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -139,7 +138,6 @@
                                         <td>{{ $payment->subtotal }}</td>
                                         <td>{{ $payment->shipping_price }}</td>
                                         <td>{{ $payment->total_amount }}</td>
-                                        <td>{{ round(($payment->total_amount / 100)*$admin_commission, 2) }}</td>
                                         <td>
                                             @if($payment->status == 'cancelled')
                                                 <span class="badge light badge-danger">{{ $payment->status }}</span>
@@ -156,7 +154,7 @@
                                                 <span class="badge light badge-danger">Yes</span>
                                             @endif
                                         </td>
-                                        <td>
+                                        <!-- <td>
                                             <div class="d-flex">
                                                 @if($payment->role == 'admin')
                                                     ---
@@ -168,7 +166,7 @@
                                                     @endif
                                                 @endif
                                             </div>
-                                        </td>
+                                        </td> -->
                                     </tr>
                                 @empty
                                 @endforelse

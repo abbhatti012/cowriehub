@@ -53,7 +53,11 @@
                         {{session('message')['text']}}
                     </div>
                 @endif
+                @if(isset($_REQUEST['role']) && $_REQUEST['role'] == 'pos')
                 <div class="col-md-7">
+                    @else
+                    <div class="col-md-12">
+                @endif
                     <div class="authincation-content">
                         <div class="row no-gutters">
                             <div class="col-xl-12">
@@ -64,22 +68,6 @@
                                     <h4 class="text-center">Register your account</h4>
                                     <form id="basic-form" method="POST" action="{{ route('register') }}">
                                         @csrf
-                                        <!-- <div class="row ">
-                                            <label for="name" class="mb-1"><strong>SignUp By</strong></label>
-
-                                            <div class="col-md-12">
-                                                <select id="role" class="form-control" name="role" required autofocus>
-                                                    <option value="" selected disabled>---Please select user type---</option>
-                                                    <option value="user">General User</option>
-                                                    <option value="author">Author</option>
-                                                    <option value="publisher">Publisher</option>
-                                                    <option value="affiliate">Affiliate</option>
-                                                    <option value="pos">POS</option>
-                                                    <option value="consultant">Consultant</option>
-                                                </select>
-                                            </div>
-                                        </div> -->
-                                        <!-- <input type="hidden" value="user" name="role"> -->
                                         <div class="row col-md-12">
                                             <div class="col-md-6">
                                                 <label for="name" class="mb-1"><strong>{{ __('Name') }}</strong></label>
@@ -94,6 +82,17 @@
                                                 <label class="mb-1"><strong>Email</strong></label>
                                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                                                 @error('email')
+                                                    <span class="invalid-feedback" role="alert">
+                                                        <strong>{{ $message }}</strong>
+                                                    </span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="row col-md-12">
+                                            <div class="col-md-6">
+                                                <label for="phone" class="mb-1"><strong>Phone Number</strong></label>
+                                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                                @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
                                                     </span>
@@ -173,7 +172,7 @@
                                             </div>
                                         @endif
                                         <div class="text-center">
-                                            <button type="submit" class="btn btn-primary btn-block">Sign Me In</button>
+                                            <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                                         </div>
                                         @if(isset($_REQUEST['ref']))
                                         <input type="hidden" name="code" value="{{ $_REQUEST['ref'] }}">

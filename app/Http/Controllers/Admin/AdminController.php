@@ -124,7 +124,12 @@ class AdminController extends Controller
         $graph_data['orderCountArr'] = $orderCountArr;
         $graph_data['orderNetArr'] = $orderNetArr;
         $graph_data['label'] = $graph['label'];
-        return view('admin.index',compact('books','orders','approved','cancelled','approved_books','check','graph_data'));
+        $data['total_authors'] = AuthorDetail::count('id');
+        $data['total_consultants'] = Consultant::count('id');
+        $data['total_pos'] = Pos::count('id');
+        $data['total_publishers'] = Publisher::count('id');
+        $data['total_affiliates'] = Affiliate::count('id');
+        return view('admin.index',compact('books','orders','approved','cancelled','approved_books','check','graph_data','data'));
     }
     public function get_date_series($start_date, $end_date){
         $dates = array();
@@ -177,7 +182,7 @@ class AdminController extends Controller
         return $data;
     }
     public function author(){
-        $authors = User::where('role','author')->orderBy('id','desc')->with('author_detail')->get();
+        $authors = AuthorDetail::orderBy('id','desc')->with('user')->get();
         return view('admin.author', compact('authors'));
     }
     public function consultant(){
@@ -198,12 +203,31 @@ class AdminController extends Controller
         return view('admin.publisher',compact('publishers'));
     }
     public function pos(){
-        $users = User::where('role','pos')->orderBy('id','desc')->with('pos')->get();
+        $users = Pos::orderBy('id','desc')->with('user')->get();
         return view('admin.pos',compact('users'));
     }
     public function affiliates(){
-        $affiliates = User::where('role','affiliate')->orderBy('id','desc')->with('affiliates')->get();
-        return view('admin.affiliates',compact('affiliates'));
+        $affiliates = Affiliate::orderBy('id','desc')->with('user')->get();
+        $referred_users = User::where('referrer_id','!=',0)->get();
+        return view('admin.affiliates',compact('affiliates','referred_users'));
+    }
+    public function referred_users(){
+        $referred_users = User::where('users.referrer_id','!=',0)
+        // ->with('affiliate_user')
+        ->leftJoin('payments','payments.user_id','=','users.id')
+        ->select('users.*','payments.*','users.id as current_user_id'
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'successfull' THEN payments.id END) AS successful_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'successfull' THEN payments.amount_paid END) AS successful_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'pending' THEN payments.id END) AS pending_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'pending' THEN payments.amount_paid END) AS pending_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'cancelled' THEN payments.id END) AS cancelled_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'cancelled' THEN payments.amount_paid END) AS cancelled_payment")
+            ,DB::raw("COUNT(payments.id) AS total_orders")
+        )
+        ->groupBy('users.id')
+        ->get();
+        
+        return view('admin.referred-users',compact('referred_users'));
     }
     public function books(){
         $books = Book::orderBy('id','desc')->with('sub_genre')->get();
@@ -276,9 +300,9 @@ class AdminController extends Controller
         $payments = $query->join('users','users.id','=','payments.user_id')->get();
         $locations = Location::orderBy('id','desc')->get();
         $users = User::orderBy('id','desc')->get();
-        $setting = Setting::select('admin_commission')->pluck('admin_commission');
-        $admin_commission = 100 - $setting[0];
-        return view('admin.order-reports', compact('payments','filter','locations','users','admin_commission'));
+        // $setting = Setting::select('admin_commission')->pluck('admin_commission');
+        // $admin_commission = 100 - $setting[0];
+        return view('admin.order-reports', compact('payments','filter','locations','users'));
     }
     public function book_reports(Request $request){
         $query = Book::orderBy('books.id','desc')->where('books.status',1)
@@ -802,13 +826,19 @@ class AdminController extends Controller
     }
     public function remove_job($id){
         Job::where('id',$id)->delete();
-        return back()->with('message', ['text'=>'Job has been remived successfully!','type'=>'success']);
+        return back()->with('message', ['text'=>'Job has been removed successfully!','type'=>'success']);
     }
     public function update_payment_status($id){
         Payment::where('id',$id)->update(['status' => 'successfull']);
         $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
         Revenue::whereIn('order_id',$order_id)->update(['payment_status'=>1]);
         return back()->with('message', ['text'=>'Payment has been approved!','type'=>'success']);
+    }
+    public function disapprove_payment_status($id){
+        Payment::where('id',$id)->update(['status' => 'cancelled', 'is_pos_payment' => 2]);
+        $order_id = Order::where('payment_id',$id)->select('id')->pluck('id')->toArray();
+        Revenue::whereIn('order_id',$order_id)->update(['payment_status'=>2]);
+        return back()->with('message', ['text'=>'Order has been disapproved!','type'=>'success']);
     }
     public function get_revenue_per_order(Request $request){
         $id = $request->id;
@@ -943,6 +973,21 @@ class AdminController extends Controller
             $m->to($data['to'])->subject('Application is approved!');
         });
         return back()->with('message', ['text'=>'POS role has been updated','type'=>'success']);
+    }
+    public function disapprove_pos($id){
+        $user_detail = Pos::find($id);
+        $user_detail->status = 0;
+        $user_detail->save();
+        $data['title'] = 'Application is Disapproved';
+        $data['body'] = 'Cowriehub has disabled your as an POS. For further assistance reach to COWRIEHUB.';
+        $data['link'] = "";
+        $data['linkText'] = "";
+        $data['to'] = auth()->user()->email;
+        $data['username'] = auth()->user()->name;
+        Mail::send('email', $data,function ($m) use ($data) {
+            $m->to($data['to'])->subject('Application is Dispproved!');
+        });
+        return back()->with('message', ['text'=>'POS role has been disabled','type'=>'success']);
     }
     public function edit_pos($id){
         $user = Pos::where('id',$id)->first();

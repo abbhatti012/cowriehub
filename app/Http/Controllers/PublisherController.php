@@ -332,28 +332,24 @@ class PublisherController extends Controller
     }
     public function update_payment_detail(Request $request){
         $user = Publisher::where('user_id',Auth::id())->first();
-        $user->payment = $request->payment;
-        if($request->payment == 'mobile_money'){
-            $user->account_name = $request->account_name;
-            $user->account_number = $request->account_number;
-            $user->networks = $request->networks;
-
-            $user->bank_account_name = '';
-            $user->bank_account_number = '';
-            $user->branch = '';
-            $user->bank_name = '';
-        } elseif($request->payment == 'bank_settelments'){
-            $user->bank_account_name = $request->bank_account_name;
-            $user->bank_account_number = $request->bank_account_number;
-            $user->branch = $request->branch;
-            $user->bank_name = $request->bank_name;
-
-            $user->account_name = '';
-            $user->account_number = '';
-            $user->networks = '';
+        if($user){
+            if($request->payment == 'mobile_money'){
+                $user->account_name = $request->account_name;
+                $user->account_number = $request->account_number;
+                $user->networks = $request->networks;
+            } elseif($request->payment == 'bank_settelments'){
+                $user->bank_account_name = $request->bank_account_name;
+                $user->bank_account_number = $request->bank_account_number;
+                $user->branch = $request->branch;
+                $user->bank_name = $request->bank_name;
+            }
+            $user->payment = $request->payment;
+            $user->primary_account = $request->primary;
+            $user->save();
+        } else {
+            return back()->with('message', ['text'=>'Your application is currently under review!','type'=>'danger']);
         }
-        $user->save();
-        return back()->with('message', ['text'=>'Payment detail set successfully!','type'=>'success']);
+        return back()->with('message', ['text'=>'Payment Details set successfully!','type'=>'success']);
     }
     public function view_book_detail(Request $request){
         $book = Book::where('id',$request->id)->first();

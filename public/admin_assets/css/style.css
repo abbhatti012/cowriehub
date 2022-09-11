@@ -34065,7 +34065,7 @@ table.dataTable tfoot th {
 .dataTables_wrapper .dataTables_paginate>.paginate_button {
     font-size: 1.125rem;
     border-radius: 1.375rem;
-    padding: 0.9rem 1.5625rem;
+    /* padding: 0.9rem 1.5625rem; */
     color: #000 !important;
     border: 0.0625rem solid #000 !important;
     -webkit-transition: all 0.2s;
@@ -34101,7 +34101,7 @@ table.dataTable tfoot th {
 .dataTables_wrapper .dataTables_paginate span {
     background-color: #F4F4F4;
     display: inline-flex;
-    padding: 0.4rem 0.625rem;
+    padding: 0rem 0rem;
     border-radius: 1.375rem;
     margin: 0 1rem
 }

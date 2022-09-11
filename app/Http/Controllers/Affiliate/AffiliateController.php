@@ -43,38 +43,55 @@ class AffiliateController extends Controller
         return view('affiliate.payment-detail',compact('user'));
     }
     public function user_referred(){
-        $users = User::where('referrer_id',Auth::id())->get();
-        return view('affiliate.user-referred',compact('users'));
+        $referred_users = User::where('users.referrer_id',Auth::id())
+        // ->with('affiliate_user')
+        ->leftJoin('payments','payments.user_id','=','users.id')
+        ->select('users.*','payments.*','users.id as current_user_id'
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'successfull' THEN payments.id END) AS successful_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'successfull' THEN payments.amount_paid END) AS successful_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'pending' THEN payments.id END) AS pending_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'pending' THEN payments.amount_paid END) AS pending_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'cancelled' THEN payments.id END) AS cancelled_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'cancelled' THEN payments.amount_paid END) AS cancelled_payment")
+            ,DB::raw("COUNT(payments.id) AS total_orders")
+        )
+        ->groupBy('users.id')
+        ->get();
+        return view('affiliate.user-referred',compact('referred_users'));
     }
     public function pos_referred(){
-        $users = User::where('users.referrer_id',Auth::id())
-        ->join('pos','pos.user_id','=','users.referrer_id')->get();
-        return view('affiliate.user-referred',compact('users'));
+        $referred_users = User::where('users.referrer_id',Auth::id())
+        // ->with('affiliate_user')
+        ->leftJoin('payments','payments.user_id','=','users.id')
+        ->select('users.*','payments.*','users.id as current_user_id'
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'successfull' THEN payments.id END) AS successful_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'successfull' THEN payments.amount_paid END) AS successful_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'pending' THEN payments.id END) AS pending_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'pending' THEN payments.amount_paid END) AS pending_payment")
+            ,DB::raw("COUNT(CASE WHEN payments.status = 'cancelled' THEN payments.id END) AS cancelled_orders")
+            ,DB::raw("SUM(CASE WHEN payments.status = 'cancelled' THEN payments.amount_paid END) AS cancelled_payment")
+            ,DB::raw("COUNT(payments.id) AS total_orders")
+        )
+        ->groupBy('users.id')
+        ->get();
+        return view('affiliate.user-referred',compact('referred_users'));
     }
     public function update_payment_detail(Request $request){
-        $user = Affiliate::where('user_id',Auth::id())->first();
-        $user->payment = $request->payment;
+        $user = Affiliate::firstOrNew(array('user_id' => Auth::id()));
         if($request->payment == 'mobile_money'){
             $user->account_name = $request->account_name;
             $user->account_number = $request->account_number;
             $user->networks = $request->networks;
-
-            $user->bank_account_name = '';
-            $user->bank_account_number = '';
-            $user->branch = '';
-            $user->bank_name = '';
         } elseif($request->payment == 'bank_settelments'){
             $user->bank_account_name = $request->bank_account_name;
             $user->bank_account_number = $request->bank_account_number;
             $user->branch = $request->branch;
             $user->bank_name = $request->bank_name;
-
-            $user->account_name = '';
-            $user->account_number = '';
-            $user->networks = '';
         }
+        $user->payment = $request->payment;
+        $user->primary_account = $request->primary;
         $user->save();
-        return back()->with('message', ['text'=>'Payment detail set successfully!','type'=>'success']);
+        return back()->with('message', ['text'=>'Payment Details set successfully!','type'=>'success']);
     }
     public function affiliate_commissions(Request $request){
         $id = Auth::id();

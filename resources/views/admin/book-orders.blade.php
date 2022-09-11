@@ -82,6 +82,7 @@
                                         <td>
                                             @if($payment->is_pos == 1 && $payment->is_pos_payment == 0)
                                                 <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="1"  data-bs-toggle="modal" data-bs-target="#payUserCommission">View Order Detail</a>
+                                                <a href="{{ route('admin.disapprove-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to disapprove the order?')" class="btn btn-danger shadow btn-xs sharp" title="Disaprove/Cancel Order"><i class="fa fa-trash"></i></a>
                                             @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 2)
                                                 <span class="badge light badge-danger">Cancelled</span>
                                             @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 1)

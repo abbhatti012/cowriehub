@@ -40,7 +40,12 @@ class LoginController extends Controller
       }
       
     protected function authenticated(Request $request, $user){
+        if(!$user->email_verified_at) {
+            Auth::logout();
+            return back()->with('registrationSuccessfull', 'Your email is not verified yet! Please verify your email first.');
+        }
         $user = User::find($user->id);
+        // dd($user->role);
         $user->checkin = $user->checkin + 1;
         if($user->role != 'admin'){
             $user->role = 'user';

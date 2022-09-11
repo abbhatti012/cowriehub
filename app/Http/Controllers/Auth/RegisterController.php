@@ -47,6 +47,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'phone' => ['required'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -61,7 +62,7 @@ class RegisterController extends Controller
             return back()->with('message', ['text'=>'Failed! Referral code does not exists','type'=>'danger']);
         } else {
             return $this->registered($request, $user)
-            ?: redirect(route('login'))->with('registrationSuccessfull', 'Your account has been created. Please login to continue');
+            ?: redirect(route('login'))->with('registrationSuccessfull', 'Please check your email to continue to login!');
         }
     }
     protected function create(array $data)
@@ -90,6 +91,7 @@ class RegisterController extends Controller
             'email' => $data['email'],
             // 'role' => $data['role'],
             'role' => 'user',
+            'phone' => $data['phone'],
             'is_subscribe' => $subsrcibe,
             'code' => md5(time() . rand()),
             'password' => Hash::make($data['password']),

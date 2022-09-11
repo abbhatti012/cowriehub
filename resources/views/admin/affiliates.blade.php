@@ -30,9 +30,10 @@
                                     <tr>
                                         <th>No.</th>
                                         <th>Phone</th>
-                                        <th>Payment Detail</th>
+                                        <th>Payment Details</th>
                                         <th>Full Name</th>
                                         <th>Email</th>
+                                        <th>Referral Code</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -41,33 +42,36 @@
                                 @forelse($affiliates as $affiliate)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
-                                        @if($affiliate->affiliates)
-                                        <td>{{ $affiliate->affiliates->company_ }}</td>
+                                        @if($affiliate)
+                                        <td>{{ $affiliate->user->phone }}</td>
                                         <td>
-                                            @if($affiliate->affiliates->payment)
+                                            @if($affiliate->payment)
                                                 <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
-                                                data-payment = "{{ $affiliate->affiliates->payment }}"
-                                                data-account_name = "{{ $affiliate->affiliates->account_name }}"
-                                                data-account_number = "{{ $affiliate->affiliates->account_number }}"
-                                                data-networks = "{{ $affiliate->affiliates->networks }}"
-                                                data-bank_account_name = "{{ $affiliate->affiliates->bank_account_name }}"
-                                                data-bank_account_number = "{{ $affiliate->affiliates->bank_account_number }}"
-                                                data-branch = "{{ $affiliate->affiliates->branch }}"
-                                                data-bank_name = "{{ $affiliate->affiliates->bank_name }}"
-                                                title="View Payment Detail">View</a>
+                                                data-payment = "{{ $affiliate->payment }}"
+                                                data-account_name = "{{ $affiliate->account_name }}"
+                                                data-account_number = "{{ $affiliate->account_number }}"
+                                                data-networks = "{{ $affiliate->networks }}"
+                                                data-bank_account_name = "{{ $affiliate->bank_account_name }}"
+                                                data-bank_account_number = "{{ $affiliate->bank_account_number }}"
+                                                data-branch = "{{ $affiliate->branch }}"
+                                                data-bank_name = "{{ $affiliate->bank_name }}"
+                                                title="View Payment Details">View</a>
                                             @endif
                                         </td>
                                         @else
                                         <td>N/A</td>
                                         <td>N/A</td>
                                         @endif
-                                        <td>{{ $affiliate->name }}</td>
-                                        <td>{{ $affiliate->email }}</td>
+                                        <td>{{ $affiliate->user->name }}</td>
+                                        <td>{{ $affiliate->user->email }}</td>
                                         <td>
-                                            @if($affiliate->affiliates)
-                                                <a href="{{ route('admin.delete-affiliate', $affiliate->affiliates->user_id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete Affiliate permanently?')" title="Delete Affiliate"><i class="fa fa-trash"></i></a>
-                                                @if($affiliate->affiliates->status == 0)
-                                                    <a href="{{ route('admin.approve-affiliate', $affiliate->affiliates->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve Affiliate"><i class="fa fa-check"></i></a>
+                                            {{ $affiliate->user->code }}
+                                        </td>
+                                        <td>
+                                            @if($affiliate)
+                                                <a href="{{ route('admin.delete-affiliate', $affiliate->user_id) }}" class="btn btn-danger shadow btn-xs sharp" onclick="return confirm('Are you sure you want delete Affiliate permanently?')" title="Delete Affiliate"><i class="fa fa-trash"></i></a>
+                                                @if($affiliate->status == 0)
+                                                    <a href="{{ route('admin.approve-affiliate', $affiliate->id) }}" class="btn btn-info shadow btn-xs sharp" title="Approve Affiliate"><i class="fa fa-check"></i></a>
                                                 @endif
                                             @endif
                                         </td>
@@ -87,7 +91,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Payment Detail</h5>
+                <h5 class="modal-title">Payment Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal">
                 </button>
             </div>
@@ -114,7 +118,7 @@
                                         <td>---</td>
                                     </tr>
                                     <tr>
-                                        <th>Bank Info</th>
+                                        <th>Bank Details</th>
                                         <td class="payment"></td>
                                         <td class="bank_account_name"></td>
                                         <td class="bank_account_number"></td>
