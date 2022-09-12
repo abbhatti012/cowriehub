@@ -351,6 +351,11 @@
                             <div class="woocommerce">
                                 <form name="checkout" method="post" class="checkout woocommerce-checkout row mt-8" action="{{ route('pay-now', $payment->id) }}" id="basic-validation" enctype="multipart/form-data" novalidate="novalidate">
                                     @csrf
+                                    @if(isset($_REQUEST['ref']) && !empty($_REQUEST['ref']))
+                                        <input type="hidden" name="ref" value="<?= $_REQUEST['ref'] ?>">
+                                    @else
+                                        <input type="hidden" name="ref" value="">
+                                    @endif
                                     <div class="col2-set col-md-6 col-lg-7 col-xl-8 mb-6 mb-md-0" id="customer_details">
                                         <div class="px-4 pt-5 bg-white border">
                                             <div id="payment" class="woocommerce-checkout-payment">

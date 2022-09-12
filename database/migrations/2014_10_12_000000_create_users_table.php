@@ -20,9 +20,11 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone');
             $table->string('role');
+            $table->string('avatar')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->longText('code')->nullable();
+            $table->string('verification_code')->nullable();
             $table->longText('fcm_token')->nullable();
             $table->unsignedBigInteger('created_by')->default(0);
             $table->integer('checkout')->default(0);

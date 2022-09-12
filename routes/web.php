@@ -240,6 +240,10 @@ Route::group(['middleware' => 'publisher'], function () {
 Route::get('/get-purchases', [App\Http\Controllers\User\UserController::class, 'get_purchases'])->name('get-purchases');
 Route::get('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
 Route::post('/author/sales', [App\Http\Controllers\User\UserController::class, 'author_sales'])->name('author.sales');
+Route::get('/update-profile', [App\Http\Controllers\User\UserController::class, 'update_profile'])->name('update.profile')->middleware('auth');
+Route::post('/update-profile-fields', [App\Http\Controllers\User\UserController::class, 'update_profile_fields'])->name('update-profile-fields')->middleware('auth');
+Route::post('/send-verification-email', [App\Http\Controllers\User\UserController::class, 'send_verification_email'])->name('send-verification-email')->middleware('auth');
+Route::post('/check-verification-email', [App\Http\Controllers\User\UserController::class, 'check_verification_email'])->name('check-verification-email')->middleware('auth');
 
 Route::get('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');
 Route::post('/my-sales', [App\Http\Controllers\PublisherController::class, 'my_sales'])->name('publisher.my-sales');

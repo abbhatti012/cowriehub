@@ -35,7 +35,7 @@
                 <div class="card">
                     <div class="card-header border-0 d-sm-flex d-block">
                         <div class="me-auto mb-sm-0 mb-3">
-                            <h4 class="card-title mb-2">Oredrs Stat</h4>
+                            <h4 class="card-title mb-2">Order Stats</h4>
                         </div>
                     </div>
                     <div class="card-body">

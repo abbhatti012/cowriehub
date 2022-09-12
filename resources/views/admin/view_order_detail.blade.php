@@ -27,10 +27,10 @@
                     <h4 class="text-primary"><i class="fas fa-book"></i> Payment Details</h4>
                     <p class="text-muted"></p>
                     <div class="post">                     
-                        <p><b>Transactio ID:&emsp;</b>{{ $payment->transaction_id }}</p>
+                        <p><b>Transaction ID:&emsp;</b>{{ $payment->transaction_id }}</p>
                         <p><b>Location:&emsp;</b>{{ $payment->location }}</p>
                         <p><b>Precise Location:&emsp;</b>{{ $payment->precise_location }}</p>
-                        <p><b>post code:&emsp;</b>{{ $payment->post_code }}</p>
+                        <p><b>Post Code:&emsp;</b>{{ $payment->post_code }}</p>
                         <p><b>Subtotal:&emsp;</b>{{ $payment->subtotal }}</p>
                         <p><b>Shipping Price:&emsp;</b>{{ $payment->shipping_price }}</p>
                         <p><b>Total Amount:&emsp;</b>{{ $payment->total_amount }}</p>
@@ -58,9 +58,9 @@
                                     <a href="javascript:void(0)" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
                                     </th>
                                     <th>Is Pre Order?</th>
-                                    <th>Extra Type</th>
+                                    <th>Book Type</th>
                                     <th>Book Original Price</th>
-                                    <th>Extra Price</th>
+                                    <th>Book Type Price</th>
                                     <th>Shipping Price</th>
                                     <th>Amount Paid</th>
                                     <th>Remaining Price</th>
@@ -107,6 +107,7 @@
                 $shipping = unserialize($payment->shipping_detail);
             @endphp
                 <div class="row col-12">
+                    @if($billing)
                     <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-book"></i> Billing Details</h4>
                         <p class="text-muted"></p>
@@ -120,6 +121,8 @@
                             <p><b>Additional Comments:&emsp;</b>{{ $billing['notes'] }}</p>
                         </div>
                     </div>
+                    @endif
+                    @if($shipping)
                     <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-book"></i> Shipping Details</h4>
                         <p class="text-muted"></p>
@@ -133,6 +136,7 @@
                             <p><b>Additional Comments:&emsp;</b>{{ $shipping['notes'] }}</p>
                         </div>
                     </div>
+                    @endif
                     <div class="col-4">
                         <h4 class="text-primary"><i class="fas fa-user"></i> User Details</h4>
                         <p class="text-muted"></p>

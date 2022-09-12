@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Traits\CurrencySession;
 use App\Models\Blog;
 use App\Models\Book;
 use App\Models\User;
@@ -15,6 +14,7 @@ use App\Models\Setting;
 use App\Models\Location;
 use App\Models\Wishlist;
 use App\Models\Addresses;
+use App\Models\Affiliate;
 use App\Models\Marketing;
 use App\Models\SearchBook;
 use App\Models\Subscriber;
@@ -22,6 +22,7 @@ use App\Models\AuthorDetail;
 use App\Models\MarketOrders;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Http\Traits\CurrencySession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
@@ -190,12 +191,14 @@ class HomeController extends Controller
         if(Auth::id()){
             $wishlist = Wishlist::where('user_id',Auth::id())->where('book_id', $book->id)->get();
             $wishlist = count($wishlist);
+            $is_affiliate = Affiliate::where('user_id',Auth::id())->count();
         } else {
             $wishlist = 0;
+            $is_affiliate = 0;
         }
         $locations = Location::orderBy('id','desc')->get();
         $currency = $this->getCurrencyRate();
-        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations','currency'));
+        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations','currency','is_affiliate'));
     }
     public function cart(){
         $data['locations'] = Location::orderBy('id','desc')->get();

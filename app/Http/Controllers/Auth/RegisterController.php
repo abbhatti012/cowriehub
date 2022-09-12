@@ -7,10 +7,11 @@ use Illuminate\Http\Request;
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Controllers\pos\PosController;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Controllers\pos\PosController;
 use Illuminate\Foundation\Auth\RegistersUsers;
 
 class RegisterController extends Controller
@@ -73,11 +74,60 @@ class RegisterController extends Controller
                 return $user = [];
             } else {
                 $referrer_id = $userExists->id;
+
+                $data['title'] = 'New Referral Register';
+                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.';
+                $data['body'] .= ' Please check below link to see its details!';
+                $data['body'] .= 'Referral Code is: '.$userExists->code;
+                $data['link'] = "affiliate.user-referred";
+                $data['linkText'] = "View";
+                $data['to'] = $userExists->email;
+                $data['username'] = $userExists->name;
+                Mail::send('email', $data,function ($m) use ($data) {
+                    $m->to($data['to'])->subject('New User Register');
+                });
+
+                $data['title'] = 'New User SignUp';
+                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.';
+                $data['body'] .= ' Please check below link to see details!';
+                $data['body'] .= ' Referral Code is: '.$userExists->code;
+                $data['link'] = "admin.general-user";
+                $data['linkText'] = "View";
+                $data['to'] = 'info@cowriehub.com';
+                $data['username'] = 'Cowriehub';
+                Mail::send('email', $data,function ($m) use ($data) {
+                    $m->to($data['to'])->subject('New User SignUp');
+                });
             }
         } else if(isset($data['code'])){
             $code = $data['code'];
             $userData = User::where('code', $code)->first();
             $referrer_id = $userData->id;
+
+            $data['title'] = 'New Referral Register';
+                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.';
+                $data['body'] .= ' Please check below link to see its details!';
+                $data['body'] .= 'Referral Code is: '.$userData->code;
+                $data['link'] = "affiliate.user-referred";
+                $data['linkText'] = "View";
+                $data['to'] = $userData->email;
+                $data['username'] = $userData->name;
+                Mail::send('email', $data,function ($m) use ($data) {
+                    $m->to($data['to'])->subject('New User Register');
+                });
+
+                $data['title'] = 'New User SignUp';
+                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.';
+                $data['body'] .= ' Please check below link to see details!';
+                $data['body'] .= ' Referral Code is: '.$userData->code;
+                $data['link'] = "admin.general-user";
+                $data['linkText'] = "View";
+                $data['to'] = 'info@cowriehub.com';
+                $data['username'] = 'Cowriehub';
+                Mail::send('email', $data,function ($m) use ($data) {
+                    $m->to($data['to'])->subject('New User SignUp');
+                });
+
         } else {
             $referrer_id = 0;
         }

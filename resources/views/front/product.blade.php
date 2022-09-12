@@ -224,7 +224,7 @@
                                                 </div>
                                                 <div>
                                                     <label for="post_code"></label>
-                                                    <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana POST Code">
+                                                    <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana Digital Address">
                                                 </div>
                                             </div>
                                         </div>
@@ -345,10 +345,11 @@
                                             <a href="{{ route('wishlist') }}" class="h-primary"><i class="flaticon-heart mr-2"></i> View Wishlist</a>
                                         @endif
                                     </li>
-                                    @if($author->role != 'admin')
+                                    @if($is_affiliate != 0)
                                     <li class="mr-3">
+                                        <?php $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>
                                         <a href="javascript:void(0)" class="h-primary" onclick="copyToClipboard('#referrelCode')"><i class="fa fa-copy mr-2"></i> Copy Referral Link</a>
-                                        <input type="text" value="<?= $author->code ?>" id="referrelCode" style="position:absolute;left:-1000px;top:-1000px;">
+                                        <input type="text" value="<?= $url ?>?ref=<?= Auth::user()->code ?>" id="referrelCode" style="position:absolute;left:-1000px;top:-1000px;">
                                     </li>
                                     @endif
                                     <li class="mr-3">
@@ -362,6 +363,16 @@
                                     <li class="mr-3">
                                         <a href="javascript:void(0)" class="h-primary sampleModalModal" data-toggle="modal" data-target="#sampleModalModal"><i class="fa fa-copy mr-2"></i> View Sample</a>
                                     </li>
+                                </ul>
+                            </div>
+                            <div class="px-4 px-xl-7 py-5 d-flex align-items-center">
+                                <ul class="list-unstyled nav">
+                                    @if(!Auth::check() && isset($_REQUEST['ref']) && !empty($_REQUEST['ref']))
+                                    <?php $url = "http" . (($_SERVER['SERVER_PORT'] == 443) ? "s" : "") . "://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']; ?>
+                                        <li class="mr-3">
+                                            <a href="{{ route('register') }}?ref=<?= $_REQUEST['ref'] ?>&callback=<?= $url ?>?ref=<?= $_REQUEST['ref'] ?>" class="btn btn-dark border-0 rounded-0 p-3 min-width-250 ml-md-4 button alt">Register Now</a>
+                                        </li>
+                                    @endif
                                 </ul>
                             </div>
                         </div>
@@ -890,6 +901,7 @@
                 var author_id = $(this).data('user_id');
                 var currency = "<?= $currency->currency_code ?>";
                 var exchange_rate = "<?= $currency->exchange_rate ?>";
+                var ref = "<?php if(isset($_REQUEST['ref']) && !empty($_REQUEST['ref'])){echo $_REQUEST['ref'];}else{echo '';} ?>";
                 
                 $.ajax({
                     type : 'POST',
@@ -906,7 +918,8 @@
                         is_preorder : is_preorder,
                         author_id : author_id,
                         exchange_rate : exchange_rate,
-                        currency : currency
+                        currency : currency,
+                        ref : ref
                     },
                     success : function(data){
                         $('body .cartItemsLength').html(data.cartLength);
@@ -949,7 +962,7 @@
                             shippingPrice : shippingPrice
                         },
                         success : function(data){
-                            location.href = "{{ route('checkout') }}?token="+data;
+                            location.href = "{{ route('checkout') }}?token="+data+"&ref=<?php if(isset($_REQUEST['ref']) && !empty($_REQUEST['ref'])){echo $_REQUEST['ref'];}else{echo '';} ?>";
                         }
                     });
                 }

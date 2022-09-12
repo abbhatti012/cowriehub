@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -503,5 +504,62 @@ class UserController extends Controller
         $graph_data['label'] = $graph['label'];
         // return response()->json(view('front.user_purchase', compact('books','orders','approved','pending','approved_books','check','graph_data'))->render());
         return view('front.user_purchase', compact('orders','approved','pending','graph_data','id'))->render();
+    }
+    public function update_profile(){
+        $role = auth()->user()->role;
+        if($role == 'author'){
+            $role  = 'user';
+        } else if($role == 'user'){
+            $role  = 'author';
+        }
+        $user = User::find(Auth::id());
+        return view('front.update-profile',compact('user','role'));
+    }
+    public function update_profile_fields(Request $request){
+        $user = User::find(Auth::id());
+        if($request->avatar != null){
+            $avatar = time().'.'.$request->avatar->extension();
+            $request->avatar->move(public_path('images/authors'), $avatar);
+            $user->avatar = 'images/authors/'.$avatar;
+        } else {
+            unset($user->avatar);
+        }
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->verification_code = '';
+        $user->save();
+        return back()->with('message', ['text'=>'Profile has been updated','type'=>'success']);
+    }
+
+    public function send_verification_email(Request $request){
+        $user = User::where('email',$request->email)->first();
+        if($user){
+            return response()->json(false);
+        } else {
+            $code = md5(now());
+            $user = User::where('id',Auth::id())->first();
+            $user->verification_code = $code;
+            $user->save();
+            $data['title'] = 'Email Verification Code';
+            $data['body'] = 'Your email verification code for Cowriehub is: '.$code;
+            $data['link'] = "";
+            $data['linkText'] = "";
+            $data['to'] = $request->email;
+            $data['username'] = $user->name;
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('Email Verification Code');
+            });
+            return response()->json(true);
+        }
+    }
+    public function check_verification_email(Request $request){
+        $code = $request->code;
+        $user = User::where('id',Auth::id())->where('verification_code',$code)->first();
+        if($user){
+            return response()->json(true);
+        } else {
+            return response()->json(false);
+        }
     }
 }

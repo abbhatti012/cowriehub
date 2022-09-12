@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Providers\RouteServiceProvider;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -51,7 +52,12 @@ class LoginController extends Controller
             $user->role = 'user';
         }
         $user->save();
-        
+        // dd(Session::get('callback'));
+        if(!empty(Session::get('callback'))){
+            $callback = Session::get('callback');
+            Session::put('callback','');
+            return redirect($callback);
+        }
         if($user->role === 'admin') {
             return redirect(route('admin'));
         }

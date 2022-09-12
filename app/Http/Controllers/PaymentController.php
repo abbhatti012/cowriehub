@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Traits\CurrencySession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -191,6 +192,20 @@ class PaymentController extends Controller
                     $revenue->currency = $cart['currency'];
                     $revenue->exchange_rate = $cart['exchange_rate'];
                     $revenue->save();
+                } else if(!empty($cart['ref'])){
+                    $user = User::where('code',$cart['ref'])->first();
+                    $revenue = new Revenue();
+                    $revenue->user_id = $user->id;
+                    $revenue->role = 'affiliate';
+                    $revenue->order_id = $order->id;
+                    $revenue->user_amount = 0;
+                    $revenue->affiliate_amount = round(($order->amount_paid/100)*$setting->affiliate_commission);
+                    $revenue->payment_status = 0;
+                    $revenue->admin_payment_status = 0;
+                    $revenue->is_referrer = 1;
+                    $revenue->currency = $cart['currency'];
+                    $revenue->exchange_rate = $cart['exchange_rate'];
+                    $revenue->save();
                 }
             }
         } else {
@@ -225,7 +240,6 @@ class PaymentController extends Controller
             $order->remaining_price = $order->total_price - $order->amount_paid;
             $order->save();
 
-            $order->save();
             $revenue = new Revenue();
             $revenue->user_id = $book->user_id;
             $revenue->role = $book->role;
@@ -240,6 +254,20 @@ class PaymentController extends Controller
             if(Auth::check() && Auth::user()->referrer_id != 0){
                 $revenue = new Revenue();
                 $revenue->user_id = Auth::user()->referrer_id;
+                $revenue->role = 'affiliate';
+                $revenue->order_id = $order->id;
+                $revenue->user_amount = 0;
+                $revenue->affiliate_amount = round(($order->amount_paid/100)*$setting->affiliate_commission);
+                $revenue->payment_status = 0;
+                $revenue->admin_payment_status = 0;
+                $revenue->is_referrer = 1;
+                $revenue->currency = $currency->currency_code;
+                $revenue->exchange_rate = $currency->exchange_rate;
+                $revenue->save();
+            } else if(isset($request->ref) && !empty($request->ref)){
+                $user = User::where('code',$request->ref)->first();
+                $revenue = new Revenue();
+                $revenue->user_id = $user->id;
                 $revenue->role = 'affiliate';
                 $revenue->order_id = $order->id;
                 $revenue->user_amount = 0;
@@ -269,6 +297,18 @@ class PaymentController extends Controller
                 }
             }
             session()->put('cart', []);
+
+            $data['title'] = 'New Order Placed';
+            $data['body'] = 'Congratulations!. New order has been placed just now!';
+            $data['body'] .= 'Please check below link to see its details!';
+            $data['link'] = "admin.book-orders";
+            $data['linkText'] = "View";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'COWRIEHUB';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Order Placed');
+            });
+
             return redirect('success-page?token='.$payment->token);
         }
         if(Auth::check() && Auth::user()->role == 'pos'){
@@ -372,6 +412,17 @@ class PaymentController extends Controller
     }
     public function pos_callback(Request $request, $id){
         if(isset($request->status)) {
+            $data['title'] = 'New Order Placed';
+            $data['body'] = 'Congratulations!. New order has been placed just now!';
+            $data['body'] .= 'Please check below link to see its details!';
+            $data['link'] = "admin.book-orders";
+            $data['linkText'] = "View";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'COWRIEHUB';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Order Placed');
+            });
+            
             $payment = Payment::find($id);
             $payment->status = $request->status;
             $payment->transaction_id = $request->transaction_id;
@@ -446,6 +497,17 @@ class PaymentController extends Controller
     }
     public function callback(Request $request, $id){
         if(isset($request->status)) {
+            $data['title'] = 'New Order Placed';
+            $data['body'] = 'Congratulations!. New order has been placed just now!';
+            $data['body'] .= 'Please check below link to see its details!';
+            $data['link'] = "admin.book-orders";
+            $data['linkText'] = "View";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'COWRIEHUB';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Order Placed');
+            });
+            
             $payment = Payment::find($id);
             $payment->status = $request->status;
             $payment->transaction_id = $request->transaction_id;

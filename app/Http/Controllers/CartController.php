@@ -34,6 +34,7 @@ class CartController extends Controller
                 "author_id" => $request->author_id,
                 "currency" => $request->currency,
                 "exchange_rate" => $request->exchange_rate,
+                "ref" => $request->ref
             ];
         }
         session()->put('cart', $cart);

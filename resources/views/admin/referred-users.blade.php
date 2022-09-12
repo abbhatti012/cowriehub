@@ -33,11 +33,11 @@
                                         <!-- <th>Affiliate Phone</th>
                                         <th>Affiliate Email</th> -->
                                         <th>Total Purchases</th>
-                                        <th>Successfull Orders/Payments</th>
+                                        <th>Successful Orders/Payments</th>
                                         <th>Pending Orders/Payments</th>
                                         <th>Cancelled Orders/Payments</th>
                                         <th>User Purchases</th>
-                                        <th>Affiliate Detail</th>
+                                        <th>Affiliate Details</th>
                                     </tr>
                                 </thead>
                                 <tbody>

@@ -225,7 +225,7 @@
                        </div>
                        <div>
                            <label for="post_code"></label>
-                           <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana POST Code">
+                           <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana Digital Address">
                        </div>
                     </div>
                 </div>

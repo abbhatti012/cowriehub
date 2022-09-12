@@ -36,7 +36,15 @@
         height: 30px;
         margin: 20px auto;
     }
+    .iti{
+        display: block !important;
+    }
 </style>
+@php
+    if(isset($_REQUEST['callback']) && !empty($_REQUEST['callback'])){
+        Session::put('callback', $_REQUEST['callback']);
+    }
+@endphp
 <body class="vh-100">
     <div class="authincation h-100">
         <div class="container h-100">
@@ -91,7 +99,7 @@
                                         <div class="row col-md-12">
                                             <div class="col-md-6">
                                                 <label for="phone" class="mb-1"><strong>Phone Number</strong></label>
-                                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+                                                <input id="phone" type="text" class="form-control @error('phone') is-invalid @enderror" name="phone" value="+233" required autocomplete="phone" autofocus>
                                                 @error('phone')
                                                     <span class="invalid-feedback" role="alert">
                                                         <strong>{{ $message }}</strong>
@@ -121,7 +129,7 @@
                                         <div class="">
                                             <div class="form-check custom-checkbox ms-1">
                                                 <input type="checkbox" class="form-check-input" name="subscribe" id="subscribe">
-                                                <label class="form-check-label" for="subscribe">Subscribe to <a href="{{ url('/') }}">COWRIEHUB</a></label>
+                                                <label class="form-check-label" for="subscribe">Subscribe to <a href="{{ url('/') }}">COWRIEHUB</a></label> for promos and deals
                                             </div>
                                         </div>
                                         @if(isset($_REQUEST['role']) && $_REQUEST['role'] == 'pos')
@@ -346,6 +354,44 @@
     }
 
         initialize();
+    });
+</script>
+<link rel='stylesheet' href='https://intl-tel-input.com/node_modules/intl-tel-input/build/css/intlTelInput.css?1549804213570'>
+<script src='https://intl-tel-input.com/node_modules/intl-tel-input/build/js/intlTelInput.js?1549804213570'></script>
+<script>
+    // International telephone format
+    // $("#phone").intlTelInput();
+    // get the country data from the plugin
+    var countryData = window.intlTelInputGlobals.getCountryData(),
+    input = document.querySelector("#phone"),
+    addressDropdown = document.querySelector("#address-country");
+
+    // init plugin
+    var iti = window.intlTelInput(input, {
+    hiddenInput: "full_phone",
+    utilsScript: "https://intl-tel-input.com/node_modules/intl-tel-input/build/js/utils.js?1549804213570" // just for formatting/placeholders etc
+    });
+
+    // populate the country dropdown
+    for (var i = 0; i < countryData.length; i++) {
+    var country = countryData[i];
+    var optionNode = document.createElement("option");
+    optionNode.value = country.iso2;
+    var textNode = document.createTextNode(country.name);
+    optionNode.appendChild(textNode);
+    addressDropdown.appendChild(optionNode);
+    }
+    // set it's initial value
+    addressDropdown.value = iti.getSelectedCountryData().iso2;
+
+    // listen to the telephone input for changes
+    input.addEventListener('countrychange', function(e) {
+    addressDropdown.value = iti.getSelectedCountryData().iso2;
+    });
+
+    // listen to the address dropdown for changes
+    addressDropdown.addEventListener('change', function() {
+    iti.setCountry(this.value);
     });
 </script>
 </html>
