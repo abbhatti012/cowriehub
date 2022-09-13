@@ -167,7 +167,7 @@
                         </table>
                     </div>
                 </div>
-
+                @if(Auth::check() && Auth::user()->role != 'pos')
                 <div class="p-4d875 border">
                     <div id="cartHeadingTwo" class="cart-head">
                         <a class="d-flex align-items-center justify-content-between text-dark" href="#"
@@ -229,6 +229,7 @@
                        </div>
                     </div>
                 </div>
+                @endif
 
                 <div  class="p-4d875 border">
                     <div id="cartHeadingOne" class="cart-head">
@@ -310,7 +311,11 @@
             </div>
            
             <div class="wc-proceed-to-checkout">
+            @if(Auth::check() && Auth::user()->role != 'pos')
                 <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedToCheckout">Proceed to checkout</a>
+            @else
+                <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedForAddress">Proceed For Address</a>
+            @endif
             </div>
             <br>
             <div class="wc-proceed-to-checkout">

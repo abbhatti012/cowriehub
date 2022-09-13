@@ -4,6 +4,9 @@
     .outCampaign{
         display: none;
     }
+    .labelBarCode div:first-child{
+        left: 50%;
+    }
 </style>
 <div class="content-body">
     <div class="container-fluid">
@@ -40,12 +43,55 @@
                         <p><b>Payment Method:&emsp;</b>{{ $payment->payment_method }}</p>
                     </div>
                 </div>
+                @php
+                    $billing = unserialize($payment->billing_detail);
+                    $shipping = unserialize($payment->shipping_detail);
+                @endphp
                 <div class="col-6">
-                    <h4 class="text-primary"><i class="fas fa-book"></i> Shipping Label</h4>
-                    <p class="text-muted"></p>
-                    @if(!empty($payment->transaction_id))
-                        <div class="mb-3">{!! DNS2D::getBarcodeHTML($payment->transaction_id, 'QRCODE') !!}</div>
-                    @endif
+                    <div class="card">
+                        <h4 class="text-primary"><i class="fas fa-book"></i> Shipping Label</h4>
+                        <div class="body" id="labelPrint">
+                            <div class="row clearfix" style="margin: 5px; font-weight: bolder">
+                            <div style="text-align: center; margin-bottom: 0px;">
+                                <h3 class="boxFont">CowrieHub</h3>
+                            </div>
+                            <div class="table-responsive" style="margin: 0px; padding: 0px; font-size: 16px;">
+                                <table class="table table-bordered" style="padding: 0px;">
+                                <tbody><tr>
+                                    <td><b>Name:</b></td>
+                                    <td>{{ $user->name }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Address:</b></td>
+                                    <td>{{ $payment->precise_location }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Phone:</b></td>
+                                    <td>{{ $user->phone }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Email:</b></td>
+                                    <td>{{ $user->email }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Cost (GHS):</b></td>
+                                    <td>{{ $payment->total_amount }}</td>
+                                </tr>
+                                </tbody></table>
+                                @if(!empty($payment->transaction_id))
+                                    <div class="mb-3 labelBarCode">
+                                        <center>{!! DNS1D::getBarcodeSVG($payment->transaction_id, 'C39',0.9,50,'black',true) !!}</center>
+                                    </div>
+                                @endif
+                            </div>
+                            </div>  
+                        </div>
+                        <div class="footer">
+                            <button type="button" onclick="pdf('#labelPrint', '85TC5MXFVSWMPBFW.pdf')" class="btn btn-xs btn-info waves-effect" style="margin: 15px;">
+                                <i class="fa fa-print"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-12"><hr>
                 <div class="table-responsive mb-4">
@@ -102,14 +148,11 @@
                     </div>
                 </div>
               </div><hr>
-            @php
-                $billing = unserialize($payment->billing_detail);
-                $shipping = unserialize($payment->shipping_detail);
-            @endphp
+            
                 <div class="row col-12">
                     @if($billing)
                     <div class="col-4">
-                        <h4 class="text-primary"><i class="fas fa-book"></i> Billing Details</h4>
+                        <h4 class="text-primary"><i class="fas fa-book"></i> Billing Address</h4>
                         <p class="text-muted"></p>
                         <div class="post">                     
                             <p><b>Billing First Name:&emsp;</b>{{ $billing['first_name'] }}</p>
@@ -162,5 +205,16 @@
 
 @endsection
 @section('scripts') 
-
+    <script>
+        function pdf(selector, filename){
+            $('body').css({ display: 'none' });
+            $('#printButton').css({ display: 'none' });
+            let content = $(selector).clone();
+            $('body').before(content);
+            window.print();
+            $(selector).first().remove();
+            $('body').css({ display: '' });
+            $('#printButton').css({ display: '' })
+        }
+    </script>
 @endsection

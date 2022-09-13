@@ -83,7 +83,7 @@
                                         <td class="text" style="border-collapse: collapse;border: 0;margin: 0;padding: 0;-webkit-text-size-adjust: none;color: #555559;font-family: Arial, sans-serif;font-size: 16px;line-height: 26px;">
                                             <div class="mktEditable" id="main_text">
                                                 Hi <b>{{ $username }} ,</b> <br><br>
-                                                    {{ $body }} <br>
+                                                    <?= $body ?> <br>
                                                     <b>
                                                         @if(!empty($link))
                                                             @if(isset($param) && !empty($param))

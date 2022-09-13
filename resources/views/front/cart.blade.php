@@ -109,6 +109,20 @@
                     });
                 }
             });
+            $(document).on('click','.proceedForAddress',function(){
+                $.ajax({
+                    type : 'POST',
+                    url : "{{ route('pos-before-payment') }}",
+                    data : {
+                        '_token' : '{{ csrf_token() }}',
+                        totalPrice : parseInt($('.totalPrice').text()),
+                        subTotal : parseInt($('.subtotalValue').text()),
+                    },
+                    success : function(data){
+                        location.href = "{{ route('checkout') }}?token="+data;
+                    }
+                });
+            });
         });
     </script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBeEQgpHcPzV4BwOa60xgE9AwhlofidWh8&libraries=places"></script>

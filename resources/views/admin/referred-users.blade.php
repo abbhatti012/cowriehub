@@ -30,6 +30,7 @@
                                     <tr>
                                         <th>Phone</th>
                                         <th>Email</th>
+                                        <th>User Type</th>
                                         <!-- <th>Affiliate Phone</th>
                                         <th>Affiliate Email</th> -->
                                         <th>Total Purchases</th>
@@ -45,10 +46,18 @@
                                 @forelse($referred_users as $user)
                                 <?php 
                                     $affiliateUser = DB::table('users')->where('id',$user->referrer_id)->first();
+                                    $posUser = DB::table('pos')->where('user_id',$user->current_user_id)->first();
                                 ?>
                                     <tr>
                                         <td>{{ $user->phone }}</td>
                                         <td>{{ $user->email }}</td>
+                                        <td>
+                                            @if($posUser)
+                                                POS
+                                            @else
+                                                general user
+                                            @endif
+                                        </td>
                                         <!-- @if($user->affiliate_user)
                                             <td>{{ $affiliateUser->phone }}</td>
                                             <td>{{ $affiliateUser->email }}</td>

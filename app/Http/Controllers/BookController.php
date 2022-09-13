@@ -41,13 +41,13 @@ class BookController extends Controller
         } else {
             unset($user->hero_image);
         }
-        // if($request->cover != null){
-        //     $UploadImage = 'b'.time().'.'.$request->cover->extension();
-        //     $request->cover->move(public_path('images/books'), $UploadImage);
-        //     $user->cover = 'images/books/'.$UploadImage;
-        // } else {
-        //     unset($user->cover);
-        // }
+        if($request->trailer != null){
+            $UploadImage = 'b'.time().'.'.$request->trailer->extension();
+            $request->trailer->move(public_path('images/books'), $UploadImage);
+            $user->trailer = 'images/books/'.$UploadImage;
+        } else {
+            unset($user->trailer);
+        }
         if($request->sample != null){
             $UploadImage = 'c'.time().'.'.$request->sample->extension();
             $request->sample->move(public_path('images/books'), $UploadImage);

@@ -74,20 +74,20 @@
             </li>
             <li class="<?php if(request()->segment(1) == 'affiliate-commissions'){echo 'mm-active';} ?>">
                 <a href="{{ route('affiliate.commissions') }}" class="ai-icon" aria-expanded="false">
-                    <i class="fa fa-percent"></i>
+                    <i class="fa fa-money"></i>
                     <span class="nav-text">My Commissions</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(1) == 'user-referred'){echo 'mm-active';} ?>">
                 <a href="{{ route('affiliate.user-referred') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-user-plus"></i>
-                    <span class="nav-text">User Referred</span>
+                    <span class="nav-text">User Referrals</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(1) == 'pos-referred'){echo 'mm-active';} ?>">
                 <a href="{{ route('affiliate.pos-referred') }}" class="ai-icon" aria-expanded="false">
                     <i class="fa fa-user-plus"></i>
-                    <span class="nav-text">POS Referred</span>
+                    <span class="nav-text">POS Referrals</span>
                 </a>
             </li>
             <li class="<?php if(request()->segment(1) == 'affiliate-payment-detail'){echo 'mm-active';} ?>">

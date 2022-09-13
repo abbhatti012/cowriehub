@@ -40,6 +40,22 @@ class PaymentController extends Controller
         $payment->save();
         return response()->json($payment->token);
     }
+    public function pos_before_payment(Request $request){
+        $userId = Auth::id();
+        if(!$userId){
+            $userId = 0;
+        }
+        $payment = new Payment();
+        $payment->user_id = $userId;
+        $payment->token = Str::random(32);
+        $payment->subtotal = $request->subTotal;
+        $payment->total_amount = $request->totalPrice;
+        $payment->shipping_price = $request->shippingPrice;
+        $payment->status = 'pending';
+        $payment->is_pos = 1;
+        $payment->save();
+        return response()->json($payment->token);
+    }
     public function preorder_before_payment(Request $request){
         $userId = Auth::id();
         if(!$userId){
@@ -299,10 +315,14 @@ class PaymentController extends Controller
             session()->put('cart', []);
 
             $data['title'] = 'New Order Placed';
-            $data['body'] = 'Congratulations!. New order has been placed just now!';
-            $data['body'] .= 'Please check below link to see its details!';
+            $data['body'] = 'Congratulations!. New order has been placed just now!<br>';
+            $data['body'] .= '<b>Total Amount: </b>'.$total_amount.'<br>';
+            $data['body'] .= '<b>Payment Type: </b>'.$request->payment_method.'<br>';
+            $data['body'] .= '<b>Destination: </b>'.$payment->precise_location.'<br>';
+            $data['body'] .= '<b>Status: </b>Pending<br>';
+            $data['body'] .= 'Please check below link to see more details!';
             $data['link'] = "admin.book-orders";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $data['to'] = 'info@cowriehub.com';
             $data['username'] = 'COWRIEHUB';
             Mail::send('email', $data,function ($m) use ($data) {
@@ -312,6 +332,20 @@ class PaymentController extends Controller
             return redirect('success-page?token='.$payment->token);
         }
         if(Auth::check() && Auth::user()->role == 'pos'){
+            $data['title'] = 'New Order Placed';
+            $data['body'] = 'Congratulations!. New order has been placed just now!<br>';
+            $data['body'] .= '<b>Total Amount: </b>'.$total_amount.'<br>';
+            $data['body'] .= '<b>Payment Type: </b>POS<br>';
+            $data['body'] .= '<b>Destination: </b>'.$payment->precise_location.'<br>';
+            $data['body'] .= '<b>Status: </b>Pending<br>';
+            $data['body'] .= 'Please check below link to see more details!';
+            $data['link'] = "admin.book-orders";
+            $data['linkText'] = "View for details";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'COWRIEHUB';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Order Placed');
+            });
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
@@ -416,7 +450,7 @@ class PaymentController extends Controller
             $data['body'] = 'Congratulations!. New order has been placed just now!';
             $data['body'] .= 'Please check below link to see its details!';
             $data['link'] = "admin.book-orders";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $data['to'] = 'info@cowriehub.com';
             $data['username'] = 'COWRIEHUB';
             Mail::send('email', $data,function ($m) use ($data) {
@@ -501,7 +535,7 @@ class PaymentController extends Controller
             $data['body'] = 'Congratulations!. New order has been placed just now!';
             $data['body'] .= 'Please check below link to see its details!';
             $data['link'] = "admin.book-orders";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $data['to'] = 'info@cowriehub.com';
             $data['username'] = 'COWRIEHUB';
             Mail::send('email', $data,function ($m) use ($data) {

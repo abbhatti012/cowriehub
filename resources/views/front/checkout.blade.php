@@ -378,7 +378,7 @@
 
                                             <div class="woocommerce-billing-fields">
 
-                                                <h3 class="mb-4 font-size-3">Billing details</h3>
+                                                <h3 class="mb-4 font-size-3">Billing Address</h3>
 
                                                 <div class="woocommerce-billing-fields__field-wrapper row">
                                                     <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field" id="billing_first_name_field" data-priority="10">
@@ -671,7 +671,7 @@
                                                 <div id="payment" class="woocommerce-checkout-payment">
                                                     <ul class="wc_payment_methods payment_methods methods">
                                                         <li class="wc_payment_method use_shipping_address">
-                                                            <input id="use_shipping_address" type="radio" class="input-radio">
+                                                            <input id="use_shipping_address" type="radio" name="billingAddress" class="input-radio">
                                                             <label for="use_shipping_address">Use existing shipping address </label>
                                                         </li>
                                                     </ul>
@@ -680,12 +680,20 @@
                                                 <div id="payment" class="woocommerce-checkout-payment">
                                                     <ul class="wc_payment_methods payment_methods methods">
                                                         <li class="wc_payment_method use_billing_address">
-                                                            <input id="use_billing_address" type="radio" class="input-radio">
+                                                            <input id="use_billing_address" type="radio" name="billingAddress" class="input-radio">
                                                             <label for="use_billing_address">Use billing address </label>
                                                         </li>
                                                     </ul>
                                                 </div>
                                                 @endif
+                                                <div id="payment" class="woocommerce-checkout-payment">
+                                                    <ul class="wc_payment_methods payment_methods methods">
+                                                        <li class="wc_payment_method use_new_address">
+                                                            <input id="use_new_address" type="radio" name="billingAddress" class="input-radio">
+                                                            <label for="use_new_address">New Address?</label>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                                 <div class="woocommerce-billing-fields__field-wrapper row">
                                                     <p class="col-lg-6 mb-4d75 form-row form-row-first validate-required woocommerce-invalid woocommerce-invalid-required-field" id="billing_first_name_field" data-priority="10">
                                                         <label for="shipping_first_name" class="form-label">First name <abbr class="required" title="required">*</abbr></label>
@@ -1099,7 +1107,7 @@
                                                 </div>
                                                 @endif
                                             </div>
-
+                                            @if(Auth::check() && Auth::user()->role != 'pos')
                                             <div class="p-4d875 border">
                                                 <div id="checkoutHeadingThree" class="checkout-head">
                                                     <a href="#" class="text-dark d-flex align-items-center justify-content-between"
@@ -1131,7 +1139,7 @@
                                                     <div class="coupoMessage"></div>
                                                 </div>
                                             </div>
-
+                                            @endif
                                             <div class="p-4d875 border">
                                                 <table  class="shop_table shop_table_responsive">
                                                     <tbody>
@@ -1256,6 +1264,14 @@
                     $('#shipping_address').val($('#billing_address').val());
                     $('#shipping_email').val($('#billing_email').val());
                     $('#shipping_phone').val($('#billing_phone').val());
+            })
+            $('#use_new_address').on('change',function(){
+                $('#shipping_first_name').val('');
+                    $('#shipping_last_name').val('');
+                    $("#shipping_country option").val('');
+                    $('#shipping_address').val('');
+                    $('#shipping_email').val('');
+                    $('#shipping_phone').val('');
             })
             $('#apply_coupon').on('click',function(){
                 var code = $('#coupon_code').val();

@@ -75,12 +75,11 @@ class RegisterController extends Controller
             } else {
                 $referrer_id = $userExists->id;
 
-                $data['title'] = 'New Referral Register';
-                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.';
-                $data['body'] .= ' Please check below link to see its details!';
-                $data['body'] .= 'Referral Code is: '.$userExists->code;
+                $data['title'] = 'New Referral Signup';
+                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.<br>';
+                $data['body'] .= ' Please check below link to see its details!<br>';
                 $data['link'] = "affiliate.user-referred";
-                $data['linkText'] = "View";
+                $data['linkText'] = "View for details";
                 $data['to'] = $userExists->email;
                 $data['username'] = $userExists->name;
                 Mail::send('email', $data,function ($m) use ($data) {
@@ -88,11 +87,11 @@ class RegisterController extends Controller
                 });
 
                 $data['title'] = 'New User SignUp';
-                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.';
-                $data['body'] .= ' Please check below link to see details!';
+                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.<br>';
+                $data['body'] .= ' Please check below link to see details!<br>';
                 $data['body'] .= ' Referral Code is: '.$userExists->code;
-                $data['link'] = "admin.general-user";
-                $data['linkText'] = "View";
+                $data['link'] = "admin.pos";
+                $data['linkText'] = "View for details";
                 $data['to'] = 'info@cowriehub.com';
                 $data['username'] = 'Cowriehub';
                 Mail::send('email', $data,function ($m) use ($data) {
@@ -104,12 +103,11 @@ class RegisterController extends Controller
             $userData = User::where('code', $code)->first();
             $referrer_id = $userData->id;
 
-            $data['title'] = 'New Referral Register';
-                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.';
-                $data['body'] .= ' Please check below link to see its details!';
-                $data['body'] .= 'Referral Code is: '.$userData->code;
+            $data['title'] = 'New Referral Signup';
+                $data['body'] = 'Congratulations! A new user has just signed up with your referral link.<br>';
+                $data['body'] .= ' Please check below link to see its details!<br>';
                 $data['link'] = "affiliate.user-referred";
-                $data['linkText'] = "View";
+                $data['linkText'] = "View for details";
                 $data['to'] = $userData->email;
                 $data['username'] = $userData->name;
                 Mail::send('email', $data,function ($m) use ($data) {
@@ -117,11 +115,11 @@ class RegisterController extends Controller
                 });
 
                 $data['title'] = 'New User SignUp';
-                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.';
+                $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.<br>';
                 $data['body'] .= ' Please check below link to see details!';
                 $data['body'] .= ' Referral Code is: '.$userData->code;
                 $data['link'] = "admin.general-user";
-                $data['linkText'] = "View";
+                $data['linkText'] = "View for details";
                 $data['to'] = 'info@cowriehub.com';
                 $data['username'] = 'Cowriehub';
                 Mail::send('email', $data,function ($m) use ($data) {
@@ -129,6 +127,17 @@ class RegisterController extends Controller
                 });
 
         } else {
+            $data['title'] = 'New User SignUp';
+            $data['body'] = 'Congratulations! A new user has just signed up to Cowriehub.<br>';
+            $data['body'] .= ' Please check below link to see details!';
+            $data['link'] = "admin.general-user";
+            $data['linkText'] = "View for details";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'Cowriehub';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New User SignUp');
+            });
+
             $referrer_id = 0;
         }
         if(isset($data['subscribe'])){

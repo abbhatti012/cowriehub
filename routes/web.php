@@ -58,6 +58,7 @@ Route::post('/insert-contacts', [App\Http\Controllers\HomeController::class, 'in
 Route::post('/subscribe', [App\Http\Controllers\HomeController::class, 'subscribe'])->name('front.subscribe');
 
 Route::post('/before-payment', [App\Http\Controllers\PaymentController::class, 'before_payment'])->name('before-payment');
+Route::post('/pos-before-payment', [App\Http\Controllers\PaymentController::class, 'pos_before_payment'])->name('pos-before-payment');
 Route::post('/preorder-before-payment', [App\Http\Controllers\PaymentController::class, 'preorder_before_payment'])->name('preorder-before-payment');
 
 Route::post('/add-to-cart', [App\Http\Controllers\CartController::class, 'addToCart'])->name('add-to-cart');

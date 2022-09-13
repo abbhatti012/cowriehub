@@ -241,7 +241,7 @@
                                     <div class="modal-content">
                                     <div class="modal-header border-bottom-0">
                                         <h5 class="modal-title" id="exampleModalLabel1">
-                                        Sample PDF
+                                        Book Sample
                                         </h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -361,7 +361,10 @@
                                         </div>
                                     </li>
                                     <li class="mr-3">
-                                        <a href="javascript:void(0)" class="h-primary sampleModalModal" data-toggle="modal" data-target="#sampleModalModal"><i class="fa fa-copy mr-2"></i> View Sample</a>
+                                        <a href="javascript:void(0)" class="h-primary sampleModalModal" data-toggle="modal" data-target="#sampleModalModal"><i class="fa fa-eye mr-2"></i> View Sample</a>
+                                    </li>
+                                    <li class="mr-3">
+                                        <a href="javascript:void(0)" class="h-primary TrailerModalModal" data-toggle="modal" data-target="#sampleModalModal"><i class="fa fa-eye mr-2"></i> View Book Trailer</a>
                                     </li>
                                 </ul>
                             </div>
@@ -870,6 +873,9 @@
             });
             $('.sampleModalModal').on('click',function(){
                 $('.sampleIframeHere').html('<iframe width="100%" height="400px" src="<?= asset($book->sample) ?>"></iframe>');
+            });
+            $('.TrailerModalModal').on('click',function(){
+                $('.sampleIframeHere').html('<iframe width="100%" height="400px" src="<?= asset($book->trailer) ?>"></iframe>');
             });
             $('.addToWishlist').on('click',function(){
                 var user_id = "{{ Auth::id() }}";

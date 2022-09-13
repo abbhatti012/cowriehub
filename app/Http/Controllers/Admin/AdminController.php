@@ -213,7 +213,7 @@ class AdminController extends Controller
     }
     public function referred_users(){
         $referred_users = User::where('users.referrer_id','!=',0)
-        // ->with('affiliate_user')
+        // ->with('pos')
         ->leftJoin('payments','payments.user_id','=','users.id')
         ->select('users.*','payments.*','users.id as current_user_id'
             ,DB::raw("COUNT(CASE WHEN payments.status = 'successfull' THEN payments.id END) AS successful_orders")
@@ -813,7 +813,7 @@ class AdminController extends Controller
             $data['body'] = 'Congratulations!. New job has been assigned to you';
             $data['body'] .= ' Click on below link to view the job!';
             $data['link'] = "consultant.jobs";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $data['to'] = $user_detail->email;
             $data['username'] = $user_detail->name;
             Mail::send('email', $data,function ($m) use ($data) {
@@ -934,7 +934,7 @@ class AdminController extends Controller
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an author';
         $data['body'] .= ' Click on below link to explore more as an author!';
         $data['link'] = "author.profile.edit";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {
@@ -950,7 +950,7 @@ class AdminController extends Controller
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an affiliate';
         $data['body'] .= ' Click on below link to explore more as an affiliate!';
         $data['link'] = "affiliate";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {
@@ -966,7 +966,7 @@ class AdminController extends Controller
         $data['body'] = 'Congratulations!. Cowriehub has approved you as an POS';
         $data['body'] .= ' Click on below link to explore more as an POS!';
         $data['link'] = "pos";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = auth()->user()->email;
         $data['username'] = auth()->user()->name;
         Mail::send('email', $data,function ($m) use ($data) {

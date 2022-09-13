@@ -54,7 +54,7 @@ class PublisherController extends Controller
             $data['username'] = 'Admin';
             $data['body'] = 'New application as a cowriehub publisher is just added to cowriehub. Please check below link to view!';
             $data['link'] = "admin.publisher";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             Mail::send('email', $data,function ($m) use ($data) {
                 $m->to($data['to'])->subject('New Applicant!');
             });
@@ -76,7 +76,7 @@ class PublisherController extends Controller
             $data['body'] .= 'Please click on below link to view your status!';
             $data['link'] = "user.publisher-account";
             $data['param'] = "id=$user->user_id";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $user_detail->role = 'publisher';
         } else {
             $data['title'] = 'Consultant Declined';
@@ -84,7 +84,7 @@ class PublisherController extends Controller
             $data['body'] .= 'If you have any question then you can reach to support. By clicking on below link to view status. Thanks!';
             $data['link'] = "user.publisher-account";
             $data['param'] = "id=$user->user_id";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $user_detail->role = 'user';
         }
         $user_detail->save();
@@ -136,7 +136,7 @@ class PublisherController extends Controller
         $data['username'] = 'Admin';
         $data['body'] = 'Author is just added by publisher. Please check below link to view its details!';
         $data['link'] = "admin.author";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         Mail::send('email', $data,function ($m) use ($data) {
             $m->to($data['to'])->subject('New Applicant!');
         });
@@ -181,12 +181,12 @@ class PublisherController extends Controller
         } else {
             unset($user->hero_image);
         }
-        if($request->cover != null){
-            $UploadImage = 'b'.time().'.'.$request->cover->extension();
-            $request->cover->move(public_path('images/books'), $UploadImage);
-            $user->cover = 'images/books/'.$UploadImage;
+        if($request->trailer != null){
+            $UploadImage = 'b'.time().'.'.$request->trailer->extension();
+            $request->trailer->move(public_path('images/books'), $UploadImage);
+            $user->trailer = 'images/books/'.$UploadImage;
         } else {
-            unset($user->cover);
+            unset($user->trailer);
         }
         if($request->sample != null){
             $UploadImage = 'c'.time().'.'.$request->sample->extension();

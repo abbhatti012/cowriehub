@@ -84,6 +84,17 @@
                                 <input type="file" name="sample" class="form-file-input form-control">
                             </div>
                         </div>
+                        @if($book->trailer)
+                        <div class="input-group mb-3">
+                            <iframe width="50%" src="{{ asset($book->trailer) }}" alt=""></iframe>
+                        </div>
+                        @endif
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Book Trailer</span>
+                            <div class="form-file">
+                                <input type="file" name="trailer" class="form-file-input form-control" required>
+                            </div>
+                        </div>
                         <h4>Optional Fields</h4><hr>
                         <div class="mb-3 col-md-12">
                             <div class="mt-4">

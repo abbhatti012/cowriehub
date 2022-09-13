@@ -100,7 +100,7 @@ class ConsultantController extends Controller
             $data['username'] = 'Admin';
             $data['body'] = 'New application as a cowriehub consultant is just added to cowriehub. Please check below link to view!';
             $data['link'] = "admin.consultant";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             Mail::send('email', $data,function ($m) use ($data) {
                 $m->to($data['to'])->subject('New Applicant!');
             });
@@ -175,7 +175,7 @@ class ConsultantController extends Controller
             $data['username'] = 'Admin';
             $data['body'] = 'Consultant just updated its record. Please check below link to view!';
             $data['link'] = "admin.consultant";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             Mail::send('email', $data,function ($m) use ($data) {
                 $m->to($data['to'])->subject('New Applicant!');
             });
@@ -197,7 +197,7 @@ class ConsultantController extends Controller
             $data['body'] .= 'Please click on below link to view your status!';
             $data['link'] = "user.consultant-account";
             $data['param'] = "id=$user->user_id";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $user_detail->role = 'consultant';
         } else {
             $data['title'] = 'Consultant Declined';
@@ -205,7 +205,7 @@ class ConsultantController extends Controller
             $data['body'] .= 'If you have any question then you can reach to support. By clicking on below link to view status. Thanks!';
             $data['link'] = "user.consultant-account";
             $data['param'] = "id=$user->user_id";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
             $user_detail->role = 'user';
         }
         $user_detail->save();
@@ -247,7 +247,7 @@ class ConsultantController extends Controller
         $data['body'] = 'Congratulations!. New job has been assigned to you';
         $data['body'] .= ' Click on below link to view the job!';
         $data['link'] = "user.consultant-account";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = $user_detail->email;
         $data['username'] = $user_detail->name;
         Mail::send('email', $data,function ($m) use ($data) {
@@ -339,7 +339,7 @@ class ConsultantController extends Controller
         $data['body'] = 'One of your updated its job status.';
         $data['body'] .= ' Click on below link to view the status!';
         $data['link'] = "admin.consultant";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = 'cowriehubllc@gmail.com';
         $data['username'] = 'Admin';
         Mail::send('email', $data,function ($m) use ($data) {
@@ -357,13 +357,13 @@ class ConsultantController extends Controller
             $data['body'] = 'One of your consultant approved the job! ';
             $data['body'] .= 'Please click on below link to view the status!';
             $data['link'] = "admin.consultant";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
         } else {
             $data['title'] = 'Job Declined';
             $data['body'] = 'One of your consultant did not approve the job.';
             $data['body'] .= 'Please click on below link to view status. Thanks :(';
             $data['link'] = "admin.consultant";
-            $data['linkText'] = "View";
+            $data['linkText'] = "View for details";
         }
         $data['to'] = 'cowriehubllc@gmail.com';
         $data['username'] = 'Admin';
@@ -395,7 +395,7 @@ class ConsultantController extends Controller
         $data['title'] = 'Payment Sent';
         $data['body'] = 'COWRIEHUB just make a payment of you, Please click on below link to view your payment proof!';
         $data['link'] = "consultant.jobs";
-        $data['linkText'] = "View";
+        $data['linkText'] = "View for details";
         $data['to'] = $user_detail->email;
         $data['username'] = $user_detail->name;
         Mail::send('email', $data,function ($m) use ($data) {
