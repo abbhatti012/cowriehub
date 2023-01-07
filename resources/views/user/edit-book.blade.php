@@ -58,7 +58,7 @@
                                 <input type="file" name="hero_image" class="form-file-input form-control" onchange="loadFile(event, 'commonImage1')">
                             </div>
                         </div>
-                        <!-- @if($book->cover)
+                        @if($book->cover)
                         <div class="input-group mb-3">
                             <img width="50%" src="{{ asset($book->cover) }}" id="commonImage2" alt="">
                         </div>
@@ -72,7 +72,7 @@
                             <div class="form-file">
                                 <input type="file" name="cover" class="form-file-input form-control" onchange="loadFile(event, 'commonImage2')">
                             </div>
-                        </div> -->
+                        </div>
                         @if($book->sample)
                         <div class="input-group mb-3">
                             <iframe width="50%" src="{{ asset($book->sample) }}" alt=""></iframe>

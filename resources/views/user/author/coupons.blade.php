@@ -1,14 +1,21 @@
 @extends('user.layout.index')
 @section('content')
 <link rel="stylesheet" href="{{asset('admin_assets/vendor/select2/css/select2.min.css')}}">
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Coupons</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Coupons</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Coupons</li>
+                </ol>
+            </div>
+
         </div>
+    </div>
+</div>
         @if(Session::has('message'))
             <div class="alert alert-{{session('message')['type']}}">
                 {{session('message')['text']}}
@@ -65,14 +72,15 @@
                 </div>
             </div>
             
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">All Coupons</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">All Marketing Purchases</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -106,19 +114,19 @@
                                 @empty
                                 @endforelse
                                 </tbody>
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
+    
 @endsection
 
 @section('scripts')
     <script src="{{asset('admin_assets/vendor/select2/js/select2.full.min.js')}}"></script>
-    <script src="{{asset('admin_assets/js/plugins-init/select2-init.js')}}"></script>
+    <script src="{{asset('admin_assets/assets/js/plugins-init/select2-init.js')}}"></script>
     <script>
        $(document).ready(function(){
         var select_ids = [];

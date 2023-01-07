@@ -1,377 +1,417 @@
 @extends('admin.layout.index')
 @section('content')
-<link rel="stylesheet" href="{{ asset('daterange/style.css') }}">
-<div class="content-body">
-    <div class="container-fluid">
-        <div style="display: none;" class="panel">
-            <div class="row page-titles">
-                <ol class="breadcrumb">
-                    <form action="{{ route('admin') }}" method="get">
-                        <div class="input-group mb-3">
-                            <input type="text" id="date-range" name="date" readonly class="form-control">
-                            <button type="submit" class="btn btn-primary">Apply</button>
-                        <div>
-                    </form>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Admin Dashboard</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboards</a></li>
+                    <li class="breadcrumb-item active">Admin Dashboard</li>
                 </ol>
             </div>
-        </div>
-        <p class="slide">
-            <div class="pull-me">
-                <p>Apply Filter!</p>
-            </div>
-        </p>
-        <div class="row">
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-1 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $books }}</h2>
-                            <span class="fs-18">Total Books</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-4 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $approved_books }}</h2>
-                            <span class="fs-18">Approved Books</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-2 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{  $orders }}</h2>
-                            <span class="fs-18">Total Orders</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M36.25 9.66665V7.24998C36.25 5.91598 37.3327 4.83331 38.6667 4.83331C40.0007 4.83331 41.0833 5.91598 41.0833 7.24998V9.66665C46.4242 9.66665 50.75 13.9949 50.75 19.3333V43.5C50.75 48.8384 46.4242 53.1666 41.0833 53.1666C34.1741 53.1666 23.8283 53.1666 16.9167 53.1666C11.5782 53.1666 7.25 48.8384 7.25 43.5V19.3333C7.25 13.9949 11.5782 9.66665 16.9167 9.66665V7.24998C16.9167 5.91598 17.9993 4.83331 19.3333 4.83331C20.6673 4.83331 21.75 5.91598 21.75 7.24998V9.66665H36.25ZM45.9167 29H12.0833V43.5C12.0833 46.168 14.2487 48.3333 16.9167 48.3333H41.0833C43.7537 48.3333 45.9167 46.168 45.9167 43.5V29ZM33.5748 37.8329L36.9822 34.5172C37.9392 33.5868 39.469 33.6086 40.3994 34.5656C41.3298 35.5202 41.3081 37.0523 40.3535 37.9827L35.3848 42.8161C34.4955 43.6788 33.1011 43.732 32.1513 42.9393L29.4302 40.6677C28.4055 39.8146 28.2677 38.2896 29.1232 37.265C29.9763 36.2403 31.5012 36.1026 32.5259 36.9581L33.5748 37.8329ZM41.0833 14.5V16.9166C41.0833 18.2506 40.0007 19.3333 38.6667 19.3333C37.3327 19.3333 36.25 18.2506 36.25 16.9166V14.5H21.75V16.9166C21.75 18.2506 20.6673 19.3333 19.3333 19.3333C17.9993 19.3333 16.9167 18.2506 16.9167 16.9166V14.5C14.2487 14.5 12.0833 16.6629 12.0833 19.3333V24.1666H45.9167V19.3333C45.9167 16.6629 43.7537 14.5 41.0833 14.5Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-3 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{  $approved }} GHS</h2>
-                            <span class="fs-18">Total Earning</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M36.25 9.66665V7.24998C36.25 5.91598 37.3327 4.83331 38.6667 4.83331C40.0007 4.83331 41.0833 5.91598 41.0833 7.24998V9.66665C46.4242 9.66665 50.75 13.9949 50.75 19.3333V43.5C50.75 48.8384 46.4242 53.1666 41.0833 53.1666C34.1741 53.1666 23.8283 53.1666 16.9167 53.1666C11.5782 53.1666 7.25 48.8384 7.25 43.5V19.3333C7.25 13.9949 11.5782 9.66665 16.9167 9.66665V7.24998C16.9167 5.91598 17.9993 4.83331 19.3333 4.83331C20.6673 4.83331 21.75 5.91598 21.75 7.24998V9.66665H36.25ZM45.9167 29H12.0833V43.5C12.0833 46.168 14.2487 48.3333 16.9167 48.3333H41.0833C43.7537 48.3333 45.9167 46.168 45.9167 43.5V29ZM33.5748 37.8329L36.9822 34.5172C37.9392 33.5868 39.469 33.6086 40.3994 34.5656C41.3298 35.5202 41.3081 37.0523 40.3535 37.9827L35.3848 42.8161C34.4955 43.6788 33.1011 43.732 32.1513 42.9393L29.4302 40.6677C28.4055 39.8146 28.2677 38.2896 29.1232 37.265C29.9763 36.2403 31.5012 36.1026 32.5259 36.9581L33.5748 37.8329ZM41.0833 14.5V16.9166C41.0833 18.2506 40.0007 19.3333 38.6667 19.3333C37.3327 19.3333 36.25 18.2506 36.25 16.9166V14.5H21.75V16.9166C21.75 18.2506 20.6673 19.3333 19.3333 19.3333C17.9993 19.3333 16.9167 18.2506 16.9167 16.9166V14.5C14.2487 14.5 12.0833 16.6629 12.0833 19.3333V24.1666H45.9167V19.3333C45.9167 16.6629 43.7537 14.5 41.0833 14.5Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-5 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $cancelled }}</h2>
-                            <span class="fs-18">Cancelled Amount</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.66671 38.6667V43.5C9.66671 48.8409 13.995 53.1667 19.3334 53.1667H43.5C48.8409 53.1667 53.1667 48.8409 53.1667 43.5C53.1667 35.455 53.1667 22.5475 53.1667 14.5C53.1667 9.16162 48.8409 4.83337 43.5 4.83337C36.5908 4.83337 26.245 4.83337 19.3334 4.83337C13.995 4.83337 9.66671 9.16162 9.66671 14.5V19.3334C9.66671 20.6674 10.7494 21.75 12.0834 21.75C13.4174 21.75 14.5 20.6674 14.5 19.3334C14.5 19.3334 14.5 17.069 14.5 14.5C14.5 11.832 16.6654 9.66671 19.3334 9.66671H43.5C46.1705 9.66671 48.3334 11.832 48.3334 14.5V43.5C48.3334 46.1705 46.1705 48.3334 43.5 48.3334C36.5908 48.3334 26.245 48.3334 19.3334 48.3334C16.6654 48.3334 14.5 46.1705 14.5 43.5C14.5 40.9335 14.5 38.6667 14.5 38.6667C14.5 37.3351 13.4174 36.25 12.0834 36.25C10.7494 36.25 9.66671 37.3351 9.66671 38.6667ZM27.9995 26.5834L24.8748 23.461C23.9323 22.5161 23.9323 20.9864 24.8748 20.0415C25.8197 19.099 27.3495 19.099 28.292 20.0415L35.542 27.2915C36.4869 28.2364 36.4869 29.7661 35.542 30.711L28.292 37.961C27.3495 38.9035 25.8197 38.9035 24.8748 37.961C23.9323 37.0161 23.9323 35.4864 24.8748 34.5415L27.9995 31.4167H7.25004C5.91604 31.4167 4.83337 30.334 4.83337 29C4.83337 27.6685 5.91604 26.5834 7.25004 26.5834H27.9995Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-6 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $data['total_authors'] }}</h2>
-                            <span class="fs-18">Total Authors</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-7 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $data['total_consultants'] }}</h2>
-                            <span class="fs-18">Total Consultants</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-8 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $data['total_pos'] }}</h2>
-                            <span class="fs-18">Total POS's</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-9 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $data['total_publishers'] }}</h2>
-                            <span class="fs-18">Total Puvlishers</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-10 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">{{ $data['total_affiliates'] }}</h2>
-                            <span class="fs-18">Total Affiliates</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0611 39.4402L13.7104 52.5947C12.9941 53.2089 11.9873 53.3497 11.1271 52.9556C10.2697 52.5614 9.7226 51.7041 9.7226 50.7597C9.7226 50.7597 9.7226 26.8794 9.7226 14.5028C9.7226 9.16424 14.0517 4.83655 19.3904 4.83655H38.7289C44.0704 4.83655 48.3995 9.16424 48.3995 14.5028V50.7597C48.3995 51.7041 47.8495 52.5614 46.9922 52.9556C46.1348 53.3497 45.1252 53.2089 44.4088 52.5947L29.0611 39.4402ZM43.5656 14.5028C43.5656 11.8335 41.3996 9.66841 38.7289 9.66841C33.0207 9.66841 25.1014 9.66841 19.3904 9.66841C16.7196 9.66841 14.5565 11.8335 14.5565 14.5028V45.5056L27.4873 34.4215C28.3926 33.646 29.7266 33.646 30.6319 34.4215L43.5656 45.5056V14.5028Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-7 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">@if($check) {{$check->checkin}} @else 0 @endif</h2>
-                            <span class="fs-18">Check In</span>
-                        </div>
-                        <svg width="58" height="58" viewBox="0 0 58 58" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M9.66671 38.6667V43.5C9.66671 48.8409 13.995 53.1667 19.3334 53.1667H43.5C48.8409 53.1667 53.1667 48.8409 53.1667 43.5C53.1667 35.455 53.1667 22.5475 53.1667 14.5C53.1667 9.16162 48.8409 4.83337 43.5 4.83337C36.5908 4.83337 26.245 4.83337 19.3334 4.83337C13.995 4.83337 9.66671 9.16162 9.66671 14.5V19.3334C9.66671 20.6674 10.7494 21.75 12.0834 21.75C13.4174 21.75 14.5 20.6674 14.5 19.3334C14.5 19.3334 14.5 17.069 14.5 14.5C14.5 11.832 16.6654 9.66671 19.3334 9.66671H43.5C46.1705 9.66671 48.3334 11.832 48.3334 14.5V43.5C48.3334 46.1705 46.1705 48.3334 43.5 48.3334C36.5908 48.3334 26.245 48.3334 19.3334 48.3334C16.6654 48.3334 14.5 46.1705 14.5 43.5C14.5 40.9335 14.5 38.6667 14.5 38.6667C14.5 37.3351 13.4174 36.25 12.0834 36.25C10.7494 36.25 9.66671 37.3351 9.66671 38.6667ZM27.9995 26.5834L24.8748 23.461C23.9323 22.5161 23.9323 20.9864 24.8748 20.0415C25.8197 19.099 27.3495 19.099 28.292 20.0415L35.542 27.2915C36.4869 28.2364 36.4869 29.7661 35.542 30.711L28.292 37.961C27.3495 38.9035 25.8197 38.9035 24.8748 37.961C23.9323 37.0161 23.9323 35.4864 24.8748 34.5415L27.9995 31.4167H7.25004C5.91604 31.4167 4.83337 30.334 4.83337 29C4.83337 27.6685 5.91604 26.5834 7.25004 26.5834H27.9995Z" fill="white"/>
-                        </svg>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-xl-3 col-sm-6">
-                <div class="card gradient-8 card-bx">
-                    <div class="card-body d-flex align-items-center">
-                        <div class="me-auto text-white">
-                            <h2 class="text-white">@if($check) {{$check->checkout}} @else 0 @endif</h2>
-                            <span class="fs-18">Check Out</span>
-                        </div>
-                        <svg width="57" height="46" viewBox="0 0 57 46" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M8.55512 20.7503L11.4641 17.8435C12.3415 16.9638 12.3415 15.5397 11.4641 14.6601C10.5844 13.7827 9.16031 13.7827 8.28289 14.6601L1.53353 21.4094C0.653858 22.2891 0.653858 23.7132 1.53353 24.5929L8.28289 31.3422C9.16031 32.2197 10.5844 32.2197 11.4641 31.3422C12.3415 30.4626 12.3415 29.0385 11.4641 28.1588L8.55512 25.2498H27.8718C29.1137 25.2498 30.1216 24.2419 30.1216 23C30.1216 21.7604 29.1137 20.7503 27.8718 20.7503H8.55512Z" fill="white"/>
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M16.5038 31.9992V36.4987C16.5038 41.4708 20.5332 45.4979 25.5029 45.4979H48.0008C52.9728 45.4979 57 41.4708 57 36.4987C57 29.0092 57 16.9931 57 9.50129C57 4.53151 52.9728 0.502136 48.0008 0.502136C41.5687 0.502136 31.9373 0.502136 25.5029 0.502136C20.5332 0.502136 16.5038 4.53151 16.5038 9.50129V14.0009C16.5038 15.2427 17.5117 16.2507 18.7536 16.2507C19.9955 16.2507 21.0034 15.2427 21.0034 14.0009C21.0034 14.0009 21.0034 11.8928 21.0034 9.50129C21.0034 7.01752 23.0192 5.00171 25.5029 5.00171H48.0008C50.4868 5.00171 52.5004 7.01752 52.5004 9.50129V36.4987C52.5004 38.9848 50.4868 40.9983 48.0008 40.9983C41.5687 40.9983 31.9373 40.9983 25.5029 40.9983C23.0192 40.9983 21.0034 38.9848 21.0034 36.4987C21.0034 34.1095 21.0034 31.9992 21.0034 31.9992C21.0034 30.7595 19.9955 29.7494 18.7536 29.7494C17.5117 29.7494 16.5038 30.7595 16.5038 31.9992Z" fill="white"/>
-                        </svg>
-                    </div>
-                </div>
-            </div> -->
-        </div>
-        <div class="row">
-            <div class="col-xl-12 col-xxl-12">
-                <div class="card">
-                    <div class="card-header border-0 d-sm-flex d-block">
-                        <div class="me-auto mb-sm-0 mb-3">
-                            <h4 class="card-title mb-2">Orders Stat</h4>
-                        </div>
-                        <!-- <div class="d-flex justify-content-between">
-                            <div class="d-flex me-5">
-                                <h3 class="mb-0 me-2">@if($check) {{$check->checkin}} @else 0 @endif</h3>
-                                <span>Check In</span>
-                            </div>
-                            <div class="d-flex me-3">
-                                <h3 class="mb-0 me-2">@if($check) {{$check->checkout}} @else 0 @endif</h3>
-                                <span>Check Out</span>
-                            </div>
-                        </div> -->
-                    </div>
-                    <div class="card-body">
-                        <div id="reservationChart" class="reservationChart"></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+<div class="row">
+    <div class="col">
+        <div class="h-100">
+            <div class="row mb-3 pb-1">
+                <div class="col-12">
+                    <div class="d-flex align-items-lg-center flex-lg-row flex-column">
+                        <div class="flex-grow-1">
+                            <h4 class="fs-16 mb-1">Good Morning, Admin!</h4>
+                            <p class="text-muted mb-0">Here's what's happening with your store
+                                today.</p>
+                        </div>
+
+                    </div><!-- end card header -->
+                </div>
+                <!--end col-->
+            </div>
+            <!--end row-->
+
+            <div class="card-body border border-dashed border-end-0 border-start-0">
+                <form action="{{ route('admin') }}" method="get">
+                    <div class="row g-3">
+                        <div class="col-xxl-2 col-sm-6">
+                            <div class="input-group input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">Start Date</span>
+                                <input type="date" class="form-control" name="min_date" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+                        </div>
+                        <div class="col-xxl-2 col-sm-6">
+                            <div class="input-group input-group mb-3">
+                                <span class="input-group-text" id="inputGroup-sizing-sm">End Date</span>
+                                <input type="date" class="form-control" name="max_date" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                            </div>
+                        </div>
+                       
+                        <div class="col-xxl-1 col-sm-4">
+                            <div>
+                                <button type="button" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                                    Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card crm-widget">
+                        <div class="card-body p-0">
+                            <div class="row row-cols-md-3 row-cols-1">
+                                <div class="col col-lg border-end">
+                                    <div class="py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">Total Books <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-book-2-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $books }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-md-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">Approved Books
+                                            <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-book-open-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $approved_books }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-md-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Total Orders <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-shopping-cart-fill display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{  $orders }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-lg-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Total Earnings <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-exchange-dollar-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0">GHS<span class="counter-value" data-target="{{  $approved }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg">
+                                    <div class="mt-3 mt-lg-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Canceled Amount <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-close-fill display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $cancelled }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                            </div><!-- end row -->
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+            </div><!-- end row -->
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card crm-widget">
+                        <div class="card-body p-0">
+                            <div class="row row-cols-md-3 row-cols-1">
+                                <div class="col col-lg border-end">
+                                    <div class="py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">Total Authors <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-team-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $data['total_authors'] }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-md-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">Total
+                                            Consultants <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-team-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $data['total_consultants'] }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-md-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Total POS's <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-store-2-fill display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $data['total_pos'] }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg border-end">
+                                    <div class="mt-3 mt-lg-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Total Publishers <i class="ri-arrow-up-circle-line text-success fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-git-repository-commits-fill display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $data['total_publishers'] }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><!-- end col -->
+                                <div class="col col-lg">
+                                    <div class="mt-3 mt-lg-0 py-4 px-3">
+                                        <h5 class="text-muted text-uppercase fs-13">
+                                            Total Affiliates <i class="ri-arrow-down-circle-line text-danger fs-18 float-end align-middle"></i>
+                                        </h5>
+                                        <div class="d-flex align-items-center">
+                                            <div class="flex-shrink-0">
+                                                <i class="ri-service-line display-6 text-muted"></i>
+                                            </div>
+                                            <div class="flex-grow-1 ms-3">
+                                                <h2 class="mb-0"><span class="counter-value" data-target="{{ $data['total_affiliates'] }}">0</span></h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-header border-0 align-items-center d-flex">
+                            <h4 class="card-title mb-0 flex-grow-1">Revenue</h4>
+                        </div>
+
+                        <div class="card-header p-0 border-0 bg-soft-light">
+                            <div class="row g-0 text-center">
+                                <div class="col-6 col-sm-4">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span class="counter-value" data-target="{{  $orders }}">0</span></h5>
+                                        <p class="text-muted mb-0">Orders</p>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-6 col-sm-4">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1">GHS<span class="counter-value" data-target="{{  $approved }}">0</span></h5>
+                                        <p class="text-muted mb-0">Earnings</p>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-6 col-sm-4">
+                                    <div class="p-3 border border-dashed border-start-0">
+                                        <h5 class="mb-1"><span class="counter-value" data-target="{{ $cancelled }}">0</span></h5>
+                                        <p class="text-muted mb-0">Cancelled</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- end card header -->
+
+                        <div class="card-body p-0 pb-2">
+                            <div class="w-100">
+                                <div id="customer_impression_charts" data-colors='["--vz-primary", "--vz-success", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                            </div>
+                        </div><!-- end card body -->
+                    </div><!-- end card -->
+                </div><!-- end col -->
+                <!-- end col -->
+            </div>
+
+        </div> <!-- end .h-100-->
+    </div> <!-- end col -->
+</div>
 @endsection
 @section('scripts')
-<script src="{{ asset('daterange/script.js') }}"></script>
-<script>
-    $(document).ready(function(){
-        $(".daterangepicker.ltr").css('display','none');
-        $('.pull-me').click(function() {
-            $('.panel').slideToggle('slow');
-        });
-    })
-</script>
-<script>
-    (function($) {
-    var dzChartlist = function() {
-
-        var screenWidth = $(window).width();
-
-        var radialChart = function() {
-            var options = {
-                series: [70],
-                chart: {
-                    height: 150,
-                    type: 'radialBar',
-                    sparkline: {
-                        enabled: true
-                    }
-                },
-                plotOptions: {
-                    radialBar: {
-                        hollow: {
-                            size: '35%',
-                        },
-                        dataLabels: {
-                            show: false,
+    <script>
+        function getChartColorsArray(e) {
+            if (null !== document.getElementById(e)) {
+                var r = document.getElementById(e).getAttribute("data-colors");
+                if (r)
+                    return (r = JSON.parse(r)).map(function (e) {
+                        var r = e.replace(" ", "");
+                        if (-1 === r.indexOf(",")) {
+                            var t = getComputedStyle(document.documentElement).getPropertyValue(r);
+                            return t || r;
                         }
-                    },
-                },
-                labels: [''],
-            };
-
-            var chart = new ApexCharts(document.querySelector("#radialChart"), options);
-            chart.render();
-        }
-
-        var reservationChart = function() {
-            var options = {
-                series: [{
-                    name: 'Total Orders',
-                    data: [
-                        <?php foreach($graph_data['orderCountArr'] as $count): ?>
-                            "<?php echo $count; ?>",
-                        <?php endforeach; ?>
-                    ]
-                }, {
-                    name: 'Earning',
-                    data: [
-                        <?php foreach($graph_data['orderNetArr'] as $net): ?>
-                            "<?php echo $net; ?>",
-                        <?php endforeach; ?>
-                    ]
-                }],
-                chart: {
-                    height: 400,
-                    type: 'area',
-                    toolbar: {
-                        show: false
-                    }
-                },
-                colors: ["#1362FC", "#FF6E5A"],
-                dataLabels: {
-                    enabled: false
-                },
-                stroke: {
-                    width: 6,
-                    curve: 'smooth',
-                },
-                legend: {
-                    show: false
-                },
-                grid: {
-                    borderColor: '#EBEBEB',
-                    strokeDashArray: 6,
-                },
-                markers: {
-                    strokeWidth: 6,
-                    hover: {
-                        size: 15,
-                    }
-                },
-                yaxis: {
-                    labels: {
-                        offsetX: -12,
-                        style: {
-                            colors: '#787878',
-                            fontSize: '13px',
-                            fontFamily: 'Poppins',
-                            fontWeight: 400
-
-                        }
-                    },
-                },
-                xaxis: {
-                    categories: [
-                        <?php foreach($graph_data['label'] as $label): ?>
-                            "<?php echo $label; ?>",
-                        <?php endforeach; ?>
-                    ],
-                    labels: {
-                        style: {
-                            colors: '#787878',
-                            fontSize: '13px',
-                            fontFamily: 'Poppins',
-                            fontWeight: 400
-
-                        },
-                    }
-                },
-                fill: {
-                    type: "solid",
-                    opacity: 0.1
-                },
-                tooltip: {
-                    x: {
-                        format: 'dd/MM/yy HH:mm'
-                    },
-                },
-            };
-
-            var chart = new ApexCharts(document.querySelector("#reservationChart"), options);
-            chart.render();
-        }
-
-        var donutChart = function() {
-                $("span.donut").peity("donut", {
-                    width: 150,
-                    height: 150
-                });
-                if ($(window).width() <= 1600) {
-                    $("span.donut").peity("donut", { width: '110', height: '110' });
-                } else {
-                    $("span.donut").peity("donut", { width: '150', height: '150' });
-                }
-                $(window).resize(function() {
-                    if ($(window).width() <= 1600) {
-                        $("span.donut").peity("donut", { width: '110', height: '110' });
-                    } else {
-                        $("span.donut").peity("donut", { width: '150', height: '150' });
-                    }
-                })
+                        e = e.split(",");
+                        return 2 != e.length ? r : "rgba(" + getComputedStyle(document.documentElement).getPropertyValue(e[0]) + "," + e[1] + ")";
+                    });
+                console.warn("data-colors atributes not found on", e);
             }
-            /* Function ============ */
-        return {
-            init: function() {},
-            load: function() {
-                radialChart();
-                reservationChart();
-                donutChart();
-            },
-            resize: function() {}
         }
-    }();
-    jQuery(window).on('load', function() {
-        setTimeout(function() {
-            dzChartlist.load();
-        }, 1000);
-    });
-})(jQuery);
-</script>
+        var linechartcustomerColors = getChartColorsArray("customer_impression_charts");
+        linechartcustomerColors &&
+        ((options = {
+            series: [
+                { name: "Orders", type: "area", data: [
+                    <?php foreach($graph_data['orderCountArr'] as $count): ?>
+                        "<?php echo $count; ?>",
+                    <?php endforeach; ?>
+                ] },
+                { name: "Earnings", type: "bar", data: [
+                    <?php foreach($graph_data['orderNetArr'] as $net): ?>
+                        "<?php echo $net; ?>",
+                    <?php endforeach; ?>
+                ] },
+                // { name: "Refunds", type: "line", data: [8, 12, 7, 17, 21, 11, 5, 9, 7, 29, 12, 35] },
+            ],
+            chart: { height: 370, type: "line", toolbar: { show: !1 } },
+            stroke: { curve: "straight", dashArray: [0, 0, 8], width: [2, 0, 2.2] },
+            fill: { opacity: [0.1, 0.9, 1] },
+            markers: { size: [0, 0, 0], strokeWidth: 2, hover: { size: 4 } },
+            xaxis: { categories: [
+                <?php foreach($graph_data['label'] as $label): ?>
+                    "<?php echo $label; ?>",
+                <?php endforeach; ?>
+            ], axisTicks: { show: !1 }, axisBorder: { show: !1 } },
+            grid: { show: !0, xaxis: { lines: { show: !0 } }, yaxis: { lines: { show: !1 } }, padding: { top: 0, right: -2, bottom: 15, left: 10 } },
+            legend: { show: !0, horizontalAlign: "center", offsetX: 0, offsetY: -5, markers: { width: 9, height: 9, radius: 6 }, itemMargin: { horizontal: 10, vertical: 0 } },
+            plotOptions: { bar: { columnWidth: "30%", barHeight: "70%" } },
+            colors: linechartcustomerColors,
+            tooltip: {
+                shared: !0,
+                y: [
+                    {
+                        formatter: function (e) {
+                            return void 0 !== e ? e.toFixed(0) : e;
+                        },
+                    },
+                    {
+                        formatter: function (e) {
+                            return void 0 !== e ? "$" + e.toFixed(2) + "k" : e;
+                        },
+                    },
+                    {
+                        formatter: function (e) {
+                            return void 0 !== e ? e.toFixed(0) + " Sales" : e;
+                        },
+                    },
+                ],
+            },
+        }),
+        (chart = new ApexCharts(document.querySelector("#customer_impression_charts"), options)).render());
+    var options,
+    chart,
+    chartDonutBasicColors = getChartColorsArray("store-visits-source");
+    chartDonutBasicColors &&
+    ((options = {
+        series: [44, 55, 41, 17, 15],
+        labels: ["Direct", "Social", "Email", "Other", "Referrals"],
+        chart: { height: 333, type: "donut" },
+        legend: { position: "bottom" },
+        stroke: { show: !1 },
+        dataLabels: { dropShadow: { enabled: !1 } },
+        colors: chartDonutBasicColors,
+    }),
+    (chart = new ApexCharts(document.querySelector("#store-visits-source"), options)).render());
+    var worldemapmarkers,
+        vectorMapWorldMarkersColors = getChartColorsArray("sales-by-locations");
+    vectorMapWorldMarkersColors &&
+    (worldemapmarkers = new jsVectorMap({
+        map: "world_merc",
+        selector: "#sales-by-locations",
+        zoomOnScroll: !1,
+        zoomButtons: !1,
+        selectedMarkers: [0, 5],
+        regionStyle: { initial: { stroke: "#9599ad", strokeWidth: 0.25, fill: vectorMapWorldMarkersColors[0], fillOpacity: 1 } },
+        markersSelectable: !0,
+        markers: [
+            { name: "Palestine", coords: [31.9474, 35.2272] },
+            { name: "Russia", coords: [61.524, 105.3188] },
+            { name: "Canada", coords: [56.1304, -106.3468] },
+            { name: "Greenland", coords: [71.7069, -42.6043] },
+        ],
+        markerStyle: { initial: { fill: vectorMapWorldMarkersColors[1] }, selected: { fill: vectorMapWorldMarkersColors[2] } },
+        labels: {
+            markers: {
+                render: function (e) {
+                    return e.name;
+                },
+            },
+        },
+    }));
+    var overlay,
+        swiper = new Swiper(".vertical-swiper", { slidesPerView: 2, spaceBetween: 10, mousewheel: !0, loop: !0, direction: "vertical", autoplay: { delay: 2500, disableOnInteraction: !1 } }),
+        layoutRightSideBtn = document.querySelector(".layout-rightside-btn");
+    layoutRightSideBtn &&
+        (Array.from(document.querySelectorAll(".layout-rightside-btn")).forEach(function (e) {
+            var r = document.querySelector(".layout-rightside-col");
+            e.addEventListener("click", function () {
+                r.classList.contains("d-block") ? (r.classList.remove("d-block"), r.classList.add("d-none")) : (r.classList.remove("d-none"), r.classList.add("d-block"));
+            });
+        }),
+        window.addEventListener("resize", function () {
+            var e = document.querySelector(".layout-rightside-col");
+            e &&
+                Array.from(document.querySelectorAll(".layout-rightside-btn")).forEach(function () {
+                    window.outerWidth < 1699 || 3440 < window.outerWidth ? e.classList.remove("d-block") : 1699 < window.outerWidth && e.classList.add("d-block");
+                });
+        }),
+        (overlay = document.querySelector(".overlay")) &&
+            document.querySelector(".overlay").addEventListener("click", function () {
+                1 == document.querySelector(".layout-rightside-col").classList.contains("d-block") && document.querySelector(".layout-rightside-col").classList.remove("d-block");
+            })),
+        window.addEventListener("load", function () {
+            var e = document.querySelector(".layout-rightside-col");
+            e &&
+                Array.from(document.querySelectorAll(".layout-rightside-btn")).forEach(function () {
+                    window.outerWidth < 1699 || 3440 < window.outerWidth ? e.classList.remove("d-block") : 1699 < window.outerWidth && e.classList.add("d-block");
+                });
+        });
+    </script>
 @endsection

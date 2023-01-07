@@ -5,103 +5,103 @@
         height: 100px !important;
     }
 </style>
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Book Orders</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Main Genre</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Main Genre</li>
+                </ol>
+            </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Book Orders</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
-                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
-                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
-                            <a href="#!" class="btn btn-primary btn-print">Print</a>
-                            <table id="datatables" class="display" style="min-width: 845px">
-                                <thead>
-                                    <tr>
-                                        <th>View Detail</th>
-                                        <th>Transaction ID</th>
-                                        <th>Location</th>
-                                        <th>Precise Location</th>
-                                        <th>Email</th>
-                                        <th>Subtotal</th>
-                                        <th>Shipping Price</th>
-                                        <th>Total Amount</th>
-                                        <th>Is POS Order?</th>
-                                        <th>Status</th>
-                                        <th>Is Fraud?</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                @forelse($payments as $payment)
-                                    <tr>
-                                        <td>
-                                        <a href="{{ route('admin.view-order-detail', $payment->id) }}" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
-                                        </td>
-                                        <td>{{ $payment->transaction_id }}</td>
-                                        <td>{{ $payment->location }}</td>
-                                        <td>{{ $payment->precise_location }}</td>
-                                        <td>{{ $payment->email }}</td>
-                                        <td>{{ $payment->subtotal }}</td>
-                                        <td>{{ $payment->shipping_price }}</td>
-                                        <td>{{ $payment->total_amount }}</td>
-                                        <td>
-                                            @if($payment->is_pos)
-                                            <span class="badge light badge-success">Yes</span>
-                                            @else
-                                            <span class="badge light badge-info">No</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($payment->status == 'cancelled')
-                                                <span class="badge light badge-danger">{{ $payment->status }}</span>
-                                            @elseif($payment->status == '')
-                                                <span class="badge light badge-warning">Pending</span>
-                                            @else
-                                                <span class="badge light badge-info">{{ $payment->status }}</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($payment->is_fraud == 0)
-                                                <span class="badge light badge-info">No</span>
-                                            @else
-                                                <span class="badge light badge-danger">Yes</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($payment->is_pos == 1 && $payment->is_pos_payment == 0)
-                                                <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="1"  data-bs-toggle="modal" data-bs-target="#payUserCommission">View Order Detail</a>
-                                                <a href="{{ route('admin.disapprove-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to disapprove the order?')" class="btn btn-danger shadow btn-xs sharp" title="Disaprove/Cancel Order"><i class="fa fa-trash"></i></a>
-                                            @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 2)
-                                                <span class="badge light badge-danger">Cancelled</span>
-                                            @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 1)
-                                                <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
-                                            @else
-                                                @if($payment->status == 'pending' || $payment->status == '')
-                                                    <a href="{{ route('admin.update-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to approve the payment?')" class="btn btn-info shadow btn-xs sharp" title="Approve Payment"><i class="fa fa-check"></i></a>
-                                                @elseif($payment->status == 'successfull')
-                                                    <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
-                                                @endif
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Book Orders</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>View Detail</th>
+                                <th>Transaction ID</th>
+                                <th>Location</th>
+                                <th>Precise Location</th>
+                                <th>Email</th>
+                                <th>Subtotal</th>
+                                <th>Shipping Price</th>
+                                <th>Total Amount</th>
+                                <th>Is POS Order?</th>
+                                <th>Status</th>
+                                <th>Is Fraud?</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        @forelse($payments as $payment)
+                            <tr>
+                                <td>
+                                <a href="{{ route('admin.view-order-detail', $payment->id) }}" class="btn btn-warning shadow btn-xs sharp me-1" title="View Detail"><i class="fa fa-eye"></i></a>
+                                </td>
+                                <td>{{ $payment->transaction_id }}</td>
+                                <td>{{ $payment->location }}</td>
+                                <td>{{ $payment->precise_location }}</td>
+                                <td>{{ $payment->email }}</td>
+                                <td>{{ $payment->subtotal }}</td>
+                                <td>{{ $payment->shipping_price }}</td>
+                                <td>{{ $payment->total_amount }}</td>
+                                <td>
+                                    @if($payment->is_pos)
+                                    <span class="badge light badge-success">Yes</span>
+                                    @else
+                                    <span class="badge light badge-info">No</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($payment->status == 'cancelled')
+                                        <span class="badge light badge-danger">{{ $payment->status }}</span>
+                                    @elseif($payment->status == '')
+                                        <span class="badge light badge-warning">Pending</span>
+                                    @else
+                                        <span class="badge light badge-info">{{ $payment->status }}</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($payment->is_fraud == 0)
+                                        <span class="badge light badge-info">No</span>
+                                    @else
+                                        <span class="badge light badge-danger">Yes</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($payment->is_pos == 1 && $payment->is_pos_payment == 0)
+                                        <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="1"  data-bs-toggle="modal" data-bs-target="#payUserCommission">View Order Detail</a>
+                                        <a href="{{ route('admin.disapprove-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to disapprove the order?')" class="btn btn-danger shadow btn-xs sharp" title="Disaprove/Cancel Order"><i class="fa fa-trash"></i></a>
+                                    @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 2)
+                                        <span class="badge light badge-danger">Cancelled</span>
+                                    @elseif($payment->is_pos == 1 && $payment->is_pos_payment == 1)
+                                        <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
+                                    @else
+                                        @if($payment->status == 'pending' || $payment->status == '')
+                                            <a href="{{ route('admin.update-payment-status', $payment->id) }}" onclick="return confirm('Are you sure you want to approve the payment?')" class="btn btn-info shadow btn-xs sharp" title="Approve Payment"><i class="fa fa-check"></i></a>
+                                        @elseif($payment->status == 'successfull')
+                                            <a href="javascript:void(0)" class="text-primary payUserCommission" data-id="{{ $payment->id }}" data-is_pos="0" data-bs-toggle="modal" data-bs-target="#payUserCommission">Pay User Comission</a>
+                                        @endif
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                        @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -186,11 +186,4 @@
     });
 </script>
 
-    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

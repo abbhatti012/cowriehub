@@ -1,27 +1,33 @@
 @extends('admin.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Assign Job</a></li>
-            </ol>
-        </div>
-        @if(Session::has('message'))
-            <div class="alert alert-{{session('message')['type']}}">
-                {{session('message')['text']}}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Assign Job</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Assign Job</li>
+                </ol>
             </div>
-        @endif
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div><br />
-        @endif
+        </div>
+    </div>
+</div>
+    @if(Session::has('message'))
+        <div class="alert alert-{{session('message')['type']}}">
+            {{session('message')['text']}}
+        </div>
+    @endif
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div><br />
+    @endif
         <div class="row">
          
             <div class="col-xl-6 col-lg-6">
@@ -70,7 +76,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                            <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>jOb #</th>
@@ -132,8 +138,6 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 <div class="modal fade" id="viewPaymentDetail">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">

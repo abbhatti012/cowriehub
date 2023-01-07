@@ -1,329 +1,85 @@
-<style>
-    .btn-light{
-        color: #161619;
-        background-color: #ffffff;
-    }
-    .btn-light:hover {
-        color: #ffffff;
-        background-color: #161619;
-        border-color: #dae0e5;
-    }
-    .btn-dark:hover {
-        color: #000;
-        background-color: #ffffff;
-        border-color: white;
-    }
-</style>
 @if(session('cart'))
-<div class="container">
-    <header class="entry-header space-top-2 space-bottom-1 mb-2">
-        <h1 class="entry-title font-size-7">Your cart: {{ count(session('cart')) }} items</h1>
-    </header>
-
-    <div class="row pb-8">
-        <div id="primary" class="filterRight content-area">
-            <main id="main" class="site-main ">
-                <div class="page type-page status-publish hentry">
-                    <div class="entry-content">
-                        <div class="woocommerce">
-                            <form class="woocommerce-cart-form table-responsive" action="#" method="post">
-                                <table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents">
-                                    <thead>
-                                        <tr>
-                                            <th  class="product-name">Product</th>
-                                            <th class="product-price">Price</th>
-                                            <th class="product-price">Extra</th>
-                                            <th class="product-quantity">Quantity</th>
-                                            <th class="product-subtotal">Total</th>
-                                            <th class="product-remove">&nbsp;</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    @php $subtotal = 0; @endphp
-                                    @if(session('cart'))
-                                        @foreach(session('cart') as $id => $cart)
-                                            <tr class="woocommerce-cart-form__cart-item cart_item">
-                                                <td  class="product-name" data-title="Product">
-                                                    <div class="d-flex align-items-center">
-                                                        <a href="#">
-                                                            <img width="100" src="{{ $cart['image'] }}" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" alt="">
-                                                        </a>
-                                                        <div class="ml-3 m-w-200-lg-down">
-                                                            <a href="#">{{ $cart['title'] }}</a>
-                                                            <!-- <a href="#" class="text-gray-700 font-size-2 d-block" tabindex="0">Kelly Harms</a> -->
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="product-price" data-title="Price">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span>{{ $cart['bookPrice'] }}</span>
-                                                </td>
-                                                <td class="product-price" data-title="Price">
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span>{{ $cart['extraPrice'] }} ({{ $cart['extraType'] }})</span>
-                                                </td>
-
-                                                <td class="product-quantity" data-title="Quantity">
-                                                    <div class="quantity d-flex align-items-center">
-                                                        <div class="border px-3 width-120">
-                                                            <div class="js-quantity">
-                                                                <div class="d-flex align-items-center">
-                                                                    <label class="screen-reader-text sr-only">Quantity</label>
-                                                                    <!-- <a class="js-minus text-dark" href="javascript:;">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="1px">
-                                                                            <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M-0.000,-0.000 L10.000,-0.000 L10.000,1.000 L-0.000,1.000 L-0.000,-0.000 Z" />
-                                                                        </svg>
-                                                                    </a> -->
-                                                                    <input type="number" value="{{ $cart['quantity'] }}" class="input-text qty text js-result form-control text-center border-0 update-cart" data-id="{{ $cart['id'] }}" step="1" min="1" max="100" name="quantity" value="1" title="Qty">
-                                                                    <!-- <a class="js-plus text-dark" href="javascript:;">
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="10px" height="10px">
-                                                                            <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M10.000,5.000 L6.000,5.000 L6.000,10.000 L5.000,10.000 L5.000,5.000 L-0.000,5.000 L-0.000,4.000 L5.000,4.000 L5.000,-0.000 L6.000,-0.000 L6.000,4.000 L10.000,4.000 L10.000,5.000 Z" />
-                                                                        </svg>
-                                                                    </a> -->
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </td>
-
-                                                <td class="product-subtotal" data-title="Total">
-                                                    @if($cart['is_preorder'] == 1)
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} <sup>{{ round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2)  }}</sup>  <del>{{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</del></span>
-                                                    @else
-                                                    <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} {{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</span>
-                                                    @endif
-                                                </td>
-                                                <td class="product-remove">
-                                                    <a href="javascript:void(0)" class="removeCart" data-id="{{ $cart['id'] }}" aria-label="Remove this item">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                                            <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.011,13.899 L13.899,15.012 L7.500,8.613 L1.101,15.012 L-0.012,13.899 L6.387,7.500 L-0.012,1.101 L1.101,-0.012 L7.500,6.387 L13.899,-0.012 L15.011,1.101 L8.613,7.500 L15.011,13.899 Z" />
-                                                        </svg>
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                            @if($cart['is_preorder'] == 1)
-                                                @php 
-                                                    $singlePrice = round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2);
-                                                    $subtotal = $subtotal +  $singlePrice;
-                                                @endphp
-                                            @else
-                                                @php 
-                                                    $singlePrice = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
-                                                    $subtotal = $subtotal +  $singlePrice;
-                                                @endphp
-                                            @endif
-                                        @endforeach
-                                        @endif
-                                        <!-- <tr>
-                                            <td colspan="5" class="actions">
-                                                <input type="submit" class="button update_cart" name="update_cart" value="Keep Shopping">
-                                            </td>
-                                        </tr>  -->
-                                    </tbody>
-                                </table>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-        <div id="secondary" class="filterLeft sidebar cart-collaterals order-1" role="complementary">
-            <div id="cartAccordion" class="border border-gray-900 bg-white mb-5">
-                <div  class="p-4d875 border">
-                    <div id="cartHeadingOne" class="cart-head">
-                        <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                            data-toggle="collapse"
-                            data-target="#cartCollapseOne"
-                            aria-expanded="true"
-                            aria-controls="cartCollapseOne">
-
-                            <h3 class="cart-title mb-0 font-weight-medium font-size-3">Cart Totals</h3>
-
-                            <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
-                            </svg>
-
-                            <svg class="plus" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div id="cartCollapseOne" class="mt-4 cart-content collapse show"
-                        aria-labelledby="cartHeadingOne"
-                        data-parent="#cartAccordion">
-                        <table class="shop_table shop_table_responsive">
-                            <tbody>
-                                <tr class="cart-subtotal">
-                                    <th>Subtotal</th>
-                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }}</span><span class="subtotalValue">{{ $subtotal }}</span></span></td>
-                                </tr>
-
-                                <tr class="order-shipping">
-                                    <th>Shipping</th>
-                                    <td data-title="Shipping">{{ $cart['currency'] }} <span class="shippingFee">0</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                @if(Auth::check() && Auth::user()->role != 'pos')
-                <div class="p-4d875 border">
-                    <div id="cartHeadingTwo" class="cart-head">
-                        <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                            data-toggle="collapse"
-                            data-target="#cartCollapseTwo"
-                            aria-expanded="true"
-                            aria-controls="cartCollapseTwo">
-
-                            <h3 class="cart-title mb-0 font-weight-medium font-size-3">Shipping</h3>
-
-                            <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
-                            </svg>
-
-                            <svg class="plus" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div id="cartCollapseTwo" class="mt-4 cart-content collapse show" aria-labelledby="cartHeadingTwo">
-                        <div>
-                           <label for="standard">
-                               <input type="radio" id="standard" name="delivery" value="standard" checked>
-                               Standard
-                            </label>
-                           <label for="express">
-                               <input type="radio" id="express" name="delivery" value="express">
-                               Express
-                            </label>
-                       </div>
-                        <div class="standardDelivery">
-                           <select name="shipping" class="shippingChargesStandard form-control">
-                               <option value="" selected disabled data-price="0">---Choose Location</option>
-                               @foreach($locations as $location)
-                               @if($location->type == 'standard')
-                               <option value="{{ $location->location }}" required data-price = "{{ $location->price * $currency->exchange_rate }}">{{ $location->location }} <small>({{ $cart['currency'] }} {{ $location->price * $currency->exchange_rate }})</small></option>
-                               @endif
-                               @endforeach
-                            </select>
-                        </div>
-                        <div style="display: none;" class="expressDelivery">
-                           <select name="shipping" class="shippingChargesExpress form-control">
-                               <option value="" selected disabled data-price="0">---Choose Location</option>
-                               @foreach($locations as $location)
-                               @if($location->type == 'express')
-                               <option value="{{ $location->location }}" required data-price = "{{ $location->price * $currency->exchange_rate }}">{{ $location->location }} <small>({{ $cart['currency'] }} {{ $location->price * $currency->exchange_rate }})</small></option>
-                               @endif
-                               @endforeach
-                            </select>
-                        </div>
-                       <div>
-                           <label for="precise_location"></label>
-                           <input type="text" id="precise_location" class="form-control" required placeholder="Enter precise location">
-                       </div>
-                       <div>
-                           <label for="post_code"></label>
-                           <input type="text" id="post_code" name="post_code" class="form-control" placeholder="Ghana Digital Address">
-                       </div>
-                    </div>
-                </div>
-                @endif
-
-                <div  class="p-4d875 border">
-                    <div id="cartHeadingOne" class="cart-head">
-                        <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                            data-toggle="collapse"
-                            data-target="#cartCollapseFour"
-                            aria-expanded="true"
-                            aria-controls="cartCollapseFour">
-
-                            <h3 class="cart-title mb-0 font-weight-medium font-size-3">Weight Summary</h3>
-
-                            <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
-                            </svg>
-
-                            <svg class="plus" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div id="cartCollapseFour" class="mt-4 cart-content collapse show"
-                        aria-labelledby="cartHeadingOne"
-                        data-parent="#cartAccordion">
-                        <table class="shop_table shop_table_responsive">
-                            <tbody>
-                                @forelse($locations as $location)
-                                <tr class="cart-subtotal">
-                                    <th>{{ $location->weight }} KG</th>
-                                    <td data-title="Subtotal"><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} </span>{{ $location->price * $currency->exchange_rate }}</span></td>
-                                </tr>
-                                @empty
-                                @endforelse
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                
-                <!-- <div class="p-4d875 border">
-                    <div id="cartHeadingThree" class="cart-head">
-                        <a class="d-flex align-items-center justify-content-between text-dark" href="#"
-                            data-toggle="collapse"
-                            data-target="#cartCollapseThree"
-                            aria-expanded="true"
-                            aria-controls="cartCollapseThree">
-
-                            <h3 class="cart-title mb-0 font-weight-medium font-size-3">Coupon</h3>
-
-                            <svg class="mins" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="2px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M0.000,-0.000 L15.000,-0.000 L15.000,2.000 L0.000,2.000 L0.000,-0.000 Z" />
-                            </svg>
-
-                            <svg class="plus" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="15px" height="15px">
-                                <path fill-rule="evenodd" fill="rgb(22, 22, 25)" d="M15.000,8.000 L9.000,8.000 L9.000,15.000 L7.000,15.000 L7.000,8.000 L0.000,8.000 L0.000,6.000 L7.000,6.000 L7.000,-0.000 L9.000,-0.000 L9.000,6.000 L15.000,6.000 L15.000,8.000 Z" />
-                            </svg>
-                        </a>
-                    </div>
-                    <div id="cartCollapseThree" class="mt-4 cart-content collapse show"
-                        aria-labelledby="cartHeadingThree"
-                        data-parent="#cartAccordion">
-                        <div class="coupon">
-                            <label for="coupon_code">Coupon:</label>
-                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Coupon code" autocomplete="off">
-                            <input type="submit" class="button" name="apply_coupon" value="Apply coupon">
-                        </div>
-                    </div>
-                </div> -->
-
-                <div class="p-4d875 border">
-                    <table class="shop_table shop_table_responsive">
-                        <tbody>
-                            <tr class="order-total">
-                                <th>Total Price</th>
-                                <td data-title="Total"><strong><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} </span><span class="totalPrice">{{ $subtotal }}</span></span></strong> </td>
+    <section class="shopping-cart padding-bottom-60">
+        <div class="container">
+            <div class="row col-lg-12">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Items</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Formating Price</th>
+                                <th class="text-center">Quantity</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center"></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                        @php $subtotal = 0; @endphp
+                            @if(session('cart'))
+                                @foreach(session('cart') as $id => $cart)
+                                <tr>
+                                    <td>
+                                        <div class="media">
+                                            <div class="media-left checkout_image"> <a href="javascript:void(0)"> <img class="img-responsive" width="100" src="{{ $cart['image'] }}" alt=""> </a> </div>
+                                            <div class="media-body">
+                                                <p>{{ $cart['title'] }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center padding-top-60">{{ $cart['currency'] }}</span>{{ $cart['bookPrice'] }}</td>
+                                    <td class="text-center padding-top-60">{{ $cart['currency'] }}</span>{{ $cart['extraPrice'] }} ({{ $cart['extraType'] }})</td>
+                                    <td class="text-center">
+                                        <div class="quinty padding-top-20">
+                                            <input type="number" class="update-cart" value="{{ $cart['quantity'] }}" data-id="{{ $cart['id'] }}" step="1" min="1" max="10" name="quantity">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        @if($cart['is_preorder'] == 1)
+                                        <span class="text-center padding-top-60 amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} <sup>{{ round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2)  }}</sup>  <del>{{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</del></span>
+                                        @else
+                                        <span class="text-center padding-top-60 amount"><span class="woocommerce-Price-currencySymbol">{{ $cart['currency'] }} {{ ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity']  }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="text-center padding-top-60"><a href="javascript:void(0)" data-id="{{ $cart['id'] }}" class="remove removeCart"><i class="fa fa-close"></i></a></td>
+                                </tr>
+                            @if($cart['is_preorder'] == 1)
+                                @php 
+                                    $singlePrice = round((((($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'])/100 )* 10), 2);
+                                    $subtotal = $subtotal +  $singlePrice;
+                                @endphp
+                            @else
+                                @php 
+                                    $singlePrice = ($cart['extraPrice'] + $cart['bookPrice']) * $cart['quantity'];
+                                    $subtotal = $subtotal +  $singlePrice;
+                                @endphp
+                            @endif
+                            @endforeach
+                        @endif
                         </tbody>
                     </table>
                 </div>
-            </div>
-           
-            <div class="wc-proceed-to-checkout">
-            @if(Auth::check() && Auth::user()->role != 'pos')
-                <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedToCheckout">Proceed to checkout</a>
-            @else
-                <a href="javascript:void(0)" class="checkout-button button alt wc-forward btn btn-dark btn-block rounded-0 py-4 proceedForAddress">Proceed For Address</a>
-            @endif
-            </div>
-            <br>
-            <div class="wc-proceed-to-checkout">
-                <a href="{{ url('shop') }}" class="checkout-button button alt wc-forward btn btn-light btn-block rounded-0 py-4">Keep Shopping</a>
+                <div class="promo">
+                    <div class="coupen">
+                        <label> Coupon Code
+                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="Your code here">
+                            <button type="button" class="button" name="apply_coupon" id="apply_coupon"><i class="fa fa-arrow-circle-right"></i></button>
+                        </label>
+                        <div class="coupoMessage"></div>
+                    </div>
+
+                    <div class="g-totel">
+                        <h5>Sub Total: <span>{{ $cart['currency'] }}</span><span class="subtotalValue">{{ $subtotal }}</span></h5>
+                    </div>
+                </div>
+
+                <div class="pro-btn"> 
+                    <a href="{{ route('shop') }}" class="btn-round mb-5 btn-light">Continue Shopping</a>
+                    <a href="javascript:void(0)" class="btn-round mb-5 btn-light checkoutNow">Proceed to checkout</a> 
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </section>
 @else
     <style>
         .empty-state {

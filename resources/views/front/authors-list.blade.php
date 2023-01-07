@@ -1,63 +1,90 @@
 @extends('front.layout.index')
 @section('content')
-<main id="content">
-    <div class="space-bottom-2 space-bottom-lg-3">
-        <div class="pb-lg-1">
-            <div class="page-header border-bottom">
-                <div class="container">
-                    <div class="d-md-flex justify-content-between align-items-center py-4">
-                        <h1 class="page-title font-size-3 font-weight-medium m-0 text-lh-lg">Authors</h1>
-                        <nav class="woocommerce-breadcrumb font-size-2">
-                            <a href="{{ url('/') }}" class="h-primary">Home</a>
-                            <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>
-                            <span>Authors</span>
-                        </nav>
+<div class="linking">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="/">Home</a></li>
+            <li class="active">All Authors</li>
+        </ol>
+    </div>
+</div>
+<section class="padding-top-40 padding-bottom-60">
+    <div class="container">
+        <div class="row">
+
+            <!-- Shop Side Bar -->
+            <div class="col-md-3">
+                <div class="shop-side-bar">
+                    <!-- Categories -->
+                    <h6>Categories</h6>
+                    <div class="checkbox checkbox-primary">
+                        <ul>
+                            @foreach($genres as $genre)
+                            <li>
+                                <input id="cate{{ $genre->id }}" class="styled" type="checkbox">
+                                <label for="cate{{ $genre->id }}"> {{ $genre->title }} </label>
+                            </li>
+                            @endforeach
+                        </ul>
                     </div>
+                    <br>
                 </div>
             </div>
-            <div class="container">
-                <div class="u-cubeportfolio mb-5 mb-lg-7">
-                    <!-- Filter -->
-                    <ul id="filterControls" class="d-flex justify-content-between list-inline cbp-l-filters-alignRight cbp-l-filters-alignRight__custom text-left pl-lg-8 pt-4 pt-lg-8 mb-5 mb-lg-8 overflow-auto">
+
+            <!-- Products -->
+            <div class="col-md-9">
+
+                <!-- Short List -->
+                <div class="short-lst">
+                    <h2>All Book Authors</h2>
+                    <ul>
+                        <!-- Short List -->
                         <li>
-                            @foreach(range('A','Z') as $v)
-                            <a href="?param={{ $v }}"><li>{{ $v }}</li></a>
-                            @endforeach
+                            <p>Showing 1–12 of 756 results</p>
                         </li>
+                        <!-- Short  -->
                         <li>
-                            <div class="site-search ml-xl-0 ml-md-auto w-r-100 my-2 my-xl-0">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="glph-icon flaticon-loupe input-group-text py-2d75 bg-white-100 border-white-100"></i>
+                            <select class="selectpicker">
+                                <option>Show 12 </option>
+                                <option>Show 24 </option>
+                                <option>Show 32 </option>
+                            </select>
+                        </li>
+                        <!-- by Default -->
+                        <li>
+                            <select class="selectpicker">
+                                <option>Sort by Default </option>
+                                <option>Sort by Default </option>
+                                <option>Sort by Default</option>
+                            </select>
+                        </li>
+
+                        <!-- Grid Layer -->
+                        <!-- <li class="grid-layer"> <a href="#."><i class="fa fa-list margin-right-10"></i></a> <a href="#."><i class="fa fa-th"></i></a> </li> -->
+                    </ul>
+                </div>
+
+                <!-- Items -->
+                <div class="col-list">
+                    @forelse($authors as $author)
+                    <div class="product">
+                        <article>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <img class="img-responsive all_auth" src="{{ asset($author->profile) }}" alt="">
                                     </div>
-                                    <input class="form-control bg-white-100 min-width-380 py-2d75 height-4 border-white-100" id="searchInput" type="search" placeholder="Search for Books..." aria-label="Search">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="media-body details">
+                                        <h4>{{ $author->name }} <small>({{ count($author->books_published) }} Published Books)</small></h4>
+                                        <p>{{ $author->biography }}</p>
+                                        <a href="{{ route('author-detail', $author->id) }}" class="btn-round"><i class="icon-eye"></i> View Profile</a>
+                                    </div>
                                 </div>
                             </div>
-                        </li>
-                    </ul>
-
-                    
-                    <div class="author-content position-relative mx-md-n7 row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-5"
-                        data-layout="grid"
-                        data-controls="#filterControls"
-                        data-animation="quicksand"
-                        data-x-gap="20"
-                        data-y-gap="100"
-                        data-media-queries='[
-                        {"width": 1100, "cols": 5},
-                        {"width": 800, "cols": 3},
-                        {"width": 480, "cols": 1}
-                        ]'>
-                    @forelse($authors as $author)
-                        <div class="cbp-item author-wrapper col px-md-7 mx-0">
-                            <a class="cbp-caption" href="{{ route('author-detail', $author->id) }}">
-                                <img class="author-image rounded-circle img-fluid mb-3" src="{{ asset($author->profile) }}" alt="Image Description">
-                                <div class="py-3 text-center">
-                                    <h4 class="h6 text-dark">{{ $author->name }}</h4>
-                                    <span class="font-size-2 text-secondary-gray-700">{{ count($author->books_published) }} Published Books</span>
-                                </div>
-                            </a>
-                        </div>
+                        </article>
+                    </div>
                     @empty
                     <style>
                         .empty-state {
@@ -115,16 +142,19 @@
                         </div>
                     </div>
                     @endforelse
-                    </div>
-                    
+                    <!-- pagination -->
+                    <!-- <ul class="pagination">
+                        <li> <a href="#" aria-label="Previous"> <i class="fa fa-angle-left"></i> </a> </li>
+                        <li><a class="active" href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li> <a href="#" aria-label="Next"> <i class="fa fa-angle-right"></i> </a> </li>
+                    </ul> -->
                 </div>
-                <!-- <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-wide border-dark text-dark rounded-0 transition-3d-hover">Load More</button>
-                </div> -->
             </div>
         </div>
     </div>
-</main>
+</section>
 @endsection
 @section('scripts')
 <script>

@@ -1,115 +1,121 @@
 @extends('admin.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Assign Job</a></li>
-            </ol>
-        </div>
-        @if(Session::has('message'))
-            <div class="alert alert-{{session('message')['type']}}">
-                {{session('message')['text']}}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Completed Jobs</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Completed Jobs</li>
+                </ol>
             </div>
-        @endif
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div><br />
-        @endif
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Completed Jobs</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
-                                <thead>
-                                    <tr>
-                                        <th>Job No.</th>
-                                        <th>User Payment Info</th>
-                                        <th>User Info</th>
-                                        <th>Marketing Info</th>
-                                        <th>Consultant Note</th>
-                                        <th>Job Status</th>
-                                        <th>All Documents</th>
-                                        <th>Payment Status</th>
-                                        <!-- <th>Remove Job</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                @forelse($jobs as $job)
-                                    <tr>
-                                        <td>JOB-{{ $job->id }}</td>
-                                        <td>
-                                            @if($job->consultant)
-                                                <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
-                                                data-payment = "{{ $job->consultant->payment }}"
-                                                data-account_name = "{{ $job->consultant->account_name }}"
-                                                data-account_number = "{{ $job->consultant->account_number }}"
-                                                data-networks = "{{ $job->consultant->networks }}"
-                                                data-bank_account_name = "{{ $job->consultant->bank_account_name }}"
-                                                data-bank_account_number = "{{ $job->consultant->bank_account_number }}"
-                                                data-branch = "{{ $job->consultant->branch }}"
-                                                data-bank_name = "{{ $job->consultant->bank_name }}"
-                                                title="View Payment Details">View</a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($job->consultant)
-                                        <a href="javascript:void(0)" class="text-primary viewUserDetail" data-bs-toggle="modal" data-bs-target="#viewUserDetail"
-                                            data-name = "{{ $job->user->name }}"
-                                            data-email = "{{ $job->user->email }}"
-                                            data-phone_number = "{{ $job->consultant->phone_number }}"
-                                            data-country = "{{ $job->consultant->country }}"
-                                            data-address = "{{ $job->consultant->address }}"
-                                            title="View User Detail">View</a>
-                                            @endif
-                                        </td>
-                                        <td>
-                                        <a href="javascript:void(0)" class="text-primary viewMarketingDetail" data-bs-toggle="modal" data-bs-target="#viewMarketingDetail"
-                                            data-package = "{{ $job->marketing->package }}"
-                                            data-price = "{{ $job->marketing->price }}"
-                                            data-duration = "{{ $job->marketing->duration }}"
-                                            title="View User Detail">View</a>
-                                        </td>
-                                        <td><p>{{ $job->document_note }}</p></td>
-                                        <td><a href="javascript:void(0)" class="text-info"> ACTIVE </a></td>
-                                        <td>
-                                            @forelse(unserialize($job->document) as $doc)
-                                            <a href="javascript:void(0)" class="text-primary viewDocument" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#viewDocument" 
-                                            data-url = "{{ asset($doc) }}"
-                                            title="View User Detail"><span class="fa fa-upload"></span></a>
-                                            @empty
-                                            @endforelse
-                                        </td>
-                                        <td>
-                                            @php $market = DB::table('marketing')->where('id',$job->marketing_id)->first(); @endphp
-                                            GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
-                                            @if($job->is_payment == 0)
-                                            <a href="javascript:void(0)" class="text-danger paymentProof" data-id="{{ $job->id }}" data-bs-toggle="modal" data-bs-target="#paymentProof"> PAY</a>
-                                            @else
-                                             <a href="javascript:void(0)" class="text-success"> PAID</a>
-                                            @endif
-                                        </td>
-                                        <!-- <td><a href="{{ route('admin.remove-job', $job->id) }}" class="text-danger" onclick="return confirm('Are you sure you want remove job?')" title="Remove Job">Remove</a></td> -->
-                                    </tr>
-                                @empty
-                                @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+
+        </div>
+    </div>
+</div>
+@if(Session::has('message'))
+    <div class="alert alert-{{session('message')['type']}}">
+        {{session('message')['text']}}
+    </div>
+@endif
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div><br />
+@endif
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Completed Jobs</h4>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Job No.</th>
+                                <th>User Payment Info</th>
+                                <th>User Info</th>
+                                <th>Marketing Info</th>
+                                <th>Consultant Note</th>
+                                <th>Job Status</th>
+                                <th>All Documents</th>
+                                <th>Payment Status</th>
+                                <!-- <th>Remove Job</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        @forelse($jobs as $job)
+                            <tr>
+                                <td>JOB-{{ $job->id }}</td>
+                                <td>
+                                    @if($job->consultant)
+                                        <a href="javascript:void(0)" class="text-primary viewPaymentDetail" data-bs-toggle="modal" data-bs-target="#viewPaymentDetail"
+                                        data-payment = "{{ $job->consultant->payment }}"
+                                        data-account_name = "{{ $job->consultant->account_name }}"
+                                        data-account_number = "{{ $job->consultant->account_number }}"
+                                        data-networks = "{{ $job->consultant->networks }}"
+                                        data-bank_account_name = "{{ $job->consultant->bank_account_name }}"
+                                        data-bank_account_number = "{{ $job->consultant->bank_account_number }}"
+                                        data-branch = "{{ $job->consultant->branch }}"
+                                        data-bank_name = "{{ $job->consultant->bank_name }}"
+                                        title="View Payment Details">View</a>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($job->consultant)
+                                <a href="javascript:void(0)" class="text-primary viewUserDetail" data-bs-toggle="modal" data-bs-target="#viewUserDetail"
+                                    data-name = "{{ $job->user->name }}"
+                                    data-email = "{{ $job->user->email }}"
+                                    data-phone_number = "{{ $job->consultant->phone_number }}"
+                                    data-country = "{{ $job->consultant->country }}"
+                                    data-address = "{{ $job->consultant->address }}"
+                                    title="View User Detail">View</a>
+                                    @endif
+                                </td>
+                                <td>
+                                <a href="javascript:void(0)" class="text-primary viewMarketingDetail" data-bs-toggle="modal" data-bs-target="#viewMarketingDetail"
+                                    data-package = "{{ $job->marketing->package }}"
+                                    data-price = "{{ $job->marketing->price }}"
+                                    data-duration = "{{ $job->marketing->duration }}"
+                                    title="View User Detail">View</a>
+                                </td>
+                                <td><p>{{ $job->document_note }}</p></td>
+                                <td><a href="javascript:void(0)" class="text-info"> ACTIVE </a></td>
+                                <td>
+                                    @forelse(unserialize($job->document) as $doc)
+                                    <a href="javascript:void(0)" class="text-primary viewDocument" 
+                                    data-bs-toggle="modal" 
+                                    data-bs-target="#viewDocument" 
+                                    data-url = "{{ asset($doc) }}"
+                                    title="View User Detail"><span class="fa fa-upload"></span></a>
+                                    @empty
+                                    @endforelse
+                                </td>
+                                <td>
+                                    @php $market = DB::table('marketing')->where('id',$job->marketing_id)->first(); @endphp
+                                    GHS {{ round(($market->price / 100)*$setting->consultant_commission, 2) }} | 
+                                    @if($job->is_payment == 0)
+                                    <a href="javascript:void(0)" class="text-danger paymentProof" data-id="{{ $job->id }}" data-bs-toggle="modal" data-bs-target="#paymentProof"> PAY</a>
+                                    @else
+                                        <a href="javascript:void(0)" class="text-success"> PAID</a>
+                                    @endif
+                                </td>
+                                <!-- <td><a href="{{ route('admin.remove-job', $job->id) }}" class="text-danger" onclick="return confirm('Are you sure you want remove job?')" title="Remove Job">Remove</a></td> -->
+                            </tr>
+                        @empty
+                        @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

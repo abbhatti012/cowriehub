@@ -1,13 +1,22 @@
 @extends('affiliate.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">User Referrals</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">User Referrals</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">User Referrals</li>
+                </ol>
+            </div>
+
         </div>
+    </div>
+</div>
+
         <div class="row">
             @if(Session::has('message'))
                 <div class="alert alert-{{session('message')['type']}}">
@@ -33,19 +42,17 @@
                     </form>
                 </div>
             </div>
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">User Referrals</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
-                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
-                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
-                            <a href="#!" class="btn btn-primary btn-print">Print</a>
-                            <table id="datatables" class="display" style="min-width: 845px">
-                                <thead>
+            <div class="col-md-12">
+                            <!-- <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userdetails">Send A link</button> -->
+                            <hr>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">User Referrals</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                                        <thead>
                                     <tr>
                                         <th>Phone</th>
                                         <th>Email</th>
@@ -99,11 +106,43 @@
                                     @empty
                                 @endforelse
                                 </tbody>
-                            </table>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <!-- inventory add Details Modal -->
+                            <div id="userdetails" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content border-0 overflow-hidden">
+                                        <div class="modal-header p-3">
+                                            <h4 class="card-title mb-0">Send A link</h4>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="javascript:void(0);">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <div class="mb-3">
+                                                            <label for="email" class="form-label">Email</label>
+                                                            <input type="email" class="form-control" placeholder="" id="email">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-12">
+                                                        <div class="text-end">
+                                                            <button type="submit" class="btn btn-primary">Send</button>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                        </div>
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </div><!-- /.modal -->
                         </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -162,8 +201,6 @@
                 <button type="button" class="btn btn-danger light" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
-    </div>
-</div>
 @endsection
 @section('scripts')
     <script>
@@ -180,11 +217,4 @@
                 });
             });
     </script>
-    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
 @endsection

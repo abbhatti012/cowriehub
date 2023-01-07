@@ -1,5 +1,12 @@
-<div class="footer">
-    <div class="copyright">
-        <p>Copyright: Cowrie Hub <br> Designed & Developed By: <a href="https://www.indigoadmarket.com" target="_blank">Indigo</a></p>
+<footer class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6">
+                <script>
+                    document.write(new Date().getFullYear())
+                </script> © Cowriehub Book Store
+            </div>
+
+        </div>
     </div>
-</div>
+</footer>

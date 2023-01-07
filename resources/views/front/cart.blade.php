@@ -1,54 +1,110 @@
 @extends('front.layout.index')
 @section('content')
-
-    <div class="page-header border-bottom">
+    <div class="linking">
         <div class="container">
-            <div class="d-md-flex justify-content-between align-items-center py-4">
-                <h1 class="page-title font-size-3 font-weight-medium m-0 text-lh-lg">Cart</h1>
-                <nav class="woocommerce-breadcrumb font-size-2">
-                    <a href="{{ url('/') }}" class="h-primary">Home</a>
-                    <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>
-                    <a href="{{ route('shop') }}" class="h-primary">Shop</a>
-                    <span class="breadcrumb-separator mx-1"><i class="fas fa-angle-right"></i></span>Cart
-                </nav>
-            </div>
+            <ol class="breadcrumb">
+                <li><a href="/">Home</a></li>
+                <li class="active">Shopping Cart</li>
+            </ol>
         </div>
     </div>
-    <div class="site-content bg-punch-light overflow-hidden cartItemHere" id="content">
-        <?php echo $cart_page ?>
+
+    <!-- Ship Process -->
+    <div class="ship-process padding-top-30 padding-bottom-30">
+        <div class="container">
+            <ul class="row">
+
+                <!-- Step 1 -->
+                <li class="col-sm-3 current">
+                    <div class="media-left"> <i class="flaticon-shopping"></i> </div>
+                    <div class="media-body"> <span>Step 1</span>
+                        <h6>Shopping Cart</h6>
+                    </div>
+                </li>
+
+                <!-- Step 2 -->
+                <li class="col-sm-3">
+                    <div class="media-left"> <i class="flaticon-delivery-truck"></i> </div>
+                    <div class="media-body"> <span>Step 2</span>
+                        <h6>Shipping Details</h6>
+                    </div>
+                </li>
+
+                <!-- Step 3 -->
+                <li class="col-sm-3">
+                    <div class="media-left"> <i class="fa fa-check"></i> </div>
+                    <div class="media-body"> <span>Step 3</span>
+                        <h6>Confirmation</h6>
+                    </div>
+                </li>
+
+                <!-- Step 4 -->
+                <li class="col-sm-3">
+                    <div class="media-left"> <i class="flaticon-business"></i> </div>
+                    <div class="media-body"> <span>Step 4</span>
+                        <h6>Payment Methods</h6>
+                    </div>
+                </li>
+            </ul>
+        </div>
     </div>
-    
+    <div class="cartItemHere">
+        <?php echo $cart_page; ?>
+    </div>
+<input type="hidden" id="coupon_value">
+<input type="hidden" id="is_coupon" value="0">
 @endsection
 @section('scripts')
     <script>
         $(document).ready(function(){
-            var shippingPriceStandard = $('.subtotalValue').text();
-            var totalPrice = $('.totalPrice').text();
-            $(document).on('change','.shippingChargesStandard',function(){
-                $('.shippingChargesStandard option:selected').each(function(){
-                    var price = $(this).data('price');
-                    $('.shippingFee').html(price);
-                    $('.totalPrice').html(+shippingPriceStandard + +price);
-                });
-            });
-            var shippingPriceExpress = $('.subtotalValue').text();
-            $(document).on('change','.shippingChargesExpress',function(){
-                $('.shippingChargesExpress option:selected').each(function(){
-                    var price = $(this).data('price')
-                    $('.shippingFee').html(price);
-                    $('.totalPrice').html(+shippingPriceExpress + +price);
-                });
-            });
-           $('input[name="delivery"]').on('change',function(){
-                var type = $(this).val();
-                if(type == 'standard'){
-                    $('.standardDelivery').show();
-                    $('.expressDelivery').hide();
-                } else if(type == 'express'){
-                    $('.expressDelivery').show();
-                    $('.standardDelivery').hide();
+           $(document).on('click','.checkoutNow',function(){
+                var is_coupon = $('#is_coupon').val();
+                if(is_coupon == 1){
+                    var coupon_value = $('#coupon_value').val();
+                    window.location.href = "{{ route('checkout') }}?is_coupon=1&coupon_code="+coupon_value;
+                } else {
+                    window.location.href = "{{ route('checkout') }}?is_coupon=0&coupon_code=";
                 }
-           });
+           })
+            <?php if(isset($_GET['token'])): ?>
+                var token = "<?= $_GET['token'] ?>";
+                var is_preorder = 1;
+            <?php else: ?>
+                var token = '';
+                var is_preorder = 0;
+            <?php endif; ?>
+           $('#apply_coupon').on('click',function(){
+                var code = $('#coupon_code').val();
+                if(code == ''){
+                    $.notify('Please enter coupon code first')
+                    return false;
+                }
+                $.ajax({
+                    type : 'GET',
+                    url : '{{ route("admin.check-coupon") }}',
+                    data : {
+                        code : code,
+                        type : is_preorder,
+                        token : token
+                    },
+                    success : function(data){
+                        if(data.status == true){
+                            for(var i = 0; i < data.data.length; i++){
+                                $('.singlePrice'+data.data[i].id).text(data.data[i].price);
+                            }
+                            $('.coupoMessage').html('Congratulations you just saved GHS'+data.totalPrice);
+                            $.notify('Coupon applied successfully','success');
+                            $('.coupoMessage').css('color','green');
+                            $('#apply_coupon').prop('disabled',true);
+                            $('#coupon_code').val('');
+                            $('#coupon_value').val(code);
+                            $('#is_coupon').val(1);
+                        } else {
+                            $.notify(data.message);
+                        }
+                    }
+                });
+            });
             $(document).on('click','.removeCart',function(){
                 var id = $(this).data('id');
                 $.ajax({
@@ -78,50 +134,6 @@
                         $('.cartItemHere').html(data);
                     }
                 })
-            });
-            $(document).on('click','.proceedToCheckout',function(){
-                var shippingCharges = $('#shippingCharges option:selected').val();
-                var preciseLocation = $('#precise_location').val();
-                var postCode = $('#post_code').val();
-                
-                if(shippingCharges == ''){
-                    $.notify('Please choose location');
-                    return false;
-                } else if(preciseLocation == ''){
-                    $.notify('Please choose your precise location');
-                    return false;
-                } else {
-                    $.ajax({
-                        type : 'POST',
-                        url : "{{ route('before-payment') }}",
-                        data : {
-                            '_token' : '{{ csrf_token() }}',
-                            shippingCharges : shippingCharges,
-                            preciseLocation : preciseLocation,
-                            postCode : postCode,
-                            totalPrice : parseInt($('.totalPrice').text()),
-                            subTotal : parseInt($('.subtotalValue').text()),
-                            shippingPrice : parseInt($('#shippingCharges option:selected').data('price'))
-                        },
-                        success : function(data){
-                            location.href = "{{ route('checkout') }}?token="+data;
-                        }
-                    });
-                }
-            });
-            $(document).on('click','.proceedForAddress',function(){
-                $.ajax({
-                    type : 'POST',
-                    url : "{{ route('pos-before-payment') }}",
-                    data : {
-                        '_token' : '{{ csrf_token() }}',
-                        totalPrice : parseInt($('.totalPrice').text()),
-                        subTotal : parseInt($('.subtotalValue').text()),
-                    },
-                    success : function(data){
-                        location.href = "{{ route('checkout') }}?token="+data;
-                    }
-                });
             });
         });
     </script>

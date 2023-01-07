@@ -1,129 +1,124 @@
 @extends($role.'.layout.index')
-<style>
-    .content-body{
-        display: block !important;
-    }
-    #loader {
-        display: none !important;
-    }
-</style>
 @section('content')
-<link rel="stylesheet" href="{{ asset('daterange/style.css') }}">
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Sales</a></li>
-            </ol>
-        </div>
-        <div style="display: none;" class="panel">
-            <div class="row page-titles">
-                <ol class="breadcrumb">
-                    <form action="{{ route('author.sales') }}" method="get">
-                        <div class="input-group mb-3">
-                            <input type="text" id="date-range" name="date" readonly class="form-control">
-                            <button type="submit" class="btn btn-primary">Apply</button>
-                        <div>
-                    </form>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Sales</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Sales</li>
                 </ol>
             </div>
+
         </div>
-        <p class="slide">
-            <div class="pull-me">
-                <p>Apply Filter!</p>
+    </div>
+</div>
+<div class="h-100">
+<div class="card-body border border-dashed border-end-0 border-start-0">
+    <form action="{{ route('author.sales') }}" method="get">
+        <div class="row g-3">
+            <div class="col-xxl-2 col-sm-6">
+                <div class="input-group input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">Start Date</span>
+                    <input type="date" id="date-range" name="min_date" class="form-control">
+                </div>
             </div>
-        </p>
-        
-        <div class="row">            
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">All Revenues</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
-                                <thead>
-                                    <tr>
-                                        <th>User Name</th>
-                                        <th>User Email</th>
-                                        <th>Amount to be paid</th>
-                                        <th>Payment Status</th>
-                                        <th>Amount Paid</th>
-                                        <th>Payment Proof</th>
-                                        <th>Payment Note</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                @forelse($revenues as $revenue)
-                                    <tr>
-                                        <td>{{ $revenue->user->name }}</td>
-                                        <td>{{ $revenue->user->email }}</td>
-                                        <td>{{ $revenue->user_amount }}</td>
-                                        <td>
-                                            @if($revenue->admin_payment_status == 0)
-                                            <span class="badge light badge-warning">PENDING</span>
-                                            @else
-                                            <span class="badge light badge-success">PAID</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($revenue->admin_payment_status == 0)
-                                            0
-                                            @else
-                                            {{ $revenue->user_amount }}
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if($revenue->payment_proof)
-                                                <a href="{{ asset($revenue->payment_proof) }}" target="_blank" class="text-info sharp">View</a>
-                                            @else
-                                                ---
-                                            @endif
-                                        </td>
-                                        <td>
-                                            {{ $revenue->payment_note }}
-                                        </td>
-                                    </tr>
-                                @empty
-                                @endforelse
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <div class="col-xxl-2 col-sm-6">
+                <div class="input-group input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-sm">End Date</span>
+                    <input type="date" class="form-control" name="max_date" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+                </div>
+            </div>
+            <div class="col-xxl-1 col-sm-4">
+                <div>
+                    <button type="submit" class="btn btn-primary w-100" onclick="SearchData();"> <i class="ri-equalizer-fill me-1 align-bottom"></i>
+                        Filters
+                    </button>
                 </div>
             </div>
         </div>
+    </form>
+</div>
         
-        <div class="row">
-            <div class="col-xl-12 col-xxl-12">
-                <div class="card">
-                    <div class="card-header border-0 d-sm-flex d-block">
-                        <div class="me-auto mb-sm-0 mb-3">
-                            <h4 class="card-title mb-2">Average Sales</h4>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div id="reservationChart" class="reservationChart"></div>
-                    </div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">All Marketing Purchases</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>User Name</th>
+                                <th>User Email</th>
+                                <th>Amount to be paid</th>
+                                <th>Payment Status</th>
+                                <th>Amount Paid</th>
+                                <th>Payment Proof</th>
+                                <th>Payment Note</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        
+                        @forelse($revenues as $revenue)
+                            <tr>
+                                <td>{{ $revenue->user->name }}</td>
+                                <td>{{ $revenue->user->email }}</td>
+                                <td>{{ $revenue->user_amount }}</td>
+                                <td>
+                                    @if($revenue->admin_payment_status == 0)
+                                    <span class="badge light badge-warning">PENDING</span>
+                                    @else
+                                    <span class="badge light badge-success">PAID</span>
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($revenue->admin_payment_status == 0)
+                                    0
+                                    @else
+                                    {{ $revenue->user_amount }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if($revenue->payment_proof)
+                                        <a href="{{ asset($revenue->payment_proof) }}" target="_blank" class="text-info sharp">View</a>
+                                    @else
+                                        ---
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $revenue->payment_note }}
+                                </td>
+                            </tr>
+                        @empty
+                        @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- <div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-body p-0 pb-2">
+                <div class="w-100">
+                    <div id="customer_impression_charts" data-colors='["--vz-primary", "--vz-success", "--vz-danger"]' class="apex-charts" dir="ltr"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+</div>
 @endsection
 @section('scripts')
-<script src="{{ asset('daterange/script.js') }}"></script>
-<script>
-    $(document).ready(function(){
-        $(".daterangepicker.ltr").css('display','none');
-        $('.pull-me').click(function() {
-            $('.panel').slideToggle('slow');
-        });
-    })
-</script>
 <script>
     (function($) {
     var dzChartlist = function() {

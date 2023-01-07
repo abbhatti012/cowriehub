@@ -13,14 +13,23 @@
         height: 600px;
     }
 </style>
-<div class="content-body">
-   <div class="container-fluid">
-      <div class="row page-titles">
-         <ol class="breadcrumb">
-            <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="javascript:void(0)">My Pos Account</a></li>
-         </ol>
-      </div>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">My Account</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">My Account</li>
+                </ol>
+            </div>
+
+        </div>
+    </div>
+</div>
+
       @if(\App\Models\User::IsPending('pos'))
         <div class="alert alert-danger">
             <p>Cowriehub reviewing your application. You will be notified in your email on the status of your application after this review</p>
@@ -153,9 +162,10 @@
         </div>
     </form>
     @endif
-   </div>
    <div id="google-map"></div>
-</div>
+<br>
+<br>
+<br>
 @endsection
 @section('scripts')
 <script src="https://maps.googleapis.com/maps/api/js?v=3&amp;sensor=false&amp;libraries=places&key=AIzaSyBeEQgpHcPzV4BwOa60xgE9AwhlofidWh8"></script>

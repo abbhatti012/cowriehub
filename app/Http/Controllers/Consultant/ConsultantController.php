@@ -170,14 +170,14 @@ class ConsultantController extends Controller
         $user->terms = $request->terms;
         $user->status = 0;
         if($user->save()){
-            $data['title'] = 'New Applicant';
+            $data['title'] = 'Action Required';
             $data['to'] = 'cowriehubllc@gmail.com';
             $data['username'] = 'Admin';
             $data['body'] = 'Consultant just updated its record. Please check below link to view!';
             $data['link'] = "admin.consultant";
             $data['linkText'] = "View for details";
             Mail::send('email', $data,function ($m) use ($data) {
-                $m->to($data['to'])->subject('New Applicant!');
+                $m->to($data['to'])->subject('Action Required!');
             });
 
             return back()->with('message', ['text'=>'Thank you for your application! Cowriehub will review your application in the next 24-48 hours.
@@ -244,7 +244,7 @@ class ConsultantController extends Controller
         $user_detail = User::where('id',$user->user_id)->first();
 
         $data['title'] = 'Job Assigned';
-        $data['body'] = 'Congratulations!. New job has been assigned to you';
+        $data['body'] = 'Congratulations!. New job has been assigned to you<br>';
         $data['body'] .= ' Click on below link to view the job!';
         $data['link'] = "user.consultant-account";
         $data['linkText'] = "View for details";
@@ -336,7 +336,7 @@ class ConsultantController extends Controller
         $user->save();
 
         $data['title'] = 'Job Status';
-        $data['body'] = 'One of your updated its job status.';
+        $data['body'] = 'One of your consultant updated its job status.<br>';
         $data['body'] .= ' Click on below link to view the status!';
         $data['link'] = "admin.consultant";
         $data['linkText'] = "View for details";
@@ -354,7 +354,7 @@ class ConsultantController extends Controller
         $user->save();
         if($value == 1){
             $data['title'] = 'Congratulations!';
-            $data['body'] = 'One of your consultant approved the job! ';
+            $data['body'] = 'One of your consultant approved the job!<br>';
             $data['body'] .= 'Please click on below link to view the status!';
             $data['link'] = "admin.consultant";
             $data['linkText'] = "View for details";

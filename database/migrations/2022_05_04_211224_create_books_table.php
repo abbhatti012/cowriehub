@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('role');
             $table->string('hero_image')->nullable();
+            $table->string('book_banner')->nullable();
             $table->string('cover')->nullable();
             $table->string('sample')->nullable();
             $table->string('trailer')->nullable();

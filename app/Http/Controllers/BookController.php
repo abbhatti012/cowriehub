@@ -55,6 +55,13 @@ class BookController extends Controller
         } else {
             unset($user->sample);
         }
+        if($request->cover != null){
+            $UploadImage = 'd'.time().'.'.$request->cover->extension();
+            $request->cover->move(public_path('images/books'), $UploadImage);
+            $user->cover = 'images/books/'.$UploadImage;
+        } else {
+            unset($user->cover);
+        }
         $user->title = $request->title;
         $user->slug = SlugService::createSlug(Genre::class, 'slug', $request->title);
         $user->price = $request->price;

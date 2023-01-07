@@ -46,10 +46,10 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $id = Auth::id();
-        if(isset($request->date) && !empty($request->date)){
-            $date = explode(' - ',$request->date);
-            $start_date = date('Y-m-d',strtotime($date[0]));
-            $end_date = date('Y-m-d',strtotime($date[1]));
+        if(isset($request->min_date) && !empty($request->min_date)){
+            // $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($request->min_date));
+            $end_date = date('Y-m-d',strtotime($request->max_date));
             $date = [0=>$start_date,1=>$end_date];
             $books = Book::whereBetween('created_at',$date)->count();
             $approved_books = Book::whereBetween('created_at',$date)->where('status',1)->count();
@@ -810,7 +810,7 @@ class AdminController extends Controller
             $user_detail = User::where('id',$request->assign_to)->first();
 
             $data['title'] = 'Job Assigned';
-            $data['body'] = 'Congratulations!. New job has been assigned to you';
+            $data['body'] = 'Congratulations!. New job has been assigned to you<br>';
             $data['body'] .= ' Click on below link to view the job!';
             $data['link'] = "consultant.jobs";
             $data['linkText'] = "View for details";
@@ -931,7 +931,7 @@ class AdminController extends Controller
         $user_detail->status = 1;
         $user_detail->save();
         $data['title'] = 'Application is approved';
-        $data['body'] = 'Congratulations!. Cowriehub has approved you as an author';
+        $data['body'] = 'Congratulations!. Cowriehub has approved you as an author<br>';
         $data['body'] .= ' Click on below link to explore more as an author!';
         $data['link'] = "author.profile.edit";
         $data['linkText'] = "View for details";

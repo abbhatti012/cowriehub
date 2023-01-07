@@ -282,10 +282,10 @@ class UserController extends Controller
     }
     public function dashboard(Request $request){
         $id = Auth::id();
-        if(isset($request->date) && !empty($request->date)){
+        if(isset($request->min_date) && !empty($request->min_date)){
             $date = explode(' - ',$request->date);
-            $start_date = date('Y-m-d',strtotime($date[0]));
-            $end_date = date('Y-m-d',strtotime($date[1]));
+            $start_date = date('Y-m-d',strtotime($request->min_date));
+            $end_date = date('Y-m-d',strtotime($request->max_date));
             $date = [0=>$start_date,1=>$end_date];
             $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
             $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->where('status',1)->count();

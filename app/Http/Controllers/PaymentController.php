@@ -38,7 +38,7 @@ class PaymentController extends Controller
             $payment->is_pos = 1;
         }
         $payment->save();
-        return response()->json($payment->token);
+        return response()->json($payment->id);
     }
     public function pos_before_payment(Request $request){
         $userId = Auth::id();
@@ -54,7 +54,7 @@ class PaymentController extends Controller
         $payment->status = 'pending';
         $payment->is_pos = 1;
         $payment->save();
-        return response()->json($payment->token);
+        return response()->json($payment->id);
     }
     public function preorder_before_payment(Request $request){
         $userId = Auth::id();
@@ -82,7 +82,8 @@ class PaymentController extends Controller
         return response()->json($payment->token);
     }
 
-    public function initialize(Request $request, $id){
+    public function add_payment(Request $request){
+        $id = $request->payment_id;
         // $user = User::where('id',Auth::id())->first();
         $currency = $this->getCurrencyRate();
         $payment = Payment::find($id);
@@ -102,12 +103,11 @@ class PaymentController extends Controller
         $shipping['notes'] = $request->shipping_notes;
         $payment->billing_detail = serialize($billing);
         $payment->shipping_detail = serialize($shipping);
-        $payment->payment_method = $request->payment_method;
         $payment->is_coupon = $request->is_coupon;
         $payment->coupon_code = $request->coupon_code;
         $setting = Setting::first();
         // $user_commission = 100 - $setting->admin_commission;
-        if($payment->is_coupon == 1){
+        if($request->is_coupon == 1){
             $check = Coupon::where('code',$payment->coupon_code)->first();
             if($payment->is_preorder == 0){
                 $carts = session()->get('cart');
@@ -137,9 +137,13 @@ class PaymentController extends Controller
         } else {
             $total_amount = $payment->subtotal;
         }
-        
+        // dd($total_amount);
         $payment->amount_paid = $total_amount;
+        if($payment->is_coupon == 1){
+            $payment->discounted_amount = $payment->total_amount - $payment->amount_paid;
+        }
         $payment->save();
+
         $carts = session()->get('cart');
         if(!Auth::id()){
             $userId = 0;
@@ -296,27 +300,32 @@ class PaymentController extends Controller
                 $revenue->save();
             }
         }
+        session()->put('cart', []);
+        return redirect('confirmation-page?token='.$payment->token);
+    }
+    public function confirmation_page(Request $request){
+        $token = $_GET['token'];
+        $payment = Payment::where('token', $token)->first();
+        $orders = Order::where('payment_id',$payment->id)->get();
+        return view('front.confirmation-page',compact('payment','orders'));
+    }
+    public function payment_method(Request $request){
+        $token = $_GET['token'];
+        $payment = Payment::where('token', $token)->first();
+        $orders = Order::where('payment_id',$payment->id)->get();
+        return view('front.payment-method',compact('payment','orders'));
+    }
+
+    public function initialize(Request $request, $id){
+        $payment = Payment::find($id);
         if($request->payment_method == 'cod'){
-            $payment = Payment::find($payment->id);
             $payment->status = 'pending';
             $payment->transaction_id = '';
             $payment->save();
-            if($payment->is_preorder == 1){
-                $book = Book::find($payment->book_id);
-                $book->book_purchased = $book->book_purchased + 1;
-                $book->save();
-            } else {
-                foreach($carts as $cart){
-                    $book = Book::find($cart['id']);
-                    $book->book_purchased = $book->book_purchased + 1;
-                    $book->save();
-                }
-            }
-            session()->put('cart', []);
-
+            
             $data['title'] = 'New Order Placed';
             $data['body'] = 'Congratulations!. New order has been placed just now!<br>';
-            $data['body'] .= '<b>Total Amount: </b>'.$total_amount.'<br>';
+            $data['body'] .= '<b>Total Amount: </b>'.$payment->amount_paid.'<br>';
             $data['body'] .= '<b>Payment Type: </b>'.$request->payment_method.'<br>';
             $data['body'] .= '<b>Destination: </b>'.$payment->precise_location.'<br>';
             $data['body'] .= '<b>Status: </b>Pending<br>';
@@ -334,7 +343,7 @@ class PaymentController extends Controller
         if(Auth::check() && Auth::user()->role == 'pos'){
             $data['title'] = 'New Order Placed';
             $data['body'] = 'Congratulations!. New order has been placed just now!<br>';
-            $data['body'] .= '<b>Total Amount: </b>'.$total_amount.'<br>';
+            $data['body'] .= '<b>Total Amount: </b>'.$payment->amount_paid.'<br>';
             $data['body'] .= '<b>Payment Type: </b>POS<br>';
             $data['body'] .= '<b>Destination: </b>'.$payment->precise_location.'<br>';
             $data['body'] .= '<b>Status: </b>Pending<br>';
@@ -349,25 +358,28 @@ class PaymentController extends Controller
             session()->put('cart', []);
             return redirect('success-page?token='.$payment->token);
         }
+        $email = unserialize($payment->billing_detail);
+        $currency = $this->getCurrencyRate();
+
         $request = [
             'tx_ref' => time(),
-            'amount' => $total_amount,
-            'currency' => $currency->currency_code,
+            'amount' => $payment->amount_paid,
+            'currency' => $currency->currency_code, 
             'payment_options' => 'card',
-            'redirect_url' => route('flutterwave-callback', $payment->id),
+            'redirect_url' => route('flutterwave-callback', $id),
             'customer' => [
-                'email' => $request->billing_email,
-                'name' => 'Zubdev'
+                'email' => $email['email'],
+                'name' => $email['first_name']
             ],
             'meta' => [
-                'price' => $total_amount
+                'price' => $payment->amount_paid
             ],
             'customizations' => [
                 'title' => 'Paying for a sample product',
                 'description' => 'sample'
             ]
         ];
-
+        
         $curl = curl_init();
         curl_setopt_array($curl, array(
         CURLOPT_URL => 'https://api.flutterwave.com/v3/payments',
@@ -388,11 +400,33 @@ class PaymentController extends Controller
     $response = curl_exec($curl);
     curl_close($curl);
     $res = json_decode($response);
+    
     if($res->status == 'success') {
         $link = $res->data->link;
         return redirect($link);
     } else {
             echo 'We can not process your payment';
+        }
+    }
+    public function pos_payment_success($id){
+        $payment = Payment::find($id);
+        if(Auth::check() && Auth::user()->role == 'pos'){
+            $data['title'] = 'New Order Placed';
+            $data['body'] = 'Congratulations!. New order has been placed just now!<br>';
+            $data['body'] .= '<b>Total Amount: </b>'.$payment->amount_paid.'<br>';
+            $data['body'] .= '<b>Payment Type: </b>POS<br>';
+            $data['body'] .= '<b>Destination: </b>'.$payment->precise_location.'<br>';
+            $data['body'] .= '<b>Status: </b>Pending<br>';
+            $data['body'] .= 'Please check below link to see more details!';
+            $data['link'] = "admin.book-orders";
+            $data['linkText'] = "View for details";
+            $data['to'] = 'info@cowriehub.com';
+            $data['username'] = 'COWRIEHUB';
+            Mail::send('email', $data,function ($m) use ($data) {
+                $m->to($data['to'])->subject('New Order Placed');
+            });
+            session()->put('cart', []);
+            return redirect('success-page?token='.$payment->token);
         }
     }
     public function pos_payment($id){

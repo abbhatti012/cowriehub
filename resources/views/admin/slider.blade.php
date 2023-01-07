@@ -1,13 +1,19 @@
 @extends('admin.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Slider</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Sliders</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Slider</li>
+                </ol>
+            </div>
         </div>
+    </div>
+</div>
         @if(Session::has('message'))
             <div class="alert alert-{{session('message')['type']}}">
                 {{session('message')['text']}}
@@ -61,7 +67,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
+                        <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -93,6 +99,4 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 @endsection

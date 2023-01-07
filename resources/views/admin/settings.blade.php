@@ -1,13 +1,19 @@
 @extends('admin.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Settings</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Settings</h4>
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Settings</li>
+                </ol>
+            </div>
         </div>
+    </div>
+</div>
         @if(Session::has('message'))
         <div class="alert alert-{{session('message')['type']}}">
             {{session('message')['text']}}
@@ -40,7 +46,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
@@ -63,7 +69,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
@@ -86,7 +92,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
@@ -109,12 +115,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary col-xl-2">Update</button>
+                            <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                     </div>
                 </div>
             </div>
         </form>
-    </div>
-</div>
 @endsection

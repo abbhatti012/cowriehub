@@ -1,42 +1,47 @@
 @extends($role.'.layout.index')
 @section('content')
-<div class="content-body">
-   <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">User</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">All Wishlist</a></li>
-            </ol>
-        </div>
-        @if(Session::has('message'))
-            <div class="alert alert-{{session('message')['type']}}">
-                {{session('message')['text']}}
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Wishlist</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Wishlist</li>
+                </ol>
             </div>
-        @endif
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            @if(isset($wishlist) && !empty($wishlist))
-                            <table id="example5" class="display" style="min-width: 845px">
-                                <thead>
-                                    <tr>
-                                        </th>
-                                        <th>#</th>
-                                        <th>Image</th>
-                                        <th>Typpe</th>
-                                        <th>Title</th>
-                                        <th>Publisher</th>
-                                        <th>Publication Date</th>
-                                        <th>Reviews</th>
-                                        <th>Price</th>
-                                        <th>Remove Wishlist</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                
-                                @foreach($wishlist as $book)
+
+        </div>
+    </div>
+</div>
+<!-- end page title -->
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">All Wishlist</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                </th>
+                                <th>#</th>
+                                <th>Image</th>
+                                <th>Typpe</th>
+                                <th>Title</th>
+                                <th>Publisher</th>
+                                <th>Publication Date</th>
+                                <th>Reviews</th>
+                                <th>Price</th>
+                                <th>Remove Wishlist</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        @foreach($wishlist as $book)
                                     <tr>
                                         <td>{{ $loop->index + 1 }}</td>
                                         <td><a href="{{ route('product', $book->slug) }}" class="d-block"><img src="{{ asset($book->hero_image) }}" class="img-fluid d-block mx-auto attachment-shop_catalog size-shop_catalog wp-post-image img-fluid" alt="image-description"></a></td>
@@ -85,14 +90,61 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                                </tbody>
-                            </table>
-                            @endif
-                        </div>
-                    </div>
+                    </table>
                 </div>
             </div>
         </div>
+
+        <!-- inventory add Details Modal -->
+        <div id="userdetails" class="modal fade" tabindex="-1" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 overflow-hidden">
+                    <div class="modal-header p-3">
+                        <h4 class="card-title mb-0">Assign A Job</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="javascript:void(0);">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="ForminputState" class="form-label">Consultant</label>
+                                        <select id="ForminputState" class="form-select">
+                                            <option selected>Choose...</option>
+                                            <option> </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="ForminputState" class="form-label">Job</label>
+                                        <select id="ForminputState" class="form-select">
+                                            <option selected>Choose...</option>
+                                            <option> </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="code" class="form-label">Add Note</label>
+                                        <textarea class="form-control" rows="3" placeholder="Enter code" id="code"></textarea>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                                <div class="col-lg-12">
+                                    <div class="text-end">
+                                        <button type="submit" class="btn btn-primary">Assign</button>
+                                    </div>
+                                </div>
+                                <!--end col-->
+                            </div>
+                            <!--end row-->
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
     </div>
 </div>
 @endsection

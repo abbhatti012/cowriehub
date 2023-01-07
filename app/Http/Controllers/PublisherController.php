@@ -72,15 +72,15 @@ class PublisherController extends Controller
         $user_detail = User::find($user->user_id);
         if($value == 1){
             $data['title'] = 'Congratulations!';
-            $data['body'] = 'You have been approved as a publisher successfully! We will be keep in touch with you. ';
+            $data['body'] = 'You have been approved as a publisher successfully! We will be keep in touch with you.<br>';
             $data['body'] .= 'Please click on below link to view your status!';
             $data['link'] = "user.publisher-account";
             $data['param'] = "id=$user->user_id";
             $data['linkText'] = "View for details";
             $user_detail->role = 'publisher';
         } else {
-            $data['title'] = 'Consultant Declined';
-            $data['body'] = 'Sorry! we are not going to accept your consultant proposal right now because of incomplete profile.';
+            $data['title'] = 'Publisher Declined';
+            $data['body'] = 'Sorry! we are not going to accept your consultant proposal right now because of incomplete profile.<br>';
             $data['body'] .= 'If you have any question then you can reach to support. By clicking on below link to view status. Thanks!';
             $data['link'] = "user.publisher-account";
             $data['param'] = "id=$user->user_id";
@@ -101,7 +101,7 @@ class PublisherController extends Controller
         $user_detail = User::where('id',$user->user_id)->first();
         
         $data['title'] = 'Publisher Removed';
-        $data['body'] = 'Sorry! you are not compatible with our requirements. We are going to remove you from cowriehub.';
+        $data['body'] = 'Sorry! you are not compatible with our requirements. We are going to remove you from cowriehub.<br>';
         $data['body'] .= ' For further query you can support cowriehub!';
         $data['link'] = "";
         $data['linkText'] = "";
@@ -195,6 +195,13 @@ class PublisherController extends Controller
         } else {
             unset($user->sample);
         }
+        if($request->cover != null){
+            $UploadImage = 'd'.time().'.'.$request->cover->extension();
+            $request->cover->move(public_path('images/books'), $UploadImage);
+            $user->cover = 'images/books/'.$UploadImage;
+        } else {
+            unset($user->cover);
+        }
         $user->title = $request->title;
         $user->slug = SlugService::createSlug(Genre::class, 'slug', $request->title);
         $user->price = $request->price;
@@ -268,7 +275,7 @@ class PublisherController extends Controller
             $data['to'] = $author->email;
             $data['username'] = $author->name;
             Mail::send('email', $data,function ($m) use ($data) {
-                $m->to($data['to'])->subject('IMPORTANT NOTE!');
+                $m->to($data['to'])->subject('New Book Added');
             });
             return back()->with('message', ['text'=>'Congratulations! Book has been added. It will be published once approved by COWRIEHUB','type'=>'success']);
         } else {
@@ -364,10 +371,10 @@ class PublisherController extends Controller
     }
     public function dashboard(Request $request){
         $id = Auth::id();
-        if(isset($request->date) && !empty($request->date)){
-            $date = explode(' - ',$request->date);
-            $start_date = date('Y-m-d',strtotime($date[0]));
-            $end_date = date('Y-m-d',strtotime($date[1]));
+        if(isset($request->min_date) && !empty($request->min_date)){
+            // $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($request->min_date));
+            $end_date = date('Y-m-d',strtotime($request->max_date));
             $date = [0=>$start_date,1=>$end_date];
             $books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
             $approved_books = Book::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->where('status',1)->count();

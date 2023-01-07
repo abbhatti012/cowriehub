@@ -1,5 +1,14 @@
 @extends('front.layout.index')
 @section('content')
+<div class="linking">
+    <div class="container">
+        <ol class="breadcrumb">
+            <li><a href="index.php">Home</a></li>
+            <li class="active">REFERRED CUSTOMER AGREEMENT</li>
+        </ol>
+    </div>
+</div>
+<section class="padding-top-30">
     <main id="content">
         <div class="container">
             <div class="space-bottom-1 space-bottom-lg-2 space-bottom-xl-3">
@@ -14,4 +23,5 @@
             </div>
         </div>
     </main>
+</section>
 @endsection

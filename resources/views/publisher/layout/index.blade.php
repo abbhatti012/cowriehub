@@ -15,15 +15,18 @@
 	<meta name="format-detection" content="telephone=no">
 	
 	<!-- PAGE TITLE HERE -->
-	<title>COWRIEHUB | Publisher</title>
+	<title>COWRIEHUB | User</title>
 	
-	<!-- FAVICONS ICON -->
-	<link rel="shortcut icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
-	<link href="{{asset('admin_assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
-	<link href="{{asset('admin_assets/vendor/jquery-nice-select/css/nice-select.css')}}" rel="stylesheet">
-    <link href="{{asset('admin_assets/css/style.css')}}" rel="stylesheet">
-    <link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
+	<link rel="shortcut icon" href="{{asset('admin_assets/assets/images/favicon.png')}}">
+    <link href="{{asset('admin_assets/assets/libs/jsvectormap/css/jsvectormap.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('admin_assets/assets/libs/swiper/swiper-bundle.min.css')}}" rel="stylesheet" type="text/css" />
+    <script src="{{asset('admin_assets/assets/js/layout.js')}}"></script>
+    <link href="{{asset('admin_assets/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('admin_assets/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('admin_assets/assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <link href="{{asset('admin_assets/assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 	<style>
 		#site_preloader {
 			position: fixed;
@@ -119,31 +122,73 @@
 	</style>
 </head>
 <body>
-	<div id="site_preloader">
-		<div id="loader"></div>
-	</div>
-    <div id="main-wrapper">
+	
+<div id="layout-wrapper">
        @include('publisher.layout.header')
 
-        @yield('content')
+	   	<div class="app-menu navbar-menu">
+            <!-- LOGO -->
+            <div class="navbar-brand-box">
+                <!-- Dark Logo-->
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="{{asset('admin_assets/assets/images/favicon.png')}}" width="50" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{asset('admin_assets/assets/images/cowriehub.png')}}" width="200" alt="">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="{{asset('admin_assets/assets/images/favicon.png')}}" width="50" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{asset('admin_assets/assets/images/cowriehub.png')}}" width="200" alt="">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+
+            @include('publisher.layout.menu')
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
+		
+		<div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+        			@yield('content')
+				</div>
+        	</div>
 
         @include('publisher.layout.footer')
     </div>
+</div>
 
-<!-- Required vendors -->
-<script src="{{asset('admin_assets/vendor/global/global.min.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/chart.js/Chart.bundle.min.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/peity/jquery.peity.min.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/apexchart/apexchart.js')}}"></script>
+<button onclick="topFunction()" class="btn btn-danger btn-icon" id="back-to-top">
+	<i class="ri-arrow-up-line"></i>
+</button>
 
-<script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/moment.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/custom.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/deznav-init.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/plugins-init/datatables.init.js')}}"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{asset('admin_assets/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/simplebar/simplebar.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/node-waves/waves.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/feather-icons/feather.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
+<script src="{{asset('admin_assets/assets/js/plugins.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/apexcharts/apexcharts.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/jsvectormap/js/jsvectormap.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/jsvectormap/maps/world-merc.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/swiper/swiper-bundle.min.js')}}"></script>
+<!-- <script src="{{asset('admin_assets/assets/js/pages/dashboard-ecommerce.init.js')}}"></script> -->
+<script src="{{asset('admin_assets/assets/js/app.js')}}"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
+
 @yield('scripts')
 	<script>
 		$(document).ready(function(){
@@ -152,7 +197,8 @@
 				$('#site_preloader').hide();
 				$('.content-body').show();
 			},1000)
-		})
+			
+		});
 	</script>
 </body>
 </html>

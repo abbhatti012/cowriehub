@@ -324,7 +324,11 @@ Route::get('/send-mail-using-mailchimp', [SocialiteController::class, 'mailchimp
 Route::get('pay', function () {
     return view('pay');
 });
-Route::post('/pay-now/{any}', [PaymentController::class, 'initialize'])->name('pay-now');
+Route::post('/pay-now', [PaymentController::class, 'add_payment'])->name('pay-now');
+Route::post('/initialize-payment/{any}', [PaymentController::class, 'initialize'])->name('initialize-payment');
+Route::get('/pos_payment_success/{any}', [PaymentController::class, 'pos_payment_success'])->name('pos_payment_success');
+Route::get('/confirmation-page', [PaymentController::class, 'confirmation_page'])->name('confirmation-page');
+Route::get('/payment-method', [PaymentController::class, 'payment_method'])->name('payment-method');
 Route::get('/pos-pay-now/{any}', [PaymentController::class, 'pos_payment'])->name('pos.pay-now');
 Route::get('/rave/callback/{any}', [PaymentController::class, 'callback'])->name('flutterwave-callback');
 Route::get('/pos/callback/{any}', [PaymentController::class, 'pos_callback'])->name('pos-callback');

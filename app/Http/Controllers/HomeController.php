@@ -119,6 +119,8 @@ class HomeController extends Controller
         $data['genres'] = Genre::get();
         $data['banners'] = Banner::get();
         $currency = $this->getCurrencyRate();
+
+        $data['blogs'] = Blog::get();
         return view('front.index',compact('data','currency'));
     }
     public function add_marketing_orders(Request $request){
@@ -139,17 +141,19 @@ class HomeController extends Controller
     public function shop(){
         $genres = Genre::with('subgenres')->get();
         $users = User::where('role','author')->get();
-        $featured = Book::where('is_featured',1)->where('status',1)->limit(3)->get();
+        $featured = Book::where('is_featured',1)->where('status',1)->limit(10)->get();
         $currency = $this->getCurrencyRate();
         return view('front.shop', compact('genres', 'users', 'featured','currency'));
     }
     public function blogs(){
-        $blogs = Blog::get();
-        return view('front.blogs', compact('blogs'));
+        $blogs = Blog::orderBy('id','asc')->get();
+        $recent_blogs = Blog::orderBy('id','desc')->limit(3)->get();
+        return view('front.blogs', compact('blogs','recent_blogs'));
     }
     public function blog_detail($id){
         $blog = Blog::find($id);
-        return view('front.blog-detail', compact('blog'));
+        $recent_blogs = Blog::orderBy('id','desc')->limit(3)->get();
+        return view('front.blog-detail', compact('blog','recent_blogs'));
     }
     public function product($slug){        
         $book = Book::where('slug',$slug)->first();
@@ -198,12 +202,12 @@ class HomeController extends Controller
         }
         $locations = Location::orderBy('id','desc')->get();
         $currency = $this->getCurrencyRate();
-        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations','currency','is_affiliate'));
+        $featured = Book::where('is_featured',1)->where('status',1)->limit(10)->get();
+        return view('front.product',compact('book', 'author', 'reviews', 'data', 'cart', 'wishlist','locations','currency','is_affiliate','featured'));
     }
     public function cart(){
-        $data['locations'] = Location::orderBy('id','desc')->get();
         $currency = $this->getCurrencyRate();
-        $cart_page = view('front.cart_item', $data, compact('currency'))->render(); 
+        $cart_page = view('front.cart_item', compact('currency'))->render(); 
         return view('front.cart', compact('cart_page','currency'));
     }
     public function wishlist(){
@@ -215,8 +219,14 @@ class HomeController extends Controller
         return view('front.wishlist', compact('wishlist_item'));
     }
     public function checkout(){
-        $token = $_GET['token'];
-        $payment = Payment::where('token', $token)->first();
+        // $token = $_GET['token'];
+        // $payment = Payment::where('token', $token)->first();
+        $carts = session()->get('cart');
+        if(isset($_GET['is_preorder'])){
+            
+        } else if(empty($carts)){
+            return redirect('/');
+        }
         if(Auth::id()){
             $user = Addresses::where('user_id',Auth::id())->first();
             if(!empty($user->billing_detail)){
@@ -237,10 +247,17 @@ class HomeController extends Controller
             $is_hide_address = 0;
             $role = 'guest';
         }
-        $location = Location::where('location',$payment->location)->first();
+        // $location = Location::where('location',$payment->location)->first();
         $currency = $this->getCurrencyRate();
-        
-        return view('front.checkout', compact('payment','billing','shipping','location','is_hide_address','currency','role'));
+        $locations = Location::orderBy('id','desc')->get();
+        if(isset($_GET['is_coupon'])){
+            $data['is_coupon'] = $_GET['is_coupon'];
+            $data['coupon_code'] = $_GET['coupon_code'];
+        } else {
+            $data['is_coupon'] = 0;
+            $data['coupon_code'] = '';
+        }
+        return view('front.checkout', compact('data','billing','shipping','locations','is_hide_address','currency','role'));
     }
     public function my_account(){
         $user = Addresses::where('user_id',Auth::id())->first();
@@ -254,7 +271,7 @@ class HomeController extends Controller
         } else {
             $shipping = [];
         }
-       
+        
         return view('front.my-account', compact('user','billing','shipping'));
     }
     public function about_us(){
@@ -268,12 +285,13 @@ class HomeController extends Controller
             $param = '';
         }
         $authors = User::where('users.role','author')
-        ->select('users.*','author-detail.profile as profile')
+        ->select('users.*','author-detail.profile as profile','author-detail.biography')
         ->join('author-detail','author-detail.user_id','=','users.id')
         ->with('books_published')
         ->where('users.name', 'like', $param.'%')
         ->get();
-        return view('front.authors-list', compact('authors'));
+        $genres = Genre::get();
+        return view('front.authors-list', compact('authors','genres'));
     }
     public function author_detail($id){
         $user = User::where('id',$id)->with('author_detail')->first();

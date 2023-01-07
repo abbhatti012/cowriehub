@@ -2,146 +2,95 @@
 <html lang="en">
 <head>
 
-    <meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="keywords" content="" />
-	<meta name="author" content="" />
-	<meta name="robots" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="description" content="" />
-	<meta property="og:title" content="" />
-	<meta property="og:description" content="" />
-	<meta property="og:image" content="https://innap.dexignzone.com/xhtml/social-image.png" />
-	<meta name="format-detection" content="telephone=no">
-	
-	<!-- PAGE TITLE HERE -->
-	<title>COWRIEHUB | AFFILIATE</title>
-	
-	<!-- Style css -->
-	<link rel="shortcut icon" type="image/png" href="{{asset('assets/img/favicon.png')}}" />
-	<link href="{{asset('admin_assets/vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet">
-    <link href="{{asset('admin_assets/css/style.css')}}" rel="stylesheet">
-	<link href="{{asset('assets/css/custom.css')}}" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<style>
-		#site_preloader {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-		#loader {
-			display: block;
-			position: relative;
-			left: 50%;
-			top: 50%;
-			width: 150px;
-			height: 150px;
-			margin: -75px 0 0 -75px;
-			border-radius: 50%;
-			border: 3px solid transparent;
-			border-top-color: #55cdc8;
-			-webkit-animation: spin 2s linear infinite;
-			animation: spin 2s linear infinite;
-		}
-		#loader:before {
-			content: "";
-			position: absolute;
-			top: 5px;
-			left: 5px;
-			right: 5px;
-			bottom: 5px;
-			border-radius: 50%;
-			border: 3px solid transparent;
-			border-top-color: #55cdc8;
-			-webkit-animation: spin 3s linear infinite;
-			animation: spin 3s linear infinite;
-		}
-		#loader:after {
-			content: "";
-			position: absolute;
-			top: 15px;
-			left: 15px;
-			right: 15px;
-			bottom: 15px;
-			border-radius: 50%;
-			border: 3px solid transparent;
-			border-top-color: #55cdc8;
-			-webkit-animation: spin 1.5s linear infinite;
-			animation: spin 1.5s linear infinite;
-		}
-		@-webkit-keyframes spin {
-			0%   {
-				-webkit-transform: rotate(0deg);
-				-ms-transform: rotate(0deg);
-				transform: rotate(0deg);
-			}
-			100% {
-				-webkit-transform: rotate(360deg);
-				-ms-transform: rotate(360deg);
-				transform: rotate(360deg);
-			}
-		}
-		@keyframes spin {
-			0%   {
-				-webkit-transform: rotate(0deg);
-				-ms-transform: rotate(0deg);
-				transform: rotate(0deg);
-			}
-			100% {
-				-webkit-transform: rotate(360deg);
-				-ms-transform: rotate(360deg);
-				transform: rotate(360deg);
-			}
-		}
-		.content-body{
-			display: none;
-		}
-		label.error {
-			color: red;
-			font-size: 1rem;
-			display: block;
-			margin-top: 5px;
-		}
+    <link rel="shortcut icon" href="{{asset('admin_assets/assets/images/favicon.ico')}}">
+    <!-- dropzone css -->
+    <link rel="stylesheet" href="{{asset('admin_assets/assets/libs/dropzone/dropzone.css')}}" type="text/css" />
 
-		input.error {
-			border: 1px dashed red;
-			font-weight: 300;
-			color: red;
-		}
-		textarea.error {
-			border: 1px dashed red;
-			font-weight: 300;
-			color: red;
-		}
-	</style>
+    <!-- Filepond css -->
+    <link rel="stylesheet" href="{{asset('admin_assets/assets/libs/filepond/filepond.min.css')}}" type="text/css" />
+    <link rel="stylesheet" href="{{asset('admin_assets/assets/libs/filepond-plugin-image-preview/filepond-plugin-image-preview.min.css')}}">
+
+    <!-- Layout config Js -->
+    <script src="{{asset('admin_assets/assets/js/layout.js')}}"></script>
+    <!-- Bootstrap Css -->
+    <link href="{{asset('admin_assets/assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- Icons Css -->
+    <link href="{{asset('admin_assets/assets/css/icons.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- App Css-->
+    <link href="{{asset('admin_assets/assets/css/app.min.css')}}" rel="stylesheet" type="text/css" />
+    <!-- custom Css-->
+    <link href="{{asset('admin_assets/assets/css/custom.min.css')}}" rel="stylesheet" type="text/css" />
+    <!--datatable css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />
+    <!--datatable responsive css-->
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.dataTables.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
 </head>
 <body>
-	<div id="site_preloader">
-		<div id="loader"></div>
-	</div>
-    <div id="main-wrapper">
+	<div id="layout-wrapper">
        @include('affiliate.layout.header')
 
-        @yield('content')
+	   <div class="app-menu navbar-menu">
+            <div class="navbar-brand-box">
+                <a href="/" class="logo logo-dark">
+                    <span class="logo-sm">
+                        <img src="{{asset('admin_assets/assets/images/favicon.png')}}" width="50" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{asset('admin_assets/assets/images/cowriehub.png')}}" width="200" alt="">
+                    </span>
+                </a>
+                <a href="/" class="logo logo-light">
+                    <span class="logo-sm">
+                        <img src="{{asset('admin_assets/assets/images/favicon.png')}}" width="50" alt="">
+                    </span>
+                    <span class="logo-lg">
+                        <img src="{{asset('admin_assets/assets/images/cowriehub.png')}}" width="200" alt="">
+                    </span>
+                </a>
+                <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
+                    <i class="ri-record-circle-line"></i>
+                </button>
+            </div>
+			@include('affiliate.layout.menu')
+            <div class="sidebar-background"></div>
+        </div>
+        <!-- Left Sidebar End -->
+        <!-- Vertical Overlay-->
+        <div class="vertical-overlay"></div>
+		
+		<div class="main-content">
+			<div class="page-content">
+				<div class="container-fluid">
+        			@yield('content')
+				</div>
+        	</div>
 
         @include('affiliate.layout.footer')
     </div>
+</div>
 
 <!-- Required vendors -->
-<script src="{{asset('admin_assets/vendor/global/global.min.js')}}"></script>
-<script src="{{asset('admin_assets/vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
+<!-- JAVASCRIPT -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{asset('admin_assets/assets/libs/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/simplebar/simplebar.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/node-waves/waves.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/feather-icons/feather.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/js/pages/plugins/lord-icon-2.1.0.js')}}"></script>
+<script src="{{asset('admin_assets/assets/js/plugins.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/apexcharts/apexcharts.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/jsvectormap/js/jsvectormap.min.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/jsvectormap/maps/world-merc.js')}}"></script>
+<script src="{{asset('admin_assets/assets/libs/swiper/swiper-bundle.min.js')}}"></script>
 
+<script src="{{asset('admin_assets/assets/js/pages/datatables.init.js')}}"></script>
+<!-- App js -->
+<script src="{{asset('admin_assets/assets/js/app.js')}}"></script>
 
-<script src="{{asset('admin_assets/vendor/bootstrap-datetimepicker/js/moment.js')}}"></script>
-<script src="{{asset('admin_assets/js/custom.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/deznav-init.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
-<script src="{{asset('admin_assets/vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
-<script src="{{asset('admin_assets/js/plugins-init/datatables.init.js')}}"></script>
-
-<script src="{{asset('admin_assets/vendor/apexchart/apexchart.js')}}"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.min.js"></script>
 @yield('scripts')
 	<script>

@@ -1,13 +1,21 @@
 @extends('consultant.layout.index')
 @section('content')
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="javascript:void(0)">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Jobs</a></li>
-            </ol>
+<div class="row">
+    <div class="col-12">
+        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+            <h4 class="mb-sm-0">Pending Jobs</h4>
+
+            <div class="page-title-right">
+                <ol class="breadcrumb m-0">
+                    <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Pending Jobs</li>
+                </ol>
+            </div>
+
         </div>
+    </div>
+</div>
         @if(Session::has('message'))
             <div class="alert alert-{{session('message')['type']}}">
                 {{session('message')['text']}}
@@ -23,15 +31,15 @@
             </div><br />
         @endif
         <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Pending Jobs</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="example5" class="display" style="min-width: 845px">
-                                <thead>
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">All Completed Jobs</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                                        <thead>
                                     <tr>
                                         <th>Job No</th>
                                         <th>Author Name</th>
@@ -66,14 +74,14 @@
                                 @empty
                                 @endforelse
                                 </tbody>
-                            </table>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    
 <div class="modal fade" id="viewMarketingDetail">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">

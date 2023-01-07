@@ -5,33 +5,33 @@
         height: 100px !important;
     }
 </style>
-<div class="content-body">
-    <div class="container-fluid">
-        <div class="row page-titles">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item active"><a href="{{ route('admin') }}">Dashboard</a></li>
-                <li class="breadcrumb-item"><a href="javascript:void(0)">Book Orders</a></li>
-            </ol>
-        </div>
-        <div class="row">
-        @if(Session::has('message'))
-            <div class="alert alert-{{session('message')['type']}}">
-                {{session('message')['text']}}
-            </div>
-        @endif
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Pending Orders</h4>
+<div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Pending Invoices</h4>
+
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a>
+                                        </li>
+                                        <li class="breadcrumb-item active">Pending Invoices</li>
+                                    </ol>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <a href="#!" class="btn btn-primary btn-csv">CSV</a>
-                            <a href="#!" class="btn btn-primary btn-excel">Excel</a>
-                            <a href="#!" class="btn btn-primary btn-pdf">PDF</a>
-                            <a href="#!" class="btn btn-primary btn-print">Print</a>
-                            <table id="datatables" class="display" style="min-width: 845px">
-                                <thead>
+                    <!-- end page title -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">All Pending Invoices</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                                        <thead>
                                     <tr>
                                         <th>Transaction ID</th>
                                         <th>Location</th>
@@ -87,28 +87,16 @@
                                 @empty
                                 @endforelse
                                 </tbody>
-                            </table>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
 @section('scripts')
-<script>
-    $(document).ready(function(){
-        
-        });
-</script>
 
-    <script src='https://cdn.datatables.net/buttons/1.3.1/js/dataTables.buttons.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.flash.min.js'></script>
-    <script src='http://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/pdfmake.min.js'></script>
-    <script src='http://cdn.rawgit.com/bpampuch/pdfmake/0.1.27/build/vfs_fonts.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.html5.min.js'></script>
-    <script src='http://cdn.datatables.net/buttons/1.3.1/js/buttons.print.min.js'></script>
+
 @endsection

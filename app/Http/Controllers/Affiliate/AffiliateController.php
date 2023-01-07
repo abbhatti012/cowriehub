@@ -95,10 +95,10 @@ class AffiliateController extends Controller
     }
     public function affiliate_commissions(Request $request){
         $id = Auth::id();
-        if(isset($request->date) && !empty($request->date)){
-            $date = explode(' - ',$request->date);
-            $start_date = date('Y-m-d',strtotime($date[0]));
-            $end_date = date('Y-m-d',strtotime($date[1]));
+        if(isset($request->min_date) && !empty($request->min_date)){
+            // $date = explode(' - ',$request->date);
+            $start_date = date('Y-m-d',strtotime($request->min_date));
+            $end_date = date('Y-m-d',strtotime($request->max_date));
             $date = [0=>$start_date,1=>$end_date];
             $orders = Revenue::where('user_id',$id)->where('role',Auth::user()->role)->whereBetween('created_at',$date)->count();
             $graphOrders = Revenue::select('*')
@@ -223,7 +223,7 @@ class AffiliateController extends Controller
             $data['title'] = 'Invitation Link';
             $data['body'] = 'Hi!.'.$user_detail->name.' <br>';
             $data['body'] = 'You are invited to become a part of COWRIEHUB. ';
-            $data['body'] = 'Join now COWRIEHUB to get your desired book at cheapest rates.';
+            $data['body'] = 'Join now COWRIEHUB to get your desired book at cheapest rates.<br>';
             $data['body'] .= ' Click on below link to register with COWRIEHUB!';
             $data['link'] = "register";
             $data['param'] = "ref=".$user_detail->code;
